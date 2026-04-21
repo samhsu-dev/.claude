@@ -3,22 +3,24 @@ paths:
   - "**/todo.md"
 ---
 
-# Python Task Management
+# LaTeX Task Management
 
-Python-specific task conventions.
+Paper-specific task conventions.
 
 ---
 
 ## Quality Gate
 
 Every task ends with:
-- [ ] uv run black and uv run isort
-- [ ] uv run pylint -- 9.0+
-- [ ] uv run mypy --strict
-- [ ] uv run pytest -- all pass
+- [ ] `latexmk -pdf main.tex` -- zero errors
+- [ ] Zero undefined references in log
+- [ ] Zero missing citations in log
+- [ ] PDF visually correct at edited section
 
 ## Conventions
 
-- Design docs by relative path: Depends on: path/to/design.md.
-- Test tasks name the test file: tests/test_<component>.py.
-- Implementation tasks reference implementation.md for library findings.
+- Design docs by relative path: `Depends on: path/to/design.md`.
+- Section tasks name the section file: `Sections/<topic>.tex` or `<topic>.tex`.
+- Figure tasks name the asset: `figures/<name>.pdf`.
+- Table tasks name the asset: `tables/<name>.tex`.
+- Implementation tasks reference `implementation.md` for package findings.

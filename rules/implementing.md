@@ -1,28 +1,37 @@
 ---
 paths:
-  - "**/*impl.md"
+  - "**/*implementation.md"
 ---
 
-# Python Implementation Documents
+# LaTeX Implementation Documents
 
-Python-specific `impl.md` conventions.
+Package and macro integration conventions.
 
 ---
 
-## API Entry Format
+## Package Entry Format
 
-**[library]** `from library import Thing` -- when/gotcha.
+**[package]** `\usepackage[options]{package}` -- when/gotcha.
 
 Example:
-**[pydantic-ai]** `Agent(model, result_type=T)` -- result_type must be BaseModel subclass.
-**[jinja2]** `Environment(loader=FileSystemLoader(path))` -- loader required; omitting disables file templates.
+**[booktabs]** `\usepackage{booktabs}` -- `\toprule`, `\midrule`, `\bottomrule`. No vertical rules.
+**[siunitx]** `\usepackage{siunitx}` -- `\qty{value}{unit}` (v3). Replaces deprecated `\SI`.
+**[subcaption]** `\usepackage{subcaption}` -- conflicts with `subfigure`. Use one.
+**[hyperref]** `\usepackage{hyperref}` -- load near-last. `cleveref` loads after.
 
-## Library Entry Format
+## Macro Entry Format
 
-- library_name >= version -- purpose. `uv add library_name`.
+- `\newcommand{\name}{expansion}` -- purpose. File where defined.
+
+## Load Order Rules
+
+1. Most packages (order-independent).
+2. `hyperref` (near-last, redefines many internals).
+3. `cleveref` (after `hyperref`, hard requirement).
 
 ## Verification
 
-- Check `impl.md` for existing findings before writing integration code.
-- Record all findings immediately. Not in conversation only.
-- Verify via DeepWiki, Context7, or minimal test. No guessing.
+- Check `implementation.md` for existing findings before adding `\usepackage`.
+- Record all package conflicts, load-order requirements, and option gotchas immediately.
+- Verify via Context7, package documentation (`texdoc <package>`), or minimal test document. No guessing.
+- Test new packages in a minimal `.tex` file before integrating.
