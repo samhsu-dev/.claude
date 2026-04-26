@@ -15,7 +15,7 @@ A skill is a prompt template injected into conversation when invoked. Not code, 
 ```
 skill-name/
 ├── SKILL.md            # Required — frontmatter + prompt
-├── scripts/            # Deterministic helpers (Python/Bash)
+├── scripts/            # Deterministic helpers (shell or scripting language)
 └── reference.md        # Large docs Claude reads on demand
 ```
 
@@ -76,7 +76,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 | Arithmetic, hashing, scoring | Compare against user context |
 | CSV/JSON read-write, bulk transforms | Format output, answer follow-ups |
 
-- Scripts in `scripts/`. Invoke: `python3 ${CLAUDE_SKILL_DIR}/scripts/<name>.py $ARGUMENTS`.
+- Scripts in `scripts/`. Invoke: `${CLAUDE_SKILL_DIR}/scripts/<name> $ARGUMENTS`.
 - Scripts output structured JSON. Agent reads and presents.
 - Scripts use stdlib only. Document dependencies if unavoidable.
 - Scripts handle errors internally. Return error objects, never crash.

@@ -12,10 +12,11 @@ Reusable Claude Code rules, organized by topic and file type. Language-independe
     ├── codequality.md  # Source code quality (scoped to code files)
     ├── committing.md   # Git commit standards (always active)
     ├── idea.md         # Concept doc standards (scoped to idea.md)
-    ├── modeling.md     # Domain model standards (scoped to model.md)
-    ├── designing.md    # Design doc standards (scoped to design.md)
+    ├── modeling.md     # Domain model standards (scoped to *model.md)
+    ├── designing.md    # Design doc standards (scoped to *design.md)
     ├── specifying.md   # Algorithm spec standards (scoped to spec.md)
     ├── implementing.md # Implementation doc standards (scoped to *impl.md)
+    ├── indexing.md     # Index/navigation doc standards (scoped to index.md)
     ├── tasking.md      # Task management standards (scoped to todo.md)
     ├── readme.md       # README standards (scoped to README.md)
     ├── testing.md      # Testing standards (scoped to test files)
@@ -26,8 +27,3 @@ Reusable Claude Code rules, organized by topic and file type. Language-independe
 ```
 
 `rulewriting.md` and `committing.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
-
-## Python Toolchain
-
-- Always use `uv run` to execute Python commands (e.g., `uv run python`, `uv run pytest`, `uv run mypy`).
-- Always use `uv` to manage Python project dependencies (e.g., `uv add`, `uv remove`, `uv sync`). Never use `pip install` or `pip` directly.

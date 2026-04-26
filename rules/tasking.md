@@ -20,8 +20,8 @@ States: `[ ]` todo, `[x]` done, `[~]` in progress, `[-]` skipped.
 ## Quality Gate
 
 Every task ends with this checklist (do not repeat inline — reference this section):
-- [ ] Lint and format (`pylint`, `black`, `isort` or equivalent)
-- [ ] Type check (`mypy --strict` or equivalent)
+- [ ] Lint and format (project linter)
+- [ ] Type check (project type checker)
 - [ ] Unit tests for new/changed public API
 - [ ] All tests pass
 
