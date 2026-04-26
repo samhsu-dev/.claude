@@ -28,3 +28,11 @@ paths:
 - When a test fails, verify the test is correct before changing the implementation.
 - When an external call fails, verify the input matches the API contract (check `implementation.md`).
 - No guessing. If the cause is unclear, add a targeted assertion or log to confirm before fixing.
+- No silent fallbacks. `map[key] ?: default` on internal mappings masks bugs — throw on missing key.
+
+## Bug Fix Protocol
+
+- Write a minimal failing test that reproduces the suspected bug before changing any source code.
+- Run the test to confirm it fails. A passing test means the bug does not exist — do not fix what is not broken.
+- Fix the source code. Run the test again to confirm it passes.
+- Keep the test as a permanent regression guard. Never delete a bug-reproduction test after the fix.
