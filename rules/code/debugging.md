@@ -1,5 +1,6 @@
 ---
 paths:
+  - "**/*.{py,ts,tsx,js,jsx,go,rs,java,cpp,c,cs,rb,swift,kt,php}"
   - "**/*test*"
 ---
 
@@ -26,7 +27,7 @@ paths:
 - Read the full traceback before changing code.
 - Check the exception type and its fields, not just the message string.
 - When a test fails, verify the test is correct before changing the implementation.
-- When an external call fails, verify the input matches the API contract (check `implementation.md`).
+- When an external call fails, verify the input matches the API contract (check `impl.md`).
 - No guessing. If the cause is unclear, add a targeted assertion or log to confirm before fixing.
 - No silent fallbacks. `map[key] ?: default` on internal mappings masks bugs — throw on missing key.
 

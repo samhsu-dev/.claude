@@ -56,14 +56,5 @@ No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 - Data holders contain only primitives, enums, or other data holders.
 - One orchestrator per workflow. Helpers are stateless and receive inputs by argument.
 - Files with shared concern grouped into one directory as an internal submodule. One public entry point per directory.
-- No guessing. Verify via documentation, source code, or test. If unverifiable, ask.
-- Search for existing libraries before implementing.
-- Verify external library API via DeepWiki/Context7 or minimal test before use. Record findings in `implementation.md`.
+- Verify external library API via DeepWiki/Context7 or minimal test before use. Record findings in `impl.md`.
 
----
-
-## 4. Change policy
-
-- No backward-compatibility requirements.
-- No changes to return types, signatures, or behavior without explicit user request.
-- No additions, removals, or renames of public API without explicit instruction.

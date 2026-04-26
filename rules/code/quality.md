@@ -34,7 +34,7 @@ paths:
 - Multi-step logic in dedicated functions.
 - Meaningful names. No single-letter variables outside comprehensions and loop indices.
 - Internal imports follow language convention.
-- Law of Demeter: call own methods, parameters, locally created objects, direct attributes only.
+- Call only own methods, parameter methods, locally created objects, direct attributes.
 - No duplicate logic blocks. Two identical blocks → extract function.
 - No feature envy — a function accessing another object's fields more than its own belongs on that object.
 - No data clumps — fields always passed together → group into a type.
@@ -67,7 +67,7 @@ paths:
 - Race condition: shared mutable state requires explicit synchronization or is forbidden.
 - Encoding: explicit encoding on every I/O boundary. No implicit platform defaults.
 
-## Performance
+## Resource Management
 - Context managers / RAII / try-with-resources for resources.
 - No object creation inside loops. Move allocation outside.
 - Cache check before expensive operations.
