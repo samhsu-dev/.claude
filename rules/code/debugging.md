@@ -6,6 +6,8 @@ paths:
 
 # Debugging Standards
 
+Language-specific debugging tools and pitfalls: see project `.claude/rules/code/debugging.md`.
+
 ## Investigation Method
 
 1. Reproduce the failure with a minimal case.

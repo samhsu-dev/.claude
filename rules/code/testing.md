@@ -5,6 +5,8 @@ paths:
 
 # Testing Standards
 
+Language-specific test framework, layout, assertions, and execution: see project `.claude/rules/code/testing.md`.
+
 ## 1. Principles
 
 - Tests prove the presence of defects, not their absence.

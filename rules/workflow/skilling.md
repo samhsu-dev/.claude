@@ -110,7 +110,7 @@ Skills run with the user's full OS permissions. A malicious skill can:
 ### allowed-tools Rules
 
 - List only tools the procedure uses. No extras.
-- Never grant bare `Bash` unless the skill requires arbitrary shell. Prefer `Read`/`Write`/`Grep`.
+- Never grant bare `Bash` unless the skill requires arbitrary shell. Use `Read`/`Write`/`Grep` instead.
 - `WebFetch` = network access. Grant only when HTTP fetch is the skill's purpose.
 - Pre-approval bypasses user confirmation. Over-permitting = reduced oversight.
 - `allowed-tools` cannot override deny rules in settings.json. Deny always wins.

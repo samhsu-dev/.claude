@@ -41,7 +41,7 @@ Record each candidate with:
 | Medium | Utility functions, constructors, off-hot-path. |
 | Low | Structural improvement, no expected throughput impact. |
 
-Sort: bug fixes first, then high → low. Same priority: prefer lower risk, smaller diff.
+Sort: bug fixes first, then high → low. Same priority: lower risk first, smaller diff first.
 
 ### 3. Baseline
 

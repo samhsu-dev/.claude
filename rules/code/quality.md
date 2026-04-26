@@ -5,6 +5,8 @@ paths:
 
 # Code Quality Standards
 
+Language-specific naming, formatting, idioms, and complexity thresholds: see project `.claude/rules/code/quality.md`.
+
 ## Control Flow
 - Early returns over nested conditionals.
 - Guard clauses to minimize nesting. Max 2 levels of indentation in function body.
