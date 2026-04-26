@@ -1,11 +1,11 @@
 ---
 paths:
-  - "**/design.md"
+  - "**/*design.md"
 ---
 
 # Kotlin Design Standards
 
-Kotlin-specific design rules. kotlinlang.org conventions and idioms.
+Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org conventions.
 
 ---
 
@@ -14,7 +14,7 @@ Kotlin-specific design rules. kotlinlang.org conventions and idioms.
 - `data class` for value holders (equality by properties, `copy()`, destructuring). Properties immutable (`val`) by default.
 - `sealed class` / `sealed interface` for closed type hierarchies (exhaustive `when`).
 - `enum class` for finite fixed sets of constants.
-- `interface` for contracts and structural abstraction. Prefer over abstract class when no shared state.
+- `interface` for contracts and structural abstraction. Over abstract class when no shared state.
 - `abstract class` for type hierarchies with shared state or template methods.
 - `value class` (`@JvmInline`) for zero-overhead type wrappers around a single property.
 - `object` for singletons and stateless utility groupings.
@@ -25,11 +25,10 @@ Kotlin-specific design rules. kotlinlang.org conventions and idioms.
 | Modifier | Scope |
 |----------|-------|
 | `public` (default) | Visible everywhere. Omit keyword unless in explicit API mode. |
-| `internal` | Visible within the module. Use for implementation details shared across files. |
+| `internal` | Visible within the module. |
 | `private` | Visible within the file (top-level) or class. |
 | `protected` | Visible in class and subclasses. Only on `open`/`abstract` members. |
 
-- Public when consumers need it. `internal` for module implementation details. `private` for file/class-local.
 - No `protected` on final classes.
 
 ## Class Design
@@ -51,7 +50,7 @@ Kotlin-specific design rules. kotlinlang.org conventions and idioms.
 
 - `sealed` when all subtypes are known at compile time.
 - Subclasses in same file (sealed class) or same package (sealed interface).
-- Exhaustive `when` -- no `else` branch. Compiler enforces completeness.
+- Exhaustive `when` — no `else` branch. Compiler enforces completeness.
 
 ## Exception Design
 
@@ -71,7 +70,7 @@ Kotlin-specific design rules. kotlinlang.org conventions and idioms.
 ## Generics
 
 - `out` (covariant) for producers. `in` (contravariant) for consumers.
-- Declaration-site variance on the class when possible. Use-site variance (`out`/`in` at call site) only when declaration-site is not feasible.
+- Declaration-site variance when possible. Use-site variance only when declaration-site is not feasible.
 - Reified type parameters (`inline fun <reified T>`) to preserve type info at runtime.
 - Star projection (`*`) when the type parameter is irrelevant.
 

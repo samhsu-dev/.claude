@@ -1,6 +1,6 @@
 # Project Commit Rules
 
-Extends global `committing.md`. No duplication -- project-specific additions only.
+Extends global `workflow/committing.md`. Project-specific additions only.
 
 ## Pre-Push
 

@@ -6,15 +6,19 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
 
 ```
 .claude/
-├── CLAUDE.md           # This file
+├── CLAUDE.md                   # This file
 └── rules/
-    ├── codequality.md  # Kotlin code quality and idioms (*.kt)
-    ├── committing.md   # Project commit, push, and PR rules
-    ├── designing.md    # Kotlin design standards (design.md)
-    ├── implementing.md # Implementation doc standards (*implementation.md)
-    ├── tasking.md      # Task management standards (todo.md)
-    ├── testing.md      # Kotlin testing standards (test files)
-    └── debugging.md    # Kotlin debugging standards (test files)
+    ├── code/
+    │   ├── quality.md          # Kotlin code quality and idioms (*.kt)
+    │   ├── testing.md          # Kotlin/JUnit 5 conventions (test files)
+    │   └── debugging.md        # Kotlin debugging tools (*.kt + test files)
+    ├── docs/
+    │   ├── design.md           # Kotlin design standards (*design.md)
+    │   ├── impl.md             # Kotlin impl.md conventions (*impl.md)
+    │   └── todo.md             # Kotlin task conventions (todo.md)
+    └── workflow/
+        ├── committing.md       # Project commit and push rules
+        └── quality-gate.md     # Gradle verification steps
 ```
 
 Rules use `paths:` frontmatter to load only when working with matching files.

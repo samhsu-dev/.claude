@@ -5,7 +5,7 @@ paths:
 
 # Kotlin Code Quality
 
-Kotlin-specific rules. kotlinlang.org coding conventions. detekt defaults.
+Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventions. detekt defaults.
 
 ---
 
@@ -31,7 +31,7 @@ Kotlin-specific rules. kotlinlang.org coding conventions. detekt defaults.
 
 ## Modifier Order
 
-`public`/`protected`/`private`/`internal` -> `expect`/`actual` -> `final`/`open`/`abstract`/`sealed`/`const` -> `external` -> `override` -> `lateinit` -> `tailrec` -> `vararg` -> `suspend` -> `inner` -> `enum`/`annotation`/`fun` -> `companion` -> `inline`/`value` -> `infix` -> `operator` -> `data`.
+`public`/`protected`/`private`/`internal` → `expect`/`actual` → `final`/`open`/`abstract`/`sealed`/`const` → `external` → `override` → `lateinit` → `tailrec` → `vararg` → `suspend` → `inner` → `enum`/`annotation`/`fun` → `companion` → `inline`/`value` → `infix` → `operator` → `data`.
 
 ## Imports
 
@@ -44,7 +44,7 @@ Kotlin-specific rules. kotlinlang.org coding conventions. detekt defaults.
 - `!!` only when provably non-null through business logic the compiler cannot verify. Never on untrusted external data. Never in public APIs.
 - `?.let { }` for non-null execution blocks.
 - `filterNotNull()` to remove nulls from collections.
-- Public functions and properties: always declare explicit Kotlin types for Java interop platform types.
+- Public functions and properties: explicit Kotlin types for Java interop platform types.
 
 ## Idiomatic Kotlin
 
@@ -88,6 +88,8 @@ Kotlin-specific rules. kotlinlang.org coding conventions. detekt defaults.
 
 ## Complexity Thresholds (detekt)
 
+Global `code/quality.md` sets 20-line function limit. Kotlin detekt overrides:
+
 | Metric | Limit |
 |--------|-------|
 | Method length | 60 lines |
@@ -100,35 +102,11 @@ Kotlin-specific rules. kotlinlang.org coding conventions. detekt defaults.
 
 ## Code Smells
 
-- Abstract class with no abstract members -> use concrete class or interface.
+- Abstract class with no abstract members → concrete class or interface.
 - Data class with mutable properties or non-conversion functions.
 - `protected` members in final (non-`open`) classes.
-- Utility class with public constructor -> private constructor.
-- Magic numbers -> named constants.
-- Functions returning only a constant -> `const val`.
-- Explicit `Unit` return type -> omit.
+- Utility class with public constructor → private constructor.
+- Functions returning only a constant → `const val`.
+- Explicit `Unit` return type → omit.
 - Redundant `constructor` keyword.
-- Object literals implementing single method -> lambda.
-
----
-
-## Quality Workflow
-
-### Before editing
-- `./gradlew detekt` -- check warnings.
-
-### After editing
-- `./gradlew detekt` -- no new violations.
-- `./gradlew test` -- all pass.
-- `./gradlew build` -- compiles clean.
-
----
-
-## External Tools
-
-- Context7: library docs before integration.
-- DeepWiki: repository structure and patterns.
-
-## Workflow
-
-- No summary/README generation after task completion. Update existing files only.
+- Object literals implementing single method → lambda.
