@@ -7,6 +7,8 @@ paths:
 
 ## 1. Required structure
 
+IEEE 1016 Logical viewpoint + Interface viewpoint. Software structure only.
+
 Sections in this order:
 
 | Section | Content |
@@ -15,7 +17,9 @@ Sections in this order:
 | **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
 | **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
 | **Exception / Error Types** | Each type and when raised. |
-| **Validation Rules** | Per component. |
+
+No domain entity semantics, state transition rules, or structural invariants -- those go in `model.md`.
+No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 
 **Overview format**:
 - **Classes**: `ClassA`, `ClassB`, `ClassC`

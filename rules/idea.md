@@ -52,8 +52,8 @@ paths:
 
 ### Content
 - Concepts and terminology only. No implementation details, APIs, commands, or code.
-- Technical specifications link to `design.md`.
-- Consistent terminology across modules.
+- Concept definitions: name + one-sentence definition + scope + relationships. No formal semantics (state transitions, invariants, edge direction rules) -- those go in `model.md`.
+- Technical specifications link to `design.md`. Domain semantics link to `model.md`.
 
 ### Format
 - Headings, bullet points, bold text, diagrams for structure.
