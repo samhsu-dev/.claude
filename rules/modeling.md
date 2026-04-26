@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/model.md"
+  - "**/*model.md"
 ---
 
 # Domain Model Documentation Standards
