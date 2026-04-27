@@ -28,19 +28,10 @@ def test_validate_month(month: int, valid: bool) -> None:
         with pytest.raises(ValueError):
             validate_month(month)
 
-### Error case checklist per function
-- Invalid type.
-- Empty input ("", [], {}).
-- None when not allowed.
-- Out-of-range values (boundary -1, boundary +1).
-- Missing required fields.
-
 ---
 
 ## Layout
 
-- tests/ root. Files: test_<component>.py.
-- Mirror source structure in test directory.
 - Shared fixtures in tests/conftest.py. Subdirectory fixtures in tests/<subdir>/conftest.py.
 
 ## Discovery
@@ -91,7 +82,3 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-
-## Naming
-
-- test_<component>_<condition>_<expected>.

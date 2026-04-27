@@ -20,23 +20,21 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 
 - raise ... from exc to chain. raise ... from None to suppress.
 - Domain exceptions with structured fields. Defined in _exceptions.py.
-- try blocks cover minimum code. No bare except:.
+- try blocks cover minimum code.
 
 ## Python Idioms
 
-- is / is not for None.
+- is / is not for None (PEP 8).
 - if not seq: for empty check.
 - .startswith() / .endswith(). Not slicing.
 - isinstance(). Not type() is.
 - def for named functions. No lambda assignment.
-- No mutable default arguments.
 
 ## Performance Idioms
 
 - set/dict for membership tests.
 - Generator expressions for single-pass. List comprehensions for reuse.
 - ''.join(parts) in loops. Not +=.
-- Never modify a list while iterating.
 - tuple/frozenset for fixed data.
 
 ## Type Hints
@@ -50,10 +48,7 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 
 ## No Weak Types
 
-- Concrete types. No Any, object, bare dict, bare list.
-- Narrow return types.
 - TypedDict / dataclass / BaseModel for structured data.
-- Explicit parameters. No *args: Any, **kwargs: Any.
 - External API boundaries: cast or validate Any to concrete types.
 
 ## Docstrings
@@ -63,7 +58,6 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 - One-line: imperative mood, period, no signature repetition.
 - Multi-line: summary, blank line, elaboration. Closing """ on own line.
 - Classes: summary, Attributes: (public), constraints.
-- Public API only. Private: one-line comment.
 - 72 characters per line.
 
 ---
@@ -91,14 +85,3 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 | mypy | uv run mypy --strict | Type checker |
 | pytest | uv run pytest | Test runner |
 | uv | uv run, uv add, uv sync | Package manager |
-
----
-
-## External Tools
-
-- Context7: library docs before integration.
-- DeepWiki: repository structure and patterns.
-
-## Workflow
-
-- No summary/README generation after task completion. Update existing files only.

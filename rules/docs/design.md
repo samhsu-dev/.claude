@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/design.md"
+  - "**/*design.md"
 ---
 
 # Python Design Standards
@@ -30,11 +30,9 @@ Public = used by consumers of the package. Internal = used only within the packa
 | Method | no prefix | _method |
 | Constant | in __all__ | _CONSTANT |
 
-- Public when a consumer needs it or benefits from direct access. Internal when it is an implementation detail.
 - __all__ is the single source of truth for a package's public API.
 - No __method (name mangling). Use _method for internal.
 - Google-style docstrings on all public symbols.
-- Public API is discoverable: __all__ + docstrings.
 
 ## Module Design
 
@@ -66,8 +64,6 @@ Keep as Python constants when:
 
 ## API Design
 
-- No mutable default arguments.
-- Explicit parameters. No *args/**kwargs unless proven necessary.
 - All branches return a value, or none do.
 - Factory functions when construction has configuration or variants.
 - Properties for O(1) access. Methods for computation.

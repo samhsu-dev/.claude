@@ -21,4 +21,4 @@ Every task ends with:
 
 - Design docs by relative path: Depends on: path/to/design.md.
 - Test tasks name the test file: tests/test_<component>.py.
-- Implementation tasks reference implementation.md for library findings.
+- Implementation tasks reference impl.md for library findings.

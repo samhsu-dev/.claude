@@ -20,9 +20,3 @@ Example:
 ## Library Entry Format
 
 - library_name >= version -- purpose. `uv add library_name`.
-
-## Verification
-
-- Check `impl.md` for existing findings before writing integration code.
-- Record all findings immediately. Not in conversation only.
-- Verify via DeepWiki, Context7, or minimal test. No guessing.

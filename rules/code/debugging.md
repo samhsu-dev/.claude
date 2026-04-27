@@ -1,5 +1,6 @@
 ---
 paths:
+  - "**/*.py"
   - "**/*test*"
 ---
 
@@ -20,12 +21,7 @@ Python-specific debugging tools and patterns.
 ## Logging
 
 - One logger per module via getLogger(__name__).
-- debug for flow. info for state transitions. error for failures.
-- Context in every log.
 
 ## Common Pitfalls
 
-- except Exception swallows too much. Catch domain exceptions.
-- Missing from exc loses the original traceback.
 - assert stripped by python -O. Use if not x: raise in production.
-- Mutable default arguments cause cross-test contamination.
