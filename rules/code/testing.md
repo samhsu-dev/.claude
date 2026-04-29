@@ -1,7 +1,8 @@
 ---
 paths:
-  - "**/*test*"
-  - "**/*Test*"
+  - "**/*Test.kt"
+  - "**/*test*.kt"
+  - "**/src/test/**"
 ---
 
 # Kotlin Testing
