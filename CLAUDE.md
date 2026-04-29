@@ -11,11 +11,13 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
     ├── codequality.md  # Kotlin code quality and idioms (*.kt)
     ├── committing.md   # Project commit, push, and PR rules
     ├── designing.md    # Kotlin design standards (design.md)
-    ├── implementing.md # Implementation doc standards (*implementation.md)
+    ├── implementing.md # Implementation doc standards (*impl.md)
     ├── tasking.md      # Task management standards (todo.md)
     ├── testing.md      # Kotlin testing standards (test files)
     └── debugging.md    # Kotlin debugging standards (test files)
 ```
+
+Global rules provide standards for `idea.md`, `model.md`, `spec.md`. No project-level overrides needed — Kotlin-specific guidance lives in `designing.md` and `implementing.md`.
 
 Rules use `paths:` frontmatter to load only when working with matching files.
 
