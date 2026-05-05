@@ -43,6 +43,21 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 
 `rulewriting.md`, `workflow/committing.md`, `workflow/change-policy.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
 
+## Documentation Naming
+
+Documents split by responsibility use prefix naming:
+
+| Type | Single file | Split by concern |
+|------|-------------|------------------|
+| Concept | `idea.md` | `idea-{concern}.md` |
+| Domain Model | `*model.md` | `model-{concern}.md` |
+| Design | `*design.md` | `design-{concern}.md` |
+| Spec | `spec.md` | `spec-{concern}.md` |
+
+Each split file follows the same rules as its single-file counterpart. One concern per file.
+
+Single doc file: 250 lines max. Exceeds limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `idea-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
+
 ## Skills
 
 | Skill | Trigger | Purpose |

@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/*design.md"
+  - "**/design-*.md"
 ---
 
 # Design Documentation Standards
