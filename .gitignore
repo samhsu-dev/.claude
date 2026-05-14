@@ -1,10 +1,12 @@
 # Ignore everything by default
 *
 
-# Track CLAUDE.md and rules
+# Track CLAUDE.md, rules, and skills
 !CLAUDE.md
 !rules/
 !rules/**
+!skills/
+!skills/**
 
 # Track .gitignore itself
 !.gitignore

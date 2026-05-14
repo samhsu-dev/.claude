@@ -51,5 +51,6 @@ Rules are read by agents. Code and documentation produced from rules are read by
 ## Conflict Resolution
 
 - Rules within one file: no contradictions.
-- Project rules and global rules: no contradictions. Project rules narrow scope, not override.
+- Global rules are language-agnostic defaults. Project rules specify language/community conventions.
+- Project rules override global rules when both set concrete values for the same metric.
 - Edge cases: one rule states the priority. "X. Exception: Y when Z."
