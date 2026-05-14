@@ -1,6 +1,7 @@
 ---
 paths:
-  - "**/*impl.md"
+  - "**/impl.md"
+  - "**/impl-*.md"
 ---
 
 # Python Implementation Documents

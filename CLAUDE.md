@@ -14,8 +14,8 @@ Python project. Global rules (`~/.claude/rules/`) provide language-agnostic stan
     │   └── debugging.md    # Python debugging tools (*.py, test files)
     │
     ├── docs/               # Writing documentation
-    │   ├── design.md       # Python design standards (*design.md)
-    │   ├── impl.md         # Python impl.md conventions (*impl.md)
+    │   ├── design.md       # Python design standards (design.md, design-*.md)
+    │   ├── impl.md         # Python impl.md conventions (impl.md, impl-*.md)
     │   └── todo.md         # Python task conventions (todo.md)
     │
     └── workflow/           # Operational processes
