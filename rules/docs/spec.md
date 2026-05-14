@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/spec.md"
+  - "**/spec-*.md"
 ---
 
 # Algorithm Specification Standards

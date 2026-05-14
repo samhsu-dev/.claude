@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/idea.md"
+  - "**/idea-*.md"
 ---
 
 # IDEA Standards (Concepts & Terminology)

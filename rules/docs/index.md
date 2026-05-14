@@ -11,7 +11,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 ## Scope
 
-- One `index.md` per documentation directory that contains 3+ files or any split documents (`*-model.md`, `*-design.md`).
+- One `index.md` per documentation directory that contains 3+ files or any split documents (`idea-*`, `model-*`, `spec-*`, `design-*`, `impl-*`).
 - Contains file list with one-line descriptions. No domain content, no concepts, no code.
 - Loaded first when an agent enters a documentation directory. All other files loaded on demand.
 
@@ -23,7 +23,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 | File | Content |
 |------|---------|
 | idea.md | <what concepts it covers> |
-| <topic>-model.md | <what domain semantics it covers> |
+| model-<topic>.md | <what domain semantics it covers> |
 | design.md | <what software structure it covers> |
 | impl.md | <what external APIs it covers> |
 ```
@@ -32,20 +32,38 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - One table. Columns: File (relative path), Content (one-line description).
 - File column: exact filename, no path prefix.
 - Content column: under 80 characters. States what the file covers, not what it is.
-- Rows ordered: idea → model files → design files → impl → todo.
+- Rows ordered: idea → model → spec → design → impl → todo (pipeline order).
 
 ## When to Split
 
-- Any `model.md` or `design.md` exceeding 200 lines: split into `<topic>-model.md` or `<topic>-design.md`.
-- Split by concept, not by section heading. Each file covers one self-contained topic.
+- Any document exceeding 200 lines: split into prefixed topic files.
 - After splitting: delete the original monolithic file. Update `index.md`.
+
+### Split Logic
+
+Split by domain concept. Never by section heading, file type, or mechanical line count.
+
+- Identify the domain concepts the document covers. Each concept that can be understood independently becomes one file.
+- Related content stays together: an entity's definition, its state transitions, and its invariants belong in one file — not three files split by "entities", "states", "invariants".
+- Cross-referencing concepts that cannot be understood without each other stay in the same file.
+- A split file may contain content from multiple document types if they serve the same domain concept. Domain coherence over document-type purity.
+- Test: "Can a reader understand this file without reading the sibling files?" Yes → good split. No → merge back.
 
 ## Naming Convention
 
-- Concept files: `<topic>-model.md` (e.g., `entities-model.md`, `state-model.md`).
-- Design files: `<topic>-design.md` (e.g., `extensions-design.md`).
+Split files use the document-type name as prefix, followed by the topic name:
+
+| Prefix | Document type | Example |
+|--------|---------------|---------|
+| `idea-` | Concept | `idea-dataflow.md` |
+| `model-` | Domain model | `model-entities.md`, `model-state.md` |
+| `spec-` | Algorithm | `spec-fixpoint.md` |
+| `design-` | Design | `design-extensions.md`, `design-pipeline.md` |
+| `impl-` | Implementation | `impl-serialization.md` |
+
+- Prefix: document type name + hyphen. Alphabetical sort groups same-type files together.
 - Topic name: noun or noun phrase. No verbs, no abbreviations.
-- Suffix matches the document type rule (`-model.md` triggers `modeling.md` rules, `-design.md` triggers `designing.md` rules).
+- Prefix triggers the corresponding document type rule (`model-*.md` triggers `model.md` rules, `design-*.md` triggers `design.md` rules).
 
 ## Content Rules
 
