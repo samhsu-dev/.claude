@@ -27,12 +27,10 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Target: >= 90% branch coverage on changed modules. `src` only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
 
 ## 3. Layout
-- One layout profile repo-wide.
-- Profile A: `tests/` root; `<component>.test.<ext>`
-- Profile B: `tests/` root; `test_<component>.<ext>`
-- Profile C: co-located near source; `*_test.<ext>`
-- Profile D: `src/test/<lang>/`; mirror packages
-- Profile E: inline unit in source; integration in `tests/`
+- `tests/` root directory, mirroring source structure.
+- File naming: `test_<component>.<ext>`.
+- Split by responsibility when oversized (>300 lines): `test_<component>_<responsibility>.<ext>`.
+- Shared fixtures in `conftest.py` (or framework equivalent) per test directory.
 
 ## 4. Types
 - Unit: isolated from external systems. One unit per test file.
@@ -50,8 +48,8 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Update the docstring when adding, removing, or renaming test functions. Docstring is the index — code is the implementation.
 
 ## 6. Naming & Location
-- Mirror source layout under the selected profile.
-- `test_<component>.<ext>` | `<component>.test.<ext>` | `*_test.<ext>`.
+- Mirror source layout: `src/a/b/foo.py` → `tests/a/b/test_foo.py`.
+- File name: `test_<component>.<ext>`. Split: `test_<component>_<responsibility>.<ext>`.
 
 ## 7. Fixtures & Data
 - Reusable setup in fixtures/factories.

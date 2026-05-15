@@ -54,10 +54,30 @@ Extract a contract list per public function/class:
 
 For each source file, check:
 
-### 3a. Test file exists
-- Every source file has a corresponding test file.
-- Test layout mirrors source per project convention.
+### 3a. Test file layout conformance
+- Every source file has exactly one corresponding test file (or split group). 1:1 mapping.
+- Test file path mirrors source path: `src/a/b/foo.py` → `tests/a/b/test_foo.py`.
 - Missing test file → record as **MISSING**.
+- Test file exists but at wrong path (does not mirror source) → record as **MISPLACED** with current and expected path.
+- Multiple test files covering the same source file without clear responsibility split → record as **FRAGMENTED** with paths to consolidate.
+- Test file exceeds 300 lines → record as **OVERSIZED** with recommended split by responsibility.
+
+#### Splitting oversized test files
+
+When a test file exceeds 300 lines, split by responsibility area of the source file:
+
+| Source | Split test files |
+|--------|-----------------|
+| `src/a/parser.py` | `tests/a/test_parser_tokenize.py`, `tests/a/test_parser_ast.py` |
+| `src/a/auth.py` | `tests/a/test_auth_login.py`, `tests/a/test_auth_permissions.py` |
+
+Naming: `test_<source_name>_<responsibility>.py`.
+
+Split rules:
+- Each split file tests one responsibility area of the source file.
+- Responsibility areas come from classes, logical groups of functions, or design.md sections.
+- Shared fixtures extracted to a `conftest.py` (or equivalent) in the same test directory.
+- Every split file has its own docstring index.
 
 ### 3b. Public function coverage
 - Every public function in the source has at least one test.
@@ -95,6 +115,11 @@ Output a structured plan before writing any code:
 ```
 ## Test Update Plan: <scope>
 
+### Layout Issues
+- MISPLACED: <CurrentPath> → move to <ExpectedPath>
+- FRAGMENTED: <Path1>, <Path2> → consolidate into <TargetPath>
+- OVERSIZED: <TestFile> (N lines) → split into <File1>, <File2>, ...
+
 ### Missing Test Files
 - <SourceFile> → create <TestFile>
 
@@ -109,7 +134,7 @@ Output a structured plan before writing any code:
 
 ### Summary
 - Source files: N
-- Test files: N existing, N to create
+- Test files: N existing, N to create, N to move, N to consolidate
 - Public functions: N total, N covered, N uncovered
 - Gaps: N
 - Stale: N to remove
@@ -117,12 +142,18 @@ Output a structured plan before writing any code:
 
 Wait for user approval before proceeding to Step 5.
 
-## Step 5 — Write Tests
+## Step 5 — Reorganize and Write Tests
 
 For each item in the approved plan:
 
+### Reorganize layout issues (before writing new tests)
+1. **MISPLACED**: Move test file to the correct mirror path. Update imports. Run tests to confirm no breakage.
+2. **FRAGMENTED**: Merge all test methods for the same source file into one test file at the correct path. Deduplicate fixtures. Update file-level docstring. Delete empty originals.
+3. **OVERSIZED**: Split test file by responsibility into `test_<source>_<responsibility>.py` files. Extract shared fixtures to `conftest.py`. Update docstrings in each new file. Delete the original oversized file.
+4. Preserve all existing test logic during reorganization. No test deletion or modification beyond import paths and file moves.
+
 ### New test files
-1. Create test file at the correct layout path.
+1. Create test file at the correct mirror path.
 2. Add file-level docstring listing all test cases and their purpose.
 3. Use project fixture conventions for shared setup.
 
@@ -149,6 +180,11 @@ For each item in the approved plan:
 
 ```
 ## Test Update Results: <scope>
+
+### Reorganized
+- MOVED: <OldPath> → <NewPath>
+- CONSOLIDATED: <Path1>, <Path2> → <TargetPath>
+- SPLIT: <OversizedFile> → <File1>, <File2>, ...
 
 ### Created
 - <TestFile> — N tests for <SourceFile>
@@ -179,3 +215,6 @@ For each item in the approved plan:
 - Fresh objects per test. No shared mutable state.
 - Parameterized tests for partitioning and boundary analysis.
 - Every test file has a docstring index of its test cases.
+- 1:1 source-to-test mapping. One source file = one test file at the mirrored path.
+- Reorganize before writing. Fix layout issues (misplaced, fragmented) before adding new tests.
+- Reorganization preserves all existing test logic. No accidental test deletion during moves.
