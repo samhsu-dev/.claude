@@ -9,10 +9,10 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 ├── CLAUDE.md               # This file — global overview
 ├── skills/
 │   ├── commit/SKILL.md     # /commit — full commit workflow
-│   ├── review-code/SKILL.md # /review-code — code quality review workflow
+│   ├── update-codes/SKILL.md # /update-codes — audit, plan, and fix code quality
 │   ├── perf/SKILL.md       # /perf — performance optimization pipeline
 │   ├── debug/SKILL.md      # /debug — reproduce-first bug fix protocol
-│   ├── review-docs/SKILL.md # /review-docs — docs audit against type rules
+│   ├── update-docs/SKILL.md # /update-docs — audit, plan, and fix documentation
 │   └── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
 └── rules/
     ├── rulewriting.md      # How to write rule files (always active)
@@ -23,11 +23,11 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   └── debugging.md    # Debugging guardrails (scoped to code + test files)
     │
     ├── docs/               # Writing documentation
-    │   ├── concept.md      # Concept doc format (scoped to idea.md)
-    │   ├── model.md        # Domain model doc format (scoped to *model.md)
-    │   ├── design.md       # Design doc format (scoped to *design.md)
-    │   ├── spec.md         # Algorithm spec format (scoped to spec.md)
-    │   ├── impl.md         # Implementation doc format (scoped to *impl.md)
+    │   ├── concept.md      # Concept doc format (scoped to concept.md, concept-*.md)
+    │   ├── model.md        # Domain model doc format (scoped to model.md, model-*.md)
+    │   ├── design.md       # Design doc format (scoped to design.md, design-*.md)
+    │   ├── spec.md         # Algorithm spec format (scoped to spec.md, spec-*.md)
+    │   ├── impl.md         # Implementation doc format (scoped to impl.md, impl-*.md)
     │   ├── index.md        # Index/navigation doc format (scoped to index.md)
     │   ├── todo.md         # Task doc format (scoped to todo.md)
     │   ├── readme.md       # README format (scoped to README.md)
@@ -49,24 +49,25 @@ Documents split by responsibility use prefix naming:
 
 | Type | Single file | Split by concern |
 |------|-------------|------------------|
-| Concept | `idea.md` | `idea-{concern}.md` |
-| Domain Model | `*model.md` | `model-{concern}.md` |
-| Design | `*design.md` | `design-{concern}.md` |
+| Concept | `concept.md` | `concept-{concern}.md` |
+| Domain Model | `model.md` | `model-{concern}.md` |
+| Design | `design.md` | `design-{concern}.md` |
 | Spec | `spec.md` | `spec-{concern}.md` |
+| Implementation | `impl.md` | `impl-{concern}.md` |
 
 Each split file follows the same rules as its single-file counterpart. One concern per file.
 
-Single doc file: 250 lines max. Exceeds limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `idea-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
+Single doc file: 200 lines max. Exceeds limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `concept-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
 
 ## Skills
 
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
 | `/commit` | User asks to commit | Full staging, classification, multi-commit workflow |
-| `/review-code` | User asks to review or verify code | detekt + tests + build + code smell scan |
+| `/update-codes` | User asks to update or fix code quality | Audit, plan fixes, apply after approval |
+| `/update-docs` | User asks to update or fix documentation | Audit against type rules, plan fixes, apply after approval |
+| `/update-tests` | User asks to add, audit, or update tests | Design-driven coverage audit, add missing, remove stale |
 | `/perf` | User asks to optimize or benchmark | 8-step measurement-driven optimization pipeline |
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
-| `/review-docs` | User asks to review documentation | Audit docs/ against idea/model/design/spec/impl/todo/index rules |
-| `/update-tests` | User asks to add, audit, or update tests | Design-driven coverage audit, add missing, remove stale |
 
 Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards.

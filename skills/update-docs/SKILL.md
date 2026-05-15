@@ -1,27 +1,29 @@
 ---
-name: review-docs
-description: Audit docs/ files against their type-specific rules (idea, model, design, spec, impl, todo, index). Use when the user asks to review or verify documentation.
+name: update-docs
+description: Audit docs against type-specific rules, plan fixes, and apply them after approval. Use when the user asks to update, fix, or improve documentation.
 allowed-tools:
   - Read
+  - Write
+  - Edit
   - Grep
   - Glob
 argument-hint: "[optional path to a specific docs/ subdirectory]"
 ---
 
-Audit every documentation file under `docs/` (or `$ARGUMENTS` if a subdirectory is specified) against its type-specific ruleset. Report violations.
+Audit documentation files against their type-specific rulesets, produce a fix plan, and apply fixes after user approval.
 
 ## Step 1 — Discover Files
 
 1. `Glob("docs/**/*.md")` (or scoped to `$ARGUMENTS`).
-2. Classify each file by suffix/name:
+2. Classify each file by name pattern:
 
 | Pattern | Type | Ruleset |
 |---------|------|---------|
-| `**/idea.md` | Concept | concept rules |
-| `**/*model.md` | Domain model | model rules |
-| `**/*design.md`, `**/*design-*.md` | Design | design rules |
-| `**/spec.md` | Algorithm spec | spec rules |
-| `**/*impl.md` | Implementation | impl rules |
+| `**/concept.md`, `**/concept-*.md` | Concept | concept rules |
+| `**/model.md`, `**/model-*.md` | Domain model | model rules |
+| `**/design.md`, `**/design-*.md` | Design | design rules |
+| `**/spec.md`, `**/spec-*.md` | Algorithm spec | spec rules |
+| `**/impl.md`, `**/impl-*.md` | Implementation | impl rules |
 | `**/todo.md`, `**/*.todo.md` | Task | todo rules |
 | `**/index.md` | Index | index rules |
 
@@ -33,7 +35,7 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
-### idea.md (Concept)
+### concept.md / concept-*.md (Concept)
 
 **Required sections** (in order):
 1. Context: Problem Statement, System Role, Data Flow (Inputs/Outputs/Connections), Scope Boundaries (Owned/Not Owned)
@@ -54,7 +56,7 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
-### *model.md (Domain Model)
+### model.md / model-*.md (Domain Model)
 
 **Required sections** (in order, include only if content exists):
 1. Entities — name, semantic role, existence conditions per entity kind
@@ -68,23 +70,17 @@ Read every file. Check against the rules below for its type. Record each violati
 - State transitions: source state, trigger, guard, target state.
 - Invariants: precise and falsifiable. "Every X has at least one Y" not "X should have Y."
 - No language-specific types, class names, or method signatures. Domain vocabulary only.
-- Reference `idea.md` for rationale. Reference `design.md` for implementation mapping.
+- Reference `concept.md` for rationale. Reference `design.md` for implementation mapping.
 
 ---
 
-### *design.md (Design)
+### design.md / design-*.md (Design)
 
 **Required sections** (in order):
 1. Design Overview — types/classes, relationships (one-way only), abstract types, exceptions, dependency roles
 2. Class / Type Specifications — per type: Responsibility, state/fields, methods (Behavior/Input/Output/errors)
 3. Function Specifications — per function: name(signature), Responsibility, Behavior, Input, Output, errors
 4. Exception / Error Types — each type and when raised
-
-**Overview format check:**
-- Classes listed
-- Relationships one-way (no A↔B)
-- Abstract types with implementors
-- Dependency roles: data holders, orchestrators, helpers
 
 **Content rules:**
 - No domain entity semantics, state transition rules, or structural invariants — those go in `model.md`.
@@ -94,7 +90,7 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
-### spec.md (Algorithm Specification)
+### spec.md / spec-*.md (Algorithm Specification)
 
 **Required sections** per algorithm:
 1. Problem — input, output, correctness condition (one paragraph)
@@ -110,7 +106,7 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
-### *impl.md (Implementation)
+### impl.md / impl-*.md (Implementation)
 
 **Required sections** (in order, include only if content exists):
 1. APIs — `**[Lib]** snippet` — one-line when/gotcha
@@ -127,17 +123,6 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ### todo.md (Task Management)
 
-**Task format:**
-```
-[state] <action verb> <object> <detail>
-  Depends on: <task ids or paths>
-  Acceptance: <criteria>
-  - [ ] <subtask>
-  - [ ] Quality gate
-```
-
-**States:** `[ ]` todo, `[x]` done, `[~]` in progress, `[-]` skipped.
-
 **Rules:**
 - Action verb + object + detail. No vague titles.
 - Acceptance criteria when verifiable.
@@ -149,16 +134,10 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ### index.md (Index/Navigation)
 
-**Structure:**
-- H1: module name + role (one line)
-- One table: File | Content columns
-- File column: exact filename, no path prefix
-- Content column: under 80 characters, states what the file covers
-
 **Rules:**
 - Every file in the directory appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
-- Rows ordered: idea → model → design → impl → todo.
+- Rows ordered: concept → model → design → spec → impl → todo.
 - No domain content. Descriptions say what topic, not definitions.
 - No hierarchy or nesting. Flat table.
 - No file exceeds 200 lines. Split and update `index.md` when exceeded.
@@ -169,35 +148,76 @@ Read every file. Check against the rules below for its type. Record each violati
 
 Check across files within the same docs subdirectory:
 
-1. **Terminology**: concepts defined in `idea.md` match names used in `model.md`, `design.md`, `spec.md`.
-2. **No content in wrong file**: implementation details not in `idea.md`/`model.md`; domain semantics not in `design.md`; algorithms not in `design.md`.
+1. **Terminology**: concepts defined in `concept.md` match names used in `model.md`, `design.md`, `spec.md`.
+2. **No content in wrong file**: implementation details not in `concept.md`/`model.md`; domain semantics not in `design.md`; algorithms not in `design.md`.
 3. **Cross-references valid**: every `see [file.md]` link points to an existing file.
 4. **index.md sync**: if `index.md` exists, all sibling files listed; no orphan entries.
 5. **impl.md sync**: API entries match what `design.md` specifies; no stale references to removed functions.
 
-## Step 4 — Report
+## Step 4 — Plan
 
-Output a structured report:
+Output a structured fix plan. Do NOT apply any fix before approval.
 
 ```
-## Docs Review: <scope>
+## Docs Update Plan: <scope>
 
-### Violations
-- [file:line] <rule type>: <description>
+### Missing Sections
+- [file] missing: <section name> — action: <add/restructure>
 
-### Warnings
-- [file:line] <description>
+### Content Violations
+- [file:line] <rule type>: <description> — fix: <what to change>
 
 ### Cross-File Issues
-- <description>
+- <description> — fix: <what to move/rename/update>
+
+### Format Issues
+- [file:line] <description> — fix: <what to change>
 
 ### Summary
 - Files audited: N
-- Violations: N (blocking)
-- Warnings: N
-- Clean files: list
+- Missing sections: N
+- Content violations: N
+- Cross-file issues: N
+- Format issues: N
+- Total fixes planned: N
 ```
 
-Violations are rule breaches. Warnings are style issues or borderline cases.
+Wait for user approval before proceeding to Step 5.
 
-Do not auto-fix. List violations for user review.
+## Step 5 — Apply Fixes
+
+For each approved item in the plan:
+
+1. Apply the fix. Preserve existing content where possible — restructure, not rewrite.
+2. Verify the fix resolves the specific violation.
+3. Check cross-file consistency after each change.
+
+One file at a time. If a fix requires changes in another file, apply them together as one logical unit.
+
+## Step 6 — Report
+
+```
+## Docs Update Results: <scope>
+
+### Fixed
+- [file:line] <what was fixed>
+
+### Skipped (user declined or needs domain input)
+- [file:line] <description> — reason: <why skipped>
+
+### Remaining
+- [file:line] <description> — requires: <user input/domain knowledge>
+
+### Summary
+- Files updated: N
+- Violations fixed: N
+- Remaining: N
+```
+
+## Rules
+
+- Plan before fix. Never auto-fix without user approval of the plan.
+- Preserve content. Restructure and move — never delete domain knowledge.
+- Missing sections that require domain knowledge: report as "needs user input", do not fabricate content.
+- Format and structural fixes are safe to apply. Content fixes require domain verification.
+- One logical change per file update. Atomic edits.

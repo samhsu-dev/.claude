@@ -23,15 +23,15 @@ Determine scope from `$ARGUMENTS`:
 
 | Input | Scope |
 |-------|-------|
-| No arguments | All source files in the project (`**/src/main/**/*.kt`) |
-| Directory path (e.g., `cobraphp-core/src/main/kotlin/.../pdg/`) | All source files under that directory |
-| File path (e.g., `.../pdg/extension/DataFlowExt.kt`) | That single file |
-| Module name (e.g., `pdg`, `intrpt`) | Resolve to matching `src/main` package directory |
+| No arguments | All source files in the project |
+| Directory path | All source files under that directory |
+| File path | That single file |
+| Module name | Resolve to matching source directory |
 
 Then for the resolved scope:
 
-1. List all source files: `Glob("<scope>/**/*.kt")` for dirs, or the single file.
-2. List all existing test files: map each source path to its test mirror under `src/test/`.
+1. List all source files in scope.
+2. List all existing test files: map each source path to its test mirror per project layout.
 3. List all design docs: find `docs/**/design.md` for the matching module. If the scope is a subdirectory of a module, walk up to find the nearest `docs/` with design files.
 
 ## Step 2 — Read Design Docs First
@@ -56,12 +56,12 @@ For each source file, check:
 
 ### 3a. Test file exists
 - Every source file has a corresponding test file.
-- Test layout mirrors source: `src/test/kotlin/{package}/{ClassName}Test.kt`.
+- Test layout mirrors source per project convention.
 - Missing test file → record as **MISSING**.
 
 ### 3b. Public function coverage
 - Every public function in the source has at least one test.
-- Match by function name in test method names or `@DisplayName`.
+- Match by function name in test method names.
 - Untested public function → record as **UNCOVERED**.
 
 ### 3c. Contract coverage per function
@@ -124,15 +124,15 @@ For each item in the approved plan:
 ### New test files
 1. Create test file at the correct layout path.
 2. Add file-level docstring listing all test cases and their purpose.
-3. Use `@BeforeEach` with `lateinit var` for fixtures.
+3. Use project fixture conventions for shared setup.
 
 ### New test methods
 1. Read design doc for the function's contract (behavior, input, output, errors).
 2. Write test assertions based on the documented contract — not current code behavior.
 3. One behavior per test. Arrange → Act → Assert.
-4. Name: `` `should <expected> when <condition>` `` (backtick syntax).
-5. Parameterized tests (`@ParameterizedTest` + `@CsvSource`) for equivalence partitioning and boundary analysis.
-6. Error cases: `assertThrows<ExceptionType> { }` for each documented exception.
+4. Name per project convention (e.g., `test_<component>_<condition>_<expected>`).
+5. Parameterized tests for equivalence partitioning and boundary analysis.
+6. Error cases: assert expected exception type for each documented error condition.
 
 ### Remove stale tests
 1. Delete the test method.
@@ -141,9 +141,9 @@ For each item in the approved plan:
 
 ## Step 6 — Verify
 
-1. Run `./gradlew test` — all pass.
+1. Run project test command — all pass.
 2. If a new test fails: this is likely a bug in the source code, not a test error. Report it to the user with the design doc reference. Do not modify the test to match current behavior.
-3. Run `./gradlew detekt` — no new violations.
+3. Run project linter — no new violations.
 
 ## Step 7 — Report
 
@@ -165,7 +165,7 @@ For each item in the approved plan:
 
 ### Verification
 - tests: all pass / N failures (reported as potential bugs)
-- detekt: clean / N violations
+- linter: clean / N violations
 ```
 
 ## Rules

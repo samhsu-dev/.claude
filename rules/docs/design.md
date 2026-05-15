@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/*design.md"
+  - "**/design.md"
   - "**/design-*.md"
 ---
 

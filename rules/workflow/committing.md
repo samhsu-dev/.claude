@@ -10,7 +10,6 @@ Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-ch
 
 ## Staging
 
-- Stage specific files by name. Never `git add -A` or `git add .`.
 - One concept per commit.
 
 ## Attribution

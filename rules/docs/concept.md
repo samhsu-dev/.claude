@@ -1,10 +1,10 @@
 ---
 paths:
-  - "**/idea.md"
-  - "**/idea-*.md"
+  - "**/concept.md"
+  - "**/concept-*.md"
 ---
 
-# IDEA Standards (Concepts & Terminology)
+# Concept Standards (Concepts & Terminology)
 
 ## Required Sections
 

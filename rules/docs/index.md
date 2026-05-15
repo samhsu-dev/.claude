@@ -11,7 +11,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 ## Scope
 
-- One `index.md` per documentation directory that contains 3+ files or any split documents (`*-model.md`, `*-design.md`).
+- One `index.md` per documentation directory that contains 3+ files or any split documents (`concept-*.md`, `model-*.md`, `design-*.md`, `spec-*.md`, `impl-*.md`).
 - Contains file list with one-line descriptions. No domain content, no concepts, no code.
 - Loaded first when an agent enters a documentation directory. All other files loaded on demand.
 
@@ -22,30 +22,40 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 | File | Content |
 |------|---------|
-| idea.md | <what concepts it covers> |
-| <topic>-model.md | <what domain semantics it covers> |
+| concept.md | <what concepts it covers> |
+| model.md | <what domain semantics it covers> |
 | design.md | <what software structure it covers> |
+| spec.md | <what algorithms it covers> |
 | impl.md | <what external APIs it covers> |
+| todo.md | <what tasks remain> |
 ```
 
 - H1: module name + role. One line.
 - One table. Columns: File (relative path), Content (one-line description).
 - File column: exact filename, no path prefix.
 - Content column: under 80 characters. States what the file covers, not what it is.
-- Rows ordered: idea → model files → design files → impl → todo.
+- Rows ordered: concept → model → design → spec → impl → todo.
 
 ## When to Split
 
-- Any `model.md` or `design.md` exceeding 200 lines: split into `<topic>-model.md` or `<topic>-design.md`.
+- Any doc file exceeding 200 lines: split by concern using prefix naming.
 - Split by concept, not by section heading. Each file covers one self-contained topic.
 - After splitting: delete the original monolithic file. Update `index.md`.
 
 ## Naming Convention
 
-- Concept files: `<topic>-model.md` (e.g., `entities-model.md`, `state-model.md`).
-- Design files: `<topic>-design.md` (e.g., `extensions-design.md`).
+Split files use `<type>-<topic>.md` prefix naming:
+
+| Type | Single | Split |
+|------|--------|-------|
+| Concept | `concept.md` | `concept-<topic>.md` |
+| Model | `model.md` | `model-<topic>.md` |
+| Design | `design.md` | `design-<topic>.md` |
+| Spec | `spec.md` | `spec-<topic>.md` |
+| Implementation | `impl.md` | `impl-<topic>.md` |
+
 - Topic name: noun or noun phrase. No verbs, no abbreviations.
-- Suffix matches the document type rule (`-model.md` triggers `modeling.md` rules, `-design.md` triggers `designing.md` rules).
+- Prefix matches the document type rule (`model-` triggers `model.md` rules, `design-` triggers `design.md` rules).
 
 ## Content Rules
 

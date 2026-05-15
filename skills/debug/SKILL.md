@@ -42,15 +42,15 @@ Isolate whether the fault is in input, logic, or external dependency:
 3. If an external call fails, verify the input matches the API contract (check `impl.md` if it exists).
 4. No guessing. If the cause is unclear, add a targeted assertion or log to confirm before changing code.
 
-### Common Pitfalls (Kotlin)
+### Common Pitfalls
 
 Check these first when applicable:
-- Empty `catch` blocks swallowing exceptions.
-- Missing `cause` parameter: `throw DomainException("msg", cause = e)`.
-- `lateinit` access before initialization.
-- Platform type nullability: Java methods returning null assigned to non-null Kotlin types.
-- `!!` on untrusted data.
-- Coroutine cancellation swallowed by `catch (e: Exception)`.
+- Empty catch/except blocks swallowing exceptions.
+- Missing error chaining (original cause lost when re-raising).
+- Uninitialized state accessed before setup completes.
+- Null/None returned from external calls assigned to non-nullable variables.
+- Unchecked assertions on untrusted data.
+- Concurrency errors swallowed by broad exception handlers.
 
 ## Step 4 — Fix
 
@@ -63,9 +63,9 @@ If the fix requires changes beyond the immediate fault:
 
 ## Step 5 — Verify
 
-1. Run `./gradlew test` (or project test command) — all pass.
-2. Run `./gradlew detekt` (or project linter) — no new violations.
-3. Run `./gradlew build` (or project build command) — compiles clean.
+1. Run project test command — all pass.
+2. Run project linter — no new violations.
+3. Run project build — compiles clean.
 
 ## Step 6 — Preserve the Test
 
@@ -85,7 +85,7 @@ Output a summary:
 **Root cause**: <what was wrong and why>
 **Fix**: <what changed>
 **Test**: <test name and file>
-**Verification**: tests pass / detekt clean / build clean
+**Verification**: tests pass / linter clean / build clean
 ```
 
 ## Rules

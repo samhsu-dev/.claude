@@ -38,7 +38,7 @@ Insert between Usage and License. Include only when the README lacks context wit
 - **Background** — Motivation and context. When the problem or naming is non-obvious.
 - **Contributing** — Link to `CONTRIBUTING.md` or one-line statement.
 - **Badges** — Build status, version, coverage. No heading. After description, before install.
-- **Documentation** — Links to `idea.md` (concepts) and `design.md` (architecture) when they exist. One link per doc, one-line description of what the reader finds there.
+- **Documentation** — Links to `concept.md` (concepts) and `design.md` (architecture) when they exist. One link per doc, one-line description of what the reader finds there.
 - **For Agents** — Link to `docs/llms.txt`. One line: "Agent-consumable documentation index at `docs/llms.txt` (llmstxt.org format)." Present when `docs/llms.txt` exists.
 - **Experiments** — One sentence per experiment: what was tested and the outcome. No methodology, no analysis — link to the full write-up.
 
