@@ -36,12 +36,13 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
         ├── change-policy.md # API change and verification rules (always active)
+        ├── develop.md      # Development phase pipeline (always active)
         ├── git-safety.md   # Multi-agent git safety rules (always active)
         ├── performance.md  # Performance optimization guardrails (scoped to perf files)
         └── skilling.md     # Skill authoring standards (scoped to SKILL.md, skills/)
 ```
 
-`rulewriting.md`, `workflow/committing.md`, `workflow/change-policy.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
+`rulewriting.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/develop.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
 
 ## Documentation Naming
 
