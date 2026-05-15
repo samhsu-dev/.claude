@@ -42,6 +42,16 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - Split by concept, not by section heading. Each file covers one self-contained topic.
 - After splitting: delete the original monolithic file. Update `index.md`.
 
+### Split Logic
+
+Split by domain concept. Never by section heading, file type, or mechanical line count.
+
+- Identify the domain concepts the document covers. Each concept that can be understood independently becomes one file.
+- Related content stays together: an entity's definition, its state transitions, and its invariants belong in one file — not three files split by "entities", "states", "invariants".
+- Cross-referencing concepts that cannot be understood without each other stay in the same file.
+- A split file may contain content from multiple document types if they serve the same domain concept. Domain coherence over document-type purity.
+- Test: "Can a reader understand this file without reading the sibling files?" Yes → good split. No → merge back.
+
 ## Naming Convention
 
 Split files use `<type>-<topic>.md` prefix naming:
