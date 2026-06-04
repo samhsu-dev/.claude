@@ -29,7 +29,8 @@ Sections in this order:
 | 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
 | 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
 | 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
-| 7 | **License** | SPDX identifier. Always last. |
+| 7 | **Citation** | BibTeX block requesting citation of our paper. Placeholder until paper is released. |
+| 8 | **License** | SPDX identifier `GPL-2.0`. Always last. |
 
 ### Optional Sections
 
@@ -55,6 +56,28 @@ No table of contents.
 - No broken links.
 
 ---
+
+## License
+
+- All projects use `GPL-2.0` (GNU General Public License v2.0). Never MIT.
+- License section states the SPDX identifier `GPL-2.0` and links to the `LICENSE` file.
+
+## Citation
+
+- Citation section is mandatory. It requests that every project using the library cite our paper.
+- Content is a fenced ```bibtex``` block.
+- Paper is not yet released. Use a placeholder BibTeX entry until release:
+
+```bibtex
+@misc{beluga_placeholder,
+  title  = {{TODO: paper title — not yet released}},
+  author = {{TODO: authors}},
+  year   = {{TODO}},
+  note   = {Paper not yet released. Citation entry will be updated on publication.}
+}
+```
+
+- Replace placeholder fields with real metadata when the paper is published.
 
 ## Rules
 
