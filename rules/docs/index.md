@@ -27,14 +27,14 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 | design.md | <what software structure it covers> |
 | spec.md | <what algorithms it covers> |
 | impl.md | <what external APIs it covers> |
-| todo.md | <what tasks remain> |
 ```
 
 - H1: module name + role. One line.
 - One table. Columns: File (relative path), Content (one-line description).
 - File column: exact filename, no path prefix.
 - Content column: under 80 characters. States what the file covers, not what it is.
-- Rows ordered: concept → model → design → spec → impl → todo.
+- Rows ordered: concept → model → design → spec → impl.
+- Never list `todo.md`, `*todo*.md`, or any task doc. Task docs are local-only, excluded from the repo. Index lists committed docs only.
 
 ## When to Split
 
@@ -82,6 +82,7 @@ Split files use `<type>-<topic>.md` prefix naming:
 
 ## Verification
 
-- Every file in the directory appears in `index.md`.
+- Every committed doc file in the directory appears in `index.md`. Exception: task docs (`todo.md`, `*todo*.md`) are never listed.
 - Every entry in `index.md` points to an existing file.
+- No `todo.md`, `*todo*.md`, or task doc entry appears in `index.md`.
 - No file exceeds 200 lines. Split and update `index.md` when exceeded.
