@@ -17,11 +17,10 @@ paper/
     ├── CLAUDE.md         # This file
     └── rules/
         ├── codequality.md  # LaTeX source quality (*.tex, *.bib, *.sty)
+        ├── writing.md      # Academic prose precision; no vague terms (*.tex)
+        ├── introduction.md # Introduction six-module funnel (introduction.tex)
         ├── committing.md   # Project commit and push rules
-        ├── designing.md    # Paper structure and layout (design.md)
-        ├── implementing.md # Package/macro conventions (*implementation.md)
-        ├── tasking.md      # Task management (todo.md)
-        └── idea.md         # Research ideas and argumentation (idea.md)
+        └── tasking.md      # Task management (todo.md)
 ```
 
 Rules use `paths:` frontmatter to load only when working with matching files.
