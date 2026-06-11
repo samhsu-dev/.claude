@@ -5,7 +5,7 @@ paths:
 
 # Academic Prose Precision
 
-Community standards: Strunk & White; Williams (*Style*); Pinker (*Sense of Style*); Gopen & Swan (*Science of Scientific Writing*, 1990); Knuth, Larrabee & Roberts (*Mathematical Writing*); Zobel (*Writing for Computer Science*); Peyton Jones (*How to write a great research paper*); Whitesides; Dijkstra (EWD).
+Community standards: Strunk & White; Gopen & Swan (*Science of Scientific Writing*, 1990); Knuth, Larrabee & Roberts (*Mathematical Writing*); Peyton Jones (*How to write a great research paper*); Dijkstra (EWD).
 
 Every term maps to a concrete, verifiable referent. No vague words.
 
@@ -13,21 +13,21 @@ Every term maps to a concrete, verifiable referent. No vague words.
 
 ## Term Grounding
 
-- Every abstract noun states its exact referent at first use (Pinker; Knuth; Zobel; IEEE/ACM).
+- Every abstract noun states its exact referent at first use (Knuth; IEEE/ACM).
 - No self-invented terms. Use an established term with a citation, or define inline with a concrete referent (Dijkstra; Knuth).
-- One concept, one name. Use the same term throughout; never rename a concept mid-paper (Knuth; Zobel).
-- Prefer the concrete mechanism over the abstract label (Strunk & White; Pinker; Zobel). "A fixed set of sinks such as `echo`, `mysql_query`" not "a general detection criterion".
-- Combat the curse of knowledge: unpack every piece of jargon a non-specialist reader cannot resolve (Pinker).
+- One concept, one name. Use the same term throughout; never rename a concept mid-paper (Knuth).
+- Use the concrete mechanism, not the abstract label (Strunk & White). "A fixed set of sinks such as `echo`, `mysql_query`" not "a general detection criterion".
+- Combat the curse of knowledge: unpack every piece of jargon a non-specialist reader cannot resolve.
 
 ## Banned Vague Words
 
 - No "technical specification", "technical error", "security property", "correctness standard" unless defined inline with a concrete referent.
-- No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective" (IEEE/ACM; Whitesides). Replace with a measurement or a concrete property.
+- No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective" (IEEE/ACM). Replace with a measurement or a concrete property.
 - No modifier that adds no information: "very", "quite", "simply", "clearly".
 
 ## Word-Level Register
 
-Standards: Strunk & White; Zobel; ACM/IEEE editorial guides; Manchester Academic Phrasebank.
+Standards: Strunk & White; ACM/IEEE editorial guides; Manchester Academic Phrasebank.
 
 Neutral, direct words over literary or conversational ones. Replacements:
 
@@ -50,24 +50,76 @@ Connectives ("thus", "therefore", "moreover", "furthermore", "consequently") are
 
 ## Precision of Claims
 
-- No claim that fails on a counterexample. Verify every characterizing claim against one counterexample before writing it (Knuth; Zobel; Dijkstra).
-- Every claim is supported by evidence or qualified to be defensible (Zobel; Whitesides).
-- State the contribution as a single explicit, refutable sentence (Whitesides; Peyton Jones).
+- No claim that fails on a counterexample. Verify every characterizing claim against one counterexample before writing it (Knuth; Dijkstra).
+- Every claim is supported by evidence or qualified to be defensible.
+- State the contribution as a single explicit, refutable sentence (Peyton Jones).
 - Degree claims, not absolutes, when prior work exists. "X remains the central difficulty", never "no such thing exists".
 
 ## Definitions
 
-- Define a term at the first sentence whose argument depends on it. No earlier; no separate glossary in the introduction (Knuth; Zobel).
+- Define a term at the first sentence whose argument depends on it. No earlier; no separate glossary in the introduction (Knuth).
 - Define to the depth the current argument needs. Defer formal definitions to the body.
 - Lead with a concrete example, then the general statement (Peyton Jones).
 - A definition that uses one method's implementation detail is not method-neutral. State problem difficulty without naming any solution's mechanism.
 
 ## Sentence Structure
 
-- Make the main character the grammatical subject; express the key action as a verb, not a nominalization (Williams; Gopen & Swan).
-- Place old/familiar information first, new information at the sentence end (stress position) (Gopen & Swan; Williams).
+- Make the main character the grammatical subject; express the key action as a verb, not a nominalization (Gopen & Swan).
+- Place old/familiar information first, new information at the sentence end (stress position) (Gopen & Swan).
 - Omit needless words (Strunk & White).
 - State each claim once. Two sentences asserting the same point → keep one.
+
+## No Anthropomorphism
+
+A program, model, or algorithm performs mechanical operations. It does not know, think, believe, want, understand, or hold a notion. Attributing cognition to code states no verifiable fact.
+
+- No mental verb with a non-agent subject: "knows", "thinks", "believes", "understands", "wants", "decides", "is aware", "has no notion of", "realizes". Not "the program has no notion of correctness."
+- State the mechanical fact instead. "No code path checks whether the outcome obeys the rule", not "the program does not know the outcome is wrong."
+- Name the human actor when cognition is the point. "The developer assumes the value is trustworthy", not "the code trusts the value."
+- A program "reports", "returns", "raises", "writes", "checks", "executes" — concrete operations it performs. These are not anthropomorphism.
+
+## Punctuation: Colon
+
+A colon promises that what follows completes or specifies what precedes. The clause before the colon is grammatically complete and raises an expectation; the text after fulfills it.
+
+Use a colon for:
+- A list the lead-in announces. "The pipeline runs in three stages: parsing, analysis, and reporting."
+- An explanation or restatement that specifies the prior clause. "The two runs diverge in one place: the loader reads the file eagerly in one, lazily in the other."
+- An appositive that names what the prior clause referred to. "One field defeats the parser: the trailing checksum."
+
+Never use a colon for:
+- A cause-effect link. Use "because", "so", "therefore". Not "The violation raises no error: no code path checks the outcome" but "...no error, because no code path checks the outcome."
+- Two independent statements with no lead-in/fulfillment relation. Use a period or "and".
+- After a verb or preposition that already governs the following text. Not "The stages are: A, B, C" but "The stages are A, B, C."
+
+One colon per sentence. The clause before it stands alone as a sentence.
+
+## Punctuation: Semicolon
+
+A semicolon joins two complete, closely related statements as equals, or separates list items that themselves contain commas. It marks balance, not direction.
+
+Use a semicolon for:
+- Two independent clauses in parallel or contrast, each a complete sentence. "Detection needs an external criterion; reproduction needs a triggering input."
+- List items that contain internal commas. "We evaluate three sites: a store in Berlin, Germany; a shop in Paris, France; and a market in Tokyo, Japan."
+
+Never use a semicolon for:
+- A directional logical relation — cause, contrast, or sequence. Use the connective that names it: "because", "so", "but", "while", "instead". Not "The rule is application-independent; only the binding is application-specific" but "...application-independent, while only the binding is application-specific."
+- A loosely related pair. Use a period.
+- A dependent clause on either side. Both sides stand alone as sentences, or it is not a semicolon.
+
+Default to a period. Use a semicolon only when the two clauses are strict parallels and the balance carries meaning.
+
+## Punctuation: Em-Dash
+
+A paired em-dash (`---...---`) sets off a parenthetical aside. It is valid punctuation, but it bolts material onto a sentence instead of integrating it. Overuse becomes a stylistic tell.
+
+Never use a paired em-dash to:
+- Inject a definition. Not "the violation of an invariant---a rule that must always hold---triggers no error" but a separate defining sentence, or a colon that announces the definition.
+- Carry the sentence's main content as an aside. If the material is the point, it belongs in the main clause.
+
+Use a paired em-dash only for a genuine aside the main clause does not need, and at most once per paragraph. A single em-dash for a list lead-in or a sharp break is unrestricted.
+
+Default to restructuring the sentence so the idea is built into its clause.
 
 ## Explanatory Prose
 
@@ -78,9 +130,9 @@ Connectives ("thus", "therefore", "moreover", "furthermore", "consequently") are
 
 ## Metadiscourse
 
-Standards: Williams (*Style*); Hyland (*Metadiscourse*, 2005); Peyton Jones; Manchester Academic Phrasebank.
+Standards: Peyton Jones; Manchester Academic Phrasebank.
 
-Writing needs some metadiscourse; too much buries the content (Williams). Keep the kind that carries a logical relation or a pointer the reader needs; cut the kind that only announces structure or narrates the act of writing.
+Writing needs some metadiscourse; too much buries the content. Keep the kind that carries a logical relation or a pointer the reader needs; cut the kind that only announces structure or narrates the act of writing.
 
 Cut:
 - The canned roadmap: "The rest of this paper is organized as follows. Section 2... Section 3..." (Peyton Jones). Replace with inline forward references from the narrative.
@@ -89,8 +141,8 @@ Cut:
 
 Keep:
 - Inline forward references woven into a claim: "We prove the type system sound (\autoref{...})" (Peyton Jones).
-- Logical transitions that mark a real relation: "but", "thus", "in contrast to X" (Hyland transitions).
-- Frame markers that orient the reader through stages: "We first bind each variable; building on it, we then mutate the inputs" (Hyland frame markers).
+- Logical transitions that mark a real relation: "but", "thus", "in contrast to X".
+- Frame markers that orient the reader through stages: "We first parse the input; building on that, we then analyze it".
 - Endophoric pointers that aid reuse: "as defined in \autoref{...}".
 
 The line: a sentence that *announces* structure is cut; a sentence that *carries* a logical relation or a needed pointer is kept.
@@ -98,7 +150,7 @@ The line: a sentence that *announces* structure is cut; a sentence that *carries
 ## Post-Edit Reread
 
 - After editing any sentence, reread the entire paragraph before stopping. Local edits accumulate redundancy and patches at sentence seams.
-- Verify the paragraph is one causal chain, states each claim once, and carries no meta-commentary. Fix every violation in the same pass.
+- Fix every violation surfaced by the reread in the same pass.
 
 ## Evidence and Attribution
 
