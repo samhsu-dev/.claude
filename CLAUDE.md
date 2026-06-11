@@ -1,29 +1,38 @@
 # Project Rules
 
-LaTeX academic paper project. Global rules (`~/.claude/rules/`) provide language-agnostic standards. Project rules below add LaTeX-specific guidance.
+LaTeX academic paper project (BELUGA). This file is the project interface: structure, rule index, and build system.
 
-## Recommended Project Structure
+## Project Structure
 
 ```
 paper/
 ├── main.tex              # Root document
 ├── references.bib        # Bibliography database
-├── Sections/             # One .tex file per section (optional for short papers)
-├── figures/              # PDF/PNG figures
-├── tables/               # Standalone table .tex files (optional)
-├── *.sty / *.cls         # Local style/class files (project root or subdir)
-├── .latexmkrc            # Build configuration (optional)
+├── zotero-references.bib # Zotero-exported bibliography
+├── Sections/             # One .tex file per section (introduction, overall, ...)
+├── Packages/             # Local style and preamble (myart.sty, packages.tex, ...)
+├── Assets/               # Figures and other binary assets
+├── Templates/            # Venue templates
+├── Revisions/            # Reviewer-response material
 └── .claude/
     ├── CLAUDE.md         # This file
-    └── rules/
-        ├── codequality.md  # LaTeX source quality (*.tex, *.bib, *.sty)
-        ├── writing.md      # Academic prose precision; no vague terms (*.tex)
-        ├── introduction.md # Introduction six-module funnel (introduction.tex)
-        ├── committing.md   # Project commit and push rules
-        └── tasking.md      # Task management (todo.md)
+    └── rules/            # Project rules (see Rules below)
 ```
 
-Rules use `paths:` frontmatter to load only when working with matching files.
+## Rules
+
+`.claude/rules/` holds the project rules. Each uses `paths:` frontmatter to load only when a matching file is open; a rule with no `paths:` is always active.
+
+| Rule | Scope (`paths:`) | Purpose |
+|------|------------------|---------|
+| `codequality.md` | `*.tex`, `*.bib`, `*.sty`, `*.cls` | LaTeX source quality |
+| `writing.md` | `*.tex` | Academic prose precision; no vague terms |
+| `writing-references.md` | always active | Bibliographic backing for `writing.md` authorities |
+| `introduction.md` | `introduction.tex`, `intro.tex` | Introduction structure |
+| `overall.md` | `overall.tex`, `overview.tex` | Overview structure |
+| `committing.md` | always active | Project commit and push rules |
+
+Global rules (`~/.claude/rules/`) provide language-agnostic defaults. These project rules add LaTeX-specific guidance and override the global defaults where both set a concrete value.
 
 ## Build System
 

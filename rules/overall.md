@@ -15,7 +15,7 @@ Three subsections driven by one running example. The example is introduced once 
 | # | Subsection | Function | Internal order |
 |---|------------|----------|----------------|
 | 1 | Motivating Example | Establish one concrete carrier for all later argument | Anchor case → domain scale → high-level consequence → mechanism primer → line-level walkthrough |
-| 2 | Key Challenges and Solution Overview | Pair each challenge with its solution | Core-artifact lead → N challenges (each with example + SOTA failure) → strategy closer → N solution blocks (1:1, same order) |
+| 2 | Key Challenges and Solution Overview | Pair each challenge with its solution | Core-artifact lead → N challenges (each with example + SoTA failure) → strategy closer → N solution blocks (1:1, same order) |
 | 3 | Threat Model | Bound the scope | Target class → attacker capabilities → attacker knowledge → covered vulnerability types |
 
 ## Opening Sentence
