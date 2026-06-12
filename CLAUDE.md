@@ -30,6 +30,7 @@ paper/
 | `writing-references.md` | always active | Bibliographic backing for `writing.md` authorities |
 | `introduction.md` | `introduction.tex`, `intro.tex` | Introduction structure |
 | `overall.md` | `overall.tex`, `overview.tex` | Overview structure |
+| `approach.md` | `approach.tex`, `approaches.tex` | Approach structure |
 | `committing.md` | always active | Project commit and push rules |
 
 Global rules (`~/.claude/rules/`) provide language-agnostic defaults. These project rules add LaTeX-specific guidance and override the global defaults where both set a concrete value.
