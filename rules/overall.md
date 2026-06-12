@@ -15,12 +15,12 @@ Three subsections driven by one running example. The example is introduced once 
 | # | Subsection | Function | Internal order |
 |---|------------|----------|----------------|
 | 1 | Motivating Example | Establish one concrete carrier for all later argument | Anchor case → domain scale → high-level consequence → mechanism primer → line-level walkthrough |
-| 2 | Key Challenges and Solution Overview | Pair each challenge with its solution | Core-artifact lead → N challenges (each with example + SoTA failure) → strategy closer → N solution blocks (1:1, same order) |
+| 2 | Solution Overview | Lead with the key insight, then show each mechanism on the snippet | Key insight + core artifact + strategy → N self-contained blocks, each: difficulty on the snippet → one-line why naive/prior fails → mechanism traced on the same lines |
 | 3 | Threat Model | Bound the scope | Target class → attacker capabilities → attacker knowledge → covered vulnerability types |
 
 ## Opening Sentence
 
-- One sentence declaring the section uses a single example to illustrate both the challenges and the solution overview.
+- One sentence declaring the section uses a single example to illustrate the solution.
 
 ## Motivating Example (1)
 
@@ -47,9 +47,9 @@ Rules:
 - Module 1 carries the domain magnitude. The motivating case need only be a representative instance of it.
 
 ### Primer element
-- Name each component by the responsibility it owns: rendering, persistence, external settlement. No vague verb ("builds", "handles") that the next paragraph must correct.
-- Declare the invariant under test explicitly: "the business-logic invariant we consider is X". Use the term `business-logic invariant`, matching module 1.
-- Close the primer on "the application is correct only when this invariant holds", so the walkthrough opens on "this invariant is broken here".
+- Name each component by the responsibility it owns. No vague verb ("builds", "handles") that the next paragraph must correct.
+- Declare the correctness property under test explicitly, using the term defined in introduction module 1.
+- Close the primer on the state where the property holds, so the walkthrough opens on the state where it is broken.
 
 ### Walkthrough element
 - State why the developer made the mistake, not only the data path. The reader learns the root cause, not just the symptom.
@@ -58,53 +58,58 @@ Rules:
 
 ## Code Snippet Conventions
 
-Code lives in `Assets/motivating.php`. The section includes it with `\lstinputlisting[language=myPHP, caption={...}, label={lst:motivating}]{Assets/motivating.php}` and defines `\newcommand{\motivline}[1]{\refline{lst:motivating}{#1}}` for line references.
+Code lives in a standalone asset file, included with `\lstinputlisting[language=..., caption={...}, label={lst:motivating}]{...}`. Define a line-reference macro bound to that label for use throughout the section.
 
 ### Code form
 - Under 30 lines. Lines short enough not to wrap in one column.
 - Top-level functions, not class methods. Short function names.
 - Short variable names (`vid`, `qty`).
-- File-origin banner comment marks code from different files: `// ===== Models/Order.php =====`.
-- Attacker-controlled input appears as `$_POST[...]` directly, so the source is visible.
+- File-origin banner comment marks code spliced from different files.
+- Attacker-controlled input appears as the language's request-parameter access directly, so the source is visible.
 - Real code, simplified for illustration. The caption states "slightly simplified".
 
 ### Comment form
 - A comment supplies only what the code cannot show: a cross-layer guard, a runtime fact, a domain rule.
 - No comment restates what the code already expresses.
 - Comments occupy their own line above the code they annotate. No trailing inline comments that force wrapping.
-- Challenge tags `// C1:`, `// C2:`, `// C3:` mark the code site of each challenge. One axis only. No TP/FP/FN tags in the snippet.
+- Challenge tags `// C1:`, `// C2:`, ... mark the code site of each challenge, one per challenge. One axis only. No TP/FP/FN tags in the snippet.
 
-### Invariant line
-- The invariant is a mathematical expression over domain logic variables: `// Invariant: amount == SUM(price_i * qty_i)`.
-- Logic variables are application-independent. No code symbols in the invariant.
+### Property line
+- The correctness property is a mathematical expression over domain-level variables, written as a comment: `// Property: <expression>`.
+- Domain variables are application-independent. No code symbols in the expression.
 
 ### Challenge sites
 - Each challenge marks one code site, mapping 1:1 to introduction module 3.
-- C1 (binding): one logic variable with two candidate code locations — the authoritative database value and the client value; binding to the client value is the false negative.
-- C2 (coincidence): an equality that holds across every observed run yet encodes no rule.
-- C3 (confirmation): a tamper that looks exploitable at one stage but a later-stage runtime guard neutralizes; confirmation needs the full workflow.
+- One tag per challenge, in the introduction's order. Each tag sits at the line where that challenge is concretely visible.
+- A tag marks where the challenge manifests, not how the method solves it.
 
-## Key Challenges and Solution Overview (2)
+## Solution Overview (2)
 
-Lead with the core artifact the method builds. State why that artifact is decisive for this task.
+Structure is insight-driven, not challenge-driven: the section is organized by the method's mechanisms, and the difficulty each mechanism overcomes is stated inside that mechanism's block. Use this structure when the work has no dense same-direction prior work to compare against line by line.
 
-Challenge narration (one per challenge, same order and vocabulary as introduction module 3):
-- Phenomenon — what is hard, in one clause.
-- Example — a specific location in the running snippet (line number).
-- SOTA failure — name the tool and its exact failure on this example.
+Opening paragraph (one, before the solution blocks):
+- State the key insight in one or two sentences: the observation that makes the problem solvable, and the core artifact it leads to. Define the core artifact inline with a concrete referent.
+- Point to where each step's difficulty appears in the running snippet, one clause per step, by line number. No detail here — this paragraph is a map.
+- Close with one sentence stating the method's core strategy (build the artifact, then use it).
 
-Close challenge narration with one sentence stating the method's core strategy.
-
-Solution blocks (`2.2.1`, `2.2.2`, ...), 1:1 with challenges, same order:
-- Name the core mechanism, italicized, reusing the introduction module-4 innovation name.
-- Trace the mechanism over the running snippet.
+Solution blocks (`2.2.1`, `2.2.2`, ...), 1:1 with mechanisms, in the order the artifact is built then used. Each block is self-contained: difficulty on the snippet, then mechanism, so each example appears once in the whole section.
+- Name the mechanism, italicized, reusing the introduction module-4 innovation name.
+- Open on the difficulty as it appears on the running snippet. The first sentence names a line or value in the snippet.
+- State why a naive or prior approach does not overcome it — one clause, at the class level (no line-by-line targeting of a tool that does not operate on this snippet).
+- Trace the mechanism over the same lines; the mechanism emerges from the concrete trace.
 - Reference one figure that illustrates the mechanism on the snippet.
 
+Term discipline:
+- Overview gives intuition in plain words. Self-coined formal terms (e.g. invariant semantics, semantic variable, concrete variable) and pipeline-internal component names debut in the approach section, not here.
+- A named, inline-defined core artifact (the oracle) is allowed; an undefined formal term is not.
+
 Rules:
-- Challenge count = solution count. Same order, same names as the introduction.
+- Mechanism count = challenge count = solution count. Same order maps to the introduction's challenges.
 - Never rename a challenge or innovation introduced in the introduction.
+- Each example (line or value) is developed in one block only. No difficulty detail is repeated in the opening paragraph.
 - Each solution block carries one figure walking the mechanism over the snippet.
-- Overview develops each challenge to line level; the introduction states it in one sentence.
+- The overview and the introduction are complementary: the introduction states each mechanism as a one-sentence idea; the overview shows it on the snippet at line level.
+- No sentence restates the introduction's abstract description of a mechanism. Carry the idea forward by demonstrating it on the snippet, not by repeating it.
 
 ## Threat Model (3)
 
