@@ -14,7 +14,9 @@ Community standards: dspinellis/latex-advice, booktabs, siunitx v3, Kopka & Daly
 
 ## Source Formatting
 
-- One clause or phrase per line. Break after logical units. Improves Git diffs (dspinellis/latex-advice).
+- Break after sentence-level logical units: end of sentence, end of independent clause, or before a coordinating conjunction that opens a new clause. These are the natural reading pauses.
+- Do not break mid-clause: not between a subject and its verb, not inside a prepositional phrase, not between an adverb and the clause it modifies (e.g. keep "for example, let buyers…" on one line), not between list items joined by commas within one clause.
+- A bulleted or enumerated prose list whose items are short noun phrases may place each item on its own line. Running prose that contains a list (e.g. "calculating prices, applying discounts, and processing payments") stays on one line or breaks only after the full list.
 - No hard wrapping at fixed column width. Let the editor soft-wrap.
 - Indent environment bodies consistently (two spaces common). No tabs in `.tex` files.
 - Blank line between paragraphs. No `\\` for paragraph breaks in body text.

@@ -25,6 +25,18 @@ Every term maps to a concrete, verifiable referent. No vague words.
 - No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective" (IEEE/ACM). Replace with a measurement or a concrete property.
 - No modifier that adds no information: "very", "quite", "simply", "clearly".
 
+## Overloaded Technical Terms
+
+Certain words carry precise formal meanings in program analysis, formal methods, or security research. Using them informally invites reviewer challenges ("prove it") that the paper cannot answer.
+
+- **"sound"** — in program analysis, soundness means the analysis reports no false negatives (all real violations are found); proving soundness requires a formal argument. Never use "sound" as a plain adjective meaning "correct" or "valid." Replace with a description of the property: "an invariant derived from domain knowledge rather than observed data" or "an invariant that encodes a real obligation."
+- **"complete"** — in formal methods, completeness means no false positives; similarly requires proof. Never use "complete" to mean "thorough" or "comprehensive."
+- **"correct"** — implies formal correctness. When the intended meaning is "accurate" or "consistent with domain rules," say so explicitly.
+- **"genuine"** — colloquial; does not map to a verifiable property. Replace with the concrete description of what makes the thing genuine: "an invariant that encodes a real obligation the application must satisfy, not a coincidence in observed data."
+- **"real"** as a standalone qualifier (e.g. "a real rule", "a real vulnerability") — imprecise. State the criterion: "a rule the application must always obey" or "a transaction that the application accepts and that violates an e-commerce invariant."
+
+General rule: if a word could trigger the reviewer question "how do you define/prove that?", replace it with the concrete property or mechanism you actually mean.
+
 ## Word-Level Register
 
 Standards: Strunk & White; ACM/IEEE editorial guides; Manchester Academic Phrasebank.
