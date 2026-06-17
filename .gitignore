@@ -6,5 +6,9 @@
 !rules/
 !rules/**
 
+# Track skills
+!skills/
+!skills/**
+
 # Track .gitignore itself
 !.gitignore

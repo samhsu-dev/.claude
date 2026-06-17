@@ -36,6 +36,23 @@ paper/
 
 Global rules (`~/.claude/rules/`) provide language-agnostic defaults. These project rules add LaTeX-specific guidance and override the global defaults where both set a concrete value.
 
+## Skills
+
+Project-specific skills in `.claude/skills/`. Invoke with `/skill-name [arguments]`.
+
+| Skill | Command | Purpose |
+|-------|---------|---------|
+| `define-term` | `/define-term <term> [in:<field>]` | Look up the accurate academic definition of a CS/academic term via Wikipedia, Semantic Scholar, and NIST |
+| `zotero-research` | `/zotero-research <topic>` | Survey, curate, and enrich the Zotero library for a research topic — reconcile `.bib`, organize collections, normalize tags, attach markdown notes |
+
+**Examples:**
+
+```
+/define-term attention mechanism in:NLP
+/define-term Byzantine fault tolerance
+/zotero-research adversarial robustness in neural networks
+```
+
 ## Build System
 
 - Engine: `pdflatex`, `xelatex`, or `lualatex`.
