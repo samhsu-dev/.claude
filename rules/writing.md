@@ -76,6 +76,7 @@ Neutral, direct words. Replacements:
 - Define to the depth the current argument needs. Defer formal definitions to the body.
 - Lead with a concrete example, then the general statement (Peyton Jones).
 - A definition that uses one method's implementation detail is not method-neutral.
+- Never define a domain phenomenon using a researcher-constructed abstraction (invariant, rule, oracle) as if that abstraction is an inherent property of the domain. State the observable phenomenon first; attribute the abstraction to the research community that introduced it.
 
 ## No Anthropomorphism
 
