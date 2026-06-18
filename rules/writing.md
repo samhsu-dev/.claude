@@ -5,7 +5,7 @@ paths:
 
 # Academic Prose Precision
 
-Community standards: Strunk & White; Gopen & Swan (*Science of Scientific Writing*, 1990); Knuth, Larrabee & Roberts (*Mathematical Writing*); Peyton Jones (*How to write a great research paper*); Dijkstra (EWD).
+Community standards: Strunk & White (*Elements of Style*); Gopen & Swan (*Science of Scientific Writing*, Am. Scientist 1990); Knuth et al. (*Mathematical Writing*, Stanford 1989); Peyton Jones (*How to Write a Great Research Paper*, MSR 2014); Levin & Redell (*How to Write a Good Systems Paper*, SIGOPS 1983); Shaw (*Writing Good SE Research Papers*, ICSE 2003); Shewchuk (*Three Sins*, CMU 1997); McDaniel (*How to Write a Security Paper*, Penn State); Dijkstra (EWD).
 
 Every term maps to a concrete, verifiable referent. No vague words.
 
@@ -18,23 +18,14 @@ Every term maps to a concrete, verifiable referent. No vague words.
 - One concept, one name. Never rename a concept mid-paper (Knuth).
 - Use the concrete mechanism, not the abstract label. "A fixed set of sinks such as `echo`, `mysql_query`" not "a general detection criterion".
 
-## Banned Vague Words
+## Word Choice Precision
 
 - No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective". Replace with a measurement or a concrete property.
-- No modifier that adds no information: "very", "quite", "simply", "clearly", "direct".
+- No modifier that adds no information: "very", "quite", "clearly", "direct".
+- No contentless modifier: a modifier that applies to every member of the class it modifies is contentless. Test: remove it; if the claim is no less specific, delete it (e.g., "custom" before "implementation" — all implementations are developed by someone).
 - No "technical specification", "technical error", "security property", "correctness standard" unless defined inline.
-
-## Overloaded Technical Terms
-
-These words carry precise formal meanings. Using them informally invites reviewer challenges ("prove it") the paper cannot answer.
-
-- **"sound"** — proves no false negatives; requires a formal argument. Replace with a description of the specific property: "derived from domain knowledge rather than observed data."
-- **"complete"** — proves no false positives; requires proof. Replace with a concrete coverage description.
-- **"correct"** — implies formal correctness. Use "accurate" or state the specific property.
-- **"genuine"** — colloquial; does not map to a verifiable property. Replace with the concrete criterion: "encodes an obligation the system must satisfy, not a coincidence in observed data."
-- **"real"** as a standalone qualifier — imprecise. State the criterion explicitly.
-
-If a word could trigger "how do you define/prove that?", replace it with the concrete property you mean.
+- **Overloaded terms** — use only with their formal meaning; each invites "prove it" if used informally: "sound" (no false negatives), "complete" (no false positives), "correct" (formal proof), "genuine" / "real" (no verifiable criterion). Replace with the concrete property you mean.
+- Express quantitative or comparative relations with noun phrases and a relational verb: "the payment amount was less than the order total", not "the amount fell far short of the total".
 
 ## Word-Level Register
 
@@ -50,6 +41,8 @@ Neutral, direct words. Replacements:
 | "a number of", "a variety of" | a number, or "several" |
 | "it should be noted that" | delete; state the fact |
 | "delve", "showcase", "underscore", "pivotal", "crucial", "seamless" | concrete verb or measured property |
+| "translate to" (causal) | "result in", "lead to", "cause" |
+
 
 - Connectives ("thus", "therefore", "moreover") mark genuine logical relations only. No filler connective. No two consecutive sentences opened by a connective.
 - No contractions in body text.
@@ -59,24 +52,37 @@ Neutral, direct words. Replacements:
 ## Sentence Structure
 
 - Main character as grammatical subject; key action as a verb, not a nominalization (Gopen & Swan).
+- No figurative or implied constructions ("emerges", "reveals", "suggests"). State the subject and its action directly.
 - Old/familiar information first, new information at sentence end (stress position) (Gopen & Swan).
 - Omit needless words (Strunk & White).
 - State each claim once.
+- One sentence, one meaning. Never merge a definition, a causal claim, and an example into one sentence.
+- Vary sentence length within each paragraph. Five or more consecutive sentences of similar length signal monotony; insert a short sentence (under ten words) or combine two.
+- A term introduced only as a modifier or object of a prepositional phrase in sentence A cannot serve as the definite referent ("this X", "that X") in sentence B. If sentence B needs to take that concept as its subject, restructure sentence A so the concept stands as the main subject or appears at the stress position, or replace the pronoun chain with a self-sufficient noun phrase in sentence B (Gopen & Swan).
+
+## Terminology Consistency
+
+- One spelling and capitalization per term throughout the paper. Never alternate hyphenated and unhyphenated forms, or capitalized and lowercase variants, for the same concept.
+- One term per concept per section. Do not cycle synonyms to avoid repetition; repetition of the correct term aids clarity.
+- The grammatical subject for the target system must remain consistent within a paragraph. Establish the precise term at first introduction (e.g., "web application"), then use it or its pronoun ("the application") for all subsequent references in the same passage. Do not shift between "site", "application", "system", and "software" within the same argument.
 
 ## Precision of Claims
 
 - No claim that fails on a counterexample (Knuth; Dijkstra).
 - Every claim is supported by evidence or qualified to be defensible.
-- State the contribution as a single explicit, refutable sentence (Peyton Jones).
 - Degree claims, not absolutes, when prior work exists. "X remains the central difficulty", never "no such thing exists."
+- No absolute quantifiers unless strictly provable: "every", "always", "all", "never". Replace with "each", "typically", or a qualified scope.
+- No "requires X" for a necessity claim that is not proven. Use "X is the natural way to…" or "X is needed to…" when the necessity is contextual, not logical.
+- Never equate concepts at different logical levels. A bug is a code defect; a vulnerability is an exploitable weakness. Use the term that matches the claim's level of abstraction.
 
 ## Definitions
 
 - Define a term at the first sentence whose argument depends on it.
 - Define to the depth the current argument needs. Defer formal definitions to the body.
-- Lead with a concrete example, then the general statement (Peyton Jones).
+- Lead with observable phenomenon first, then the formal definition. Never introduce a label before the reader has seen what it refers to.
 - A definition that uses one method's implementation detail is not method-neutral.
-- Never define a domain phenomenon using a researcher-constructed abstraction (invariant, rule, oracle) as if that abstraction is an inherent property of the domain. State the observable phenomenon first; attribute the abstraction to the research community that introduced it.
+- Never define a domain phenomenon using a researcher-constructed abstraction as if that abstraction is an inherent property of the domain. State the observable phenomenon first; attribute the abstraction to the research community that introduced it.
+- When introducing a problem class, follow this order: (1) observable symptom, (2) prior work's model of that symptom, (3) the abstraction with its source made explicit.
 
 ## No Anthropomorphism
 
@@ -117,15 +123,60 @@ Default to restructuring the sentence so the idea is built into its clause.
 - A trailing clause that restates the sentence's point is a patch — drop it.
 - Name a component by the action it performs: "Settles the order through the payment SDK", not "handles payment."
 
+## Argument Continuity
+
+- Each paragraph ends by motivating the next; each section ending sets up the opening of the following section.
+- Every promise made in an introductory paragraph must be fulfilled in the body, in the stated order. An unfulfilled promise is a structural gap.
+- Logical bridge required between adjacent paragraphs. A transition that marks only sequence ("Next, …", "Then, …") is not a logical bridge.
+
 ## Metadiscourse
 
 Cut: canned roadmap ("The rest of this paper is organized as follows…"); self-narration ("In this section we discuss"); content-free structural announcement.
+
+Delete these throat-clearing openers: "In the realm of", "It is important to note that", "It is worth mentioning that", "It goes without saying that", "In order to", "It should be noted that", "With that being said", "When it comes to".
 
 Keep: inline forward references woven into a claim; logical transitions marking a real relation; frame markers orienting the reader through stages.
 
 ## Post-Edit Reread
 
 After editing any sentence, reread the entire paragraph. Fix every violation in the same pass.
+
+## Structural Alignment
+
+- Every figure and table must have an explicit in-text citation before or at its first appearance. No orphaned floats.
+- A section introduction that enumerates topics ("we cover X, Y, and Z") must address them in the stated order with no omissions.
+- Caption text must match figure content. A spatial description in the caption ("left column", "top row") must correspond to the actual layout.
+
+## Opening
+
+- The subject of the first substantive sentence is the paper's central artifact or domain, matching the title's primary noun (Gopen & Swan).
+- No technology, language, or implementation detail appears as the grammatical subject of the opening unless the paper's title names it.
+- Do not open by explaining to experts why their field is important. Open with the paper's specific purpose (Shewchuk).
+
+## Paper Structure
+
+- Abstract: four sentences — (1) the problem, (2) why it is hard, (3) the approach, (4) the result (Peyton Jones).
+- Introduction: problem description and contribution list only. No background, no related work, no methodology. One page.
+- Related work follows the core idea, not precedes it. Readers cannot evaluate related work before understanding the contribution (Peyton Jones).
+- State the contribution at four levels of detail: title (~10 words), abstract (~100 words), introduction (~1000 words), body (~10,000 words). Each level is independently coherent and consistent with the others (Levin & Redell).
+
+## Contributions
+
+- Write the contribution list before drafting the body. The body provides evidence for the contributions, not the other way around (Peyton Jones).
+- Each contribution is a single refutable sentence. "We describe X" is not a contribution. "We prove X satisfies property Y (Section N)" is (Peyton Jones).
+- Forward-reference the evidence for each contribution at the point of the claim in the introduction.
+- Signal explicitly whether the work is novel (new scientific observation) or incremental (improvement over prior work). Do not leave the reader to infer which (McDaniel).
+
+## Evaluation
+
+- State upfront whether the system is implemented and deployed, unimplemented, or purely theoretical. Readers have a right to know this before investing in the paper (Levin & Redell).
+- Report failures, limitations, and trade-offs alongside successes. An evaluation that measures only what the system does well invites reviewer skepticism (Levin & Redell).
+- Every paper must answer three questions: (1) What is the contribution? (2) What is the new result and how does it differ from prior work? (3) Why should the reader believe the result? (Shaw).
+
+## Conclusions
+
+- Conclusions must add new information: implications, conjectures, open problems, perspective gained after reading the full paper (Shewchuk).
+- Do not summarize the paper in the conclusions. The reader has just read it. A conclusion the reader could understand before reading the paper adds nothing.
 
 ## Evidence and Attribution
 
