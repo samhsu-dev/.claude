@@ -7,7 +7,9 @@ paths:
 
 Community standards: Strunk & White (*Elements of Style*); Gopen & Swan (*Science of Scientific Writing*, Am. Scientist 1990); Knuth et al. (*Mathematical Writing*, Stanford 1989); Peyton Jones (*How to Write a Great Research Paper*, MSR 2014); Levin & Redell (*How to Write a Good Systems Paper*, SIGOPS 1983); Shaw (*Writing Good SE Research Papers*, ICSE 2003); Shewchuk (*Three Sins*, CMU 1997); McDaniel (*How to Write a Security Paper*, Penn State); Dijkstra (EWD).
 
-Every term maps to a concrete, verifiable referent. No vague words.
+## Governing Principle
+
+Every sentence is read by a reviewer seeing the paper for the first time. Each term, claim, and transition is verifiable from the text already read, never from knowledge of a later section. Every rule below serves this test: a term maps to a concrete, verifiable referent; a claim survives one counterexample; a transition supplies every step the reader needs.
 
 ---
 

@@ -52,6 +52,10 @@ All project-wide constants and terminology live in `local.tex`, organized into s
 
 To rename a challenge or the overall approach, edit only the corresponding macro in Section 3 of `local.tex`.
 
+## Governing Principle
+
+Every sentence is written for a reviewer reading the paper for the first time. Each term, claim, and transition must be verifiable from the text already read, never from knowledge of a later section. `writing.md` states this as the governing rule; the skills below operationalize it at sentence and section granularity.
+
 ## Skills
 
 Project-specific skills in `.claude/skills/`. Invoke with `/skill-name [arguments]`.
@@ -62,6 +66,19 @@ Project-specific skills in `.claude/skills/`. Invoke with `/skill-name [argument
 | `zotero-research` | `/zotero-research <topic>` | Survey, curate, and enrich the Zotero library for a research topic |
 | `review-section` | `/review-section <file.tex> [subsection]` | Review a LaTeX section for logic, argumentation rigor, and writing standards |
 | `check-sentence` | `/check-sentence <"sentence" or L42-L48> [file.tex]` | Check sentences for logical validity, sentence-to-sentence coherence, and reviewer-rejection risk (strong declarations, scope overreach, causal overclaims) |
+
+### When to use which
+
+| Situation | Use |
+|-----------|-----|
+| Writing or editing one sentence or a short passage; a sentence feels logically off | `check-sentence` |
+| Reviewing or auditing a whole section or subsection | `review-section` (composes `check-sentence` across paragraphs, then adds section-arc, terminology, prose-sweep, and structural checks) |
+| Unsure a term's academic meaning is accurate | `define-term` before committing the term |
+| Checking whether prior work already exists, or sourcing a claim | `zotero-research` |
+
+- **Layering.** `check-sentence` is the sentence-level module; `review-section` is the section-level composer that invokes it. Sentence-internal and adjacent-pair checks live only in `check-sentence`; section-scope checks live only in `review-section`. No skill restates another's checks.
+- **Pre-write protocol.** Before proposing any sentence, run the four-step check (proposition → quantifier counterexample → referent test → paragraph reread) codified in `check-sentence`. Show only the passed version; no write-then-fix rounds.
+- **Rules vs. skills.** `.claude/rules/` (`writing.md`, `codequality.md`) is the authority. Skills operationalize the rules; when a skill and a rule conflict, the rule wins and the skill is corrected.
 
 **Examples:**
 ```

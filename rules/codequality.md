@@ -8,7 +8,7 @@ paths:
 
 # LaTeX Source Quality
 
-Community standards: dspinellis/latex-advice, booktabs, siunitx v3, Kopka & Daly.
+Community standards: dspinellis/latex-advice, booktabs, Kopka & Daly.
 
 ---
 
@@ -57,7 +57,8 @@ Community standards: dspinellis/latex-advice, booktabs, siunitx v3, Kopka & Daly
 
 ## Numbers and Units
 
-- `siunitx` v3: `\num{12345}` for numbers, `\qty{7146}{s}` for number+unit, `\unit{m}` for standalone units.
+- This project does not load `siunitx`. Write numbers bare: `26 million`, `20\%`, `\$20,000`. No `\num{}`/`\qty{}`/`\unit{}`.
+- Non-breaking space between a number and its unit: `7146~s`, `4~years`.
 - Spell out integers under 10 in prose ("three tools", not "3 tools").
 
 ## Commands and Macros

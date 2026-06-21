@@ -20,6 +20,17 @@ Check each sentence in isolation.
 - "every", "all", "always", "never" hold without exception? If not, scope them: "in all tested cases", "across our 100-repo corpus."
 - "must", "requires", "is necessary" assert logical necessity. Flag unless the necessity is proven in this paper, not just observed.
 
+**Hidden universals (copular overclaim)**
+- "each X is Y", "X is a Y", "an X is a Y" assert a universal even with no "all"/"every". Run the counterexample test: name one X that is not Y. One counterexample exists → flag.
+- The fix is not to scope harder but to relocate the claim. Demote a false universal over members to a property of the container: "each transaction is a payment" (refunds, cancellations falsify) → "these websites process payments".
+- Root-cause note: a universal is chosen because it reads as short and forceful. Defensibility outranks force (`writing.md` L71/L74).
+
+**Word-referent precision (anti-colloquial)**
+- For each content noun and verb, ask: what exact thing does it denote, and can a reader verify it? No answer → the word is vague; flag it.
+- Colloquial fillers fail this test: "moves money", "handles money", "goes through", "deals with", "involves". Replace with the concrete mechanism ("processes payments", "settles the order").
+- Cross-check against the `writing.md` register blacklist (L31–43) and the empty-modifier ban ("direct", "very", "clearly"; L24).
+- Root-cause note: the most fluent phrasing is usually the most colloquial. Fluency is not precision (`writing.md` L10/L84).
+
 **Causal language**
 - "because", "therefore", "leads to", "causes", "results in" assert a causal link. Flag if the paper establishes only correlation. Replace with "we observe that X coincides with Y" or "X is associated with Y."
 
@@ -51,6 +62,10 @@ Check every pair of adjacent sentences in the passage.
 **Referent continuity**
 - Does the subject of sentence B match the topic introduced in sentence A? An abrupt subject change without a bridge breaks coherence.
 
+**First-read position**
+- Read each sentence as a reviewer who has read only up to it, never as someone who knows the rest of the paper. A term, referent, or justification the reader meets only later is a forward dependency. Flag it unless an explicit forward reference ("Section N") is present.
+- A label introduced before its referent fails this test: the reader sees a name with nothing to attach it to. Demand observable phenomenon first, then the name (`writing.md` L82/L85).
+
 **Stress position**
 - The new information at the end of sentence A should be the topic of sentence B. If it is not, the chain loses momentum (Gopen & Swan).
 
@@ -70,6 +85,8 @@ Think as a skeptical reviewer. Flag patterns that invite challenge, rejection, o
 | "requires X" (unproven) | "Prove X is necessary, not just sufficient." | "X is the natural means to" |
 | "trivially", "obviously", "clearly" | "Not obvious to me." | Delete; state the fact directly |
 | "simply" (before a non-trivial step) | Condescending; reader may not find it simple | Delete |
+| "each X is a Y" / "an X is a Y" | "Here is an X that is not a Y." | Demote to a container property: "these websites process Y" |
+| "moves/handles money", "goes through" | "What exactly happens?" | Name the mechanism: "processes payments" |
 
 **Scope overreach**
 - Conclusions drawn from N experiments stated as universal truths. Scope every empirical claim: "across our 100-repo corpus", "in our evaluation", "for the PHP e-commerce applications we tested."
@@ -108,6 +125,7 @@ Categories and severity:
 - **REVIEWER-RISK** — logically defensible but likely to trigger reviewer challenge or negative impression. Fix before submission.
 - **COHERENCE** — adjacent sentences do not flow; logical bridge missing. Fix before submission.
 - **AMBIGUOUS** — two valid readings exist. Disambiguate.
+- **VAGUE** — a content word has no concrete, verifiable referent (colloquial filler or empty modifier). Replace with the mechanism. Fix before submission.
 
 If no issues are found: `No issues found in the provided passage.`
 

@@ -1,6 +1,7 @@
-# Review-Section: Complete Rule Reference
+# Review-Section: Section-Level Rule Reference
 
-Condensed from `.claude/rules/writing.md` and `.claude/rules/introduction.md`.
+Condensed from `.claude/rules/writing.md`. Section-scope checks only.
+Sentence-internal and adjacent-pair checks belong to the `check-sentence` module; this file does not repeat them.
 This file is read by the review-section skill at runtime.
 
 ---
@@ -40,19 +41,10 @@ This file is read by the review-section skill at runtime.
 
 **Banned throat-clearing openers**: "In the realm of", "It is important to note that", "It is worth mentioning that", "It goes without saying that", "In order to", "It should be noted that", "With that being said", "When it comes to", "This section will discuss", "In this section we".
 
-**Sentence rules**:
-- One sentence, one meaning.
-- No absolute quantifiers unless provable: every, all, never, always.
-- No anthropomorphism: programs do not know, think, believe, or understand.
-- No paired em-dashes to inject a definition or carry main content.
+**Section-wide rhythm**:
 - Vary sentence length; flag 5+ consecutive sentences within ±5 words of each other.
 
-**Register**:
-- No "yet" as conjunction → "but".
-- No "utilize", "leverage", "employ" meaning "use" → "use".
-- No "in order to" → "to".
-- No connective ("thus", "therefore", "moreover") without a genuine logical relation.
-- No two consecutive sentences opened by a connective.
+(Per-sentence prose and register checks — one meaning per sentence, absolute quantifiers, anthropomorphism, em-dash, word-level register — are run by `check-sentence`, not here.)
 
 ---
 
