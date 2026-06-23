@@ -11,6 +11,8 @@ Community standards: Strunk & White (*Elements of Style*); Gopen & Swan (*Scienc
 
 Every sentence is read by a reviewer seeing the paper for the first time. Each term, claim, and transition is verifiable from the text already read, never from knowledge of a later section. Every rule below serves this test: a term maps to a concrete, verifiable referent; a claim survives one counterexample; a transition supplies every step the reader needs.
 
+The target reader is a computer-science expert with no prior knowledge of this paper. This baseline calibrates term choice in both directions: assume field-standard CS terms (data flow, static analysis, precision, recall, NP-hardness) are known and do not explain them; define every paper-specific term, system name, and non-standard use of a common word at first use. Over-explaining a standard term wastes the expert's attention; leaving a paper-specific term ungrounded breaks the first-read test.
+
 ---
 
 ## Term Grounding
@@ -18,7 +20,7 @@ Every sentence is read by a reviewer seeing the paper for the first time. Each t
 - Every abstract noun states its exact referent at first use (Knuth; IEEE/ACM).
 - No self-invented terms. Use an established term with a citation, or define inline with a concrete referent (Dijkstra; Knuth).
 - One concept, one name. Never rename a concept mid-paper (Knuth).
-- Use the concrete mechanism, not the abstract label. "A fixed set of sinks such as `echo`, `mysql_query`" not "a general detection criterion".
+- Use the concrete mechanism, not the abstract label. "A fixed set of calls such as `read()`, `write()`" not "a general detection criterion".
 
 ## Word Choice Precision
 
@@ -27,7 +29,9 @@ Every sentence is read by a reviewer seeing the paper for the first time. Each t
 - No contentless modifier: a modifier that applies to every member of the class it modifies is contentless. Test: remove it; if the claim is no less specific, delete it (e.g., "custom" before "implementation" — all implementations are developed by someone).
 - No "technical specification", "technical error", "security property", "correctness standard" unless defined inline.
 - **Overloaded terms** — use only with their formal meaning; each invites "prove it" if used informally: "sound" (no false negatives), "complete" (no false positives), "correct" (formal proof), "genuine" / "real" (no verifiable criterion). Replace with the concrete property you mean.
-- Express quantitative or comparative relations with noun phrases and a relational verb: "the payment amount was less than the order total", not "the amount fell far short of the total".
+- **Near-synonym precision** — measurement and theory terms are distinct and non-interchangeable: "accuracy", "precision", "recall", "F1", "correctness", "soundness", "completeness". Name the one the paper actually computes or proves; never substitute one for another.
+- Use the exact established term for a concept, not an approximate near-synonym. Confirm an unfamiliar or ambiguous term's field-standard meaning before committing it (`/define-term`).
+- Express quantitative or comparative relations with noun phrases and a relational verb: "the measured latency was lower than the baseline", not "the latency fell far short of the baseline".
 
 ## Word-Level Register
 
@@ -62,9 +66,35 @@ Neutral, direct words. Replacements:
 - Vary sentence length within each paragraph. Five or more consecutive sentences of similar length signal monotony; insert a short sentence (under ten words) or combine two.
 - A term introduced only as a modifier or object of a prepositional phrase in sentence A cannot serve as the definite referent ("this X", "that X") in sentence B. If sentence B needs to take that concept as its subject, restructure sentence A so the concept stands as the main subject or appears at the stress position, or replace the pronoun chain with a self-sufficient noun phrase in sentence B (Gopen & Swan).
 
+## Grammatical Agreement
+
+### Articles
+
+- Every singular count noun takes a determiner: "a", "an", "the", "this", "each", or a possessive. A bare singular count noun is an error.
+- "a"/"an" for a count noun at first mention or for any instance of its class: "a violation", "an invariant".
+- "the" for a count noun already introduced, or fixed as unique by the context or a following restrictive phrase: "the invariant defined above", "the attacker in this example".
+- No article for a generic claim about a whole class: use the bare plural ("e-commerce websites accept orders"). Never "the" + singular for the class.
+- No article for a mass or abstract noun used generically: "static analysis", "data flow", "prior work".
+- "a" before a consonant sound, "an" before a vowel sound; decide by sound, not spelling: "an ELV", "a unique state", "an honest user".
+
+### Number
+
+- The verb agrees with its grammatical subject, not with an intervening noun in a prepositional phrase.
+- "each", "every", "a", "one" + singular noun take a singular verb and a singular pronoun ("it"). Never bind "they"/"them" to a singular antecedent.
+- A generic statement uses the bare plural with a plural verb ("violations occur"), not a singular count noun ("a violation occurs") when the claim is about the class.
+- A collective abstract noun is singular: "prior work shows", "the literature reports". Use "prior works"/"studies" only when counting distinct works.
+
+## Tense
+
+- Present tense for general truths, established facts, prior-work claims that still hold, and what the paper or system does: "the oracle evaluates the rule", "prior work detects ELVs".
+- Past tense for completed actions of this work: experiments run, corpus collected, results obtained: "we evaluated", "the tool flagged 42 cases".
+- Present perfect for prior work's contribution to the current state: "prior work has shown". Past for a specific completed study action: "Felmetsger et al. inferred invariants dynamically".
+- One tense per narrative frame. No tense shift within a paragraph when describing the same event or fact.
+
 ## Terminology Consistency
 
 - One spelling and capitalization per term throughout the paper. Never alternate hyphenated and unhyphenated forms, or capitalized and lowercase variants, for the same concept.
+- A multi-word technical term has one canonical form (spacing, hyphenation, capitalization) used at every occurrence: fix "data flow" / "data-flow" / "dataflow" to a single field-standard form. Confirm the standard form via `/define-term`.
 - One term per concept per section. Do not cycle synonyms to avoid repetition; repetition of the correct term aids clarity.
 - The grammatical subject for the target system must remain consistent within a paragraph. Establish the precise term at first introduction (e.g., "web application"), then use it or its pronoun ("the application") for all subsequent references in the same passage. Do not shift between "site", "application", "system", and "software" within the same argument.
 
@@ -120,10 +150,11 @@ Default to restructuring the sentence so the idea is built into its clause.
 
 ## Explanatory Prose
 
+- One main claim per paragraph, stated in its topic sentence.
 - State the root cause, not the observable symptom.
 - One causal chain per paragraph. A clause appended to cover an edge case is a patch — rewrite the chain.
 - A trailing clause that restates the sentence's point is a patch — drop it.
-- Name a component by the action it performs: "Settles the order through the payment SDK", not "handles payment."
+- Name a component by the action it performs: "Writes each record to the database through the storage API", not "handles storage."
 
 ## Argument Continuity
 

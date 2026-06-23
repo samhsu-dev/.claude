@@ -17,19 +17,24 @@ Parse `$ARGUMENTS` as: a quoted sentence, a line range (e.g. `L42-L48`), or a pa
 Check each sentence in isolation.
 
 **Quantifier accuracy**
-- "every", "all", "always", "never" hold without exception? If not, scope them: "in all tested cases", "across our 100-repo corpus."
+- "every", "all", "always", "never" hold without exception? If not, scope them: "in all tested cases", "across the repositories we evaluated."
 - "must", "requires", "is necessary" assert logical necessity. Flag unless the necessity is proven in this paper, not just observed.
 
 **Hidden universals (copular overclaim)**
 - "each X is Y", "X is a Y", "an X is a Y" assert a universal even with no "all"/"every". Run the counterexample test: name one X that is not Y. One counterexample exists → flag.
-- The fix is not to scope harder but to relocate the claim. Demote a false universal over members to a property of the container: "each transaction is a payment" (refunds, cancellations falsify) → "these websites process payments".
-- Root-cause note: a universal is chosen because it reads as short and forceful. Defensibility outranks force (`writing.md` L71/L74).
+- The fix is not to scope harder but to relocate the claim. Demote a false universal over members to a property of the container: "each element of the set is positive" (one counterexample falsifies) → "the set contains positive elements".
+- Root-cause note: a universal is chosen because it reads as short and forceful. Defensibility outranks force (`writing.md`, Precision of Claims).
 
 **Word-referent precision (anti-colloquial)**
 - For each content noun and verb, ask: what exact thing does it denote, and can a reader verify it? No answer → the word is vague; flag it.
-- Colloquial fillers fail this test: "moves money", "handles money", "goes through", "deals with", "involves". Replace with the concrete mechanism ("processes payments", "settles the order").
-- Cross-check against the `writing.md` register blacklist (L31–43) and the empty-modifier ban ("direct", "very", "clearly"; L24).
-- Root-cause note: the most fluent phrasing is usually the most colloquial. Fluency is not precision (`writing.md` L10/L84).
+- Colloquial fillers fail this test: "handles", "goes through", "deals with", "involves". Replace with the concrete mechanism ("validates the input", "writes the record").
+- Cross-check against the `writing.md` Word-Level Register table and the empty-modifier ban ("direct", "very", "clearly"; Word Choice Precision).
+- Root-cause note: the most fluent phrasing is usually the most colloquial. Fluency is not precision (`writing.md`, Governing Principle).
+
+**Technical-term accuracy**
+- A measurement or theory term must denote exactly what the paper computes or proves. Flag a near-synonym used in place of the right one: "accuracy" for "precision"/"recall", "correct" for "sound"/"complete" (`writing.md`, Near-synonym precision).
+- A concept term must match its logical level: a bug is a code defect, a vulnerability is an exploitable weakness (`writing.md`, Precision of Claims). Flag the wrong-level term.
+- A term whose field-standard meaning is uncertain: flag and suggest `/define-term <term>`.
 
 **Causal language**
 - "because", "therefore", "leads to", "causes", "results in" assert a causal link. Flag if the paper establishes only correlation. Replace with "we observe that X coincides with Y" or "X is associated with Y."
@@ -42,6 +47,16 @@ Check each sentence in isolation.
 
 **Existence vs. universal**
 - "there exists an application where…" and "all applications…" are not interchangeable. Flag conflation.
+
+**Article and number agreement**
+- Every singular count noun has a determiner. Flag a bare singular count noun. Choose by context: "a"/"an" for first mention or any-instance, "the" for an already-introduced or uniquely-fixed referent, bare plural for a generic class claim (`writing.md`, Grammatical Agreement).
+- "a" before a consonant sound, "an" before a vowel sound — by sound, not spelling ("an ELV", "a unique state").
+- The verb agrees with its grammatical subject, not an intervening noun. "each"/"every"/"a" + singular noun take a singular verb and the pronoun "it"; flag "they"/"them" bound to a singular antecedent.
+- A generic claim about a class uses the bare plural ("violations occur"); flag a singular count noun standing for the whole class.
+
+**Tense**
+- Present tense for general facts and what the paper or system does; past tense for completed actions of this work (experiments run, results obtained). Flag a tense that misframes the claim (`writing.md`, Tense).
+- Flag a tense shift within the passage describing the same event or fact.
 
 ---
 
@@ -64,7 +79,8 @@ Check every pair of adjacent sentences in the passage.
 
 **First-read position**
 - Read each sentence as a reviewer who has read only up to it, never as someone who knows the rest of the paper. A term, referent, or justification the reader meets only later is a forward dependency. Flag it unless an explicit forward reference ("Section N") is present.
-- A label introduced before its referent fails this test: the reader sees a name with nothing to attach it to. Demand observable phenomenon first, then the name (`writing.md` L82/L85).
+- A label introduced before its referent fails this test: the reader sees a name with nothing to attach it to. Demand observable phenomenon first, then the name (`writing.md`, Definitions).
+- Calibrate to the target reader — a CS expert with no knowledge of this paper (`writing.md`, Governing Principle). Do not flag an ungrounded field-standard CS term (data flow, static analysis, precision); flag any paper-specific term, system name, or non-standard word use that is not yet defined.
 
 **Stress position**
 - The new information at the end of sentence A should be the topic of sentence B. If it is not, the chain loses momentum (Gopen & Swan).
@@ -86,10 +102,10 @@ Think as a skeptical reviewer. Flag patterns that invite challenge, rejection, o
 | "trivially", "obviously", "clearly" | "Not obvious to me." | Delete; state the fact directly |
 | "simply" (before a non-trivial step) | Condescending; reader may not find it simple | Delete |
 | "each X is a Y" / "an X is a Y" | "Here is an X that is not a Y." | Demote to a container property: "these websites process Y" |
-| "moves/handles money", "goes through" | "What exactly happens?" | Name the mechanism: "processes payments" |
+| "handles X", "goes through" | "What exactly happens?" | Name the mechanism: "validates X" |
 
 **Scope overreach**
-- Conclusions drawn from N experiments stated as universal truths. Scope every empirical claim: "across our 100-repo corpus", "in our evaluation", "for the PHP e-commerce applications we tested."
+- Conclusions drawn from N experiments stated as universal truths. Scope every empirical claim: "across the N repositories we evaluated", "in our evaluation", "for the applications we tested."
 
 **Unqualified firsts**
 - "the first approach to X" invites the reviewer to recall prior work. Either cite a survey confirming the claim, or qualify: "the first approach to X that also Y."
@@ -126,6 +142,7 @@ Categories and severity:
 - **COHERENCE** — adjacent sentences do not flow; logical bridge missing. Fix before submission.
 - **AMBIGUOUS** — two valid readings exist. Disambiguate.
 - **VAGUE** — a content word has no concrete, verifiable referent (colloquial filler or empty modifier). Replace with the mechanism. Fix before submission.
+- **GRAMMAR** — article, number-agreement, or tense error (missing/wrong article, subject-verb mismatch, singular-class generic, wrong or drifting tense). Fix before submission.
 
 If no issues are found: `No issues found in the provided passage.`
 

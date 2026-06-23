@@ -64,7 +64,7 @@ Community standards: dspinellis/latex-advice, booktabs, Kopka & Daly.
 ## Commands and Macros
 
 - `\newcommand` for project terms appearing 3+ times.
-- After macro invocation, use `{}` to prevent space swallowing: `\sys{} is a tool`.
+- After macro invocation, use `{}` to prevent space swallowing: `\toolname{} is a tool`.
 - `\todo{text}` for unfinished sections. Remove before submission.
 
 ## Package Management

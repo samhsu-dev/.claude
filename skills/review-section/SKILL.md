@@ -11,89 +11,83 @@ Review the academic writing quality of `$ARGUMENTS`.
 
 Parse `$ARGUMENTS` as: first token is the `.tex` file path; optional second token is a subsection name or keyword to scope the review within that file.
 
-Read the target file (and the full rules at `${CLAUDE_SKILL_DIR}/rules.md`) before beginning.
-
 ---
 
 ## Layering
 
-`check-sentence` is the sentence-level module. It owns every check at the granularity of one sentence or one adjacent-sentence pair: internal validity, sentence-to-sentence coherence, first-read position, and reviewer-rejection risk. This skill composes over it: it runs `check-sentence` across the section, then adds only the checks that span more than two adjacent sentences — paragraph arc, whole-section terminology, whole-section prose sweeps, and structural alignment. Never re-derive a sentence-level check here.
+`check-sentence` owns every sentence-level and adjacent-pair check; it sees one passage at a time and a reader who has read only up to the current sentence. This skill runs `check-sentence` across the section (Step 2), then adds only what spans more than two adjacent sentences or more than one passage: the cross-section first-read state (Step 3) and the section-wide checks named in `writing.md` (Steps 4–7). `writing.md` is the single authority for the rules; the steps name which of its sections apply at section scope. Never re-derive a sentence-level check here.
 
 ---
 
-## Step 1 — Read
+## Step 1 — Read and establish reading order
 
 1. Read the target `.tex` file in full.
 2. If a subsection is specified, identify its boundaries and focus there; still flag cross-section issues visible from the excerpt.
-3. Read `${CLAUDE_SKILL_DIR}/rules.md` for the section-level check list.
-4. Read the sentence-level module at `${CLAUDE_SKILL_DIR}/../check-sentence/SKILL.md`.
+3. Read `main.tex` and record the `\input`/`\include` order. The target section's position in that order defines "prior sections" — every section input before it.
+4. Read every prior section in document order. Build a knowledge ledger of what a reviewer holds on entering the target section: defined terms and notation, established claims, prior-work concepts and their attribution, and stated assumptions. Carry only what the prior text actually establishes, not background knowledge.
+5. Read `.claude/rules/writing.md`, the authoritative writing rules. Steps 3–7 name the sections that apply at section scope.
+6. Read the sentence-level module at `${CLAUDE_SKILL_DIR}/../check-sentence/SKILL.md`.
 
 ---
 
 ## Step 2 — Sentence Audit (run check-sentence)
 
 Apply the `check-sentence` procedure to each paragraph of the scoped text. It is authoritative for:
-- sentence-internal validity (quantifier accuracy, hidden universals, word-referent precision, causal language, comparisons);
+- sentence-internal validity (quantifier accuracy, hidden universals, word-referent precision, technical-term accuracy, causal language, comparisons, article and number agreement, tense);
 - adjacent-pair coherence (logical bridge, scope transfer, hidden premise, referent continuity, first-read position, stress position);
 - reviewer-rejection risk (undefendable strong declarations, scope overreach, unqualified firsts, causal overclaim, proof-triggering terms).
 
-Record each finding with its line number, verbatim quote (≤ 120 characters), and `check-sentence` category. Fold them into the report below. Do not restate these checks.
+Run `check-sentence` on every paragraph in reading order; do not sample. Tag each finding with its `check-sentence` category and fold it into the report below, and do not restate these checks. Category-to-report mapping: INVALID/UNSUPPORTED/COHERENCE/AMBIGUOUS → Logic and Argumentation; GRAMMAR → Prose and Register; VAGUE and technical-term accuracy → Terminology and Consistency; REVIEWER-RISK → its matching report row.
 
 ---
 
-## Step 3 — Section-Level Argument Arc
+## Step 3 — First-Read Knowledge-State Audit (cross-section)
 
-Check what spans more than two adjacent sentences. Record every violation with its line number and a verbatim quote (≤ 120 characters).
+This step operationalizes the `writing.md` Governing Principle (every sentence verifiable from text already read) across section boundaries.
 
-- Every claim is backed by a citation, an experiment result, or a logical inference from a stated premise.
-- Each paragraph has exactly one main claim, stated in its topic sentence.
-- Each paragraph's argument follows from the preceding paragraph; no unexplained jumps.
-- Each section ending motivates the opening of the following section.
-- Promises made in introductory text (enumerated topics, "we show that…") are fulfilled in the stated order.
-- Terms used at different logical levels are not equated (bug ≠ vulnerability; correlation ≠ causation).
-- Concepts defined by prior work are attributed to prior work, not presented as domain ground truth.
-- Observable phenomenon described before its formal label is introduced anywhere in the section.
+Advance the knowledge ledger from Step 1 sentence by sentence through the target section, so it always reflects what a reviewer has read up to the current line. Add a term to the ledger only when the text defines it, cites it, or grounds it in a concrete referent. Flag every paper-specific term, symbol, prior-work concept, claim treated as known, and assumption the text relies on that is not yet in the ledger; never flag standard field background a target reviewer holds. Sort each violation into one report category:
+
+- **Forward dependency** — established only in a later section, with no explicit forward reference (`Section N`) at the point of use.
+- **Unestablished assumption** — never established anywhere in prior text.
+- **Intra-section forward use** — defined later in this same section.
 
 ---
 
-## Step 4 — Terminology Consistency (section-wide)
+## Step 4 — Section-Level Argument Arc
 
-Check what only a whole-section view reveals; `check-sentence` sees one passage at a time and cannot catch drift across the section.
-
-- One name per concept throughout the section. Flag any synonym cycling.
-- One spelling and capitalization per term. Flag hyphenation or capitalization variants.
-- No self-invented terms without an inline definition and a citation or a concrete referent.
-- A pronoun ("this", "these", "such") referring to a class introduced several sentences earlier without restatement.
+Apply the `writing.md` **Precision of Claims**, **Argument Continuity**, and **Definitions** checks to what spans more than two adjacent sentences: paragraph topic claims, paragraph-to-paragraph flow, section-to-section motivation, fulfilled promises, logical-level conflation, prior-work attribution, and observable-phenomenon-before-label.
 
 ---
 
-## Step 5 — Prose Sweep (section-wide)
+## Step 5 — Terminology Consistency (section-wide)
 
-### 5a. Banned Words
-Flag any appearance of: delve, tapestry, landscape, pivotal, crucial, foster, showcase, testament, navigate, leverage, realm, embark, underscore, multifaceted, nuanced, comprehensive, robust, intricate, cornerstone, paradigm, synergy, holistic, streamline, cutting-edge, groundbreaking.
-
-### 5b. Throat-Clearing
-Flag sentence openers: "In the realm of", "It is important to note that", "It is worth mentioning that", "It goes without saying that", "In order to", "It should be noted that", "With that being said", "When it comes to", "This section will discuss", "In this section we".
-
-### 5c. Sentence Rhythm
-- Flag five or more consecutive sentences of similar length (within a ±5 word range).
+Apply the `writing.md` **Terminology Consistency** checks across the whole section — the drift `check-sentence` cannot see from a single passage: naming, spelling, term invention, subject consistency, and the canonical form of multi-word technical terms (spacing, hyphenation, capitalization). Also flag a measurement or concept term used inconsistently across the section (`writing.md` **Word Choice Precision** Near-synonym precision).
 
 ---
 
-## Step 6 — Structural Alignment Audit
+## Step 6 — Prose Sweep (section-wide)
 
-- Every figure and table cited in the text before or at its first appearance.
-- Caption text matches figure content; spatial descriptions match actual layout.
-- A section introduction listing topics addresses them in the stated order.
+Scan the whole section for the `writing.md` **Word Choice Precision** vague qualifiers, **Word-Level Register** banned terms, **Metadiscourse** throat-clearing openers, the **Sentence Structure** rhythm rule (5+ consecutive sentences within ±5 words), and **Tense** drift across the section (consistent tense per narrative frame). Sentence-internal register and per-sentence tense are run by `check-sentence` (Step 2); here run only the section-wide scan.
 
 ---
 
-## Step 7 — Report
+## Step 7 — Structural Alignment Audit
+
+Apply the `writing.md` **Structural Alignment** checks: figure and table citation order, caption-to-figure match, and topic-enumeration order.
+
+---
+
+## Step 8 — Report
 
 Output findings in this format. Omit any category with zero issues.
 
 ```
 ## Section Review: <file> [<subsection>]
+
+### Critical — First-Read Knowledge State
+| # | Line | Category | Issue | Quote |
+|---|------|----------|-------|-------|
+| 1 | L42  | Forward dependency / Unestablished assumption / Intra-section forward use | <what the reader cannot resolve here> | "…" |
 
 ### Critical — Logic and Argumentation
 | # | Line | Issue | Quote |
@@ -113,11 +107,12 @@ Output findings in this format. Omit any category with zero issues.
 |---|------|-------|-------|
 
 ---
-**Summary**: <N> critical, <N> warnings, <N> notes.
+**Summary**: <N> first-read, <N> critical, <N> warnings, <N> notes.
 **Verdict**: Pass / Needs revision / Major revision required.
 ```
 
 Severity levels:
+- **First-read (Critical)**: a reviewer cannot resolve the term, symbol, claim, or assumption from text read so far — must fix before submission.
 - **Critical**: affects logical validity or claim accuracy — must fix before submission.
 - **Warning**: weakens rigor or violates register — fix before submission.
 - **Note**: minor style or structural issue — fix when convenient.
@@ -126,6 +121,6 @@ Severity levels:
 
 ## Rules
 
-- Report only verifiable violations with line numbers and quotes. No speculation.
+- Record every finding with its line number and a verbatim quote (≤ 120 characters). No speculation.
 - Do not suggest rewrites in this step. Report findings only.
 - If the argument is valid but a term's academic definition is uncertain, flag it as a Warning and suggest `/define-term <term>`.
