@@ -54,6 +54,19 @@ Check each sentence in isolation.
 - The verb agrees with its grammatical subject, not an intervening noun. "each"/"every"/"a" + singular noun take a singular verb and the pronoun "it"; flag "they"/"them" bound to a singular antecedent.
 - A generic claim about a class uses the bare plural ("violations occur"); flag a singular count noun standing for the whole class.
 
+**Dangling participle**
+- Identify every participial phrase (a phrase opening with a verb ending in "-ing" or "-ed" before or after the main clause).
+- Verify the participle shares its grammatical subject with the main clause subject. If not: flag as GRAMMAR. Name the intended subject and the actual grammatical subject.
+- Example of dangling: "That volume spans 26 million websites, growing by 4% per year" — "growing" implies the volume grows, but the intended subject is the website count.
+
+**Figurative verb with abstract subject**
+- Flag any spatial or physical verb ("spans", "captures", "covers", "bridges") whose grammatical subject is an abstract noun (volume, rate, approach, tension). Replace with a literal mechanism verb.
+- Cross-check the `writing.md` Word-Level Register table for banned figurative verbs.
+
+**Oral register**
+- Flag "call it" / "call X Y" → "refer to it as" / "refer to X as Y".
+- Cross-check every content verb against the Word-Level Register table in `writing.md`.
+
 **Tense**
 - Present tense for general facts and what the paper or system does; past tense for completed actions of this work (experiments run, results obtained). Flag a tense that misframes the claim (`writing.md`, Tense).
 - Flag a tense shift within the passage describing the same event or fact.
@@ -163,3 +176,4 @@ If no issues are found: `No issues found in the provided passage.`
 - Do not flag correctly hedged claims ("we believe", "this suggests", "in our evaluation") as risks — hedging is correct epistemic practice.
 - Do not flag claims that are defended elsewhere in the paper unless the passage presents them as self-evident without a forward reference.
 - When flagging reviewer risk, name the specific reviewer objection, not just "this is risky."
+- Before proposing any revised sentence (including the new-text argument of `\revision{}{}`), run Steps 1–3 on that sentence internally. Output only the version that passes all checks. Never propose a sentence and fix it in a subsequent round.

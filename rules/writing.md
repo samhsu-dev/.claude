@@ -49,6 +49,8 @@ Neutral, direct words. Replacements:
 | "delve", "showcase", "underscore", "pivotal", "crucial", "seamless" | concrete verb or measured property |
 | "translate to" (causal) | "result in", "lead to", "cause" |
 | "by hand" | "manually" |
+| "call it" / "call X Y" | "refer to it as" / "refer to X as Y" |
+| "spans" with abstract subject | "accounts for", "is distributed across", "covers" |
 
 
 - Connectives ("thus", "therefore", "moreover") mark genuine logical relations only. No filler connective. No two consecutive sentences opened by a connective.
@@ -59,7 +61,8 @@ Neutral, direct words. Replacements:
 ## Sentence Structure
 
 - Main character as grammatical subject; key action as a verb, not a nominalization (Gopen & Swan).
-- No figurative or implied constructions ("emerges", "reveals", "suggests"). State the subject and its action directly.
+- No figurative or implied constructions ("emerges", "reveals", "suggests", "spans" for non-spatial subjects, "captures"). State the subject and its action directly with a literal verb.
+- No dangling participle: a participial phrase must share its grammatical subject with the main clause. "That volume…, growing by 4%" is a dangling participle when the main subject is not the thing growing.
 - Old/familiar information first, new information at sentence end (stress position) (Gopen & Swan).
 - The concept at the stress position (sentence end) of sentence N becomes the topic position (sentence start) of sentence N+1. A sentence whose subject has no referent in the preceding sentence's stress position requires an explicit logical bridge ("Specifically,", "Three routes illustrate this.").
 - Omit needless words (Strunk & White).
