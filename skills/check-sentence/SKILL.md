@@ -58,6 +58,11 @@ Check each sentence in isolation.
 - Present tense for general facts and what the paper or system does; past tense for completed actions of this work (experiments run, results obtained). Flag a tense that misframes the claim (`writing.md`, Tense).
 - Flag a tense shift within the passage describing the same event or fact.
 
+**Sentence information load**
+- Count the underlying concepts in each sentence. Each of the following counts as one concept: a definition, a concrete example, a causal or contrastive claim, a limitation, a quantitative result.
+- A sentence carrying more than one concept is overloaded. Flag it as **STRUCTURE** and name which concepts must be split into separate sentences.
+- Signals of overload: paired em-dashes embedding an example (`---…---`); a "but" clause appended to a sentence that already contains an example or definition; "such as" and a causal conjunction in the same sentence.
+
 ---
 
 ## Step 2 — Sentence-to-sentence coherence
@@ -82,8 +87,10 @@ Check every pair of adjacent sentences in the passage.
 - A label introduced before its referent fails this test: the reader sees a name with nothing to attach it to. Demand observable phenomenon first, then the name (`writing.md`, Definitions).
 - Calibrate to the target reader — a CS expert with no knowledge of this paper (`writing.md`, Governing Principle). Do not flag an ungrounded field-standard CS term (data flow, static analysis, precision); flag any paper-specific term, system name, or non-standard word use that is not yet defined.
 
-**Stress position**
-- The new information at the end of sentence A should be the topic of sentence B. If it is not, the chain loses momentum (Gopen & Swan).
+**Stress-to-topic chain**
+- Identify the new concept at the stress position (end) of sentence A.
+- Verify the subject of sentence B contains that concept, a pronoun referring to it, or an explicit bridge ("Specifically,", "Three routes illustrate this.").
+- If none of the three holds: flag as COHERENCE. Name the concept dropped at the stress position and the subject that replaces it without a bridge.
 
 ---
 
@@ -143,6 +150,7 @@ Categories and severity:
 - **AMBIGUOUS** — two valid readings exist. Disambiguate.
 - **VAGUE** — a content word has no concrete, verifiable referent (colloquial filler or empty modifier). Replace with the mechanism. Fix before submission.
 - **GRAMMAR** — article, number-agreement, or tense error (missing/wrong article, subject-verb mismatch, singular-class generic, wrong or drifting tense). Fix before submission.
+- **STRUCTURE** — sentence carries more than one underlying concept (definition + example, causal claim + limitation, etc.). Split into separate sentences before submission.
 
 If no issues are found: `No issues found in the provided passage.`
 
@@ -150,7 +158,7 @@ If no issues are found: `No issues found in the provided passage.`
 
 ## Rules
 
-- Report only verifiable flaws or specific reviewer-risk patterns, not style preferences.
+- Report only verifiable flaws or specific reviewer-risk patterns. Do not flag word-choice style preferences, but do flag sentence information overload (STRUCTURE) and punctuation misuse that signals overload.
 - Do not rewrite sentences. State the flaw and the minimal fix direction.
 - Do not flag correctly hedged claims ("we believe", "this suggests", "in our evaluation") as risks — hedging is correct epistemic practice.
 - Do not flag claims that are defended elsewhere in the paper unless the passage presents them as self-evident without a forward reference.

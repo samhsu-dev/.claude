@@ -48,6 +48,7 @@ Neutral, direct words. Replacements:
 | "it should be noted that" | delete; state the fact |
 | "delve", "showcase", "underscore", "pivotal", "crucial", "seamless" | concrete verb or measured property |
 | "translate to" (causal) | "result in", "lead to", "cause" |
+| "by hand" | "manually" |
 
 
 - Connectives ("thus", "therefore", "moreover") mark genuine logical relations only. No filler connective. No two consecutive sentences opened by a connective.
@@ -60,6 +61,7 @@ Neutral, direct words. Replacements:
 - Main character as grammatical subject; key action as a verb, not a nominalization (Gopen & Swan).
 - No figurative or implied constructions ("emerges", "reveals", "suggests"). State the subject and its action directly.
 - Old/familiar information first, new information at sentence end (stress position) (Gopen & Swan).
+- The concept at the stress position (sentence end) of sentence N becomes the topic position (sentence start) of sentence N+1. A sentence whose subject has no referent in the preceding sentence's stress position requires an explicit logical bridge ("Specifically,", "Three routes illustrate this.").
 - Omit needless words (Strunk & White).
 - State each claim once.
 - One sentence, one meaning. Never merge a definition, a causal claim, and an example into one sentence.
