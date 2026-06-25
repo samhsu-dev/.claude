@@ -35,6 +35,7 @@ Check each sentence in isolation.
 - A measurement or theory term must denote exactly what the paper computes or proves. Flag a near-synonym used in place of the right one: "accuracy" for "precision"/"recall", "correct" for "sound"/"complete" (`writing.md`, Near-synonym precision).
 - A concept term must match its logical level: a bug is a code defect, a vulnerability is an exploitable weakness (`writing.md`, Precision of Claims). Flag the wrong-level term.
 - A term whose field-standard meaning is uncertain: flag and suggest `/define-term <term>`.
+- A term that carries a conflicting standard meaning in an adjacent field (payments, security, PL, networking): flag as AMBIGUOUS. Name the conflicting field-standard sense the reader would attach, and suggest a neutral replacement. Example: "settlement" reads as bank-side fund clearing in payments, not checkout completion.
 
 **Causal language**
 - "because", "therefore", "leads to", "causes", "results in" assert a causal link. Flag if the paper establishes only correlation. Replace with "we observe that X coincides with Y" or "X is associated with Y."

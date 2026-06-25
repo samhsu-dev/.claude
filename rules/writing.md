@@ -21,6 +21,7 @@ The target reader is a computer-science expert with no prior knowledge of this p
 - No self-invented terms. Use an established term with a citation, or define inline with a concrete referent (Dijkstra; Knuth).
 - One concept, one name. Never rename a concept mid-paper (Knuth).
 - Use the concrete mechanism, not the abstract label. "A fixed set of calls such as `read()`, `write()`" not "a general detection criterion".
+- No term whose established meaning in an adjacent field (payments, security, PL, networking) differs from the intended sense. The expert reader attaches the field-standard referent and misreads the claim. Pick a neutral term that carries only the intended meaning. Example: "settlement" denotes bank-side fund clearing in payments, not checkout completion.
 
 ## Word Choice Precision
 
