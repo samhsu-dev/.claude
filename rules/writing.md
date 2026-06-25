@@ -112,6 +112,8 @@ Neutral, direct words. Replacements:
 - No absolute quantifiers unless strictly provable: "every", "always", "all", "never". Replace with "each", "typically", or a qualified scope.
 - No "requires X" for a necessity claim that is not proven. Use "X is the natural way to…" or "X is needed to…" when the necessity is contextual, not logical.
 - Never equate concepts at different logical levels. A bug is a code defect; a vulnerability is an exploitable weakness. Use the term that matches the claim's level of abstraction.
+- A derived clause (consequence, motivation, elaboration, "as a result", "this means", "so that") asserts only what the established premises strictly entail. No new actor, need, capability, or downstream effect the premises do not contain.
+- Entailment outranks completeness. A weaker statement that strictly follows beats a stronger one that needs an unstated assumption. Highest priority: every added assertion is un-questionable.
 
 ## Definitions
 

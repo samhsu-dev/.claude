@@ -40,6 +40,12 @@ Check each sentence in isolation.
 **Causal language**
 - "because", "therefore", "leads to", "causes", "results in" assert a causal link. Flag if the paper establishes only correlation. Replace with "we observe that X coincides with Y" or "X is associated with Y."
 
+**Over-derived consequence**
+- A derived clause (consequence, motivation, elaboration; "as a result", "this means", "so that") must assert only what the established premises strictly entail.
+- For each added assertion, name its premise. No premise in the text already read → flag as UNSUPPORTED.
+- Flag any new actor, need, capability, or downstream effect the premises do not contain (e.g. "merchants gain no proof to act on" derived from "no exploit is generated" — adds an actor and a need).
+- Fix: keep only the strictly entailed step; drop the rest. Entailment outranks rhetorical completeness.
+
 **Universal negatives**
 - "X does not Y" fails on one counterexample. Scope it or qualify it.
 
