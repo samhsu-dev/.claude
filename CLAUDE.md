@@ -48,7 +48,7 @@ All project-wide constants and terminology live in `local.tex`, organized into s
 | Argument structure | `\chalOne`, `\chalTwo`, `\approachName` — challenge and approach names; change once, propagates everywhere |
 | Background data | `\phpEcomShare` — PHP market share with derivation comments |
 | Evaluation data | Corpus, detection pool, coverage, precision, headline results |
-| Linked terminology | `\ecomInvariant`, `\invOracle`, `\semanticVar`, `\invSemantics` — each has a `\termDef{}` hook for the definition anchor |
+| Linked terminology | `\ecomInvariant`, `\invMonitor`, `\invVariable` — each pairs a reference form with a one-shot definition anchor (`\invVariableDef{...}`) |
 
 To rename a challenge or the overall approach, edit only the corresponding macro in Section 3 of `local.tex`.
 
