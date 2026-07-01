@@ -58,8 +58,24 @@ Check each sentence in isolation.
 **Article and number agreement**
 - Every singular count noun has a determiner. Flag a bare singular count noun. Choose by context: "a"/"an" for first mention or any-instance, "the" for an already-introduced or uniquely-fixed referent, bare plural for a generic class claim (`writing.md`, Grammatical Agreement).
 - "a" before a consonant sound, "an" before a vowel sound — by sound, not spelling ("an ELV", "a unique state").
-- The verb agrees with its grammatical subject, not an intervening noun. "each"/"every"/"a" + singular noun take a singular verb and the pronoun "it"; flag "they"/"them" bound to a singular antecedent.
 - A generic claim about a class uses the bare plural ("violations occur"); flag a singular count noun standing for the whole class.
+
+**Number agreement (singular/plural)**
+- Subject-verb: the verb agrees with its grammatical subject, not an intervening noun in a prepositional phrase. "the set of candidates **is**", not "**are**"; "each of the rules **holds**", not "**hold**". Flag the mismatch and name the true subject.
+- Quantifier heads: "each", "every", "either", "neither", "one", "a", "another" + noun take a singular verb and the pronoun "it"/"its". Flag "they"/"them"/"their" bound to such a singular antecedent.
+- Collective abstract nouns are singular: "prior work **shows**", "the literature **reports**", "research **suggests**". Flag a plural verb. Use "prior works"/"studies" only when counting distinct works.
+- Coordinated subjects joined by "and" take a plural verb ("the model and the binding **are**"); a subject joined by "as well as"/"along with"/"together with" keeps the number of the head noun.
+- Noun-noun agreement: a shared verb, appositive, or "respectively" list must match the number of every noun it covers. Flag "both candidates denote a value" when each candidate has its own value → "denote values" or "each denotes a value".
+- Count vs. mass: "number"/"amount", "fewer"/"less", "many"/"much" must match the noun's countability. Flag "less candidates", "amount of violations", "a total amount ... equals to".
+- Antecedent number: a pronoun ("it", "they", "this", "these") matches the number of its antecedent. Flag a plural pronoun pointing at a singular noun and vice versa; flag "this"/"these" whose antecedent count is ambiguous.
+- Distributive plural: when N items each have one instance of X, X is plural across the set ("the three files each define **a** function" but "the three files define **functions**"). Flag a singular X asserted over a plural set.
+- Determiner-noun number: "one candidate**s**", "two candidate" — flag a numeral or "these"/"those" whose noun number disagrees.
+- List parallelism: every item in an enumerated list shares one grammatical number and part of speech. Flag an item that breaks the pattern.
+
+**Verb form and voice**
+- A finite clause needs a tensed verb: flag "may considered", "requires the developer locate" (missing "be"/"to"), and a bare participle standing as the main verb.
+- Flag a double modal or redundant modal stack ("can only be ... the only", "will be ... remained").
+- Flag a nominalization used where a verb is available and clearer ("performs a conversion of" → "converts").
 
 **Dangling participle**
 - Identify every participial phrase (a phrase opening with a verb ending in "-ing" or "-ed" before or after the main clause).
