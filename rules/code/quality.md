@@ -21,7 +21,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Errors handled at the appropriate abstraction level.
 - Original error context preserved across call chains.
 - Error messages include context (function, parameters, state).
-- Fail fast. Never return empty values, fall back, or degrade.
+- Fail fast. Never return empty values, fall back, or degrade. Exception: a sub-tool's documented partial or recoverable output is not application degradation — handle it per `resource-bounds.md`.
 - No swallowed exceptions — every catch block re-raises, logs, or transforms.
 - No error codes as return values. Raise/throw on failure.
 
