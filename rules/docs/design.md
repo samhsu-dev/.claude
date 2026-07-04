@@ -43,17 +43,10 @@ Public = used by consumers of the package. Internal = used only within the packa
 - Exceptions in _exceptions.py. Types in _types.py when numerous.
 - Resource files (TOML, Jinja2 templates) in _resources/. Jinja2 templates in _resources/templates/.
 
-## TOML Externalization
+## Value Placement
 
-Externalize to TOML when:
-- Data is a table, list, or mapping that would dominate the Python source.
-- Data is shared across multiple modules or layers.
-- Data changes independently of the logic that consumes it.
-
-Keep as Python constants when:
-- Value is a single scalar.
-- Value is an enum member or a frozen set of a few items.
-- Value is tightly coupled to one function and meaningless elsewhere.
+- Constant vs config object vs data file: decision order in `rules/code/constants.md`.
+- The design doc records the tier of each named value the design introduces.
 
 ## Exception Design
 
