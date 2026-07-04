@@ -69,7 +69,7 @@ Split files use `<type>-<topic>.md` prefix naming:
 
 ## Content Rules
 
-- No domain content. "ADG node types and their semantic roles" not a definition of what ADG node types are.
+- No domain content. "Graph node types and their semantic roles" not a definition of what the node types are.
 - No redundancy with file content. The description says what topic the file covers; the file itself has the content.
 - No hierarchy or nesting. Flat table. No subsections, no grouping headers.
 - No external links. All entries point to files in the same directory.

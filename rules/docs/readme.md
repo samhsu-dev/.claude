@@ -29,7 +29,7 @@ Sections in this order:
 | 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
 | 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
 | 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
-| 7 | **Citation** | BibTeX block requesting citation of our paper. Placeholder until paper is released. |
+| 7 | **Citation** | BibTeX block requesting citation of the project's associated paper. Placeholder until the paper is released. |
 | 8 | **License** | SPDX identifier `GPL-2.0`. Always last. |
 
 ### Optional Sections
@@ -64,12 +64,12 @@ No table of contents.
 
 ## Citation
 
-- Citation section is mandatory. It requests that every project using the library cite our paper.
+- Citation section is mandatory. It requests that every project using the library cite the project's associated paper.
 - Content is a fenced ```bibtex``` block.
-- Paper is not yet released. Use a placeholder BibTeX entry until release:
+- Paper not yet released → placeholder BibTeX entry until release:
 
 ```bibtex
-@misc{beluga_placeholder,
+@misc{citation_placeholder,
   title  = {{TODO: paper title — not yet released}},
   author = {{TODO: authors}},
   year   = {{TODO}},

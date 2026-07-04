@@ -55,7 +55,7 @@ Sections in order (llmstxt.org spec):
 ### Instructions for Agents section
 
 - Imperative mood. One directive per bullet.
-- State the action, not the reason. "Use `model_lean.yaml` for simple apps." Not "Because simple apps have fewer variables, you should consider using the lean model."
+- State the action, not the reason. "Call `connect()` before `query()`." Not "Because queries require an open connection, you should consider calling connect first."
 - Include function/class names with backticks.
 - Group by: what to call, what to configure, what to never do.
 
