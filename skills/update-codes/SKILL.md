@@ -61,6 +61,22 @@ Read each scoped file. Check against:
 - String concatenation with user-controlled input.
 - Shared mutable state without synchronization.
 
+### Logging (per `rules/code/logging.md`)
+- Level mismatch — per-iteration or expected-success records above TRACE; WARN/ERROR on expected outcomes.
+- One record per loop iteration instead of aggregation at loop exit.
+- Unstructured records — string concatenation of fields; multi-event narratives.
+- Double logging — the same failure logged at more than one layer; log-and-rethrow.
+- ERROR records missing reproduction state — operation, inputs, entity identifiers.
+- Records within a unit of work missing its correlation ID.
+- Secrets, credentials, tokens, or PII in records.
+
+### Naming & Organization (per `rules/code/organization.md`)
+- File name does not state the file's single responsibility.
+- Pattern-role names — utils, helpers, common, misc, manager, handler — as file or directory names.
+- Mixed grammatical number across file and directory names.
+- Files grouped by architectural layer where the codebase groups by feature.
+- Business logic in entry-point files or package index files.
+
 ### Patch Patterns (reject)
 - Band-aid fixes with `HACK`/`FIXME`/`TODO`/`WORKAROUND` comments.
 - Shim/adapter layers around code we control.
@@ -83,6 +99,12 @@ Output a structured fix plan. Do NOT apply any fix before approval.
 ### Bug Risks
 - [file:line] <risk type> — fix: <what to change>
 
+### Logging
+- [file:line] <violation> — fix: <what to change>
+
+### Naming & Organization
+- [file or path] <violation> — fix: <what to change>
+
 ### Patch Patterns
 - [file:line] <pattern> — fix: <what to change>
 
@@ -91,6 +113,8 @@ Output a structured fix plan. Do NOT apply any fix before approval.
 - Linter violations: N
 - Code smells: N
 - Bug risks: N
+- Logging: N
+- Naming & organization: N
 - Patch patterns: N
 - Total fixes planned: N
 ```
