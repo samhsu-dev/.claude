@@ -38,6 +38,9 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   ├── readme.md       # README format (scoped to README.md)
     │   └── llms.md         # LLM-consumable doc format (scoped to llms.txt, llms/*.md)
     │
+    ├── prompt/             # Writing LLM-agent prompts
+    │   └── prompting.md    # Prompt construction standards (scoped to *.prompty, prompts/)
+    │
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
         ├── change-policy.md # API change and verification rules (always active)
