@@ -71,7 +71,7 @@ Each phase produces one document. Later phases read earlier documents as input. 
 
 - **Input:** completed code.
 - **Output:** all quality gate checks pass.
-- **Rules:** run project quality gate (`workflow/quality-gate.md`). Fix failures before reporting completion.
+- **Rules:** run the quality gate checklist (`docs/todo.md` Quality Gate). Fix failures before reporting completion.
 
 ## Existing Codebase Changes
 

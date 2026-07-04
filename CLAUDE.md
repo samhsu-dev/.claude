@@ -15,7 +15,9 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 │   ├── update-docs/SKILL.md # /update-docs — audit, plan, and fix documentation
 │   └── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
 └── rules/
-    ├── rulewriting.md      # How to write rule files (always active)
+    ├── meta/               # Authoring .claude assets
+    │   ├── rulewriting.md  # How to write rule files (always active)
+    │   └── skilling.md     # Skill authoring standards (scoped to SKILL.md, skills/)
     │
     ├── code/               # Writing code
     │   ├── quality.md      # Code quality standards (scoped to code files)
@@ -39,13 +41,12 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
         ├── change-policy.md # API change and verification rules (always active)
-        ├── develop.md      # Development phase pipeline (always active)
+        ├── development.md  # Development phase pipeline (always active)
         ├── git-safety.md   # Multi-agent git safety rules (always active)
-        ├── performance.md  # Performance optimization guardrails (scoped to perf files)
-        └── skilling.md     # Skill authoring standards (scoped to SKILL.md, skills/)
+        └── performance.md  # Performance optimization guardrails (scoped to perf files)
 ```
 
-`rulewriting.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/develop.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
+`meta/rulewriting.md`, `code/resource-bounds.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/development.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
 
 ## Documentation Naming
 

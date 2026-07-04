@@ -15,6 +15,19 @@ Rules are read by agents. Code and documentation produced from rules are read by
 - Discovered recursively in `.claude/rules/`. Subdirectories supported.
 - Contradicting rules across files → Claude picks one arbitrarily. Prevent this.
 
+## Repository Layout
+
+| Directory | Contains | File named after |
+|-----------|----------|------------------|
+| `rules/code/` | Rules constraining code artifacts | The concern: `quality.md`, `logging.md`, `organization.md` |
+| `rules/docs/` | Rules constraining one documentation artifact each | The artifact it governs: `design.md` governs design.md files |
+| `rules/workflow/` | Rules constraining operational processes | The process: `committing.md`, `git-safety.md` |
+| `rules/meta/` | Rules for authoring `.claude` assets | The asset type: `rulewriting.md`, `skilling.md` |
+
+- A rule file lives in the directory of the artifact it constrains, not the activity that produces it.
+- File names are nouns or gerunds. No bare verbs.
+- Always-active status comes from missing `paths:` frontmatter, not from location. A paths-less file stays in its domain directory.
+
 ## Audience
 
 - **Rule files** → agent. Short, unambiguous, no narrative.
