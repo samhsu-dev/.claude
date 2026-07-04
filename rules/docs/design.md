@@ -13,7 +13,7 @@ Python-specific design rules. PEP 8 / PEP 20 / PEP 257 / PEP 484 / PEP 544.
 ## Type Selection
 
 - @dataclass for data holders. @dataclass(frozen=True) for immutable data holders.
-- BaseModel for validated or schema-generated data (LLM structured output).
+- BaseModel for data requiring runtime validation or schema generation.
 - TypedDict for typed dictionary shapes (TOML/JSON config).
 - Protocol + @runtime_checkable for structural subtyping without shared state.
 - ABC + @abstractmethod for type hierarchies with shared state.

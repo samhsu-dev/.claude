@@ -48,6 +48,6 @@ Public = used by consumers of the package. Internal = used only within the packa
 
 ## Package Data
 
-- Resource files (TOML, Jinja2 templates) in _resources/. Jinja2 templates in _resources/templates/.
+- Resource files (data files, templates) in _resources/. Templates in _resources/templates/.
 - Read package data via importlib.resources. Never via __file__ path arithmetic.
 - Build configuration includes _resources/ in the distribution.

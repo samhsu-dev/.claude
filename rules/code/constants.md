@@ -34,7 +34,7 @@ Apply in order. First match wins.
 
 ## Data Files
 
-- Bulk payloads — word lists, lookup tables, fixture-like data — live in external TOML/JSON files, never in Python source. File location: `docs/design.md` Module Design.
+- Bulk payloads — word lists, lookup tables, fixture-like data — live in external TOML/JSON files, never in Python source. File location: `rules/code/organization.md` Package Data.
 - A data file is loaded at one boundary and validated into typed structures. Core logic receives typed data, never raw parse output.
 
 ## Promotion
