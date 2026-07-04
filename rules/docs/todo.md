@@ -12,8 +12,7 @@ Python-specific task conventions.
 ## Quality Gate
 
 Every task ends with:
-- [ ] uv run black and uv run isort
-- [ ] uv run pylint -- 9.0+
+- [ ] uv run ruff format and uv run ruff check
 - [ ] uv run mypy --strict
 - [ ] uv run pytest -- all pass
 

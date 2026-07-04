@@ -38,7 +38,9 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 - Files: test_*.py or *_test.py.
 - Functions prefixed with test_.
-- No unittest.TestCase. Plain functions with fixtures.
+- Plain functions with fixtures by default.
+- Test classes: `Test` prefix, stateless grouping of one component's behavior families only.
+- No unittest.TestCase. No `__init__` in test classes. No class attributes holding shared state.
 
 ## Fixtures
 
@@ -46,7 +48,7 @@ def test_validate_month(month: int, valid: bool) -> None:
 - function (default): per test.
 - module: per file. For setup shared across one file.
 - session: per run. For read-only resources.
-- No class scope. No test classes.
+- No class scope.
 
 ### Patterns
 - Yield fixtures for teardown.

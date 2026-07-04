@@ -12,7 +12,7 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 ## Imports
 
 - Relative imports for internal modules.
-- isort for sorting. Groups: stdlib, third-party, local -- blank line between each.
+- ruff rule set I (isort-compatible) for sorting. Groups: stdlib, third-party, local -- blank line between each.
 - No wildcard imports.
 - __all__ and __version__ after module docstring, before imports (except from __future__).
 
@@ -65,11 +65,11 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 ## Quality Workflow
 
 ### Before editing
-- uv run pylint <target> -- check score and warnings.
+- uv run ruff check <target> -- check existing violations.
 
 ### After editing
-- uv run black <target> and uv run isort <target>.
-- uv run pylint <target> -- 9.0+.
+- uv run ruff format <target>.
+- uv run ruff check <target> -- zero violations.
 - uv run mypy --strict <target>.
 - uv run pytest -- all pass.
 
@@ -79,9 +79,8 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| black | uv run black | Formatter |
-| isort | uv run isort | Import sorter |
-| pylint | uv run pylint | Linter (9.0+) |
+| ruff | uv run ruff format | Formatter (black-compatible) |
+| ruff | uv run ruff check | Linter + import sorter (rule sets E, W, F, I, N, UP, B, C4, SIM) |
 | mypy | uv run mypy --strict | Type checker |
 | pytest | uv run pytest | Test runner |
 | uv | uv run, uv add, uv sync | Package manager |
