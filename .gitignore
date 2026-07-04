@@ -10,3 +10,7 @@
 
 # Track .gitignore itself
 !.gitignore
+
+# macOS noise
+.DS_Store
+**/.DS_Store
