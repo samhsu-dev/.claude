@@ -49,6 +49,17 @@ No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 - **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
 - **Fail-fast** — Detect and report errors at the earliest point.
 
+### Naturalness and maintainability
+
+The maintainer reloads context each session and trusts types over execution. Design for that reader.
+
+- **Name the concept** — A recurring argument clump becomes a parameter object; a closed-value scalar becomes an enum; a distinct concern becomes its own type.
+- **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`s3_`, `s4_`) is two concepts.
+- **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
+- **Cohesion sets granularity** — Split on a second concern, never on a line or field count. A god object and an over-decomposed call graph are both defects. Thresholds: `code/quality.md`.
+- **Contract lives in types** — No escape types. Named fields over `None`-able positional args. Return types exhaust result meaning.
+- **Absence is not failure** — "No result" and "failed" are distinguishable by type, never a shared empty or `None`.
+
 ---
 
 ## 3. Architectural constraints
