@@ -37,6 +37,11 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 - ''.join(parts) in loops. Not +=.
 - tuple/frozenset for fixed data.
 
+## Resource Management
+
+- Context managers for resource lifecycle. No __del__.
+- @functools.cache / @functools.lru_cache for pure-function memoization.
+
 ## Type Hints
 
 - from __future__ import annotations in every module.
