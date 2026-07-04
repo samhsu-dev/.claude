@@ -71,7 +71,7 @@ When a test file exceeds 300 lines, split by responsibility area of the source f
 | `src/a/parser.py` | `tests/a/test_parser_tokenize.py`, `tests/a/test_parser_ast.py` |
 | `src/a/auth.py` | `tests/a/test_auth_login.py`, `tests/a/test_auth_permissions.py` |
 
-Naming: `test_<source_name>_<responsibility>.py`.
+Naming: `test_<source_name>_<responsibility>.<ext>`.
 
 Split rules:
 - Each split file tests one responsibility area of the source file.
@@ -149,7 +149,7 @@ For each item in the approved plan:
 ### Reorganize layout issues (before writing new tests)
 1. **MISPLACED**: Move test file to the correct mirror path. Update imports. Run tests to confirm no breakage.
 2. **FRAGMENTED**: Merge all test methods for the same source file into one test file at the correct path. Deduplicate fixtures. Update file-level docstring. Delete empty originals.
-3. **OVERSIZED**: Split test file by responsibility into `test_<source>_<responsibility>.py` files. Extract shared fixtures to `conftest.py`. Update docstrings in each new file. Delete the original oversized file.
+3. **OVERSIZED**: Split test file by responsibility into `test_<source>_<responsibility>.<ext>` files. Extract shared fixtures to `conftest.py` (or equivalent). Update docstrings in each new file. Delete the original oversized file.
 4. Preserve all existing test logic during reorganization. No test deletion or modification beyond import paths and file moves.
 
 ### New test files
