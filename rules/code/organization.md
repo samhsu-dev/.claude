@@ -5,7 +5,7 @@ paths:
 
 # Python File Naming and Organization
 
-Python realization of global `rules/code/organization.md`. PEP 8 naming; src layout per PyPA.
+Python realization of global `rules/code/organization.md`. PEP 8 naming; layout per `uv init` defaults.
 
 ---
 
@@ -16,7 +16,14 @@ Python realization of global `rules/code/organization.md`. PEP 8 naming; src lay
 
 ## Package Layout
 
-- Distributable packages use src layout: `src/<package>/`. Applications never installed as a package keep the package at repo root.
+A single-project repo follows the `uv init` default layout for its project type. Repo root holds `pyproject.toml`, `.python-version`, `README.md`, `uv.lock`.
+
+| Project type | Layout | Scaffold |
+|--------------|--------|----------|
+| Script-style application: run in place, never installed | Flat: `main.py` at repo root | `uv init` |
+| Installable application: console script in `[project.scripts]` | src layout: `src/<import_name>/` | `uv init --package` |
+| Library: imported by other projects | src layout: `src/<import_name>/` + `py.typed` | `uv init --lib` |
+
 - `tests/` at repo root, outside `src/`. Test layout: `rules/code/testing.md`.
 
 ## Multi-Project Repository
