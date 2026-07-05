@@ -11,7 +11,7 @@ Python project. Global rules (`~/.claude/rules/`) provide language-agnostic stan
     ├── code/               # Writing code
     │   ├── quality.md      # Python code quality and toolchain (*.py)
     │   ├── constants.md    # Value placement: constant vs config vs data file (*.py)
-    │   ├── organization.md # Python module naming, package layout, entry points (*.py)
+    │   ├── organization.md # Python module naming, package layout, workspaces, entry points (*.py)
     │   ├── testing.md      # Pytest conventions (test files)
     │   └── debugging.md    # Python debugging tools (*.py, test files)
     │

@@ -19,6 +19,16 @@ Python realization of global `rules/code/organization.md`. PEP 8 naming; src lay
 - Distributable packages use src layout: `src/<package>/`. Applications never installed as a package keep the package at repo root.
 - `tests/` at repo root, outside `src/`. Test layout: `rules/code/testing.md`.
 
+## Multi-Project Repository
+
+A repo containing multiple Python projects is a uv workspace.
+
+- Root `pyproject.toml` declares `[tool.uv.workspace]` with `members` globs. One `uv.lock` and one `.venv` at repo root.
+- Members live under `packages/`. Each member follows the uv default layout: `packages/<dist-name>/` holding its own `pyproject.toml` and `src/<import_name>/`. Scaffold with `uv init --lib packages/<dist-name>`.
+- A member depends on another member via `[tool.uv.sources]` with `<dist-name> = { workspace = true }`.
+- Per-member commands use `--package`: `uv run --package <dist-name>`, `uv sync --package <dist-name>`.
+- A workspace is one shared resolution. Members requiring conflicting dependency versions or disjoint `requires-python`: independent projects with `{ path = "..." }` sources, no `[tool.uv.workspace]` table.
+
 ## Visibility
 
 Public = used by consumers of the package. Internal = used only within the package.
