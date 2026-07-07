@@ -22,7 +22,7 @@ Python project. Global rules (`~/.claude/rules/`) provide language-agnostic stan
     │
     └── workflow/           # Operational processes
         ├── committing.md   # Project commit and push rules
-        └── releasing.md    # Multi-distribution release rules (pyproject.toml, tools/make_wheels.py, uv.lock)
+        └── releasing.md    # PyPI distribution release rules (pyproject.toml, tools/make_wheels.py, uv.lock)
 ```
 
 Rules use `paths:` frontmatter to load only when working with matching files.
