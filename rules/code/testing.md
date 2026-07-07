@@ -84,3 +84,4 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]

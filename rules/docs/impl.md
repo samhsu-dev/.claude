@@ -15,7 +15,7 @@ Python-specific `impl.md` conventions.
 **[library]** `from library import Thing` -- when/gotcha.
 
 Example:
-**[pydantic-ai]** `Agent(model, result_type=T)` -- result_type must be BaseModel subclass.
+**[requests]** `requests.get(url, timeout=10)` -- no default timeout; omitting it hangs forever.
 **[jinja2]** `Environment(loader=FileSystemLoader(path))` -- loader required; omitting disables file templates.
 
 ## Library Entry Format
