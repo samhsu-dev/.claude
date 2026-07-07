@@ -25,8 +25,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   ├── logging.md      # Logging standards (scoped to code files)
     │   ├── organization.md # File naming and organization (scoped to code files)
     │   ├── testing.md      # Testing standards (scoped to test files)
-    │   ├── debugging.md    # Debugging guardrails (scoped to code + test files)
-    │   └── resource-bounds.md # Timeout, liveness, and bound-the-input rules (always active)
+    │   └── debugging.md    # Debugging guardrails (scoped to code + test files)
     │
     ├── docs/               # Writing documentation
     │   ├── concept.md      # Concept doc format (scoped to concept.md, concept-*.md)
