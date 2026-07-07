@@ -30,7 +30,7 @@ Sections in order; include only if they have content:
 | **Relations** | Each semantic relation: direction, label requirements, cardinality, meaning. Table format. |
 | **State Model** | States, transitions, guards, terminal conditions. State diagram or table. |
 | **Invariants** | Structural constraints that hold at all times. One per line, falsifiable. |
-| **Cross-Structure Contracts** | Semantic mappings between domain structures (e.g., AST-to-ADG mapping rules). |
+| **Cross-Structure Contracts** | Semantic mappings between domain structures (e.g., AST-to-IR mapping rules). |
 
 ## Content Rules
 

@@ -55,6 +55,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Reusable setup in fixtures/factories.
 - Scenario-specific fixtures per test when needed.
 - Temporary resources for file/network/process. Auto-clean after test.
+- Test data files in `tests/data/`. No bulk payloads inline in test files. No test data in the source tree.
 
 ## 8. Assertions
 - One assertion per test. Multiple only when verifying one behavior.

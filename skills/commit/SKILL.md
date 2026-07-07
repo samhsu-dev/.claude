@@ -19,12 +19,25 @@ Run these three commands in parallel:
 2. `git diff` and `git diff --cached` — see staged + unstaged changes.
 3. `git log --oneline -10` — recent commit messages for style reference.
 
+### Scope self-check (timing signal)
+
+Before classifying, assess whether the working tree holds one task or many:
+
+- Count the distinct concepts the changes serve, not the files. Signals of multiple concepts: changes span 3+ unrelated subdirectories/modules; the same file mixes edits belonging to different features/fixes; the change set is far larger than recent single-task commits in `git log`.
+- File count is a diagnostic signal, not a rule. A cohesive refactor may touch many files (one concept); three unrelated fixes may touch three files (three concepts). High file count triggers reflection — "is this really one concept?" — never a forced split.
+- When the tree clearly spans multiple unrelated concepts, warn the user before committing: state how many concepts you detect and that a large multi-concept tree usually means commits were deferred too long, so clean per-concept separation may no longer be possible. Recommend committing per task in future. Then proceed with the best grouping available.
+- One concept can still be too large for one commit. When a single concept touches many files (rule of thumb: more than ~15, or several times the size of recent `git log` commits), do not default to one commit. First test whether it decomposes into the Step 2 role layers as separate runnable commits (config → core → deletions → docs → tests). Collapse to a single commit only when the change is **atomic** — a rename/move or interlocking edit whose intermediate states are not independently runnable and cannot be reconstructed without redoing the work.
+- When a large single-concept tree is forced into one commit because it is atomic, say so explicitly to the user: name why it could not be split (e.g. a layout move whose halves are non-runnable) and state that the durable fix is committing each runnable stage as the work is done, not deferring to the end. The commit skill runs at commit time and cannot un-defer an already-entangled tree.
+
 ## Step 2 — Classify Changes
 
-Group files into **one or more logical commits**, each covering one concept:
+Group files into **one or more logical commits** by **concept first, role second**:
 
-| Commit order | Content |
-|--------------|---------|
+1. Partition changes into concepts — one feature, fix, or refactor per concept. Use `git log`, task context, and functional clustering, not file type alone.
+2. Within each concept, order commits by role:
+
+| Order | Content |
+|-------|---------|
 | 1 | Types, config, build files |
 | 2 | Core logic |
 | 3 | Deletions, cleanup, refactoring |
@@ -32,7 +45,15 @@ Group files into **one or more logical commits**, each covering one concept:
 | 5 | Documentation |
 | 6 | Tests |
 
-Skip empty groups. If all changes belong to one concept, use one commit.
+Skip empty groups. A single concept splits into multiple role-ordered commits when each layer lands the tree runnable; collapse to one commit only when the change is atomic — a move/rename or interlocking edit whose halves are not independently runnable.
+
+### When concepts are entangled in shared files
+
+A single file may carry edits from multiple concepts, and `git` stages whole files. When `git add -p` cannot cleanly separate them (interdependent hunks, or splitting would leave a non-runnable intermediate commit):
+
+- Commit the smallest cohesive unit that still leaves the codebase runnable (compiles, tests pass) — not the finest conceptual split.
+- Name it for the dominant concept; list the merged concepts in the body.
+- This is a fallback for an already-entangled tree. The real fix is timing: commit after each task completes, before the next task's edits touch the same files. Note this to the user when the fallback is used.
 
 ## Step 3 — Draft Each Commit
 

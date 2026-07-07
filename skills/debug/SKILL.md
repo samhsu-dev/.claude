@@ -74,6 +74,14 @@ The reproduction test is a permanent regression guard. Never delete it after the
 - Ensure it follows project test conventions (layout, naming, assertions).
 - Add a file-level docstring entry if the test file uses them.
 
+## Step 7 — Commit
+
+Commit the fix and its reproduction test together, before returning to other work.
+
+- One `fix(scope):` commit carrying the root-cause change plus the regression test — they are one concept.
+- Commit now, while the tree holds only this fix. Deferring lets the next task's edits entangle it into an unsplittable commit. Cadence rules: `workflow/committing.md`.
+- Follow the `/commit` staging and safety rules. Stage by name; never `git add -A`.
+
 ## Report
 
 Output a summary:

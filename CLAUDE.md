@@ -15,10 +15,15 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 │   ├── update-docs/SKILL.md # /update-docs — audit, plan, and fix documentation
 │   └── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
 └── rules/
-    ├── rulewriting.md      # How to write rule files (always active)
+    ├── meta/               # Authoring .claude assets
+    │   ├── rulewriting.md  # How to write rule files (always active)
+    │   └── skilling.md     # Skill authoring standards (scoped to SKILL.md, skills/)
     │
     ├── code/               # Writing code
     │   ├── quality.md      # Code quality standards (scoped to code files)
+    │   ├── resource-bounds.md # Timeout, liveness, and bound-the-input rules (always active)
+    │   ├── logging.md      # Logging standards (scoped to code files)
+    │   ├── organization.md # File naming and organization (scoped to code files)
     │   ├── testing.md      # Testing standards (scoped to test files)
     │   ├── debugging.md    # Debugging guardrails (scoped to code + test files)
     │   └── resource-bounds.md # Timeout, liveness, and bound-the-input rules (always active)
@@ -34,16 +39,18 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   ├── readme.md       # README format (scoped to README.md)
     │   └── llms.md         # LLM-consumable doc format (scoped to llms.txt, llms/*.md)
     │
+    ├── prompt/             # Writing LLM-agent prompts
+    │   └── prompting.md    # Prompt construction standards (scoped to *.prompty, prompts/)
+    │
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
         ├── change-policy.md # API change and verification rules (always active)
-        ├── develop.md      # Development phase pipeline (always active)
+        ├── development.md  # Development phase pipeline (always active)
         ├── git-safety.md   # Multi-agent git safety rules (always active)
-        ├── performance.md  # Performance optimization guardrails (scoped to perf files)
-        └── skilling.md     # Skill authoring standards (scoped to SKILL.md, skills/)
+        └── performance.md  # Performance optimization guardrails (scoped to perf files)
 ```
 
-`rulewriting.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/develop.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
+`meta/rulewriting.md`, `code/resource-bounds.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/development.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
 
 ## Documentation Naming
 

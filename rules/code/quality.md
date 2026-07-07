@@ -25,11 +25,6 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No swallowed exceptions — every catch block re-raises, logs, or transforms.
 - No error codes as return values. Raise/throw on failure.
 
-## File Responsibility
-- One responsibility per file. All types and functions in a file serve that responsibility.
-- Files under 300 lines. Extract a new file when a second responsibility emerges.
-- File name reflects the single responsibility it owns.
-
 ## Code Structure
 - Functions under 20 lines.
 - Max 3 parameters per function. More → introduce a parameter object.
