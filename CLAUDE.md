@@ -20,7 +20,8 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     ├── code/               # Writing code
     │   ├── quality.md      # Code quality standards (scoped to code files)
     │   ├── testing.md      # Testing standards (scoped to test files)
-    │   └── debugging.md    # Debugging guardrails (scoped to code + test files)
+    │   ├── debugging.md    # Debugging guardrails (scoped to code + test files)
+    │   └── resource-bounds.md # Timeout, liveness, and bound-the-input rules (always active)
     │
     ├── docs/               # Writing documentation
     │   ├── concept.md      # Concept doc format (scoped to concept.md, concept-*.md)
