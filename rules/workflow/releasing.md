@@ -3,6 +3,7 @@ paths:
   - "**/pyproject.toml"
   - "tools/make_wheels.py"
   - "uv.lock"
+  - ".github/workflows/*.yml"
 ---
 
 # Release Rules — Multi-Distribution uv Workspace
@@ -42,12 +43,23 @@ Per full release, 12 artifacts:
 
 ## Release Procedure
 
+Releases run through CI (see Tag-Driven CI Release). The local steps end at the tag push.
+
 1. Quality gate green: `ruff format`, `ruff check`, `mypy --strict`, `pytest`.
-2. Bump versions per the versioning rules; update the façade pin when the companion bumps; run `uv lock`.
-3. Build all artifacts; verify reproducibility by rebuilding and comparing hashes.
-4. `twine check` on every artifact.
-5. Upload to TestPyPI; verify `pip install` from TestPyPI resolves and imports on the host.
-6. Upload the identical artifacts to PyPI.
+2. Bump versions per the versioning rules; update the façade pin when the companion bumps; run `uv lock`; commit.
+3. Tag the release commit `<distribution>-v<version>` (e.g. `static-php-build-v0.1.5`); one tag per distribution being released.
+4. Push the commit and tag. CI builds, checks, publishes to TestPyPI, verifies the install, and waits for `pypi` environment approval before publishing to PyPI.
+
+Manual fallback (CI unavailable): build all artifacts; rebuild and compare hashes to verify reproducibility; `twine check` every artifact; upload to TestPyPI and verify `pip install` resolves and imports; upload the identical artifacts to PyPI.
+
+## Tag-Driven CI Release
+
+- `.github/workflows/release.yml` triggers on tags `static-php-py-v*`, `static-php-py-binary-v*`, `static-php-build-v*`. One tag releases one distribution.
+- The workflow parses `<package>-v<version>` from the tag, fails when the tag version differs from the package's pyproject version, and runs `uv lock --check` (catches a façade pin that disagrees with the companion's version).
+- Build routing: façade via `uv build --package static-php-py`; binary carriers via `uv run python tools/make_wheels.py packages/<package>`. All binary archives are git-tracked, so a plain checkout builds every platform wheel on one Linux runner.
+- Publish path: TestPyPI (`testpypi` environment) → install-and-smoke-test from TestPyPI → PyPI (`pypi` environment). The `pypi` environment carries required reviewers; the final publish waits for manual approval.
+- Auth is token-based via org-level secrets `TEST_PYPI_API_TOKEN` and `PYPI_API_TOKEN`. Never switch to trusted publishing and never enable attestations: both attach repository provenance to the PyPI release, breaking the pseudonymous identity.
+- First upload of a name unregistered on PyPI requires an account-scoped token; after registration, scope the secret's token to the three projects.
 
 ## Identity
 
