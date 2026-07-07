@@ -65,7 +65,8 @@ Each phase produces one document. Later phases read earlier documents as input. 
 - **Input:** `todo.md`, `impl.md`, `model.md`, `design.md`.
 - **Output:** source code implementing tasks in order.
 - **Gate:** none. Agent proceeds per task list.
-- **Rules:** follow `code/quality.md` and `code/testing.md`. Check `impl.md` before using external libraries. Each task committed separately per `workflow/committing.md`.
+- **Rules:** follow `code/quality.md` and `code/testing.md`. Check `impl.md` before using external libraries.
+- **Commit cadence:** commit each `todo.md` task the moment it lands runnable, before starting the next. No task's edits touch files an uncommitted task already changed. Cadence rules: `workflow/committing.md`.
 
 ### 8. Verify
 
