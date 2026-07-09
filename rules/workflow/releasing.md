@@ -38,7 +38,7 @@ Release standards by distribution type. Project-specific release facts — distr
 - One wheel per target platform. Wheel tags carry the `py3-none` prefix when the package holds no Python-version-specific code.
 - A statically linked Linux binary uses the compressed tag set `manylinux_<x>_<y>_<arch>.musllinux_<x>_<y>_<arch>`: one wheel per architecture serves glibc and musl; the WHEEL file carries one `Tag:` line per tag.
 - The distribution version mirrors the carried binary's version. A repack without binary change appends one extra version segment.
-- Wheels are reproducible: fixed timestamps and permissions. Two builds of the same tree are byte-identical; a non-identical rebuild indicates an unintended content change.
+- Wheels are reproducible: fixed 1980 timestamps and fixed permissions. Two builds of the same tree are byte-identical; a non-identical rebuild indicates an unintended content change.
 - Every wheel ships the carried binary's third-party licenses in `.dist-info/licenses/` with one `License-File:` header per file. A duplicate file name across license sources fails the build.
 
 ## Multi-Distribution Workspaces
@@ -51,6 +51,8 @@ Release standards by distribution type. Project-specific release facts — distr
 
 ## Release Procedure
 
+Releases run through CI (see Tag-Driven CI). The local steps end at the tag push.
+
 1. Quality gate green.
 2. Bump versions per the type rules; update dependent pins; run `uv lock`; commit.
 3. Tag the release commit `<distribution>-v<version>`; one tag per distribution being released.
@@ -62,6 +64,7 @@ Manual fallback (CI unavailable): build all artifacts; rebuild and compare hashe
 
 - One tag `<distribution>-v<version>` releases one distribution.
 - The workflow parses the tag, fails when the tag version differs from that distribution's pyproject version, and runs `uv lock --check`.
+- Build routing: pure-Python distributions via `uv build`, with `--package <distribution>` in a workspace; binary carriers via the project's wheel-build script.
 - Publish path in CI: TestPyPI environment → install-and-smoke-test from TestPyPI → PyPI environment with required reviewers; the final publish waits for manual approval.
 - Publish credentials are CI environment secrets. The credential mechanism (API token or trusted publishing) is a project decision recorded in the project's `docs/releasing.md`.
 - First upload of a name unregistered on the index requires an account-scoped token; after registration, the token is scoped to the released projects.
