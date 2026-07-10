@@ -21,6 +21,7 @@ Release standards by distribution type. Project-specific release facts — distr
 
 ## All Distributions
 
+- `requires-python = ">=3.10"` in every distribution's pyproject. Tool targets (`mypy python_version`, black/ruff `target-version`) match this floor. The floor raises only on explicit user instruction.
 - A version uploaded to PyPI or TestPyPI is burned. Never rebuild and re-upload under the same version; bump instead.
 - Quality gate green before the version-bump commit: formatter, linter, type checker, tests.
 - Version bump, lock-file update, and dependent-pin updates land in one commit.
