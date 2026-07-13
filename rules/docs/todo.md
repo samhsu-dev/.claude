@@ -12,8 +12,9 @@ Kotlin-specific task conventions. Extends global `docs/todo.md`.
 ## Quality Gate
 
 Every task ends with:
-- [ ] `./gradlew build` — compiles clean
+- [ ] `./gradlew detekt` — no new violations
 - [ ] `./gradlew test` — all pass
+- [ ] `./gradlew build` — compiles clean
 
 ## Conventions
 

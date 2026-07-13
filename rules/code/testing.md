@@ -28,13 +28,6 @@ fun `validate month boundary`(month: Int, valid: Boolean) {
 }
 ```
 
-### Error case checklist per function
-- Invalid type / wrong class.
-- Empty input (`""`, `emptyList()`, `emptyMap()`).
-- `null` when nullable parameter.
-- Out-of-range values (boundary -1, boundary +1).
-- Missing required fields.
-
 ---
 
 ## Layout

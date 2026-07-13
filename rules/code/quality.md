@@ -110,3 +110,26 @@ Kotlin community conventions per detekt defaults:
 - Explicit `Unit` return type → omit.
 - Redundant `constructor` keyword.
 - Object literals implementing single method → lambda.
+
+---
+
+## Quality Workflow
+
+### Before editing
+- `./gradlew detekt` — check existing violations.
+
+### After editing
+- `./gradlew detekt` — no new violations.
+- `./gradlew test` — all pass.
+- `./gradlew build` — compiles clean.
+
+---
+
+## Toolchain
+
+| Tool | Command | Purpose |
+|------|---------|---------|
+| detekt | `./gradlew detekt` | Static analysis + style (default rule set) |
+| JUnit 5 | `./gradlew test` | Test runner |
+| Kover | `./gradlew koverHtmlReport` | Coverage report |
+| Gradle | `./gradlew build` | Compile + full verification |

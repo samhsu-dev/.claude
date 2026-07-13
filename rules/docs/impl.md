@@ -1,6 +1,7 @@
 ---
 paths:
-  - "**/*impl.md"
+  - "**/impl.md"
+  - "**/impl-*.md"
 ---
 
 # Kotlin Implementation Documents
@@ -19,10 +20,4 @@ Example:
 
 ## Dependency Entry Format
 
-- group:artifact:version — purpose. Add to `build.gradle.kts` dependencies.
-
-## Verification
-
-- Check `impl.md` for existing findings before writing integration code.
-- Record all findings immediately. Not in conversation only.
-- Verify via DeepWiki, Context7, or minimal test. No guessing.
+- group:artifact:version — purpose. Version catalog alias in `gradle/libs.versions.toml`, referenced from `build.gradle.kts`.

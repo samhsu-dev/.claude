@@ -1,6 +1,7 @@
 ---
 paths:
-  - "**/*design.md"
+  - "**/design.md"
+  - "**/design-*.md"
 ---
 
 # Kotlin Design Standards
@@ -20,16 +21,15 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 - `object` for singletons and stateless utility groupings.
 - `typealias` for long generic types or functional types used repeatedly.
 
-## Visibility
+## Module Structure
 
-| Modifier | Scope |
-|----------|-------|
-| `public` (default) | Visible everywhere. Omit keyword unless in explicit API mode. |
-| `internal` | Visible within the module. |
-| `private` | Visible within the file (top-level) or class. |
-| `protected` | Visible in class and subclasses. Only on `open`/`abstract` members. |
+- Visibility, module layout, packaging, resources: `rules/code/organization.md`.
+- The design doc records each type's visibility (public or internal) and its module.
 
-- No `protected` on final classes.
+## Value Placement
+
+- Constant vs config object vs data file: decision order in `rules/code/constants.md`.
+- The design doc records the tier of each named value the design introduces.
 
 ## Class Design
 
