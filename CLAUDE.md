@@ -15,6 +15,9 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
     │   ├── testing.md      # Kotlin/JUnit 5 conventions (test files)
     │   └── debugging.md    # Kotlin debugging tools (*.kt, test files)
     │
+    ├── communication/      # Agent output vocabulary
+    │   └── terminology.md  # Established repository terms (always active)
+    │
     ├── docs/               # Writing documentation
     │   ├── design.md       # Kotlin design standards (design.md, design-*.md)
     │   ├── impl.md         # Kotlin impl.md conventions (impl.md, impl-*.md)
@@ -25,6 +28,7 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
 ```
 
 Rules use `paths:` frontmatter to load only when working with matching files.
+`communication/terminology.md` has no `paths:` -- it is always active.
 
 ## Build System
 
