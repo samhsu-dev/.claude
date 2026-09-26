@@ -58,6 +58,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 - Hierarchy by how callers catch, not where raised.
 - Structured context: named properties on exception classes, not bare message strings.
 - Third-party exceptions mapped at boundary. Internal code raises domain exceptions only.
+- Misuse errors separate from runtime errors: caller misuse raises through `require()` / `check()` (`IllegalArgumentException` / `IllegalStateException`); runtime failures raise domain exceptions. No caller catches a misuse error.
 
 ## API Design
 
