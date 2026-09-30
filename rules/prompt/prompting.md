@@ -30,6 +30,14 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 - Data block placement: long input data goes in section 9, above the anchored query, never before the instructions.
 - For prompts over 20k tokens: mirror the highest-priority constraint at both top and bottom.
 
+## Information Placement
+
+- One kind of information has one section. A rule, its scope, its exceptions, and its illustrations sit in the section that owns the rule.
+- A rule stated in two sections is one rule in the wrong place. Delete the copy that is not in the owning section.
+- A section that exists to hold the exception to a rule stated elsewhere is a patch. Fold it into the rule.
+- A prompt states only what the model cannot derive: our policy, our environment, our data's provenance, our measured frequencies. Domain facts and common terms the model already applies are omitted.
+- Section 10's restatement carries exactly one rule. Restating more than one is duplication, not emphasis.
+
 ## Constraints
 
 - Constraints sit in section 3, adjacent to the task, before examples and output format.
