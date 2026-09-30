@@ -10,7 +10,7 @@ One naming logic for every project, independent of language. Language-specific c
 ## File Responsibility
 
 - One responsibility per file. All types and functions in a file serve that responsibility.
-- Files under 300 lines. Extract a new file when a second responsibility emerges.
+- Files under 300 lines. Extract a new file when a second responsibility emerges. Exception: a standalone tool script — a single-invocation script outside the shipped package (e.g. under `tools/`) — stays one file regardless of length.
 - Splits follow responsibility boundaries, never line count alone. A split that leaves a fragment without a nameable responsibility is wrong.
 - A file exceeding the size limit becomes a directory of the same name; the directory's index file re-exports the original names so import paths survive the split.
 
@@ -29,4 +29,4 @@ One naming logic for every project, independent of language. Language-specific c
 
 ## Entry Points
 
-- Entry-point files contain argument parsing and delegation only. Business logic lives in importable modules.
+- Entry-point files contain argument parsing and delegation only. Business logic lives in importable modules. Exception: a standalone tool script holds its own logic.
