@@ -12,6 +12,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 │   ├── update-codes/SKILL.md # /update-codes — audit, plan, and fix code quality
 │   ├── perf/SKILL.md       # /perf — performance optimization pipeline
 │   ├── debug/SKILL.md      # /debug — reproduce-first bug fix protocol
+│   ├── render-doc/SKILL.md # /render-doc — render a Markdown doc as an editorial HTML page
 │   ├── update-docs/SKILL.md # /update-docs — audit, plan, and fix documentation
 │   └── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
 └── rules/
@@ -31,6 +32,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   ├── concept.md      # Concept doc format (scoped to concept.md, concept-*.md)
     │   ├── model.md        # Domain model doc format (scoped to model.md, model-*.md)
     │   ├── design.md       # Design doc format (scoped to design.md, design-*.md)
+    │   ├── html.md         # Standalone HTML page standards (scoped to *.html)
     │   ├── spec.md         # Algorithm spec format (scoped to spec.md, spec-*.md)
     │   ├── impl.md         # Implementation doc format (scoped to impl.md, impl-*.md)
     │   ├── index.md        # Index/navigation doc format (scoped to index.md)
@@ -74,6 +76,7 @@ Single doc file: 200 lines max. Exceeds limit → split by concern using prefix 
 | `/commit` | User asks to commit | Full staging, classification, multi-commit workflow |
 | `/update-codes` | User asks to update or fix code quality | Audit, plan fixes, apply after approval |
 | `/update-docs` | User asks to update or fix documentation | Audit against type rules, plan fixes, apply after approval |
+| `/render-doc` | User asks to convert a doc to HTML or make it readable/printable | Render a Markdown source as a self-contained editorial HTML page |
 | `/update-tests` | User asks to add, audit, or update tests | Design-driven coverage audit, add missing, remove stale |
 | `/perf` | User asks to optimize or benchmark | 8-step measurement-driven optimization pipeline |
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
