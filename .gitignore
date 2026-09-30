@@ -10,6 +10,20 @@
 
 # Track .gitignore itself
 !.gitignore
+!LICENSE
+
+# App-managed skills are local runtime data
+/skills/synced/
+
+# Generated dependencies, caches, and local secrets (including inside skills)
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+!.env.sample
 
 # macOS noise
 .DS_Store
