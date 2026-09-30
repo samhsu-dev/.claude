@@ -43,6 +43,9 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     ├── prompt/             # Writing LLM-agent prompts
     │   └── prompting.md    # Prompt construction standards (scoped to *.prompty, prompts/)
     │
+    ├── communication/      # Agent output vocabulary
+    │   └── terminology.md  # CS/Security terms only, no coined metaphors (always active)
+    │
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
         ├── change-policy.md # API change and verification rules (always active)
@@ -51,7 +54,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
         └── performance.md  # Performance optimization guardrails (scoped to perf files)
 ```
 
-`meta/rulewriting.md`, `code/resource-bounds.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/development.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
+`meta/rulewriting.md`, `code/resource-bounds.md`, `communication/terminology.md`, `workflow/committing.md`, `workflow/change-policy.md`, `workflow/development.md`, and `workflow/git-safety.md` have no `paths:` — always active. Other rules use `paths:` frontmatter to activate only when working with matching files.
 
 ## Documentation Naming
 
