@@ -4,35 +4,24 @@ paths:
   - "**/impl-*.md"
 ---
 
-# Implementation Document Standards
+# Rust Implementation Documents
 
-## 1. Scope
+Rust-specific `impl.md` conventions.
 
-- One `impl.md` per design. Same directory as the paired `design.md`. Create if missing.
-- Contains APIs, libraries, and developer notes for the design. No types or responsibilities (those stay in design).
-- On task start: read the paired `impl.md`.
-- Before writing code that uses an external library: check `impl.md` for existing findings.
-- Format: headings + lists + inline code. One line per fact. No prose.
+---
 
-## 2. Structure
+## API Entry Format
 
-Sections in order; include only if they have content:
+**[crate]** `use crate_name::Thing` -- when/gotcha.
 
-| Section | Content |
-|--------|--------|
-| **APIs** | `**[Lib]**` `snippet` — one-line when/gotcha. |
-| **Libraries** | Name; version if fixed; purpose. One line each. |
-| **Developer instructions** | Workflow, command, pattern, constraint. One fact per line. |
-| **Design-specific** | Invariants, non-obvious behaviour, integration. Subheadings by design filename if multiple. |
+Example:
+**[reqwest]** `Client::builder().timeout(Duration::from_secs(10)).build()?` -- no default timeout; omitting it hangs forever.
+**[serde]** `#[serde(deny_unknown_fields)]` on config structs -- the default silently ignores misspelled keys.
 
-## 3. When to write
+## Crate Entry Format
 
-- API needed → **APIs**. Library needed → **Libraries**. Developer instruction → **Developer instructions**. User correction → update immediately.
-- All investigation findings (API behavior, gotchas, version constraints) go into `impl.md` immediately. Not in conversation only.
-- No design duplication. No long examples or tutorials.
+- crate_name >= version -- purpose. `cargo add crate_name`. `cargo add --dev` for test-only crates.
 
-## 4. Rules
+## Feature Flags
 
-- One to two lines per API: canonical import + when/gotcha. Remove when design no longer uses it.
-- Developer instructions: concrete only. Update/remove when workflow changes.
-- On user correction: update, deduplicate, remove obsolete. Design stays in design file.
+- Every entry names the Cargo features it requires: `cargo add tokio --features rt-multi-thread,macros`. A feature omitted from `impl.md` is a compile error found late.

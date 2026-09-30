@@ -3,89 +3,61 @@ paths:
   - "**/README.md"
 ---
 
-# README Standards
+# Rust README Badges
 
-Audience: developers evaluating or using this library. Not maintainers, not contributors.
+Extends global `readme.md`. Badge set, format, and placement for Rust
+crates. Overrides the global **Badges** bullet for Rust projects.
 
 ---
 
 ## Principle
 
-Cognitive funnel: broadest to most specific. Each section is an exit point — readers stop when their question is answered. The developer decision flow: name → description → example → install → API → adopt.
+- Every badge reports a live fact a reader acts on in the adopt decision: installable version, API documentation, toolchain compatibility, quality signal, legal terms, citation.
+- A badge value is pulled from a backing service and reflects current state. A hand-set or decorative badge (static version, tech logo, "PRs welcome", "made with") is forbidden.
+- Value test before adding a badge: name the reader question it answers and the action its value changes. No question, no badge.
 
-A developer understands what the repo does within 10 seconds: title, one-line description, usage example.
+## Placement
 
----
+- Badges occupy one row immediately below the title, before the description. Overrides the global "after description, before install" placement.
+- One blank line above and below the row.
+- One row only. A second row is a badge wall, forbidden by global `readme.md`.
 
-## Required Sections
+## Badge Set
 
-Sections in this order:
+Order left to right. A badge is present only when its Backing-State gate holds.
 
-| # | Section | Content |
-|---|---------|---------|
-| 1 | **Title** | Project name. Matches package name. |
-| 2 | **Name** | One-line blockquote (`>`) with name etymology or metaphor. |
-| 3 | **Description** | One line, under 120 characters. Core functionality and idea — not how. |
-| 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
-| 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
-| 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
-| 7 | **Citation** | BibTeX block requesting citation of the project's associated paper. Placeholder until the paper is released. |
-| 8 | **License** | SPDX identifier `GPL-2.0`. Always last. |
+| # | Badge | Reader question | shields.io source | Link target |
+|---|-------|-----------------|-------------------|-------------|
+| 1 | crates.io version | latest installable version? | `crates/v/<crate>` | `https://crates.io/crates/<crate>` |
+| 2 | docs.rs | is the API documented, does it build? | `docsrs/<crate>` | `https://docs.rs/<crate>` |
+| 3 | MSRV | compiles on my toolchain? | `crates/msrv/<crate>` | crates.io page |
+| 4 | Coverage | test depth? | `endpoint?url=<coverage-badge.json>` | coverage report |
+| 5 | CI build | is `main` green? | `github/actions/workflow/status/<org>/<repo>/<wf>.yml` | Actions page |
+| 6 | License | may I use it? | `github/license/<org>/<repo>` | `./LICENSE` |
 
-### Optional Sections
+Optional, after License, present only when its question applies:
 
-Insert between Usage and License. Include only when the README lacks context without them:
+- DOI — how to cite? — `badge/DOI-<doi>-blue` linking to the Zenodo or publisher record. Present when a released paper or dataset DOI exists.
 
-- **Background** — Motivation and context. When the problem or naming is non-obvious.
-- **Contributing** — Link to `CONTRIBUTING.md` or one-line statement.
-- **Badges** — Build status, version, coverage. No heading. After description, before install.
-- **Documentation** — Links to `concept.md` (concepts) and `design.md` (architecture) when they exist. One link per doc, one-line description of what the reader finds there.
-- **For Agents** — Link to `docs/llms.txt`. One line: "Agent-consumable documentation index at `docs/llms.txt` (llmstxt.org format)." Present when `docs/llms.txt` exists.
-- **Experiments** — One sentence per experiment: what was tested and the outcome. No methodology, no analysis — link to the full write-up.
+Excluded as low-information: download counts (`crates/d/<crate>`), code-style/logo badges, "PRs welcome". Each restates no live adopt-decision fact.
 
-No table of contents.
+## Backing-State Gate
 
----
+- A badge appears only after its backing service returns real status. A badge rendering `invalid`, `unknown`, or `no status` is forbidden (global: no broken links).
+- crates.io, docs.rs, and MSRV badges: present only after the crate is published to crates.io. Absent for a crate carrying `publish = false`. The MSRV badge reads `[package].rust-version`; absent when that field is unset.
+- docs.rs badge: present only after the docs.rs build of the published version succeeded.
+- Coverage badge: value comes from `cargo llvm-cov --workspace --all-features --json --summary-only` (field `data[0].totals.lines.percent`). A CI workflow on `main` writes a shields `endpoint` JSON from that value and hosts it in-repo. No third-party coverage service.
+- Coverage and CI badges: present only after that workflow runs on `main`.
+- Pre-publication crate: shows License only. No placeholder badge for a not-yet-live metric.
+
+## Values
+
+- `<crate>` is `[package].name` in the crate's `Cargo.toml`. In a workspace: the user-facing crate the README describes.
+- `<org>/<repo>` is the GitHub slug from `git remote get-url origin`.
+- `<wf>` is the workflow file name under `.github/workflows/`.
 
 ## Format
 
-- Code blocks for all commands, examples, and output. No prose descriptions of code.
-- Two heading levels maximum (`#` and `##`).
-- Hyperlink specialized terms, related projects, and external concepts.
-- Code examples pass the project's own linter.
-- No broken links.
-
----
-
-## License
-
-- All projects use `GPL-2.0` (GNU General Public License v2.0). Never MIT.
-- License section states the SPDX identifier `GPL-2.0` and links to the `LICENSE` file.
-
-## Citation
-
-- Citation section is mandatory. It requests that every project using the library cite the project's associated paper.
-- Content is a fenced ```bibtex``` block.
-- Paper not yet released → placeholder BibTeX entry until release:
-
-```bibtex
-@misc{citation_placeholder,
-  title  = {{TODO: paper title — not yet released}},
-  author = {{TODO: authors}},
-  year   = {{TODO}},
-  note   = {Paper not yet released. Citation entry will be updated on publication.}
-}
-```
-
-- Replace placeholder fields with real metadata when the paper is published.
-
-## Rules
-
-- Lead with the problem solved, not the implementation.
-- One usage example visible without scrolling.
-- Detailed docs, tutorials, and guides in separate files or docs site. README is a landing page, not a manual.
-- No decorative content (banner images, animated GIFs, badge walls).
-- No vague descriptions ("A utility library", "A tool for developers").
-- Blockquote (`>`) only for the Name line. No blockquote elsewhere.
-- No generic section names ("Miscellaneous", "Extra", "Other").
-- Install section present even when trivial (single command).
+- `[![<alt>](<shields-url>)](<target-url>)`. Every badge is a link; no bare image.
+- `<alt>` names the metric: `crates.io`, `docs.rs`, `MSRV`, `coverage`, `CI`, `License`.
+- shields.io is the source. The coverage badge uses shields `endpoint` reading the repo-hosted coverage JSON; no third-party coverage service.

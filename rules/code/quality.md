@@ -1,116 +1,141 @@
 ---
 paths:
-  - "**/*.{py,ts,tsx,js,jsx,go,rs,java,cpp,c,cs,rb,swift,kt,php}"
+  - "**/*.rs"
 ---
 
-# Code Quality Standards
+# Rust Code Quality
 
-Language-specific naming, formatting, idioms, and complexity thresholds: see project `.claude/rules/code/quality.md`.
+Rust-specific rules and toolchain. Rust API Guidelines (C-* references), Rust Style Guide, edition 2024.
 
-## Control Flow
-- Early returns over nested conditionals.
-- Guard clauses to minimize nesting. Max 2 levels of indentation in function body.
-- `continue` over nested `if` in loops.
-- `break` on condition.
-- Flat logic. No deep nesting.
-- No boolean parameters that switch behavior — split into two functions.
-- No flag variables tracking state across a loop — extract to function or use early exit.
+---
+
+## Naming
+
+Rust API Guidelines C-CASE.
+
+| Item | Convention |
+|------|------------|
+| Crates, modules, functions, methods, locals, macros | `snake_case` |
+| Types, traits, enum variants | `UpperCamelCase` |
+| Constants, statics | `SCREAMING_SNAKE_CASE` |
+| Type parameters | one uppercase letter or `UpperCamelCase` |
+| Lifetimes | short lowercase: `'a`, `'de`, `'src` |
+| Cargo features | `snake_case`; no `use-` / `with-` prefix |
+
+- An acronym is one word in `UpperCamelCase`: `Uuid`, `HttpClient`. Not `UUID`, `HTTPClient`.
+- Conversions (C-CONV): `as_` borrowed to borrowed, free; `to_` borrowed to owned, expensive; `into_` consumes `self`.
+- Getters carry no `get_` prefix: `fn name(&self)` (C-GETTER). Exception: `get` / `get_mut` on a keyed collection.
+- Iterator methods: `iter`, `iter_mut`, `into_iter`; iterator types named after the method: `Iter`, `IntoIter` (C-ITER, C-ITER-TY).
+- Word order matches existing std names: `ParseError`, `parse_json`, `JoinPathsError` (C-WORD-ORDER).
+
+## Formatting
+
+- rustfmt defaults: 100-column width, 4-space indent. No `rustfmt.toml`; rustfmt reads `edition` from `Cargo.toml`.
+- `cargo fmt --all` before every commit. Formatting is never hand-adjusted.
+
+## Imports
+
+- Three groups separated by one blank line: `std` / `core` / `alloc`; external crates; `crate` / `super` / `self`. rustfmt sorts within a group.
+- `use` declarations before `mod` declarations, both after inner attributes and `//!` docs.
+- Types and traits imported by full path; functions called through their parent module: `fs::read_to_string`, not `read_to_string`.
+- No glob imports. Exceptions: `use super::*;` in a `#[cfg(test)]` module; a crate's own `prelude` module.
+- `pub use` re-exports only in `lib.rs` (`rules/code/organization.md`).
 
 ## Error Handling
-- Specific exception/error types. No broad catches.
-- Errors handled at the appropriate abstraction level.
-- Original error context preserved across call chains.
-- Error messages include context (function, parameters, state).
-- Fail fast. Never return empty values, fall back, or degrade. Exception: a sub-tool's documented partial or recoverable output is not application degradation — handle it per `resource-bounds.md`.
-- No swallowed exceptions — every catch block re-raises, logs, or transforms.
-- No error codes as return values. Raise/throw on failure.
 
-## Code Structure
-- Functions under 20 lines.
-- Max 3 parameters per function. More → introduce a parameter object.
-- Multi-step logic in dedicated functions.
-- Meaningful names. No single-letter variables outside comprehensions and loop indices.
-- Internal imports follow language convention.
-- Call only own methods, parameter methods, locally created objects, direct attributes.
-- No duplicate logic blocks. Two identical blocks → extract function.
-- No feature envy — a function accessing another object's fields more than its own belongs on that object.
-- No data clumps — fields always passed together → group into a type.
+- Library crate: one enum deriving `thiserror::Error` in `error.rs`, plus `pub type Result<T> = std::result::Result<T, Error>;`. Never `Box<dyn Error>` in a public signature (C-GOOD-ERR).
+- Binary crate: `anyhow::Result` in `main` and command handlers. `.context("...")` / `.with_context(|| ...)` at every `?` that crosses a boundary and would otherwise lose the operation name.
+- `?` propagates. Never `match` on a `Result` only to return its error.
+- Causes stay in the chain via `#[source]` or `#[from]`. Never formatted into the message string.
+- `unwrap`, `panic!`, `unreachable!`, `todo!`, `unimplemented!` are forbidden outside tests. `expect("<invariant>")` is permitted when the message states the invariant that makes failure impossible.
+- No `std::process::exit` outside `main`. `main` returns `anyhow::Result<()>` or `ExitCode`.
 
-## No Stale Code
-- No dead code. No commented-out code.
-- No compatibility stubs. Removed API = removed everywhere.
-- No historical references in docstrings or comments.
-- No redundant indirection.
-- No orphan artifacts.
+## Idioms
 
-## Code Smells — Detect and Eliminate
-- No primitive obsession — raw strings/ints representing domain concepts → wrap in a type.
-- No god objects — a class with >7 public methods or >5 fields → split responsibilities.
-- No shotgun surgery — one change requires edits in many files → consolidate.
-- No speculative generality — abstractions, parameters, or config for hypothetical futures → remove.
-- No message chains — `a.b().c().d()` → encapsulate in a method on `a`.
-- No middle-man classes that only delegate → remove and call target directly.
-- No magic numbers/strings. Named constants or enums.
-- No repeated conditional logic on the same discriminant → polymorphism or lookup table.
+- `Option` / `Result` combinators (`map`, `and_then`, `ok_or`, `unwrap_or_else`) over a `match` with one trivial arm.
+- `if let` / `let else` for one pattern. `match` on a crate-local enum has no `_` arm.
+- Iterator chains over index loops. `for` over `while` with a counter.
+- Parameters: `&str` not `&String`; `&[T]` not `&Vec<T>`; `impl AsRef<Path>` for paths; `impl Into<String>` for owned-string sinks.
+- No `bool` parameters: a two-variant enum (C-CUSTOM-TYPE).
+- Derives per C-COMMON-TRAITS: `Debug` on every public type; `Clone`, `PartialEq`, `Eq`, `Hash`, `Default` when semantically valid; `Copy` on small plain-data types.
+- `#[must_use]` on side-effect-free functions returning a value and on builder methods.
+- `#[non_exhaustive]` on public structs and enums that will grow.
+- Inline format arguments: `format!("{name}")`. Not `format!("{}", name)`.
+- `Arc::clone(&x)` / `Rc::clone(&x)`. Not `x.clone()` on a reference-counted pointer.
 
-## Bug Prevention
-- Off-by-one: boundary values tested for every range/slice/index operation.
-- Null/None: never assume a return value is non-null without a type guarantee or check.
-- Resource leaks: every opened resource (file, connection, lock) has a guaranteed close path.
-- Mutation hazard: never mutate a collection while iterating. Never mutate function arguments.
-- String building: use structured formatting. No manual concatenation of user-controlled input.
-- Comparison: use value equality for data, identity for singletons only.
-- Integer overflow: validate arithmetic on external inputs before use.
-- Race condition: shared mutable state requires explicit synchronization or is forbidden.
-- Encoding: explicit encoding on every I/O boundary. No implicit platform defaults.
+## Ownership and Resources
 
-## Resource Management
-- Context managers / RAII / try-with-resources for resources.
-- No object creation inside loops. Move allocation outside.
-- Cache check before expensive operations.
+- Resource lifetime by ownership and `Drop`. A `close(self) -> Result` method exists only to surface teardown errors; correctness never depends on the caller invoking it.
+- Borrow over clone. A `.clone()` in a hot path carries a comment stating why the borrow is impossible.
+- `Arc<Mutex<T>>` / `RwLock` only at concurrency boundaries. Core logic takes `&T` / `&mut T`.
+- `unsafe_code = "forbid"`. Exception: an FFI crate, where every `unsafe` block carries a `// SAFETY:` comment (clippy `undocumented_unsafe_blocks`).
 
 ## Documentation
 
-### Comments
-- English.
-- Why, not what.
+- `//!` crate docs in `lib.rs`: one-paragraph purpose and one runnable example (C-CRATE-DOC, C-EXAMPLE).
+- `///` on every public item. First line: one sentence, third person, period, no signature repetition.
+- Sections in order: `# Examples`; `# Errors` on every `Result`-returning fn; `# Panics` on every fn that can panic; `# Safety` on every `unsafe fn` (C-FAILURE). No `# Arguments` / `# Returns` sections.
+- Doctests propagate with `?` inside a hidden `# fn main() -> Result<(), Box<dyn std::error::Error>>` wrapper. Never `unwrap` in a doctest (C-QUESTION-MARK).
+- Every referenced item is an intra-doc link: [`Type`], [`module::function`]. Other code names in backticks.
+- `#[doc(hidden)]` only on items public for macro expansion. Never to hide API.
 
-### Docstrings (Public API)
-- Public API only. Private: one-line comment.
-- Content: summary; constraints; parameters; return value; exceptions.
-- No redundancy, no implementation details, no examples.
-- Language-standard convention.
+## Lints
 
-## Type Safety
-- Type annotations on all parameters and return values.
-- Concrete types. No escape types (`Any`, `any`, `Object`, `interface{}`).
-- Strict type checking enabled.
+Declared in `Cargo.toml` (`[workspace.lints]` plus `[lints] workspace = true` per member in a workspace). Never as `#![...]` crate attributes.
 
-## Input Contract & Invariants
-- Allowed input set defined per function.
-- Validated at entry. Violation = raise/throw.
-- Invariants as executable checks, not comments.
-- Single validation point at boundary. Core logic accepts verified data only.
-- Single access path for optional/variant fields.
-- Same violation → same exception type at same layer.
+```toml
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
 
-## No Patch-Style Code
-- Every change integrates as if written from scratch. No "add a check here" band-aids.
-- No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
-- No conditional branches added solely to handle one caller's edge case — fix the design.
-- No adapter/shim layers around code you control — change the source.
-- No defensive copies or re-validation deep inside code that already validated at the boundary.
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "warn"
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
+undocumented_unsafe_blocks = "deny"
+mod_module_files = "deny"
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
 
-## Post-Edit Verification (Mandatory)
-After every code modification, review all changed files for:
-1. **Smell scan**: code smells listed above — primitive obsession, duplication, feature envy, data clumps, god objects, magic values, middle-man, speculative generality.
-2. **Bug scan**: off-by-one, null safety, resource leaks, mutation hazards, race conditions, encoding assumptions, integer overflow, string injection.
-3. **Patch scan**: band-aid fixes, workaround comments, shim layers, redundant validation, caller-specific branches.
-Fix every finding before considering the change complete. No exceptions.
+[lints.rustdoc]
+broken_intra_doc_links = "deny"
+missing_crate_level_docs = "warn"
+```
 
-## API Design
-- Call core module APIs directly. No wrapping layers.
-- No infrastructure dependencies.
-- Exception-driven error handling.
-- Data containers hold data. No embedded behavior.
-- Application logic as explicit functions.
+- `clippy.toml` at the repo root: `allow-unwrap-in-tests = true`, `allow-expect-in-tests = true`, `allow-panic-in-tests = true`. No `msrv` key: Clippy reads `rust-version` from `Cargo.toml`.
+- A lint exception is `#[expect(<lint>, reason = "...")]` on the narrowest item. Never `#[allow]`; never crate-wide `#![allow]`. An `expect` that stops firing is itself a warning, so the exception expires with its cause.
+- Restriction-group lints are enabled one by one, as above. Never `restriction = "warn"`.
+
+---
+
+## Quality Workflow
+
+### Before editing
+- `cargo clippy --all-targets --all-features` -- check existing violations.
+
+### After editing
+- `cargo fmt --all`.
+- `cargo clippy --all-targets --all-features -- -D warnings` -- zero warnings.
+- `cargo test --workspace --all-features` -- all pass.
+- `RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features` -- doc build clean.
+
+---
+
+## Toolchain
+
+`rust-toolchain.toml` at the repo root pins `[toolchain] channel` and `components = ["rustfmt", "clippy"]`.
+
+| Tool | Command | Purpose |
+|------|---------|---------|
+| rustfmt | `cargo fmt --all` | Formatter |
+| clippy | `cargo clippy --all-targets --all-features -- -D warnings` | Linter |
+| rustdoc | `cargo doc --no-deps --all-features` | API docs and doc lints |
+| cargo test | `cargo test --workspace --all-features` | Unit, integration, and doc tests |
+| cargo-llvm-cov | `cargo llvm-cov --workspace --all-features` | Coverage |
+| cargo-semver-checks | `cargo semver-checks` | Public API compatibility against the last published version |
+| cargo-hack | `cargo hack check --rust-version --workspace --all-targets` | MSRV verification |
+| cargo | `cargo add`, `cargo update`, `cargo build` | Package manager |

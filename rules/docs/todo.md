@@ -3,69 +3,22 @@ paths:
   - "**/todo.md"
 ---
 
-# Task Management Standards
+# Rust Task Management
 
-## Task Format
+Rust-specific task conventions.
 
-```
-[state] <action verb> <object> <detail>
-  Depends on: <task ids>
-  Acceptance: <criteria>
-  - [ ] <subtask>
-  - [ ] Quality gate (see below)
-```
-
-States: `[ ]` todo, `[x]` done, `[~]` in progress, `[-]` skipped.
+---
 
 ## Quality Gate
 
-Every task ends with this checklist (do not repeat inline — reference this section):
-- [ ] Lint and format (project linter)
-- [ ] Type check (project type checker)
-- [ ] Unit tests for new/changed public API
-- [ ] All tests pass
+Every task ends with:
+- [ ] cargo fmt --all -- --check
+- [ ] cargo clippy --all-targets --all-features -- -D warnings
+- [ ] cargo test --workspace --all-features -- all pass
+- [ ] RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
 
-## Scope Rules
+## Conventions
 
-- One task = one session of work.
-- Action verb + object + detail. No vague titles.
-- Acceptance criteria when verifiable.
-- Explicit dependencies.
-- Reference interfaces from design docs. No new design in TODO files.
-
-## File Organization
-
-- One `todo.md` per phase. Sequential numbering when multiple: `1.todo.md`, `2.todo.md`.
-- Group related tasks together.
-- Update state immediately after change.
-
-## Templates
-
-Feature:
-```
-[ ] Implement <feature>
-  Acceptance: <criteria>
-  - [ ] <subtask>
-  - [ ] Quality gate
-```
-
-Bug fix:
-```
-[ ] Fix <description>
-  Acceptance: <repro no longer fails>
-  - [ ] Reproduce
-  - [ ] Root cause
-  - [ ] Fix
-  - [ ] Regression test
-  - [ ] Quality gate
-```
-
-Refactor:
-```
-[ ] Refactor <component>
-  Acceptance: <no behavior change, tests pass>
-  - [ ] Analyze
-  - [ ] Implement
-  - [ ] Update tests
-  - [ ] Quality gate
-```
+- Design docs by relative path: Depends on: path/to/design.md.
+- Test tasks name the test file: tests/<component>.rs for integration tests; the source file holding the `#[cfg(test)]` module for unit tests.
+- Implementation tasks reference impl.md for crate findings and required features.

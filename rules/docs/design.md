@@ -4,69 +4,57 @@ paths:
   - "**/design-*.md"
 ---
 
-# Design Documentation Standards
+# Rust Design Standards
 
-## 1. Required structure
-
-IEEE 1016 Logical viewpoint + Interface viewpoint. Software structure only.
-
-Sections in this order:
-
-| Section | Content |
-|--------|--------|
-| **Design Overview** | Types/classes; relationships (one-way only); abstract types; exceptions/errors; dependency roles. |
-| **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
-| **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
-| **Exception / Error Types** | Each type and when raised. |
-
-No domain entity semantics, state transition rules, or structural invariants -- those go in `model.md`.
-No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
-
-**Overview format**:
-- **Classes**: `ClassA`, `ClassB`, `ClassC`
-- **Relationships**: `ClassA` extends `ClassB`, `ClassA` contains `ClassC` (one-way; no A↔B)
-- **Abstract**: `ClassE` (implemented by `ClassF`, `ClassG`)
-- **Exceptions**: `ExceptionH` extends `ExceptionI`, raised by `ClassA`
-- **Dependency roles**: Data holders: `ClassC`. Orchestrator: `ClassA`. Helpers: `ClassB`.
+Rust-specific design rules. Rust API Guidelines (C-* references).
 
 ---
 
-## 2. Design principles
+## Type Selection
 
-### SOLID
-- **S** — One reason to change per type.
-- **O** — Open for extension, closed for modification.
-- **L** — Subtypes fulfill the supertype contract without caller awareness.
-- **I** — No client depends on methods it does not use.
-- **D** — Depend on abstractions, not concretes.
+- `struct` with private fields for data holders. `pub` fields only on plain-data structs whose every field is independently valid (C-STRUCT-PRIVATE).
+- `enum` for finite state and closed variant sets. `#[non_exhaustive]` on public enums and structs that will grow.
+- Newtype (`struct Meters(f64);`) for zero-cost type distinctions and validated values (C-NEWTYPE). Validated construction via `TryFrom` or `new(..) -> Result`.
+- Trait for behavior with multiple implementations. Generic parameter (`T: Trait`) for static dispatch; `Box<dyn Trait>` for heterogeneous collections and plugin boundaries.
+- Builder (`XBuilder` with `build()`) when construction has more than two optional parameters (C-BUILDER).
+- Typestate (`Struct<S>` with `PhantomData<S>`) when the design names a state machine whose invalid transitions are compile-time errors.
+- `Default` when a zero-argument value is valid; a `new()` with no arguments implies `Default` (clippy `new_without_default`).
 
-### Foundational
-- **KISS** — Simplest design that satisfies the requirement.
-- **YAGNI** — Implement only what is needed now.
-- **DRY** — One authoritative representation per piece of knowledge.
-- **Separation of Concerns** — One concern per module. No overlap.
-- **Law of Demeter** — Call only own methods, parameter methods, locally created objects, direct attributes.
-- **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
-- **Fail-fast** — Detect and report errors at the earliest point.
+## Module Structure
 
-### Naturalness and maintainability
+- Visibility, module layout, packaging, package data: `rules/code/organization.md`.
+- The design doc records each module's visibility (`pub` or `pub(crate)`) and its crate.
 
-The maintainer reloads context each session and trusts types over execution. Design for that reader.
+## Value Placement
 
-- **Name the concept** — A recurring argument clump becomes a parameter object; a closed-value scalar becomes an enum; a distinct concern becomes its own type.
-- **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`s3_`, `s4_`) is two concepts.
-- **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
-- **Cohesion sets granularity** — Split on a second concern, never on a line or field count. A god object and an over-decomposed call graph are both defects. Thresholds: `code/quality.md`.
-- **Contract lives in types** — No escape types. Named fields over `None`-able positional args. Return types exhaust result meaning.
-- **Absence is not failure** — "No result" and "failed" are distinguishable by type, never a shared empty or `None`.
+- Constant vs config struct vs data file: decision order in `rules/code/constants.md`.
+- The design doc records the tier of each named value the design introduces.
 
----
+## Error Design
 
-## 3. Architectural constraints
+- One error enum per crate deriving `thiserror::Error` and `Debug`. Variants partition failures by how callers match, not where raised.
+- Variant fields are structured (`path: PathBuf`, `line: usize`). No preformatted `String`. Exception: an opaque message from an external system.
+- Third-party errors mapped at the boundary into a variant with `#[source]`; `#[from]` only when the mapping is one-to-one and adds no context.
+- Misuse errors (caller violated a documented precondition) panic and are listed under `# Panics`. Runtime errors (I/O, parse, external) are `Result`.
+- Public error types are `std::error::Error + Send + Sync + 'static` (C-GOOD-ERR).
+- The design doc lists each variant, its fields, and the caller decision it enables.
 
-- Dependencies are one-way: A uses B → B must not use A.
-- Data holders contain only primitives, enums, or other data holders.
-- One orchestrator per workflow. Helpers are stateless and receive inputs by argument.
-- Files with shared concern grouped into one directory as an internal submodule. One public entry point per directory.
-- Verify external library API via DeepWiki/Context7 or minimal test before use. Record findings in `impl.md`.
+## API Design
 
+- Constructors: `new` for the primary; `with_<param>` for a variant; `From` / `TryFrom` impls for conversions (C-CTOR, C-CONV-TRAITS).
+- Accessors: `field()` returns `&T`; `field_mut()` returns `&mut T`. No `get_` prefix (C-GETTER).
+- Receivers: `&self` by default; `&mut self` on mutation; `self` on consumption or `into_` conversion.
+- Parameters generic over `impl Into<T>` / `impl AsRef<T>` at the public boundary; concrete types in internals.
+- No `bool` or `Option<bool>` parameters: an enum (C-CUSTOM-TYPE).
+- Standard traits per C-COMMON-TRAITS: `Debug`, `Clone`, `PartialEq`, `Eq`, `Hash`, `Default`; `Display` for user-facing values; `FromStr` for parseable values; `Send + Sync`. The design doc lists derives per type.
+- Lazy sequences return `impl Iterator<Item = T>`. `Vec<T>` only when the collection is materialized anyway.
+- Side-effect-free functions returning a value are `#[must_use]`.
+- Every public item is semver surface: a new variant, field, or trait method without a default is a breaking change unless `#[non_exhaustive]` / a default body applies (`rules/workflow/releasing.md`).
+
+## Typing Patterns
+
+- Trait bounds on `impl` blocks and functions, not on struct definitions (C-STRUCT-BOUNDS).
+- Sealed traits for extension-closed traits (C-SEALED): `mod private { pub trait Sealed {} }`.
+- `Deref` only for smart pointers. Never for inheritance-style delegation (C-DEREF).
+- Associated types for one-to-one type relations; generic parameters for many.
+- Lifetimes elided where the rules permit. A named lifetime is documented with what it borrows.
