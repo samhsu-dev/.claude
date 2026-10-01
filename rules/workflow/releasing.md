@@ -27,9 +27,9 @@ Release standards by crate type. Project-specific release facts — crate names,
 - A version published to crates.io is permanent. Never re-upload the same version; a broken release is yanked (`cargo yank --version <v>`) and superseded by a new version.
 - Quality gate green before the version-bump commit: formatter, linter, tests, doc build (`rules/docs/todo.md`).
 - `cargo semver-checks` passes against the last published version before the bump. A reported breaking change forces a major bump (the `y` position while the version is `0.y.z`).
-- Version bump, `Cargo.lock` update (`cargo update -w`), sibling-pin updates, and `CHANGELOG.md` entry land in one commit.
+- Version bump, `Cargo.lock` update (`cargo update -w`), and sibling-pin updates land in one commit.
 - `[package]` metadata: `description`, `license` (SPDX expression), `repository`, `readme`, `keywords`, `categories`. `documentation` only when the docs are not on docs.rs.
-- `[package.metadata.docs.rs] all-features = true`, plus `rustdoc-args = ["--cfg", "docsrs"]` when feature-gated items use `#[cfg_attr(docsrs, doc(cfg(...)))]`.
+- `[package.metadata.docs.rs]` names the features docs.rs builds (`all-features = true` when no features are mutually exclusive), plus `rustdoc-args = ["--cfg", "docsrs"]` when feature-gated items use `#[cfg_attr(docsrs, doc(cfg(...)))]`.
 - `cargo publish --dry-run` and `cargo package --list` reviewed before every publish: the file list holds no test data, CI config, or secrets. `include` / `exclude` trims it.
 
 ## Library Crates
@@ -41,7 +41,6 @@ Release standards by crate type. Project-specific release facts — crate names,
 ## Binary Crates
 
 - Install path documented as `cargo install --locked <crate>`.
-- `[profile.release]`: `lto = true`, `codegen-units = 1`, `strip = "symbols"`.
 - `--version` prints `CARGO_PKG_VERSION` (clap `#[command(version)]`).
 - Per-target archives, installers, and the release workflow come from `dist`: `dist init` writes `dist-workspace.toml` and generates `.github/workflows/release.yml`. The generated workflow is never hand-edited; configuration changes go through `dist init` again.
 
@@ -58,7 +57,7 @@ Release standards by crate type. Project-specific release facts — crate names,
 Releases run through CI (see Tag-Driven CI). The local steps end at the tag push.
 
 1. Quality gate green; `cargo semver-checks` clean; `cargo hack check --rust-version` clean.
-2. Bump versions per the type rules; update sibling pins; run `cargo update -w`; update `CHANGELOG.md`; commit.
+2. Bump versions per the type rules; update sibling pins; run `cargo update -w`; commit.
 3. Tag the release commit `v<version>` (single crate) or `<crate>-v<version>` (workspace); one tag per crate being released.
 4. Push the commit and tag. CI verifies, packages, publishes to crates.io, builds binary artifacts, and creates the GitHub Release after approval.
 
@@ -68,7 +67,8 @@ Manual fallback (CI unavailable): `cargo publish --dry-run`; review `cargo packa
 
 - One tag releases one crate. The workflow parses the tag and fails when the tag version differs from that crate's `[package].version`.
 - Gate job before publish: `cargo fmt --all -- --check`, `cargo clippy --all-targets --all-features -- -D warnings`, `cargo test --workspace --all-features`, `RUSTDOCFLAGS="-D warnings" cargo doc --no-deps`, `cargo hack check --rust-version`, `cargo semver-checks`.
-- Publish credentials via crates.io trusted publishing: the job declares `permissions: id-token: write`, runs `rust-lang/crates-io-auth-action@v1`, and passes its short-lived token as `CARGO_REGISTRY_TOKEN`. No long-lived registry token in repository secrets.
+- Publish credentials are CI environment secrets. The credential mechanism (registry API token or crates.io trusted publishing) is a project decision recorded in the project's `docs/releasing.md`.
+- Trusted publishing on GitHub Actions: the job declares `permissions: id-token: write`, runs `rust-lang/crates-io-auth-action@v1`, and passes its short-lived token as `CARGO_REGISTRY_TOKEN`; no long-lived registry token in repository secrets.
 - The publish job runs in a GitHub environment with required reviewers; the final publish waits for manual approval.
-- First publish of a new crate name is manual with a user token. Trusted publishing is configured on crates.io afterwards for the existing crate: repository owner, repository name, workflow file name, environment name.
+- First publish of a new crate name uses a user token: a trusted publisher is configured on crates.io only for an existing crate (repository owner, repository name, workflow file name, environment name).
 - Binary crates: the `dist`-generated `release.yml` builds per-target archives on the tag and attaches them to the GitHub Release.
