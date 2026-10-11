@@ -27,10 +27,9 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Target: >= 90% branch coverage on changed modules. `src` only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
 
 ## 3. Layout
-- `tests/` root directory, mirroring source structure.
-- File naming: `test_<component>.<ext>`.
-- Split by responsibility when oversized (>300 lines): `test_<component>_<responsibility>.<ext>`.
-- Shared fixtures in `conftest.py` (or framework equivalent) per test directory.
+- The test tree mirrors the source tree. The project rule names its root and file-name pattern.
+- One test file per component. Split by responsibility past 300 lines.
+- Shared fixtures per test directory, in the framework's fixture mechanism.
 
 ## 4. Types
 - Unit: isolated from external systems. One unit per test file.
@@ -39,45 +38,41 @@ Language-specific test framework, layout, assertions, and execution: see project
 ## 5. Structure
 - Arrange → Act → Assert.
 - One behavior per test.
-- Name: `test_<component>_<condition>_<expected>`.
+- Name states component, condition, and expected result. The project rule names the pattern.
 - Suites/classes only if the framework requires them.
 
-## 5a. File-Level Docstring
-- Every test file starts with a module docstring listing all test cases and their purpose.
+## 5a. File-Level Index Comment
+- Every test file starts with a file-level comment listing all test cases and their purpose.
 - Format: file description, then one entry per test function with name and one-line verification goal.
-- Update the docstring when adding, removing, or renaming test functions. Docstring is the index — code is the implementation.
+- Update the comment when adding, removing, or renaming test functions. The comment is the index — code is the implementation.
 
-## 6. Naming & Location
-- Mirror source layout: `src/a/b/foo.py` → `tests/a/b/test_foo.py`.
-- File name: `test_<component>.<ext>`. Split: `test_<component>_<responsibility>.<ext>`.
-
-## 7. Fixtures & Data
+## 6. Fixtures & Data
 - Reusable setup in fixtures/factories.
 - Scenario-specific fixtures per test when needed.
 - Temporary resources for file/network/process. Auto-clean after test.
-- Test data files in `tests/data/`. No bulk payloads inline in test files. No test data in the source tree.
+- Test data files in a data directory under the test root. No bulk payloads inline in test files. No test data in the source tree.
 
-## 8. Assertions
+## 7. Assertions
 - One assertion per test. Multiple only when verifying one behavior.
 - Specific assertions (equality, errors, ranges) over boolean checks.
 - Negative paths and error conditions asserted explicitly.
 
-## 9. Mocking
+## 8. Mocking
 - Mock at system boundaries only.
 - Dependency injection enables mocking.
 - Verified interactions on test doubles.
 - No over-mocking. Real behavior for internal collaborators.
 
-## 10. Configuration
+## 9. Configuration
 - Framework, discovery, markers, strict/fail-fast in repo config.
 - Deterministic environment: fixed seeds, stable paths, isolated temp dirs.
 
-## 11. Execution
+## 10. Execution
 - Default command: unit tests only. Separate command for integration.
 - Parallel execution when supported.
 - Concise tracebacks. Stop on first failure for debugging.
 
-## 12. Maintenance
+## 11. Maintenance
 - Tests alongside new/changed code in the same change set.
 - Independent tests. No shared mutable state.
 - Deduplicate via helpers, fixtures, factories.
