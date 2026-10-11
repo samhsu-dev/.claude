@@ -1,28 +1,8 @@
 # Project Terminology
 
-Project parameters for the global `communication/terminology.md`. The policy — domain test, name-source ranks, naming steps, registration — lives there and is not restated here.
+Forbidden substitutions of CobraPHP for the global `communication/terminology.md`. The project's naming decisions (name sources, naming steps, core terms, publication classes) live in `docs/glossary.md` Naming.
 
 ---
-
-## Glossary
-
-- `docs/glossary.md` Naming records the naming decisions cited below with their dates.
-- PHP keywords need no glossary entry.
-
-## Name Sources
-
-- Rank 2 is the PHP manual. Rank 3 is php-src (user decision 2026-10-11, `docs/glossary.md` Name Sources).
-
-## Naming Steps
-
-- The head noun is the graph element: an AST, PDG, ADG or CCG node or edge, a label, or a datum of the algorithm (user decision 2026-10-11, 87bd7a879).
-- A value is classified by the program point at which PHP obtains it (user decision 2026-10-11, 87bd7a879, `docs/glossary.md` Naming Steps).
-
-## Core Terms
-
-- The core terms are STRETCHED, CONCRETE, UNKNOWN, stretch, and relax (user decision 2026-10-02, `docs/glossary.md` Core Terms).
-- The algorithm's own data are named from the core terms: relax memo, relax component (user decision 2026-10-11, TQ18, 129474c19).
-- The publication classes are the outer stretch node and the inner stretch node of the COBRA paper (Xu et al., ICSE 2026, §3.2), the top classes of STRETCHED values (user decision 2026-10-11, e16f1f78c).
 
 ## Forbidden Substitutions
 
