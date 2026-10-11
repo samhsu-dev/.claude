@@ -1,4 +1,7 @@
 ---
+paths:
+  - "**/.claude/rules/**/*.md"
+  - "**/CLAUDE.md"
 ---
 
 # Rule Writing Standards
