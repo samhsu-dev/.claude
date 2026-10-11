@@ -46,7 +46,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   └── prompting.md    # Prompt construction standards (scoped to *.prompty, prompts/)
     │
     ├── communication/      # Agent output vocabulary
-    │   └── terminology.md  # CS/Security terms only, no coined metaphors (always active)
+    │   └── terminology.md  # CS/Security terms only, name sources, naming steps (always active)
     │
     └── workflow/           # Operational processes
         ├── committing.md   # Git commit guardrails (always active, minimal)
