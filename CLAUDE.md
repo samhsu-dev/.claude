@@ -86,6 +86,6 @@ Single doc file: 200 lines max. Exceeds limit → split by concern using prefix 
 | `/update-tests` | User asks to add, audit, or update tests | Design-driven coverage audit, add missing, remove stale |
 | `/perf` | User asks to optimize or benchmark | 8-step measurement-driven optimization pipeline |
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
+| `/zotero-audit` | User asks to check or clean Zotero items | Read-only metadata audit against Crossref, report before any write |
 
 Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards.
-| `/zotero-audit` | User asks to check or clean Zotero items | Read-only metadata audit against Crossref, report before any write |
