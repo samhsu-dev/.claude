@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.{py,ts,tsx,js,jsx,go,rs,java,cpp,c,cs,rb,swift,kt,php,sh}"
+---
+
 # Resource Bounds and Timeouts
 
 Rules governing how cost, runtime, and process liveness are bounded.
