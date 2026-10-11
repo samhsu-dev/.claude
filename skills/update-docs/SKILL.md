@@ -26,6 +26,7 @@ Audit documentation files against their type-specific rulesets, produce a fix pl
 | `**/impl.md`, `**/impl-*.md` | Implementation | impl rules |
 | `**/todo.md`, `**/*.todo.md` | Task | todo rules |
 | `**/index.md` | Index | index rules |
+| `**/glossary.md`, `**/glossary-*.md` | Glossary | glossary rules |
 
 Files matching no pattern: report as **unclassified** for user review.
 
@@ -144,11 +145,17 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
+### glossary.md / glossary-*.md (Glossary)
+
+**Rules:** `rules/docs/glossary.md`, loaded by path. Audit every rule in it, the routing file and the retired-names table included.
+
+---
+
 ## Step 3 — Cross-File Consistency
 
 Check across files within the same docs subdirectory:
 
-1. **Terminology**: concepts defined in `concept.md` match names used in `model.md`, `design.md`, `spec.md`.
+1. **Terminology**: every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use.
 2. **No content in wrong file**: implementation details not in `concept.md`/`model.md`; domain semantics not in `design.md`; algorithms not in `design.md`.
 3. **Cross-references valid**: every `see [file.md]` link points to an existing file.
 4. **index.md sync**: if `index.md` exists, all sibling files listed; no orphan entries.

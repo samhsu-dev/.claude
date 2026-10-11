@@ -33,6 +33,7 @@ Reusable Claude Code rules, organized by domain. Language-independent.
     │   ├── concept.md      # Concept doc format (scoped to concept.md, concept-*.md)
     │   ├── model.md        # Domain model doc format (scoped to model.md, model-*.md)
     │   ├── design.md       # Design doc format (scoped to design.md, design-*.md)
+    │   ├── glossary.md     # Glossary registry format (scoped to glossary.md, glossary-*.md)
     │   ├── html.md         # Standalone HTML page standards (scoped to *.html)
     │   ├── spec.md         # Algorithm spec format (scoped to spec.md, spec-*.md)
     │   ├── impl.md         # Implementation doc format (scoped to impl.md, impl-*.md)
@@ -68,8 +69,9 @@ Documents split by responsibility use prefix naming:
 | Design | `design.md` | `design-{concern}.md` |
 | Spec | `spec.md` | `spec-{concern}.md` |
 | Implementation | `impl.md` | `impl-{concern}.md` |
+| Glossary | `glossary.md` | `glossary-{concern}.md` |
 
-Each split file follows the same rules as its single-file counterpart. One concern per file.
+Each split file follows the same rules as its single-file counterpart. One concern per file. Exception: the glossary's single file is its routing file and holds no entry (`rules/docs/glossary.md`).
 
 Single doc file: 200 lines max. Exceeds limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `concept-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
 
