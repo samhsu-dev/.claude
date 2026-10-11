@@ -77,5 +77,6 @@ Rules are read by agents. Code and documentation produced from rules are read by
 
 - Rules within one file: no contradictions.
 - Global rules are language-agnostic defaults. Project rules specify language/community conventions.
-- Project rules override global rules when both set concrete values for the same metric.
+- User-level and project rules load together; the platform gives neither precedence.
+- A project rule that sets another value for a metric a global rule sets names the replaced global rule in the same bullet: "Replaces global `code/quality.md`: functions under 20 lines."
 - Edge cases: one rule states the priority. "X. Exception: Y when Z."
