@@ -64,7 +64,7 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 - Few-shot examples follow the instructions, never precede them.
 - 3–5 examples, diverse, each wrapped in `<example>` tags; group under `<examples>`.
 - Include one abstain / negative example when the task has an abstain path.
-- Concrete tokens in examples are illustrative. No merchant-specific or caller-specific token baked into a constraint as if it were a general rule.
+- Concrete tokens in examples are illustrative. No input-specific token baked into a constraint as if it were a general rule.
 
 ## Multi-Stage Consistency
 
@@ -74,7 +74,7 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 - Recall stage: wide net, bounded top-k, "include anything plausibly relevant, do not filter." A candidate dropped here is unrecoverable.
 - Precision stage: verify strictly, abstain on doubt. Emit `{decision, confidence, abstain_reason}`.
 - Confidence is a ranking signal, not a calibrated probability. Threshold it on a held-out set. Route abstain to review, never to a forced decision.
-- A stage's prompt states only that stage's job. No precision/ranking bias in a recall prompt. No value-selection a downstream solver owns.
+- A stage's prompt states only that stage's job. No precision/ranking bias in a recall prompt. No decision a downstream stage owns.
 
 ## Terminology
 
