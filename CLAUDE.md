@@ -24,11 +24,12 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
     │   └── todo.md         # Kotlin task conventions (todo.md)
     │
     └── workflow/           # Operational processes
-        └── committing.md   # Project commit and push rules
+        ├── committing.md   # Project commit and push rules
+        └── decision-recall.md # Review docs and git history before asking (always active)
 ```
 
 Rules use `paths:` frontmatter to load only when working with matching files.
-`communication/terminology.md` has no `paths:` -- it is always active.
+`communication/terminology.md` and `workflow/decision-recall.md` have no `paths:` -- they are always active.
 
 ## Build System
 
