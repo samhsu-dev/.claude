@@ -88,17 +88,8 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Complexity Thresholds (detekt)
 
-Kotlin community conventions per detekt defaults:
-
-| Metric | Limit |
-|--------|-------|
-| Method length | 60 lines |
-| Class length | 600 lines |
-| Cyclomatic complexity / method | 14 |
-| Cognitive complexity / method | 15 |
-| Function parameters | 5 (6 for constructors) |
-| Nesting depth | 4 levels |
-| Return statements / function | 2 |
+- The detekt default thresholds apply: `buildUponDefaultConfig = true` and `maxIssues: 0` in `config/detekt/detekt.yml`. `./gradlew detekt` enforces them.
+- Replaces global `code/quality.md`: functions under 20 lines, max 3 parameters, max 2 indentation levels. Replaces global `code/organization.md`: files under 300 lines.
 
 ## Code Smells
 
