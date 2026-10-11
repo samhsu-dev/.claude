@@ -14,7 +14,8 @@ Reusable Claude Code rules, organized by domain. Language-independent.
 │   ├── debug/SKILL.md      # /debug — reproduce-first bug fix protocol
 │   ├── render-doc/SKILL.md # /render-doc — render a Markdown doc as an editorial HTML page
 │   ├── update-docs/SKILL.md # /update-docs — audit, plan, and fix documentation
-│   └── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
+│   ├── update-tests/SKILL.md # /update-tests — design-driven test coverage audit
+│   └── zotero-audit/SKILL.md # /zotero-audit — read-only Zotero metadata audit vs Crossref
 └── rules/
     ├── meta/               # Authoring .claude assets
     │   ├── rulewriting.md  # How to write rule files (always active)
@@ -85,3 +86,4 @@ Single doc file: 200 lines max. Exceeds limit → split by concern using prefix 
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
 
 Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards.
+| `/zotero-audit` | User asks to check or clean Zotero items | Read-only metadata audit against Crossref, report before any write |
