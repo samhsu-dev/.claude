@@ -6,9 +6,40 @@ paths:
 
 # Glossary Standards
 
-The registry of a project's established terms. Which names are allowed and how a name is chosen: `communication/terminology.md`. This file sets the layout of the registry.
+The registry of a project's established terms: how a new term is named and how the registry is laid out. Which terms output may use: `communication/terminology.md`.
 
 ---
+
+## Name Sources
+
+A concept takes the name the highest-ranked source gives that same concept:
+
+1. A name widely accepted in the literature.
+2. The reference manual or standard of the language or system the project analyzes or implements.
+3. The reference implementation of that language or system.
+4. A name several tools in the field use.
+5. The repository's own name.
+6. A name only one tool uses.
+
+- Ranks 2 and 3 apply when the project analyzes or implements a language or system. The glossary routing file names them.
+- A source counts only where its word names the same concept. The same word for another concept is a clash, never a name source.
+- A candidate name that already names another glossary concept is reported to the user with both entries.
+- A borrowed word with no literature source in its glossary entry is a coined term.
+- A rename question cites the rank and the source of every candidate name.
+
+## Naming Steps
+
+A new term is named in three steps, in order:
+
+1. **Locate.** The structure the term belongs to — the model, graph, or table, and the element kind within it — gives the head noun.
+2. **Classify.** The semantics of the analyzed system fixes the term's locus: for a value in program analysis, the program point at which the language produces it.
+3. **Name.** The name is the locus plus one role noun taken by Name Sources.
+
+- The terms of one locus share one role noun.
+- A state or attribute recorded on the element stays out of the element's name.
+- An umbrella term names only a class with a behavior of its own.
+- A project with a central algorithm declares its core terms in the glossary routing file: the names of the algorithm and its states. Core terms keep their names. A literature name for the same mechanism is cited in the entry as its method or as a similar concept, never used as the name. A literature name for what a value stands for serves as the role noun.
+- A class named in the project's own publication stays a class in the glossary. It never becomes the name of one implementation element.
 
 ## Files
 
