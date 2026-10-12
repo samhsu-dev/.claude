@@ -4,6 +4,8 @@
 # Track CLAUDE.md, rules, and skills
 !CLAUDE.md
 !README.md
+!hooks/
+!hooks/**
 !rules/
 !rules/**
 !skills/
