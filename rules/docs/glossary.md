@@ -103,6 +103,6 @@ One entry per term: an H3 heading followed by fields in this order.
 ## Enumerations
 
 - A closed set (every node type or edge type of one graph, every label) is one H2 section: the set's class entry, then one table with columns Member, Definition, Status, Reference, Literature, Tools. A file holds any number of closed sets.
-- A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none`.
+- A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none` with an optional parenthetical reason. A `|` inside a cell is escaped as `\|`.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.
