@@ -4,7 +4,7 @@ paths:
   - "**/concept-*.md"
 ---
 
-# Concept Standards (Concepts & Terminology)
+# Concept Standards
 
 ## Required Sections
 
@@ -29,9 +29,9 @@ paths:
 ```
 
 **Core Concepts** — One entry per concept:
-- **Name:** [identifier]
-- **Definition:** [what it is and why it matters]
-- **Scope:** [includes/excludes]
+- **Name:** [term, linked to its glossary entry]
+- **Role:** [why this module needs the concept, one sentence]
+- **Scope:** [includes/excludes within this module]
 - **Relationships:** [connections to other concepts]
 
 ### 3. Contracts & Flow
@@ -52,8 +52,10 @@ paths:
 ## Generation Rules
 
 ### Content
-- Concepts and terminology only. No implementation details, APIs, commands, or code.
-- Concept definitions: name + one-sentence definition + scope + relationships. No formal semantics (state transitions, invariants, edge direction rules) -- those go in `model.md`.
+- Concepts only. No implementation details, APIs, commands, or code.
+- A term's definition lives only in its glossary entry. A Core Concepts entry links that entry and never restates the definition.
+- A concept without a glossary entry gets one in the same change.
+- No formal semantics (state transitions, invariants, edge direction rules) -- those go in `model.md`.
 - Technical specifications link to `design.md`. Domain semantics link to `model.md`.
 
 ### Format
