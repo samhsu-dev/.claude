@@ -5,7 +5,8 @@
 - a glossary Source path that does not resolve (rules/docs/glossary.md),
 - a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry),
 - a glossary citation field without a bibliography key (rules/docs/glossary.md Entry),
-- a citation key that the bibliography does not hold (rules/docs/bibliography.md).
+- a citation key that the bibliography does not hold (rules/docs/bibliography.md),
+- a repository document that names a path of the agent configuration (CLAUDE.md Documentation Naming).
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
@@ -25,6 +26,7 @@ BIBLIOGRAPHY = Path("docs/references.bib")
 CITATION = re.compile(r"\[[^\[\]]*@[^\[\]]*\]")
 CITATION_KEY = re.compile(r"(?<![\w@])-?@([\w][\w:.#$%&+?<>~/-]*\w|\w)")
 CITATION_FIELDS = ("Reference", "Literature", "Tools")
+AGENT_CONFIG = re.compile(r"(?<![\w.])~?/?\.claude/")
 EXTERNAL_LOCATION = re.compile(
     r"https?://|\b[\w-]+(?:\.[\w-]+)*\.(?:com|org|io|net|dev|edu)/"            # URL
     r"|\.(?:c|h|cc|cpp|hpp|kt|java|scala|qll|py|ts|js|go|rs|ml|php|y)`?:\d+"   # file:line
@@ -228,6 +230,12 @@ def main():
     hits = term_hits(path, written_text(tool_input))
     if hits:
         warnings.append("Forbidden term in written text (allowed only as an exception the rule names):\n  " + "\n  ".join(hits[:MAX_REPORTED]))
+    if path.suffix == ".md" and not path.name.endswith(".todo.md") and ".claude" not in path.parts:
+        agent_paths = [f"{path.name}:{number}" for number, line in enumerate(path.read_text().splitlines(), 1)
+                       if AGENT_CONFIG.search(line)]
+        if agent_paths:
+            warnings.append("A repository document names the agent configuration, which is not part of the repository:\n  "
+                            + "\n  ".join(agent_paths[:MAX_REPORTED]))
     if DOC_TYPES.match(path.name):
         unresolved = unresolved_citations(path)
         if unresolved:
