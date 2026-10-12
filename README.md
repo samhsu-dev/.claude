@@ -66,7 +66,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | Script | Event | Checks |
 |--------|-------|--------|
 | `hooks/git_guard.py` | before a git command | Blocks the operations `workflow/git-safety.md` prohibits; blocks a commit whose subject breaks Conventional Commits or 72 chars, or that carries an attribution trailer |
-| `hooks/doc_check.py` | after a file write | Reports a doc or rule file past its line limit, a forbidden term from the project's `.claude/rules/communication/terminology.md`, and a glossary Source path that does not resolve |
+| `hooks/doc_check.py` | after a file write | Reports a doc or rule file past its line limit, a forbidden term from the project's `.claude/rules/communication/terminology.md`, a glossary Source path that does not resolve, a URL, path or line number in a glossary citation, a glossary citation field without a key, and a citation key the bibliography does not hold |
 
 Project data comes from the project: `doc_check.py` reads the forbidden terms of the repository it edits, so one script serves every repository.
 
