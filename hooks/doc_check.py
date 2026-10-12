@@ -3,7 +3,9 @@
 - a doc or rule file past its line limit (CLAUDE.md Documentation Naming, rules/meta/rulewriting.md),
 - a forbidden term from the project's .claude/rules/communication/terminology.md in the written text,
 - a glossary Source path that does not resolve (rules/docs/glossary.md),
-- a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry).
+- a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry),
+- a glossary citation field without a bibliography key (rules/docs/glossary.md Entry),
+- a citation key that the bibliography does not hold (rules/docs/bibliography.md).
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
@@ -19,6 +21,10 @@ TERMINOLOGY = Path(".claude/rules/communication/terminology.md")
 CODE_SPAN = re.compile(r"`[^`\n]*`")
 PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
 MAX_REPORTED = 20
+BIBLIOGRAPHY = Path("docs/references.bib")
+CITATION = re.compile(r"\[[^\[\]]*@[^\[\]]*\]")
+CITATION_KEY = re.compile(r"(?<![\w@])-?@([\w][\w:.#$%&+?<>~/-]*\w|\w)")
+CITATION_FIELDS = ("Reference", "Literature", "Tools")
 EXTERNAL_LOCATION = re.compile(
     r"https?://|\b[\w-]+(?:\.[\w-]+)*\.(?:com|org|io|net|dev|edu)/"            # URL
     r"|\.(?:c|h|cc|cpp|hpp|kt|java|scala|qll|py|ts|js|go|rs|ml|php|y)`?:\d+"   # file:line
@@ -139,6 +145,42 @@ def external_locations(path):
     return hits
 
 
+def keyless_citations(path):
+    """Citation fields and citation table cells of a glossary entry file that hold no bibliography key."""
+    hits = []
+    columns = []
+    for number, line in enumerate(path.read_text().splitlines(), 1):
+        field = re.match(r"\s*- \*\*(" + "|".join(CITATION_FIELDS) + r"):\*\*(.*)", line)
+        if field:
+            if "[@" not in field.group(2) and field.group(2).strip() != "none":
+                hits.append(f"{path.name}:{number}: {field.group(1)}")
+            continue
+        if not line.startswith("|"):
+            columns = []
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if any(name in cells for name in CITATION_FIELDS):
+            columns = [cells.index(name) for name in CITATION_FIELDS if name in cells]
+        elif columns and not set("".join(cells)) <= set("-: "):
+            for column in columns:
+                if column < len(cells) and "[@" not in cells[column] and cells[column] != "none":
+                    hits.append(f"{path.name}:{number}: {cells[0]}")
+    return hits
+
+
+def unresolved_citations(path):
+    """Citation keys of a doc that the repository bibliography does not hold."""
+    text = CODE_SPAN.sub("", path.read_text())
+    cited = {key for citation in CITATION.findall(text) for key in CITATION_KEY.findall(citation)}
+    if not cited:
+        return []
+    bibliography = repo_root(path.parent) / BIBLIOGRAPHY
+    if not bibliography.is_file():
+        return [f"{path.name}: no {BIBLIOGRAPHY}"]
+    held = set(re.findall(r"^@\w+\{([^,\s]+),", bibliography.read_text(), re.M))
+    return [f"{path.name}: @{key}" for key in sorted(cited - held)]
+
+
 def tracked_paths(root):
     """Paths git tracks under root, submodules included."""
     result = subprocess.run(["git", "-C", str(root), "ls-files", "--recurse-submodules"],
@@ -186,6 +228,10 @@ def main():
     hits = term_hits(path, written_text(tool_input))
     if hits:
         warnings.append("Forbidden term in written text (allowed only as an exception the rule names):\n  " + "\n  ".join(hits[:MAX_REPORTED]))
+    if DOC_TYPES.match(path.name):
+        unresolved = unresolved_citations(path)
+        if unresolved:
+            warnings.append(f"{len(unresolved)} citation keys do not resolve:\n  " + "\n  ".join(unresolved[:MAX_REPORTED]))
     if path.name.startswith("glossary") and path.suffix == ".md":
         missing = unresolved_sources(path)
         if missing:
@@ -196,6 +242,10 @@ def main():
             if located:
                 more = f"\n  ... {len(located) - MAX_REPORTED} more" if len(located) > MAX_REPORTED else ""
                 warnings.append(f"{len(located)} glossary lines cite a URL, path, or line number outside Source:\n  " + "\n  ".join(located[:MAX_REPORTED]) + more)
+            keyless = keyless_citations(path)
+            if keyless:
+                more = f"\n  ... {len(keyless) - MAX_REPORTED} more" if len(keyless) > MAX_REPORTED else ""
+                warnings.append(f"{len(keyless)} glossary citations hold no bibliography key:\n  " + "\n  ".join(keyless[:MAX_REPORTED]) + more)
     if warnings:
         print("~/.claude/hooks/doc_check.py:\n- " + "\n- ".join(warnings), file=sys.stderr)
         sys.exit(2)
