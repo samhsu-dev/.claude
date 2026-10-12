@@ -22,7 +22,7 @@ MAX_REPORTED = 20
 EXTERNAL_LOCATION = re.compile(
     r"https?://|\b[\w-]+(?:\.[\w-]+)*\.(?:com|org|io|net|dev|edu)/"            # URL
     r"|\.(?:c|h|cc|cpp|hpp|kt|java|scala|qll|py|ts|js|go|rs|ml|php|y)`?:\d+"   # file:line
-    r"|`:\d+|(?<![\w])L\d+(?:-L?\d+)?\b"                                     # bare line number
+    r"|`:\d+|(?<![\w])L\d+-L?\d+\b"                                          # bare line range
     r"|`[^`\s]*\w/[\w.][^`\s]*`")                                            # directory path
 
 
