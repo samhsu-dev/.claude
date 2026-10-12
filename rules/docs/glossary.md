@@ -52,8 +52,8 @@ A new term is named in three steps, in order:
 ## Layers
 
 - The glossary files form layers, read from the general to the specific. Default order: architecture (modules, phases); infrastructure (storage, input and output, settings, dispatch); the model of the analyzed language or system; one schema file per data structure (a graph, a model, a table) with its element types and their attributes; the core algorithm; analysis semantics, one file per concern; the procedure of each phase; outputs (facts, reports). The routing file names the project's layers and the commit that fixed them.
-- An entry goes to the file of the structure its Is a names. An attribute of an element goes to the schema file of that element's structure. A rule for writing a structure goes to infrastructure. A phase step goes to that phase's procedure file.
-- A file holds no entry whose Is a names a structure another file owns.
+- An element type of a structure, or an attribute of one, goes to that structure's schema file. A rule for writing a structure goes to infrastructure. A step of one phase goes to that phase's procedure file.
+- Any other entry goes to the file of the concern its Definition states; its Is a may name an element kind of any structure. A semantic term whose Is a is an AST node, such as a read of a variable, stays with its concern, not in the AST schema file.
 
 ## Entry
 
