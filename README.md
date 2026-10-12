@@ -51,6 +51,24 @@ A rule without `paths:` frontmatter is always active. A rule with `paths:` loads
 | `meta/rulewriting.md` | rule files, `CLAUDE.md` | How to write rules |
 | `meta/skilling.md` | skill files | How to write skills |
 
+## Hooks
+
+Hooks check what a rule can only ask for. They apply in every repository once registered in `~/.claude/settings.json`; `settings.json` is not tracked, so a new machine adds this block:
+
+```json
+"PreToolUse": [{ "matcher": "Bash", "hooks": [{ "type": "command", "if": "Bash(git *)",
+  "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" }] }],
+"PostToolUse": [{ "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command",
+  "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"" }] }]
+```
+
+| Script | Event | Checks |
+|--------|-------|--------|
+| `hooks/git_guard.py` | before a git command | Blocks the operations `workflow/git-safety.md` prohibits; blocks a commit whose subject breaks Conventional Commits or 72 chars, or that carries an attribution trailer |
+| `hooks/doc_check.py` | after a file write | Reports a doc or rule file past its line limit, a forbidden term from the project's `.claude/rules/communication/terminology.md`, and a glossary Source path that does not resolve |
+
+Project data comes from the project: `doc_check.py` reads the forbidden terms of the repository it edits, so one script serves every repository.
+
 ## License
 
 MIT
