@@ -2,7 +2,8 @@
 """PostToolUse hook for Write, Edit, and MultiEdit: reports
 - a doc or rule file past its line limit (CLAUDE.md Documentation Naming, rules/meta/rulewriting.md),
 - a forbidden term from the project's .claude/rules/communication/terminology.md in the written text,
-- a glossary Source path that does not resolve (rules/docs/glossary.md).
+- a glossary Source path that does not resolve (rules/docs/glossary.md),
+- a URL, a directory path, or a line number in a glossary entry outside Source (rules/docs/glossary.md Entry).
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
@@ -18,6 +19,11 @@ TERMINOLOGY = Path(".claude/rules/communication/terminology.md")
 CODE_SPAN = re.compile(r"`[^`\n]*`")
 PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
 MAX_REPORTED = 20
+EXTERNAL_LOCATION = re.compile(
+    r"https?://|\b[\w-]+(?:\.[\w-]+)*\.(?:com|org|io|net|dev|edu)/"            # URL
+    r"|\.(?:c|h|cc|cpp|hpp|kt|java|scala|qll|py|ts|js|go|rs|ml|php|y)`?:\d+"   # file:line
+    r"|`:\d+|(?<![\w])L\d+(?:-L?\d+)?\b"                                     # bare line number
+    r"|`[^`\s]*\w/[\w.][^`\s]*`")                                            # directory path
 
 
 def line_limit(path):
@@ -109,6 +115,30 @@ def source_cells(lines):
             yield number, cells[column]
 
 
+def external_locations(path):
+    """Lines of a glossary entry file that hold a URL, a directory path, or a line number outside Source."""
+    hits = []
+    column = None
+    for number, line in enumerate(path.read_text().splitlines(), 1):
+        if re.match(r"\s*- \*\*Source:\*\*", line):
+            continue
+        text = line
+        if line.startswith("|"):
+            cells = line.strip().strip("|").split("|")
+            stripped = [cell.strip() for cell in cells]
+            if "Source" in stripped:
+                column = stripped.index("Source")
+            elif column is not None and column < len(cells):
+                cells[column] = ""
+            text = "|".join(cells)
+        else:
+            column = None
+        match = EXTERNAL_LOCATION.search(text)
+        if match:
+            hits.append(f"{path.name}:{number}: {match.group(0)}")
+    return hits
+
+
 def tracked_paths(root):
     """Paths git tracks under root, submodules included."""
     result = subprocess.run(["git", "-C", str(root), "ls-files", "--recurse-submodules"],
@@ -161,6 +191,11 @@ def main():
         if missing:
             more = f"\n  ... {len(missing) - MAX_REPORTED} more" if len(missing) > MAX_REPORTED else ""
             warnings.append(f"{len(missing)} glossary Source paths do not resolve:\n  " + "\n  ".join(missing[:MAX_REPORTED]) + more)
+        if path.name != "glossary.md" and not path.name.endswith(".todo.md"):
+            located = external_locations(path)
+            if located:
+                more = f"\n  ... {len(located) - MAX_REPORTED} more" if len(located) > MAX_REPORTED else ""
+                warnings.append(f"{len(located)} glossary lines cite a URL, path, or line number outside Source:\n  " + "\n  ".join(located[:MAX_REPORTED]) + more)
     if warnings:
         print("~/.claude/hooks/doc_check.py:\n- " + "\n- ".join(warnings), file=sys.stderr)
         sys.exit(2)

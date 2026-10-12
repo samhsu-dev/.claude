@@ -44,7 +44,7 @@ A new term is named in three steps, in order:
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- The routing file holds, in order: the project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, each with its commit), the conventions shared by every glossary file (Source path prefix), the routing table, and the retired-names table. It holds no entry.
+- The routing file holds, in order: the project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, each with its commit), the conventions shared by every glossary file (Source path prefix), the pinned versions (each rank 3 implementation and each tool with its repository commit or documentation site), the routing table, and the retired-names table. It holds no entry.
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor, Commit. One row per rename or removal.
 - A glossary file is at most 200 lines. A file past 200 lines splits by concern and the routing table gains a row.
@@ -62,7 +62,7 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Status:** code | design | gap | withdrawn
 - **Reference:** <manual section or reference-implementation symbol> — same | similar | clash | none
 - **Literature:** <authors>, <title>, <venue> <year>, §<section> — borrowed | same | similar | method | clash | none
-- **Tools:** <tool> `<location>` — same | similar | clash | none
+- **Tools:** <tool> `<symbol>` — same | similar | clash | none
 - **Decision:** <commit> (<decision ID>) — <one clause>
 ```
 
@@ -74,7 +74,8 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Status:** `code` (implemented); `design` (decided, no code); `gap` (code and decided design differ, the Definition's last sentence states the difference); `withdrawn` (removed from the design, code still present). A design term with partial code is `gap`.
 - **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when the project names ranks 2 and 3.
 - **Literature:** one line per source: authors, title, venue, year, and the section that defines the word, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
-- **Tools:** one line per tool: tool name, then a source location pinned to a commit or a documentation page, then the relation. At most two lines.
+- **Tools:** one line per tool: tool name, then the symbol or the documentation page title, then the relation. At most two lines.
+- Reference and Tools name a symbol, a manual section, or a page title: never a URL, a directory path, or a line number. A file name is added only when the symbol alone is ambiguous. `hooks/doc_check.py` reports a URL, a path, or a line number outside Source.
 - **Decision:** one line: every user decision that fixed the name or the definition, newest last, separated by `;`. A commit resolves in the repository. A decision ID resolves in the module's decision record.
 - No field carries a date. A commit fixes when a decision, a rename, or a check was made.
 - Is a, Definition, Source, and Status are required. Example is required by its rule above. The other fields are present when one exists.
@@ -95,6 +96,6 @@ One entry per term: an H3 heading followed by fields in this order.
 ## Enumerations
 
 - A closed set (every node type or edge type of one graph, every label) is one H2 section: the set's class entry, then one table with columns Member, Definition, Status, Reference, Literature, Tools. A file holds any number of closed sets.
-- A counterpart cell holds `<source> — <relation>` or `none`.
+- A counterpart cell holds `<symbol or section> — <relation>` or `none`, under the Reference and Tools rule of Entry.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.
