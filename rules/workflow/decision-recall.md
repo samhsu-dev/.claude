@@ -25,7 +25,7 @@ Every question to the user and every option list is preceded by these steps, in 
 
 ## Recording
 
-- A user decision is written into the committed doc of the affected module in the same turn it is made, marked with its date.
+- A user decision is written into the committed doc of the affected module in the same turn it is made, marked as a user decision with its decision ID. The doc carries no date; the commit that records the decision identifies it.
 - An edge case raised in discussion is written with its PHP example into the Edge Cases section of the affected doc, or into the module's `*.todo.md` while its rule is open, in the same turn it is raised.
 - A decided design the code does not implement stays in the docs as an open gap. Never delete design text because no caller exists.
 - A doc audit that removes a mechanism's text names the replacing doc section in its commit body.
