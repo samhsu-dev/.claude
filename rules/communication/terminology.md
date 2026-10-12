@@ -14,7 +14,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - Never borrow a term from an unrelated domain — gaming, biology, finance, sports, medicine, clinical trial design, military, law — as a metaphor for a technical concept. Domain-of-origin test before writing any term: name the field it comes from. Not CS, not security, not this repository → replace it.
 - Never coin a term, label, or metaphor the codebase does not already use.
 - Two named variants of one system under comparison are its implementations, named by what the code calls them (backend, strategy, implementation). Never "arm", "condition", "treatment", or "control" — those name a trial design, not a program.
-- Never translate a metaphor word for word across languages. A project's forbidden substitutions live in its project `communication/terminology.md`.
+- Never translate a metaphor word for word across languages. A project's forbidden substitutions live in the Forbidden Substitutions section of its project `communication/terminology.md`, one bullet each, the forbidden words quoted after "never". `hooks/doc_check.py` reports them in written files.
 
 ## Established Terms
 

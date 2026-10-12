@@ -6,18 +6,7 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 
 ## Prohibited Operations
 
-Never run these commands. They destroy commits, discard changes, or rewrite history other agents depend on.
-
-- `git reset` — any form (`--hard`, `--soft`, `--mixed`). Moves HEAD, losing commits other agents reference.
-- `git checkout -- <path>` / `git checkout .` — discards uncommitted changes other agents made.
-- `git checkout -f` — force-switches branch, discarding local changes.
-- `git restore` — discards working tree or staged changes.
-- `git clean` — deletes untracked files another agent may have created.
-- `git stash` — hides changes from other agents. Stash is per-repo, not per-agent.
-- `git push --force` / `git push -f` / `git push --force-with-lease` — rewrites remote history.
-- `git branch -D` — force-deletes branch with unmerged commits.
-- `git rebase -i` / `git rebase --interactive` — can drop or squash commits silently.
-- `git commit --amend` — rewrites the last commit another agent may already reference.
+- Never `git reset`, `checkout --`/`.`/`-f`, `restore`, `clean`, `stash`, `push --force`/`-f`/`--force-with-lease`, `branch -D`, `rebase -i`, `commit --amend`, `add -A`/`.`. `hooks/git_guard.py` blocks each one; a block is never worked around.
 
 ## Safe Alternatives
 
@@ -34,7 +23,7 @@ Never run these commands. They destroy commits, discard changes, or rewrite hist
 ## Before Any Git Write Operation
 
 1. `git status` — verify working tree state.
-2. Stage specific files by name. Never `git add -A` or `git add .`.
+2. Stage specific files by name.
 3. Verify no other agent has uncommitted changes in the same files.
 
 ## Branch Operations

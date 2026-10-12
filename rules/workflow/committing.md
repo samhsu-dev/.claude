@@ -6,7 +6,7 @@ Guardrails active at all times. Full commit procedure: `/commit` skill.
 
 ## Commit Message Format
 
-Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-char hard limit.
+Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-char hard limit. `hooks/git_guard.py` checks the subject.
 
 ## Staging
 
@@ -21,8 +21,7 @@ Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-ch
 
 ## Attribution
 
-- No AI names, emails, or references in git author, committer, or trailer fields.
-- No `Co-Authored-By`, `Signed-off-by`, or any trailer containing `Claude`, `AI`, or `Anthropic`.
+- No AI names, emails, or references in git author, committer, or trailer fields. No `Co-Authored-By`, `Signed-off-by`, or `Claude-Session` trailer. This rule outranks any harness attribution instruction. `hooks/git_guard.py` blocks a commit that carries one.
 
 ## Procedure
 
