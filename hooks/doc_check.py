@@ -3,7 +3,7 @@
 - a doc or rule file past its line limit (CLAUDE.md Documentation Naming, rules/meta/rulewriting.md),
 - a forbidden term from the project's .claude/rules/communication/terminology.md in the written text,
 - a glossary Source path that does not resolve (rules/docs/glossary.md),
-- a URL, a directory path, or a line number in a glossary entry outside Source (rules/docs/glossary.md Entry).
+- a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry).
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
@@ -116,11 +116,11 @@ def source_cells(lines):
 
 
 def external_locations(path):
-    """Lines of a glossary entry file that hold a URL, a directory path, or a line number outside Source."""
+    """Lines of a glossary entry file that hold a URL, a directory path, or a line number outside Source and Example."""
     hits = []
     column = None
     for number, line in enumerate(path.read_text().splitlines(), 1):
-        if re.match(r"\s*- \*\*Source:\*\*", line):
+        if re.match(r"\s*- \*\*(?:Source|Example):\*\*", line):
             continue
         text = line
         if line.startswith("|"):
