@@ -22,6 +22,7 @@ TERMINOLOGY = Path(".claude/rules/communication/terminology.md")
 CODE_SPAN = re.compile(r"`[^`\n]*`")
 PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
 MAX_REPORTED = 20
+CELL_SEPARATOR = re.compile(r"(?<!\\)\|")
 BIBLIOGRAPHY = Path("docs/references.bib")
 CITATION = re.compile(r"\[[^\[\]]*@[^\[\]]*\]")
 CITATION_KEY = re.compile(r"(?<![\w@])-?@([\w][\w:.#$%&+?<>~/-]*\w|\w)")
@@ -116,7 +117,7 @@ def source_cells(lines):
         if not line.startswith("|"):
             column = None
             continue
-        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        cells = [cell.strip() for cell in CELL_SEPARATOR.split(line.strip().strip("|"))]
         if "Source" in cells:
             column = cells.index("Source")
         elif column is not None and column < len(cells) and not set(cells[column]) <= set("-: "):
@@ -132,7 +133,7 @@ def external_locations(path):
             continue
         text = line
         if line.startswith("|"):
-            cells = line.strip().strip("|").split("|")
+            cells = CELL_SEPARATOR.split(line.strip().strip("|"))
             stripped = [cell.strip() for cell in cells]
             if "Source" in stripped:
                 column = stripped.index("Source")
@@ -154,18 +155,18 @@ def keyless_citations(path):
     for number, line in enumerate(path.read_text().splitlines(), 1):
         field = re.match(r"\s*- \*\*(" + "|".join(CITATION_FIELDS) + r"):\*\*(.*)", line)
         if field:
-            if "[@" not in field.group(2) and field.group(2).strip() != "none":
+            if "[@" not in field.group(2) and not field.group(2).strip().startswith("none"):
                 hits.append(f"{path.name}:{number}: {field.group(1)}")
             continue
         if not line.startswith("|"):
             columns = []
             continue
-        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        cells = [cell.strip() for cell in CELL_SEPARATOR.split(line.strip().strip("|"))]
         if any(name in cells for name in CITATION_FIELDS):
             columns = [cells.index(name) for name in CITATION_FIELDS if name in cells]
         elif columns and not set("".join(cells)) <= set("-: "):
             for column in columns:
-                if column < len(cells) and "[@" not in cells[column] and cells[column] != "none":
+                if column < len(cells) and "[@" not in cells[column] and not cells[column].startswith("none"):
                     hits.append(f"{path.name}:{number}: {cells[0]}")
     return hits
 
