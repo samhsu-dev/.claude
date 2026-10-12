@@ -47,7 +47,7 @@ A rule without `paths:` frontmatter is always active. A rule with `paths:` loads
 | `code/debugging.md` | code and test files | Debugging guardrails |
 | `code/testing.md` | test files | Test design, layout, assertions |
 | `docs/<type>.md` | the doc type it names | Format of concept, model, spec, design, impl, todo, index, glossary, README, llms, HTML |
-| `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography, Pandoc citation keys, pinned tool versions |
+| `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography exported from Zotero by Better BibTeX, Pandoc citation keys, pinned tool versions |
 | `prompt/prompting.md` | `*.prompty`, `prompts/` | LLM prompt construction |
 | `meta/rulewriting.md` | rule files, `CLAUDE.md` | How to write rules |
 | `meta/skilling.md` | skill files | How to write skills |

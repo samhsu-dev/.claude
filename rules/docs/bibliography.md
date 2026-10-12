@@ -23,14 +23,14 @@ Every paper, manual, reference implementation, and tool a document cites is one 
 
 ## File
 
-- One bibliography per repository: `docs/references.bib`, in BibLaTeX syntax. The glossary routing file names it.
-- One entry per source. A source cited twice is one entry cited twice.
-- A paper entry holds authors, title, venue, year, pages, and DOI, checked against the DOI registry.
-- A tool, a reference implementation, a manual, or a documentation site is a `@software` or `@manual` entry. `version` holds the pinned repository commit or the documentation version; `url` holds the repository or the site. The pin lives only here.
-- No `urldate` and no other access date. A commit of the bibliography fixes when a pin was checked.
-- Paper key: first author's family name, year, first title word that is not an article, lowercase ASCII: `xu2026cobra`, `horwitz1990interprocedural`. Software and manual key: the project's own name in lowercase: `joern`, `php-src`, `php-manual`.
+- One bibliography per repository: `docs/references.bib`, in BibLaTeX syntax. The glossary routing file names it and the Zotero collection it is exported from.
+- The bibliography is a Better BibTeX auto-export (Better BibLaTeX translator) of the project's Zotero collection. It is never edited by hand: a source is added or changed as a Zotero item in that collection.
+- One item per source. A source cited twice is one item cited twice.
+- A paper item holds authors, title, venue, year, pages, and DOI, checked against the DOI registry.
+- A tool, a reference implementation, a manual, or a documentation site is a Computer Program or Document item. Its Version field holds the pinned repository commit or the documentation version; its URL holds the repository or the site. The pin lives only here.
+- No `urldate`, `abstract`, or other access date in the export. The Better BibTeX postscript removes them under `Translator.BetterBibLaTeX`. A commit of the bibliography fixes when a pin was checked.
+- Paper key: the key Better BibTeX generates with the formula `auth.lower + "_" + shorttitle(1, 0).lower.condense("_") + "_" + year`: `horwitz_interprocedural_1990`. Software and manual key: the project's own name in lowercase, pinned by a `Citation Key:` line in the item's Extra field: `joern`, `php-src`, `php-manual`.
 - A key is never renamed. A source replaced by another gets a new key.
-- Entries are sorted by key.
 
 ## Citation
 
