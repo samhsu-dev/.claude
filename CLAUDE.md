@@ -21,6 +21,21 @@ Single doc file: 200 lines max (`hooks/doc_check.py` reports an overrun). Exceed
 
 A repository document never names an agent rule, skill, or hook, or any path under `.claude/` or `~/.claude/`. The agent configuration is not part of the repository; a document states the convention it follows in its own words (`hooks/doc_check.py` reports such a path).
 
+## Documentation Ownership
+
+Each fact has one owning document; every other document links it and never restates it.
+
+| Fact | Owner |
+|------|-------|
+| What a term means | its glossary entry |
+| Why a module needs a concept, how concepts relate | `concept.md` |
+| Rules a concept obeys: relations, states, invariants | `model.md` |
+| Algorithm steps | `spec.md` |
+| Types, functions, open gaps between code and decided design | `design.md` |
+| External APIs | `impl.md` |
+
+A document states the current design. No dates, no change history, no dated or "verified" sections; a commit records when a fact changed.
+
 ## Skills
 
 Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards. The human-facing listing of rules and skills: `README.md`.
