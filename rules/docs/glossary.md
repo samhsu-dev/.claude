@@ -21,7 +21,7 @@ A concept takes the name the highest-ranked source gives that same concept:
 5. The repository's own name.
 6. A name only one tool uses.
 
-- Ranks 2 and 3 apply when the project analyzes or implements a language or system. The glossary routing file names them.
+- Ranks 2 and 3 apply when the project analyzes or implements a language or system. The project rule names them.
 - A source counts only where its word names the same concept. The same word for another concept is a clash, never a name source.
 - A candidate name that already names another glossary concept is reported to the user with both entries.
 - A borrowed word with no literature source in its glossary entry is a coined term.
@@ -44,14 +44,15 @@ A new term is named in three steps, in order:
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- The routing file holds, in order: the project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, its layers, each with its commit), the conventions shared by every glossary file (Source path prefix, bibliography path), the routing table, and the retired-names table. It holds no entry. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
+- The project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, its layers, each with its commit) are agent instructions. They live in the project rule `.claude/rules/docs/glossary.md`, never in a repository document.
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor, Commit. One row per rename or removal.
 - A glossary file is at most 200 lines. A file past 200 lines splits by concern and the routing table gains a row.
 
 ## Layers
 
-- The glossary files form layers, read from the general to the specific. Default order: architecture (modules, phases); infrastructure (storage, input and output, settings, dispatch); the model of the analyzed language or system; one schema file per data structure (a graph, a model, a table) with its element types and their attributes; the core algorithm; analysis semantics, one file per concern; the procedure of each phase; outputs (facts, reports). The routing file names the project's layers and the commit that fixed them.
+- The glossary files form layers, read from the general to the specific. Default order: architecture (modules, phases); infrastructure (storage, input and output, settings, dispatch); the model of the analyzed language or system; one schema file per data structure (a graph, a model, a table) with its element types and their attributes; the core algorithm; analysis semantics, one file per concern; the procedure of each phase; outputs (facts, reports). The project rule names the project's layers and the commit that fixed them.
 - An element type of a structure, or an attribute of one, goes to that structure's schema file. A rule for writing a structure goes to infrastructure. A step of one phase goes to that phase's procedure file.
 - Any other entry goes to the file of the concern its Definition states; its Is a may name an element kind of any structure. A semantic term whose Is a is an AST node, such as a read of a variable, stays with its concern, not in the AST schema file.
 
