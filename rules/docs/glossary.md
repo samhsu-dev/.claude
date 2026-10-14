@@ -6,9 +6,19 @@ paths:
 
 # Glossary Standards
 
-The registry of a project's established terms: how a new term is named and how the registry is laid out. Which terms output may use: `communication/terminology.md`.
+The registry of a project's established terms: which terms it holds, how a new term is named, and how the registry is laid out. Which terms output may use: `communication/terminology.md`. Basis: ANSI/NISO Z39.19-2005 (R2010) §5.3.5 term selection by warrant, §8.3 hierarchical relations; W3C SKOS Reference, documentation and mapping properties.
 
 ---
+
+## Selection
+
+- An entry exists for a term whose meaning a reader of the repository needs and cannot take from general CS or security usage: a concept the project defines, or a concept of the literature, the analyzed system's manual, or its reference implementation that the documents use with that source's meaning.
+- No entry for a general programming word `communication/terminology.md` exempts, nor for a CS or security term used with its textbook meaning: Interface Segregation Principle.
+- No entry for a keyword of the analyzed language.
+- No entry for an identifier that names no concept of the domain: a helper class, an index, a monitor. Its owner is the design doc.
+- No entry for a named external artifact: a paper, a tool, a dataset. Its owner is the bibliography.
+- No entry for a shorthand one document uses in its own prose.
+- An entry stays only when removing it leaves a sentence of some document ambiguous or unexplained.
 
 ## Name Sources
 
@@ -54,7 +64,7 @@ A new term is named in three steps, in order:
 
 - The glossary files form layers, read from the general to the specific. Default order: architecture (modules, phases); infrastructure (storage, input and output, settings, dispatch); the model of the analyzed language or system; one schema file per data structure (a graph, a model, a table) with its element types and their attributes; the core algorithm; analysis semantics, one file per concern; the procedure of each phase; outputs (facts, reports). The project rule names the project's layers and the commit that fixed them.
 - An element type of a structure, or an attribute of one, goes to that structure's schema file. A rule for writing a structure goes to infrastructure. A step of one phase goes to that phase's procedure file.
-- Any other entry goes to the file of the concern its Definition states; its Is a may name an element kind of any structure. A semantic term whose Is a is an AST node, such as a read of a variable, stays with its concern, not in the AST schema file.
+- Any other entry goes to the file of the concern its Definition states, whatever structure its Is a names. A semantic term whose Is a is an AST node type, such as a read of a variable, stays with its concern, not in the AST schema file.
 
 ## Entry
 
@@ -62,11 +72,10 @@ One entry per term: an H3 heading followed by fields in this order.
 
 ```markdown
 ### <Long form> (<ABBREVIATION>)
-- **Is a:** <parent entry or element kind>
+- **Is a:** <parent entry>
 - **Definition:** <one to three sentences>
 - **Example:** `<minimal input>` → <the term's instance in it>
 - **Source:** `<path>` `<symbol>`
-- **Status:** code | design | gap | withdrawn
 - **Reference:** [@<key>] `<symbol>` | [@<key>, "<section>"] — same | similar | clash | none
 - **Literature:** [@<key>, sec. <section>] — borrowed | same | similar | method | clash | none
 - **Tools:** [@<key>] `<symbol>` | [@<key>, "<page>"] — same | similar | clash | none
@@ -74,18 +83,17 @@ One entry per term: an H3 heading followed by fields in this order.
 ```
 
 - **Heading:** one term as used in prose, or one identifier in backticks. An abbreviation follows the long form in parentheses. The identifier that implements a prose term is named in Source, never in the heading. A heading never names two terms.
-- **Is a:** the parent entry; or, when no entry is the parent, the element kind from the locate step of the naming steps. An element kind is not an entry. Omitted on a top class only.
-- **Definition:** one sentence of plain prose: the parent and the distinguishing property. The rules the term obeys live in the module's `model.md`, its steps in `spec.md`, its types and open gaps in `design.md`; the Definition states none of them. Status `code`: written from the implementing symbol. Status `design`: written from the doc section. No citation, no history.
-- **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for status `design`, the element the doc section specifies. Required when an input yields an instance of the term (a value, a node, an edge, a label, a construct). Omitted on a module, a phase, a component, a principle, and a dataset.
-- **Source:** every file and symbol that implements the term, separated by `;`. Status `design`: the doc and its section. Status `gap` or `withdrawn`: the doc section, then the code symbol. Every Source resolves to the named location; `hooks/doc_check.py` reports one that does not.
-- **Status:** `code` (implemented); `design` (decided, no code); `gap` (code and decided design differ, the Open Gaps section of the design doc in Source states the difference); `withdrawn` (removed from the design, code still present). A design term with partial code is `gap`.
+- **Is a:** the parent entry, or the enumeration member in backticks, such that "<heading> is a <parent>" holds and both name the same kind of concept: two operations, two data, two rules. Omitted when no entry is the parent. A part never names its whole here: "Relax is a Phase 2" is false; the Definition states the whole.
+- **Definition:** one sentence of plain prose: the genus and the distinguishing property. The genus is the Is a entry, or a plain CS word (operation, graph, rule) when Is a is omitted. The rules the term obeys live in the module's `model.md`, its steps in `spec.md`, its types and open gaps in `design.md`; the Definition states none of them. Written from the design doc section that decides the term; from the implementing symbol when no doc section decides it. No citation, no history.
+- **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for a term with no code, the element the doc section specifies. Required when an input yields an instance of the term (a value, a node, an edge, a label, a construct); omitted otherwise.
+- **Source:** every file and symbol that implements the term, separated by `;`. A term with no code: the doc and its section. A term whose code differs from the decided design, or whose code the design removed: the doc section, then the code symbol; the Open Gaps section of that design doc states the difference. Every Source resolves to the named location; `hooks/doc_check.py` reports one that does not.
 - **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when the project names ranks 2 and 3.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Reference, Literature, and Tools cite by bibliography key (`rules/docs/bibliography.md`). Reference and Tools name a symbol, a manual section, or a page title: never a URL, a directory path, or a line number. A file name is added only when the symbol alone is ambiguous. `hooks/doc_check.py` reports a URL, a path, or a line number outside Source and Example, and a citation field without a key.
 - **Decision:** one line: every user decision that fixed the name or the definition, newest last, separated by `;`. A commit resolves in the repository. A decision ID resolves in the module's decision record.
 - No field carries a date. A commit fixes when a decision, a rename, or a check was made.
-- Is a, Definition, Source, and Status are required. Example is required by its rule above. The other fields are present when one exists.
+- Definition and Source are required. Is a is required when an entry is the parent. Example is required by its rule above. The other fields are present when one exists.
 
 ## Order
 
@@ -102,7 +110,7 @@ One entry per term: an H3 heading followed by fields in this order.
 
 ## Enumerations
 
-- A closed set (every node type or edge type of one graph, every label) is one H2 section: the set's class entry, then one table with columns Member, Definition, Status, Reference, Literature, Tools. A file holds any number of closed sets.
+- A closed set (every node type or edge type of one graph, every label) is one H2 section: the set's class entry, then one table with columns Member, Definition, Reference, Literature, Tools. A file holds any number of closed sets.
 - A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none` with an optional parenthetical reason. A `|` inside a cell is escaped as `\|`.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.
