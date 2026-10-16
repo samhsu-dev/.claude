@@ -8,7 +8,7 @@ Rules for recovering recorded decisions before asking the user. Always active.
 
 Every question to the user and every option list is preceded by these steps, in order:
 
-1. Read the docs of every module the question touches and of every module whose facts an option reads or writes: `concept*.md`, `model*.md`, `spec*.md`, `design*.md`, and the glossary: `docs/glossary.md` and the `docs/glossary-*.md` file holding the entry of each concept the question touches (`grep -n "^### <term>" docs/glossary*.md`).
+1. Read the docs of every module the question touches and of every module whose facts an option reads or writes: `concept*.md`, `model*.md`, `spec*.md`, `design*.md`, and the glossary: `docs/glossary/glossary.md` and the `docs/glossary/glossary-*.md` file holding the entry of each concept the question touches (`grep -n "^### <term>" docs/glossary/glossary*.md`).
 2. Search history for each concept the question names: `git log -S '<term>' --oneline -- docs/ <module>/src/` and `git log --grep='<term>' --oneline`.
 3. Read the deleted text of every hit: `git show <commit>^:<path>`.
 4. A decision found in steps 1-3 is cited with its file or commit and applied. It is never offered as an open option.

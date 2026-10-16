@@ -1,12 +1,12 @@
 # Project Terminology
 
-Forbidden substitutions of CobraPHP for the global `communication/terminology.md`. The project's naming decisions (name sources, naming steps, core terms, publication classes) live in `docs/glossary.md` Naming.
+Forbidden substitutions of CobraPHP for the global `communication/terminology.md`. The project glossary is `docs/glossary/glossary.md` and the `docs/glossary/glossary-*.md` files it routes to. The project's naming decisions (name sources, naming steps, core terms, top classes, layers, bibliography) live in `.claude/rules/docs/glossary.md`.
 
 ---
 
 ## Forbidden Substitutions
 
-- The Phase 1 loop iteration cap (`MAX_LOOP_ITERATIONS`) is "iteration cap", never "widening". No widening operator is applied.
+- The Phase 1 loop iteration cap (`MAX_LOOP_ITERATIONS`) is "iteration cap", never "widening". Exception: "widening operator" names the operator of [@cousot] that the design does not apply; a doc may state that no widening operator is applied.
 - The per-node visit cap (`MAX_NODE_VISITS`) is "liveness bound", never "lattice height".
 - The graph in `graphs/pdg/` is "PDG", never "CPG". Exception: the `cpg` field of `TaintGraphs`.
 - Comparing behavior with the PHP manual or php-src is "check against", never "adjudicate" or "裁定" (law).
