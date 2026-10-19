@@ -13,9 +13,6 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - Every technical term comes from computer science or security, or from the repository's own established vocabulary. There is no third source.
 - Never borrow a term from an unrelated domain — gaming, biology, finance, sports, medicine, clinical trial design, military, law — as a metaphor for a technical concept. Domain-of-origin test before writing any term: name the field it comes from. Not CS, not security, not this repository → replace it.
 - Never coin a term, label, or metaphor the codebase does not already use.
-- A term exists to ease communication. Before a term is introduced or kept, ask what a reader loses when it is replaced by the elements it is made of, an existing name, or a plain clause. Nothing → no term. A new noun bundling several existing things is the typical failure. Necessity is checked before a name is sourced.
-- A shorthand written to shorten a sentence never becomes a term.
-- A concept the literature names keeps that name. A coined word for it is replaced by the literature term, with its source.
 - Two named variants of one system under comparison are its implementations, named by what the code calls them (backend, strategy, implementation). Never "arm", "condition", "treatment", or "control" — those name a trial design, not a program.
 - Never translate a metaphor word for word across languages. A project's forbidden substitutions live in the Forbidden Substitutions section of its project `communication/terminology.md`, one bullet each, the forbidden words quoted after "never". `hooks/doc_check.py` reports them in written files.
 
@@ -37,5 +34,5 @@ These rules bind every surface the agent writes, with no exception: chat replies
 
 - Every naming rule serves readability; one term per concept is a means to it. For a generic or coined word, when a rule and the reader's understanding pull apart, the reader wins. A literature, domain or core term keeps its name (Established Terms).
 - A generic word whose meaning the context fixes is not split by the one-term rule and needs no question.
-- An abstract noun a reader new to the repository cannot parse without the glossary ("containment") is replaced by a plain clause or the identifier.
+- An abstract noun a reader new to the repository cannot parse without the glossary is replaced by a plain clause or the identifier.
 - After a change that renames or rewords terms, every changed sentence is reread in full. A sentence that reads stiffly, is ambiguous, or needs the glossary to parse is rewritten.

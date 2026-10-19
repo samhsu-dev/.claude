@@ -41,7 +41,7 @@ Phase pipeline for feature development. Always active. The content rules of each
 - After every complete revision of a module's documents is committed, a reader new to the repository reads them from `index.md`: concept, model, design, impl, in that order, the documents only.
 - It reports with file:line every place it cannot follow: an undefined or generic-looking term, a step it cannot trace, a diagram that differs from its text, a missing reason, a term whose meaning drifts, a class or layer that does not match what it groups, a section a maintainer cannot change safely without reading other files.
 - Acceptance: accurate semantics and sound abstraction, so the documents are easy to understand and easy to maintain.
-- A fix changes the documents, never the algorithm. A domain term the reader cannot follow gets a definition or a link, never a substitute word.
+- A fix changes the documents, never the algorithm.
 
 ## Index
 
