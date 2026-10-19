@@ -23,6 +23,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - Every domain term in output has a glossary entry. General programming words (function, variable, class, loop, exception, call) need none. An identifier quoted as code needs an entry when it names a domain concept.
 - A new concept gets its glossary entry on first use, in the same change that introduces it.
 - A term absent from the glossary, the code, and the data files is not established. Use the plain CS or security term.
+- A term of the literature or of the domain (abstract interpretation, lattice, strong update, taint, sanitizer, slice, context sensitivity) and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A reader is helped by its definition, its citation, or a clause beside it. A common word in its place reads as wrong to a reader of the field.
 - One term names one concept, and one concept has one term. An audit checks both directions.
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.

@@ -19,6 +19,7 @@ The registry of a project's established terms: which terms it holds, how a new t
 - No entry for a named external artifact: a paper, a tool, a dataset. Its owner is the bibliography.
 - No entry for a shorthand one document uses in its own prose.
 - An entry stays only when removing it leaves a sentence of some document ambiguous or unexplained.
+- Removing an entry never removes the term from the prose: a textbook or literature term stays in the text with its textbook meaning, and only its entry goes.
 
 ## Name Sources
 
