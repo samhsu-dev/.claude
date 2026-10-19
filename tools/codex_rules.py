@@ -4,10 +4,12 @@
 pack <run-dir> [project-root]
     Writes <run-dir>/AGENTS.md: the always-active rule files the run reads in full before any work,
     the path-scoped rule files it reads before it writes or reviews a matching file, and the skills.
+    Writes <run-dir>/rules.json, the rule set of the launch, so a later rule change does not alter
+    what the run is checked against.
 gate <run-dir> [project-root]
-    Checks the run's codex.log: every always-active rule file, and every path-scoped rule file whose
-    globs match a file that a patch under <run-dir> writes, was read. Writes rules-missing.txt and
-    exits 1 when one was not.
+    Checks the run's codex.log against the rules.json of <run-dir> or its nearest parent: every
+    always-active rule file, and every path-scoped rule file whose globs match a file that a patch
+    under <run-dir> writes, was read. Writes rules-missing.txt and exits 1 when one was not.
 doccheck <repo> <file>...
     Runs the documentation check hook on each file as it now stands in <repo> and prints its findings,
     one per line with line numbers removed, so an applier can diff the findings before and after a patch.
@@ -15,6 +17,7 @@ doccheck <repo> <file>...
 The run directory is the Codex working directory, so Codex loads its AGENTS.md after the global one.
 The pointer list stays far below Codex's default project_doc_max_bytes, so no rule text is cut off.
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -129,6 +132,15 @@ def pack(run_dir, project):
         "",
     ]
     (run_dir / "AGENTS.md").write_text("\n".join(lines))
+    (run_dir / "rules.json").write_text(json.dumps([[str(f), globs] for f, globs in rules], indent=1))
+
+
+def launch_rules(run_dir, project):
+    """The rule set packed for the run: rules.json of the run directory or its nearest parent."""
+    for directory in [run_dir, *run_dir.parents]:
+        if (directory / "rules.json").exists():
+            return [(Path(f), globs) for f, globs in json.loads((directory / "rules.json").read_text())]
+    return configuration(project)
 
 
 def patch_targets(run_dir):
@@ -152,7 +164,7 @@ def gate(run_dir, project):
     log = "".join(p.read_text(errors="replace") for p in run_dir.rglob("codex.log"))
     targets = patch_targets(run_dir)
     missing = []
-    for rule, globs in configuration(project):
+    for rule, globs in launch_rules(run_dir, project):
         forms = {t for target in targets
                  for t in (target, f"{GLOBAL}/{target}", f"{project}/{target}" if project else target)}
         needed = not globs or any(matches(globs, form) for form in forms)
@@ -167,7 +179,6 @@ def gate(run_dir, project):
 
 
 def doccheck(repo, files):
-    import json
     import subprocess
     for name in files:
         path = repo / name
