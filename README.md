@@ -39,6 +39,7 @@ A rule without `paths:` frontmatter is always active. A rule with `paths:` loads
 | `workflow/change-policy.md` | always | When code and public API may change |
 | `workflow/committing.md` | always | Commit message, staging, cadence, attribution |
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
+| `workflow/multi-agent.md` | always | Role discussion, model routing, task consolidation, run ledger and serial patch integration |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |
