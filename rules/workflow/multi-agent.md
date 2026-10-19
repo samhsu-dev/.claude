@@ -42,7 +42,7 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 
 ## No Ad Hoc Solutions
 
-- Before any fix, the root-cause gate validates the consolidation groups and asks whether one mechanism solves each group, checking existing mechanisms first.
+- Before any fix, the root-cause gate applies the root-cause and capability rules of `workflow/change-policy.md`: it validates the consolidation groups and asks whether one mechanism solves each group, checking existing mechanisms first.
 - The gate rejects per-item special cases under `code/quality.md` No Patch-Style Code; a distinct mechanism requires evidence that the problem differs and a design rationale in its owning document.
 - Before proposing a solution with a known limitation, researchers survey literature, industrial tools, cross-domain methods, closed-form mathematics and known algorithms, and return cited alternatives and remaining limits.
 - Analysis covers every affected item and boundary case against research, repository conventions and recorded decisions before options leave the panel.
