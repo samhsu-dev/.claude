@@ -10,6 +10,8 @@
 !rules/**
 !skills/
 !skills/**
+!tools/
+!tools/**
 
 # Track .gitignore itself
 !.gitignore

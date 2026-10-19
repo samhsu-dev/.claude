@@ -68,10 +68,11 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 ## Run Isolation and Integration
 
 - Run directories live in persistent scratch storage outside temporary directories; each worker's working directory and write sandbox are its own unique output directory.
+- Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules it reads before any work and the path-scoped rules and skills it reads before touching a matching file. Its result counts only when `tools/codex_rules.py gate` finds in its log a read of every rule its patched files need.
 - A launch brief fixes inputs, target files, exclusions, protected files, dependencies, acceptance criteria and return format; workers never write the target tree or Git metadata.
 - Every worker persists its result before the main agent reads it and returns patches plus a summary containing evidence, limits, verification and next step; no-change results return an empty patch set.
 - Each batch has one waiter that waits for every handle and sends one completion notification with results and failures; no polling by the main agent or wrapper workers.
 - Research artifacts, vetted analogues, citation-audit verdicts and approved source additions feed matching design-review/audit roles for a second pass and the update plan; all research finishes before document-update patches are applied.
-- Only one applier writes the target tree and Git metadata; it checks patch bases, reconciles overlaps, applies, lints and commits serially through the project's quality gate.
+- Only one applier writes the target tree and Git metadata; it takes a stack only from a run that passed the rules gate, checks patch bases, reconciles overlaps, applies, runs `tools/codex_rules.py doccheck` on every written file and rejects a new finding, lints and commits serially through the project's quality gate.
 - The applier skips protected files and records them as unresolved; staging by name and Git-write checks belong to `workflow/git-safety.md`, commit procedure and cadence to `workflow/committing.md`.
 - Failed or missing outputs block dependent tasks; independent verification follows integration, and the ledger records the remaining work before a batch closes.
