@@ -34,7 +34,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - File column: exact filename, no path prefix.
 - Content column: under 80 characters. States what the file covers, not what it is.
 - Rows ordered: concept → model → design → spec → impl.
-- Never list `todo.md`, `*todo*.md`, or any task doc. Task docs are local-only, excluded from the repo. Index lists committed docs only.
+- Never list a local record (`docs/decisions/`, `docs/todo/`, `docs/audit/`). Index lists committed docs only.
 
 ## When to Split
 
@@ -82,7 +82,7 @@ Split files use `<type>-<topic>.md` prefix naming:
 
 ## Verification
 
-- Every committed doc file in the directory appears in `index.md`. Exception: task docs (`todo.md`, `*todo*.md`) are never listed.
+- Every committed doc file in the directory appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
-- No `todo.md`, `*todo*.md`, or task doc entry appears in `index.md`.
+- No local record appears in `index.md`.
 - No file exceeds 200 lines. Split and update `index.md` when exceeded.

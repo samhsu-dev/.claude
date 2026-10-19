@@ -24,7 +24,8 @@ Audit documentation files against their type-specific rulesets, produce a fix pl
 | `**/design.md`, `**/design-*.md` | Design | design rules |
 | `**/spec.md`, `**/spec-*.md` | Algorithm spec | spec rules |
 | `**/impl.md`, `**/impl-*.md` | Implementation | impl rules |
-| `**/todo.md`, `**/*.todo.md` | Task | todo rules |
+| `docs/todo/**` | Task | todo rules |
+| `docs/decisions/**`, `docs/audit/**` | Local record | `CLAUDE.md` Local Records only |
 | `**/index.md` | Index | index rules |
 | `**/glossary.md`, `**/glossary-*.md` | Glossary | glossary rules |
 
@@ -122,7 +123,7 @@ Read every file. Check against the rules below for its type. Record each violati
 
 ---
 
-### todo.md (Task Management)
+### docs/todo/ (Task Management)
 
 **Rules:**
 - Action verb + object + detail. No vague titles.
@@ -138,7 +139,7 @@ Read every file. Check against the rules below for its type. Record each violati
 **Rules:**
 - Every file in the directory appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
-- Rows ordered: concept → model → design → spec → impl → todo.
+- Rows ordered: concept → model → design → spec → impl. No local record.
 - No domain content. Descriptions say what topic, not definitions.
 - No hierarchy or nesting. Flat table.
 - No file exceeds 200 lines. Split and update `index.md` when exceeded.

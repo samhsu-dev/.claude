@@ -65,6 +65,14 @@ def terminology_files(path):
     return found
 
 
+LOCAL_RECORD_DIRS = {"decisions", "todo", "audit"}
+
+
+def local_record(path):
+    """A file of a local record directory, `docs/decisions/`, `docs/todo/` or `docs/audit/`, which is never committed."""
+    return path.parent.name in LOCAL_RECORD_DIRS and path.parent.parent.name == "docs"
+
+
 def forbidden_terms(rule_file):
     """Quoted words after `never` in each bullet of the Forbidden Substitutions section."""
     section = re.search(r"^## Forbidden Substitutions\n(.*?)(?=^## |\Z)", rule_file.read_text(), re.S | re.M)
@@ -231,7 +239,7 @@ def main():
     hits = term_hits(path, written_text(tool_input))
     if hits:
         warnings.append("Forbidden term in written text (allowed only as an exception the rule names):\n  " + "\n  ".join(hits[:MAX_REPORTED]))
-    if path.suffix == ".md" and not path.name.endswith(".todo.md") and ".claude" not in path.parts:
+    if path.suffix == ".md" and not local_record(path) and ".claude" not in path.parts:
         agent_paths = [f"{path.name}:{number}" for number, line in enumerate(path.read_text().splitlines(), 1)
                        if AGENT_CONFIG.search(line)]
         if agent_paths:
@@ -246,7 +254,7 @@ def main():
         if missing:
             more = f"\n  ... {len(missing) - MAX_REPORTED} more" if len(missing) > MAX_REPORTED else ""
             warnings.append(f"{len(missing)} glossary Source paths do not resolve:\n  " + "\n  ".join(missing[:MAX_REPORTED]) + more)
-        if path.name != "glossary.md" and not path.name.endswith(".todo.md"):
+        if path.name != "glossary.md" and not local_record(path):
             located = external_locations(path)
             if located:
                 more = f"\n  ... {len(located) - MAX_REPORTED} more" if len(located) > MAX_REPORTED else ""

@@ -36,6 +36,21 @@ Each fact has one owning document; every other document links it and never resta
 
 A document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision" or "agent decision" markers. A decision's question, options, choice, evidence and commits live in the project's local decision log, which is never committed; a commit records when a fact changed.
 
+## Local Records
+
+Records that serve only the developers at work live in three local directories, excluded through `.git/info/exclude` and never committed:
+
+| Record | Directory | Holds |
+|--------|-----------|-------|
+| Decision log | `docs/decisions/` | Each decision item, open or decided: question, options, examples, choice, reason, commits |
+| Task docs | `docs/todo/` | Tasks still to do (`rules/docs/todo.md`) |
+| Audit reports | `docs/audit/` | Each audit's findings, each with where it went: a doc fix, a task, or a decision item |
+
+- A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
+- Each directory holds one file per module, named after the module's docs path with `/` as `-` (`docs/intrpt/phases/phase1/` → `intrpt-phases-phase1.md`), split by concern past 200 lines, and an `index.md` listing its files.
+- Dates, decision IDs and commit hashes are allowed in local records only.
+- A committed document never names or links a local record, and no committed fact depends on one.
+
 ## Skills
 
 Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards. The human-facing listing of rules and skills: `README.md`.

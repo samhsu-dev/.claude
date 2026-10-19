@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/todo.md"
+  - "**/docs/todo/**"
 ---
 
 # Task Management Standards
@@ -35,7 +35,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 ## File Organization
 
-- One `todo.md` per phase. Sequential numbering when multiple: `1.todo.md`, `2.todo.md`.
+- Task docs are local records in `docs/todo/`, one file per module (`CLAUDE.md` Local Records).
 - Group related tasks together.
 - Update state immediately after change.
 

@@ -13,14 +13,14 @@ Phase pipeline for feature development. Always active. The content rules of each
 | 3 | Algorithm | `spec.md` | User confirms correctness and termination | No worklist, fixpoint, graph traversal, or recursive structure |
 | 4 | Design | `design.md` | User confirms structure and responsibility allocation | Never |
 | 5 | Research | `impl.md` | None; agent reports findings | Never |
-| 6 | Plan | `todo.md` | User confirms task breakdown and order | Never |
-| 7 | Code | source code | None; agent follows `todo.md` in order | Never |
-| 8 | Verify | passing quality gate | `todo.md` Quality Gate checklist passes | Never |
+| 6 | Plan | task doc `docs/todo/<module>.md` | User confirms task breakdown and order | Never |
+| 7 | Code | source code | None; agent follows the task doc in order | Never |
+| 8 | Verify | passing quality gate | Task doc Quality Gate checklist passes | Never |
 
 - Each phase reads the documents of the earlier phases as input.
 - A skipped phase states its skip reason in the next document.
 - Research verifies every external API via documentation, DeepWiki, Context7, or a minimal test, and records each finding in `impl.md` at once.
-- Code commits each `todo.md` task the moment it lands runnable, before the next task starts.
+- Code commits each task the moment it lands runnable, before the next task starts.
 
 ## Existing Codebase Changes
 
