@@ -34,7 +34,7 @@ Each fact has one owning document; every other document links it and never resta
 | Types, functions, open gaps between code and decided design | `design.md` |
 | External APIs | `impl.md` |
 
-A document states the current design. No dates, no change history, no dated or "verified" sections; a commit records when a fact changed.
+A document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision" or "agent decision" markers. A decision's question, options, choice, evidence and commits live in the project's local decision log, which is never committed; a commit records when a fact changed.
 
 ## Skills
 

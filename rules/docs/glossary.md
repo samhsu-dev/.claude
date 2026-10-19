@@ -81,7 +81,6 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Reference:** [@<key>] `<symbol>` | [@<key>, "<section>"] — same | similar | clash | none
 - **Literature:** [@<key>, sec. <section>] — borrowed | same | similar | method | clash | none
 - **Tools:** [@<key>] `<symbol>` | [@<key>, "<page>"] — same | similar | clash | none
-- **Decision:** <commit> (<decision ID>) — <one clause>
 ```
 
 - **Heading:** one term as used in prose, or one identifier in backticks. An abbreviation follows the long form in parentheses. The identifier that implements a prose term is named in Source, never in the heading. A heading never names two terms.
@@ -93,8 +92,7 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Reference, Literature, and Tools cite by bibliography key (`rules/docs/bibliography.md`). Reference and Tools name a symbol, a manual section, or a page title: never a URL, a directory path, or a line number. A file name is added only when the symbol alone is ambiguous. `hooks/doc_check.py` reports a URL, a path, or a line number outside Source and Example, and a citation field without a key.
-- **Decision:** one line: every user decision that fixed the name or the definition, newest last, separated by `;`. A commit resolves in the repository. A decision ID resolves in the module's decision record.
-- No field carries a date. A commit fixes when a decision, a rename, or a check was made.
+- No field carries a date, a decision ID or a commit. The project's local decision log records the decision that fixed a name or a definition.
 - Definition and Source are required. Is a is required when an entry is the parent. Example is required by its rule above. The other fields are present when one exists.
 
 ## Order
