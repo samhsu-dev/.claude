@@ -95,8 +95,9 @@ def pack(run_dir, project):
     lines = [
         "# Agent Rules of This Run",
         "",
-        "The global instructions loaded before this file are an older import of these rules with `.claude` rewritten "
-        "to `.Codex`. Where they differ, the files below govern, and every `.Codex` path means `.claude`.",
+        "The global instructions loaded before this file are the Codex profile of these rules, checked out at "
+        "`~/.codex` and possibly older. Where they differ, the files below govern, and the profile's step that reads "
+        "a project `.codex/AGENTS.md` does not apply to this run.",
         "",
         "## Before Any Work",
         "",
