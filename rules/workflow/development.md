@@ -27,6 +27,7 @@ Phase pipeline for feature development. Always active. The content rules of each
 - Read the existing docs in the target directory first.
 - Start at the earliest phase the change affects.
 - Update documents in place. Never recreate them from scratch.
+- A change rewrites the section that owns the fact. It never appends a paragraph or a note beside the text it changes.
 - A concept or model change revises every downstream document before code changes.
 
 ## Phase Transitions
@@ -34,6 +35,13 @@ Phase pipeline for feature development. Always active. The content rules of each
 - Forward only. Exception: Research findings that invalidate a design assumption return to Design, and `design.md` is revised before work continues.
 - A backward step states its reason.
 - Each phase completes before the next begins.
+
+## Reader Review
+
+- After every complete revision of a module's documents is committed, a reader new to the repository reads them from `index.md`: concept, model, design, impl, in that order, the documents only.
+- It reports with file:line every place it cannot follow: an undefined or generic-looking term, a step it cannot trace, a diagram that differs from its text, a missing reason, a term whose meaning drifts, a class or layer that does not match what it groups, a section a maintainer cannot change safely without reading other files.
+- Acceptance: accurate semantics and sound abstraction, so the documents are easy to understand and easy to maintain.
+- A fix changes the documents, never the algorithm. A domain term the reader cannot follow gets a definition or a link, never a substitute word.
 
 ## Index
 
