@@ -25,14 +25,12 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 | 7 | Output Format | Response contract: fields, value domains, abstain path | Task restatement |
 | 8 | Examples | Few-shot demonstrations; construction follows Examples below | Novel rules not stated above |
 | 9 | Context / Data | Long input data, wrapped in XML tags | Instructions |
-| 10 | Final | Restate single most important rule; anchor query last | New rules |
-
-- For prompts over 20k tokens: mirror the highest-priority constraint at both top and bottom.
+| 10 | Final | Priority reminder per Information Placement; anchor query last | New rules |
 
 ## Information Placement
 
 - One kind of information has one section. A rule, its scope, its exceptions, and its illustrations sit in the section that owns the rule.
-- A rule stated in two sections is one rule in the wrong place. Delete the copy that is not in the owning section.
+- A rule occurs only in its owning section. Exception: Final repeats the single highest-priority rule. For prompts over 20k tokens, that rule is first in Constraints and its only repetition is in Final.
 - A section that exists to hold the exception to a rule stated elsewhere is a patch. Fold it into the rule.
 - A prompt states only what the model cannot derive: our policy, our environment, our data's provenance, our measured frequencies. Domain facts and common terms the model already applies are omitted.
 
