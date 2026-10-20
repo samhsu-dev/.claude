@@ -35,7 +35,7 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 - A failure is logged exactly once, at the layer that handles it. A layer that propagates an error never logs it.
 - Propagation sites attach context (operation, parameters, entity IDs) to the error object; context reaches the handling boundary inside the error, not as log records.
-- Every ERROR record carries the exception type and stack trace, the operation attempted, and the inputs and state needed to reproduce the failure.
+- Every ERROR record carries the exception type and stack trace, the operation attempted, and the inputs and state permitted by Record Content for reproducing the failure.
 - Every ERROR record carries the identifiers of the affected unit of work and entities.
 - A failed unit's summary record carries the error identifier, linking summary to failure detail.
 
