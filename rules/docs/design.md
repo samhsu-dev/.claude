@@ -46,7 +46,7 @@ No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 - **YAGNI** — Implement only what is needed now.
 - **DRY** — One authoritative representation per piece of knowledge.
 - **Separation of Concerns** — One concern per module. No overlap.
-- **Law of Demeter** — Call only own methods, parameter methods, locally created objects, direct attributes.
+- Method access contracts: `code/quality.md` Code Structure.
 - **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
 - **Fail-fast** — Detect and report errors at the earliest point.
 
