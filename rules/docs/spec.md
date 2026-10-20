@@ -41,9 +41,9 @@ Per algorithm:
 
 ## When Required
 
-- Module implements iterative/recursive algorithms (worklist, fixpoint, graph traversal).
+- Module implements iterative/recursive algorithms.
 - Correctness depends on invariants not obvious from code.
-- Algorithm choice is a design decision (why worklist, not chaotic iteration).
+- Algorithm choice is a design decision.
 
 ## When Not Required
 
