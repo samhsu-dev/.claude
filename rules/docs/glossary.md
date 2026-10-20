@@ -105,7 +105,7 @@ One entry per term: an H3 heading followed by fields in this order.
 
 ## Names
 
-- Every heading is unique across all glossary files. An identifier and the prose term it implements share one entry.
+- Every heading is unique across all glossary files.
 - A heading is a term, never the bare element kind of the locate step: no entry named "Node", "Edge", or "Label".
 - A rename deletes the old entry and adds a retired-names row with the successor and the commit. A term removed from the design whose code is gone gets a row with successor `none`. A retired name is never reused for another concept.
 
