@@ -10,7 +10,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 ## 1. Principles
 
 - Tests prove the presence of defects, not their absence.
-- Exhaustive testing is impossible. Select inputs via equivalence partitioning and boundary analysis.
+- Exhaustive testing is impossible.
 - Defects cluster. Concentrate tests on high-risk and high-change areas.
 - Same tests stop finding new defects over time (pesticide paradox). Update tests as code evolves.
 

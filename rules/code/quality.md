@@ -54,7 +54,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Bug Prevention
 - Check for string injection.
-- Off-by-one: boundary values tested for every range/slice/index operation.
+- For every range, slice, and index operation, apply boundary value analysis from `testing.md`.
 - Null/None: never assume a return value is non-null without a type guarantee or check.
 - Resource leaks: every opened resource (file, connection, lock) has a guaranteed close path.
 - Mutation hazard: never mutate a collection while iterating. Never mutate function arguments.
