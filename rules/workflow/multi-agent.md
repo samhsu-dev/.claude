@@ -8,7 +8,7 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 
 - The main agent owns user communication and a persistent run ledger; large tasks form a hierarchy of main agent, track leads, workers and independent checkers.
 - The ledger holds the verbatim task and numbered user directives, hierarchy, gate order, dependencies, protected files and next steps.
-- Before launch, a ledger entry fixes task ID, parent, role, model, effort, input versions, output directory, target files and acceptance criteria; the handle is added when assigned.
+- Before launch, a ledger entry fixes task ID, parent, role, model, effort, inputs and their versions, output directory, target files, protected files, dependencies and acceptance criteria; the handle is added when assigned.
 - Every result, failure, gate and decision updates the ledger with evidence, status and next step; proposed, applied, committed and independently verified remain distinct states.
 - After context compaction, the main agent rereads the ledger before acting; the ledger takes precedence over the compacted summary.
 
@@ -69,7 +69,7 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 
 - Run directories live in persistent scratch storage outside temporary directories; each worker's working directory and write sandbox are its own unique output directory.
 - Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules it reads before any work and the path-scoped rules and skills it reads before touching a matching file. Its result counts only when `tools/codex_rules.py gate` finds in its log a read of every rule its patched files need.
-- A launch brief fixes inputs, target files, exclusions, protected files, dependencies, acceptance criteria and return format; workers never write the target tree or Git metadata.
+- A launch brief carries the Run Ledger entry plus exclusions and return format; workers never write the target tree or Git metadata.
 - Every worker persists its result before the main agent reads it and returns patches plus a summary containing evidence, limits, verification and next step; no-change results return an empty patch set.
 - Each batch has one waiter that waits for every handle and sends one completion notification with results and failures; no polling by the main agent or wrapper workers.
 - Research artifacts, vetted analogues, citation-audit verdicts and approved source additions feed matching design-review/audit roles for a second pass and the update plan; all research finishes before document-update patches are applied.
