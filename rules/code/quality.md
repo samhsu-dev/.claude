@@ -53,6 +53,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No repeated conditional logic on the same discriminant → polymorphism or lookup table.
 
 ## Bug Prevention
+- Check for string injection.
 - Off-by-one: boundary values tested for every range/slice/index operation.
 - Null/None: never assume a return value is non-null without a type guarantee or check.
 - Resource leaks: every opened resource (file, connection, lock) has a guaranteed close path.
@@ -102,9 +103,9 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Post-Edit Verification (Mandatory)
 After every code modification, review all changed files for:
-1. **Smell scan**: code smells listed above — primitive obsession, duplication, feature envy, data clumps, god objects, magic values, middle-man, speculative generality.
-2. **Bug scan**: off-by-one, null safety, resource leaks, mutation hazards, race conditions, encoding assumptions, integer overflow, string injection.
-3. **Patch scan**: band-aid fixes, workaround comments, shim layers, redundant validation, caller-specific branches.
+1. Check Code Structure and Code Smells.
+2. Check Bug Prevention.
+3. Check No Patch-Style Code.
 Fix every finding before considering the change complete. No exceptions.
 
 ## API Design
