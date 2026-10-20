@@ -23,7 +23,7 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 | 5 | Priority / Tie-break | Ranking and disambiguation order | Hard constraints |
 | 6 | Reasoning | Induced planning step — non-reasoning models only | Any content on native-thinking models |
 | 7 | Output Format | Response contract: fields, value domains, abstain path | Task restatement |
-| 8 | Examples | 3–5 few-shot demonstrations in XML tags | Novel rules not stated above |
+| 8 | Examples | Few-shot demonstrations; construction follows Examples below | Novel rules not stated above |
 | 9 | Context / Data | Long input data, wrapped in XML tags | Instructions |
 | 10 | Final | Restate single most important rule; anchor query last | New rules |
 
@@ -59,7 +59,6 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 
 ## Examples
 
-- Few-shot examples follow the instructions, never precede them.
 - 3–5 examples, diverse, each wrapped in `<example>` tags; group under `<examples>`.
 - Include one abstain / negative example when the task has an abstain path.
 - Concrete tokens in examples are illustrative. No input-specific token baked into a constraint as if it were a general rule.
