@@ -23,7 +23,7 @@ Sections in order; include only if they have content:
 | **APIs** | `**[Lib]**` `snippet` — one-line when/gotcha. |
 | **Libraries** | Name; version if fixed; purpose. One line each. |
 | **Developer instructions** | Workflow, command, pattern, constraint. One fact per line. |
-| **Design-specific** | Invariants, non-obvious behaviour, integration. Subheadings by design filename if multiple. |
+| **Design-specific** | Links to model invariants; non-obvious behaviour, integration. Subheadings by design filename if multiple. |
 
 ## 3. When to write
 
