@@ -35,7 +35,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 ## File Organization
 
-- Task docs are local records in `docs/todo/`, one file per module (`CLAUDE.md` Local Records).
+- Record location and file naming: `CLAUDE.md` Local Records.
 - Group related tasks together.
 - Update state immediately after change.
 

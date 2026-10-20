@@ -34,7 +34,7 @@ Each fact has one owning document; every other document links it and never resta
 | Types, functions, open gaps between code and decided design | `design.md` |
 | External APIs | `impl.md` |
 
-A document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision" or "agent decision" markers. A decision's question, options, choice, evidence and commits live in the project's local decision log, which is never committed; a commit records when a fact changed.
+A committed document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision" or "agent decision" markers. Decision records follow Local Records; a commit records when a fact changed.
 
 ## Local Records
 
@@ -42,7 +42,7 @@ Records that serve only the developers at work live in three local directories, 
 
 | Record | Directory | Holds |
 |--------|-----------|-------|
-| Decision log | `docs/decisions/` | Each decision item, open or decided: question, options, examples, choice, reason, commits |
+| Decision log | `docs/decisions/` | Each decision item, open or decided: question, options, examples, choice, reason, evidence, commits |
 | Task docs | `docs/todo/` | Tasks still to do (`rules/docs/todo.md`) |
 | Audit reports | `docs/audit/` | Each audit's findings, each with where it went: a doc fix, a task, or a decision item |
 
