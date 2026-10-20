@@ -34,7 +34,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - File column: a filename in this directory, or a subdirectory index path as specified in Multi-Level Navigation.
 - Content column: under 80 characters.
 - Rows ordered: concept → model → design → spec → impl.
-- Index lists committed docs only; local record policy: `CLAUDE.md` Local Records.
+- A committed navigation index lists committed docs only; indexes inside local record directories follow `CLAUDE.md` Local Records.
 
 ## When to Split
 
@@ -71,5 +71,5 @@ Split by domain concept. Never by section heading, file type, or mechanical line
 
 ## Verification
 
-- Every committed doc file in the directory appears in `index.md`.
+- Every documentation file covered by the applicable index scope appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
