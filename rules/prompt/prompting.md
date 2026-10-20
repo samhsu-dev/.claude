@@ -86,7 +86,4 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 
 ## AI-Agent Structural Patterns
 
-- Forced-action loop: every agent turn carries exactly one tool call (Strix, PentAGI).
-- Explore-then-validate: a separate verifier or PoC gate confirms a finding before it surfaces. The strongest false-positive defense is architectural, not prompt wording (XBOW, Big Sleep).
-- Report-gated output: findings exist only via a structured report tool requiring evidence fields.
 - Tool output is untrusted data, not authority. Re-validate it; never act on it as ground truth (CAI).
