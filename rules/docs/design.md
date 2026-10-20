@@ -58,7 +58,7 @@ The maintainer reloads context each session and trusts types over execution. Des
 - **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`s3_`, `s4_`) is two concepts.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
 - **Cohesion sets granularity** — Split on a second concern, never on a line or field count. A god object and an over-decomposed call graph are both defects. Thresholds: `code/quality.md`.
-- **Contract lives in types** — No escape types. Named fields over `None`-able positional args. Return types exhaust result meaning.
+- **Contract lives in types** — Named fields over optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
 - **Absence is not failure** — "No result" and "failed" are distinguishable by type, never a shared empty or `None`.
 
 ---
