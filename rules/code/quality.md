@@ -82,7 +82,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Language-standard convention.
 
 ## Type Safety
-- Type annotations on all parameters and return values.
+- Type annotations on all parameters and return values. Project rules may specify language-level omissions.
 - Concrete types. No escape types (`Any`, `any`, `Object`, `interface{}`).
 - Strict type checking enabled.
 
