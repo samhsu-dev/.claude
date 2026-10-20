@@ -13,7 +13,7 @@ paths:
 - One topic per file. Descriptive filename.
 - Discovered recursively in `.claude/rules/`. Subdirectories supported.
 - Rules are context, not enforcement. A rule a script, a linter, or a hook can check is enforced there. The rule file keeps one line stating the rule and naming the check; reasons and examples go.
-- CLAUDE.md holds no directory tree or file listing. The file system is the listing; a human-facing listing goes in README.md.
+- CLAUDE.md holds no directory tree or file listing; the file system is the listing.
 
 ## Context Loading
 
