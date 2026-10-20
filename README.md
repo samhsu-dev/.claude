@@ -10,7 +10,7 @@ Language-independent agent rules and skills for Claude Code, organized by the ar
 git clone https://github.com/samhsu-dev/.claude ~/.claude
 ```
 
-Claude Code reads `~/.claude/CLAUDE.md`, `~/.claude/rules/`, and `~/.claude/skills/` at session start. A project adds its own parameters in `<project>/.claude/`.
+Claude Code reads `~/.claude/CLAUDE.md`, `~/.claude/rules/`, and `~/.claude/skills/` at session start.
 
 ## Usage
 
@@ -30,7 +30,7 @@ Rules apply by themselves. Skills run on request:
 
 ## Rules
 
-A rule without `paths:` frontmatter is always active. A rule with `paths:` loads when Claude reads a matching file.
+Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-loading).
 
 | File | Loads for | Governs |
 |------|-----------|---------|
