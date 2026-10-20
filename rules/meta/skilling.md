@@ -77,7 +77,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 | CSV/JSON read-write, bulk transforms | Format output, answer follow-ups |
 
 - Scripts in `scripts/`. Invoke: `${CLAUDE_SKILL_DIR}/scripts/<name> $ARGUMENTS`.
-- Scripts output structured JSON. Agent reads and presents.
+- Scripts return structured JSON on success and error. Agent reads and presents.
 - Scripts use stdlib only. Document dependencies if unavoidable.
 - Scripts handle errors internally. Return error objects, never crash.
 
@@ -188,4 +188,3 @@ Same-name: higher scope wins, no merging. Live reload on file change.
 
 - `/name` triggers correctly with `$ARGUMENTS`.
 - All referenced files exist at `${CLAUDE_SKILL_DIR}` paths.
-- Scripts return valid JSON on success and error.
