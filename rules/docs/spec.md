@@ -15,7 +15,7 @@ IEEE 1016 Algorithm viewpoint. Formalizes computation logic between domain model
 - One `spec.md` per module with non-trivial algorithms.
 - Same directory as paired `design.md`.
 - Contains algorithm steps, invariants, termination arguments, complexity.
-- No domain entity definitions -- stays in `model.md`.
+- Entity definitions: glossary; domain entity rules: `model.md`.
 - No class structure or method signatures -- stays in `design.md`.
 - No library API notes -- stays in `impl.md`.
 
@@ -37,7 +37,7 @@ Per algorithm:
 - One algorithm per heading. Multiple algorithms grouped by concern.
 - Pseudocode is unambiguous.
 - Edge cases and degenerate inputs documented after main steps.
-- Reference `model.md` for entity/state definitions used in steps.
+- Link the glossary entries of entities used in steps and `model.md` for their state rules.
 
 ## When Required
 
