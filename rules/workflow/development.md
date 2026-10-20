@@ -9,7 +9,7 @@ Phase pipeline for feature development. Always active. The content rules of each
 | # | Phase | Document | Gate | Skip when |
 |---|-------|----------|------|-----------|
 | 1 | Concept | `concept.md` | User confirms scope, terminology, boundaries | Never |
-| 2 | Domain Model | `model.md` | User confirms entities, invariants, state rules | Pure infrastructure (adapters, I/O, CLI) or trivial domain semantics |
+| 2 | Domain Model | `model.md` | User confirms entities, invariants, state rules | Applicability criteria in `rules/docs/model.md` require no model |
 | 3 | Algorithm | `spec.md` | User confirms correctness and termination | No worklist, fixpoint, graph traversal, or recursive structure |
 | 4 | Design | `design.md` | User confirms structure and responsibility allocation | Never |
 | 5 | Research | `impl.md` | None; agent reports findings | Never |

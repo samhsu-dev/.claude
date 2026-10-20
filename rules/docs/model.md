@@ -12,7 +12,7 @@ IEEE 1016 Information viewpoint + State dynamics viewpoint. Formalizes domain se
 
 ## Scope
 
-- One `model.md` per module with non-trivial domain semantics.
+- One `model.md` per module meeting When Required; apply When Not Required as the exception.
 - Same directory as paired `concept.md` and `design.md`.
 - Contains domain entity semantics, state models, invariants, relation semantics.
 - No software structure (classes, methods, fields) -- stays in `design.md`.
