@@ -17,7 +17,7 @@ One naming logic for every project, independent of language. Language-specific c
 ## File Naming
 
 - The file name states the single responsibility the file owns.
-- File names contain lowercase letters, digits, and underscores only. No dashes, dots, spaces, or uppercase.
+- By default, the filename stem uses lowercase letters, digits and underscores; the extension is excluded. A project rule may replace the stem convention.
 - File names are domain nouns, never pattern roles. No `utils`, `helpers`, `common`, `shared`, `misc`, `manager`, `handler` as a file name.
 - Never name a file after one class it contains when the file owns a broader responsibility. The file names the responsibility; the class names the instance.
 - One grammatical number for file and directory names across a codebase. Never singular and plural variants of the same name.
