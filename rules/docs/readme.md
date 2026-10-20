@@ -88,4 +88,3 @@ No table of contents.
 - No vague descriptions ("A utility library", "A tool for developers").
 - Blockquote (`>`) only for the Name line. No blockquote elsewhere.
 - No generic section names ("Miscellaneous", "Extra", "Other").
-- Install section present even when trivial (single command).
