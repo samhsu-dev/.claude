@@ -21,7 +21,7 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 | 3 | Constraints | High-priority rules, grouped | Examples, output schema, data |
 | 4 | Exclusions | What to reject, stated positively as "treat X as Y" | Selection rules |
 | 5 | Priority / Tie-break | Ranking and disambiguation order | Hard constraints |
-| 6 | Reasoning | Induced planning step — non-reasoning models only | Any content on native-thinking models |
+| 6 | Reasoning | Planning guidance subject to Reasoning below | Content excluded by Reasoning below |
 | 7 | Output Format | Response contract: fields, value domains, abstain path | Task restatement |
 | 8 | Examples | Few-shot demonstrations; construction follows Examples below | Novel rules not stated above |
 | 9 | Context / Data | Long input data, wrapped in XML tags | Instructions |
@@ -52,6 +52,8 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 - Phrase the contract positively: state the target shape, not forbidden shapes.
 
 ## Reasoning
+
+- The Reasoning section has no content for native-thinking models.
 
 - Induce a brief planning step only when the model is non-reasoning.
 - No hand-scripted reasoning steps and no forced reasoning field on native-thinking models.
