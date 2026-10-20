@@ -47,7 +47,7 @@ Records that serve only the developers at work live in three local directories, 
 | Audit reports | `docs/audit/` | Each audit's findings, each with where it went: a doc fix, a task, or a decision item |
 
 - A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
-- Each directory holds one file per module, named after the module (`intrpt-phase1.md` for `docs/intrpt/phases/phase1/`), split by concern past 200 lines, and an `index.md` listing its files.
+- Each directory holds one file per module, named after the module (`catalog-import.md` for `docs/catalog/import/`), split by concern past 200 lines, and an `index.md` listing its files.
 - Dates, decision IDs and commit hashes are allowed in local records only.
 - A committed document never names or links a local record, and no committed fact depends on one.
 
