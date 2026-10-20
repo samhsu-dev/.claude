@@ -12,7 +12,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 
 - Every technical term comes from the task's domain or from the repository's own established vocabulary.
 - Never borrow a term from an unrelated domain as a metaphor for a technical concept. Before writing a term, check that its source field belongs to the task domain or the repository vocabulary.
-- Never coin a term, label, or metaphor the codebase does not already use.
+- Term introduction follows `rules/docs/glossary.md` Selection and Naming Steps; no unregistered coined terms or aliases.
 - Never translate a metaphor word for word across languages. A project's forbidden substitutions live in the Forbidden Substitutions section of its project `communication/terminology.md`, one bullet each, the forbidden words quoted after "never". `hooks/doc_check.py` reports them in written files.
 
 ## Established Terms
@@ -21,13 +21,12 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - A concept the glossary names is referred to only by that name, in every output language alike.
 - Every domain term in output has a glossary entry. General programming words (function, variable, class, loop, exception, call) need none. An identifier quoted as code needs an entry when it names a domain concept.
 - A new concept gets its glossary entry on first use, in the same change that introduces it.
-- A term absent from the glossary, the code, and the data files is not established. Use the plain CS or security term.
+- Until that procedure establishes a name, use an existing term or a plain clause.
 - A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A reader is helped by its definition, its citation, or a clause beside it. A common word in its place reads as wrong to a reader of the field.
 - One term names one concept, and one concept has one term, so a search for the term finds every use of the concept. An audit checks both directions.
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.
 - The first use of a glossary term in a reply carries its definition in plain words.
-- A new term is named by the Name Sources and Naming Steps in `rules/docs/glossary.md`, read before the name is chosen.
 
 ## Readability
 
