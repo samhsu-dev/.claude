@@ -6,10 +6,6 @@ paths:
 
 # Rule Writing Standards
 
-Rules are read by agents. Code and documentation produced from rules are read by humans.
-
----
-
 ## Platform Constraints
 
 - Under 200 lines per file. Longer files reduce adherence.
