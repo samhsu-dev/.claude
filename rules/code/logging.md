@@ -27,8 +27,7 @@ Assign level by actionability, not by code location. Levels follow OpenTelemetry
 
 The unit of work — request, job, task, consumed message — is the anchor for log granularity, not the function or the line.
 
-- Every unit of work emits one summary record at completion carrying its identifiers, outcome, and duration.
-- The summary record is emitted on every exit path: success, handled failure, abort.
+- Every unit of work emits one summary record at completion carrying its identifiers, outcome, and duration on every exit path: success, handled failure, abort.
 - Every call to an external system (network, database, subprocess) is recorded with target, duration, and result — as its own record or as fields on the unit-of-work summary.
 - Records report completed outcomes. A start record whose only field is the operation name is TRACE. Exception: an operation that can hang or crash mid-work logs start at INFO, so the absence of its completion record is diagnosable.
 
