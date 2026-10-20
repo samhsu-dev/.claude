@@ -29,7 +29,7 @@ skill-name/
 |-------|------|---------|---------|
 | `name` | string | dir name | `/name` invocation. Lowercase, hyphens, max 64 chars. |
 | `description` | string | first paragraph | Auto-trigger judgment; see Description Rules. |
-| `allowed-tools` | string/list | session perms | Pre-approved tools. Names only, no patterns. |
+| `allowed-tools` | string/list | session perms | Pre-approved tools; see Constraints. |
 | `argument-hint` | string | none | Autocomplete hint. |
 | `disable-model-invocation` | bool | `false` | `true` = user-only, Claude cannot auto-trigger. |
 | `user-invocable` | bool | `true` | `false` = Claude-only, hidden from `/` menu. |
@@ -188,5 +188,4 @@ Same-name: higher scope wins, no merging. Live reload on file change.
 
 - `/name` triggers correctly with `$ARGUMENTS`.
 - All referenced files exist at `${CLAUDE_SKILL_DIR}` paths.
-- `allowed-tools` matches actual tool usage. No excess.
 - Scripts return valid JSON on success and error.
