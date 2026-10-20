@@ -13,13 +13,11 @@ Rules governing how cost, runtime, and process liveness are bounded.
 
 - Bound cost by reducing input — scope, file count, item count, granularity. Never by killing a running computation on a wall-clock deadline.
 - A deadline that kills a process producing all-or-nothing output is forbidden on a mandatory step. Its abort yields zero output, which fails the whole operation.
-- Aborting a mandatory all-or-nothing step converts slow success into total failure. The bound belongs on the input, not on the wall clock.
 
 ## Liveness Backstops
 
 - A hard-kill deadline is a liveness backstop, not a tuning parameter. Never expose it as a per-run configuration knob.
-- One liveness backstop per unit of work. Never add an inner deadline that duplicates an outer deadline already bounding the same work.
-- When an external or enclosing timeout bounds total runtime, inner steps set no fixed sub-deadline. The outer bound reaps a wedged process.
+- One liveness backstop per unit of work. When an external or enclosing timeout bounds total runtime, inner steps set no fixed sub-deadline; the outer bound reaps a wedged process.
 
 ## Degradation
 
