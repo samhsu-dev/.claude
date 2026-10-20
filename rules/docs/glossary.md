@@ -93,7 +93,6 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Shared citation syntax: `rules/docs/bibliography.md`. Glossary locators name a symbol, manual section, or page title; a file name is added only when the symbol alone is ambiguous. No URL, path, or line number outside Source and Example, and no citation field without a key; `hooks/doc_check.py` reports these violations.
-- No field carries a date, a decision ID or a commit. The project's local decision log records the decision that fixed a name or a definition.
 - Definition and Source are required. Fields without a presence condition above are present when a source exists.
 
 ## Order
