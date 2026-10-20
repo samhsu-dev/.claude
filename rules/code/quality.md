@@ -64,7 +64,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Encoding: explicit encoding on every I/O boundary. No implicit platform defaults.
 
 ## Resource Management
-- Context managers / RAII / try-with-resources for resources.
+- Use the language's scoped resource mechanism to satisfy the guaranteed close path in Bug Prevention.
 - No object creation inside loops. Move allocation outside.
 - Cache check before expensive operations.
 
