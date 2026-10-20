@@ -34,7 +34,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - File column: exact filename, no path prefix.
 - Content column: under 80 characters.
 - Rows ordered: concept → model → design → spec → impl.
-- Never list a local record (`docs/decisions/`, `docs/todo/`, `docs/audit/`). Index lists committed docs only.
+- Index lists committed docs only; local record policy: `CLAUDE.md` Local Records.
 
 ## When to Split
 
@@ -73,4 +73,3 @@ Split by domain concept. Never by section heading, file type, or mechanical line
 
 - Every committed doc file in the directory appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
-- No local record appears in `index.md`.
