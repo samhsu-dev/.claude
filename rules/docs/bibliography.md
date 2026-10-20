@@ -17,7 +17,7 @@ paths:
 
 # Bibliography Standards
 
-Every paper, manual, reference implementation, and tool a document cites is one entry of the repository's bibliography, cited by key in Pandoc citation syntax, the syntax Pandoc citeproc, MyST, and Quarto share. How a glossary entry uses citations: `rules/docs/glossary.md` Entry.
+Shared bibliography storage and citation syntax. Glossary field relations: `rules/docs/glossary.md` Entry.
 
 ---
 
