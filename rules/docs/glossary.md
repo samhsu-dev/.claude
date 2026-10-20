@@ -60,7 +60,7 @@ A new term is named in three steps, in order:
 - The project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, its layers, each with its commit) are agent instructions. They live in the project rule `.claude/rules/docs/glossary.md`, never in a repository document.
 - The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
-- Retired-names table columns: Retired, Successor, Commit. One row per rename or removal.
+- Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `CLAUDE.md` Local Records.
 - After a glossary file splits, add its new files to the routing table.
 
 ## Layers
@@ -106,7 +106,7 @@ One entry per term: an H3 heading followed by fields in this order.
 
 - Every heading is unique across all glossary files.
 - A heading is a term, never the bare element kind of the locate step: no entry named "Node", "Edge", or "Label".
-- A rename deletes the old entry and adds a retired-names row with the successor and the commit. A term removed from the design whose code is gone gets a row with successor `none`. A retired name is never reused for another concept.
+- A rename deletes the old entry and adds a retired-names row with the successor. A term removed from the design whose code is gone gets a row with successor `none`. A retired name is never reused for another concept.
 
 ## Enumerations
 
