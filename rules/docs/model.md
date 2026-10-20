@@ -34,7 +34,7 @@ Sections in order; include only if they have content:
 
 ## Content Rules
 
-- An entity is named by its glossary heading and linked to its entry. The entry states what it is; `model.md` states only its existence conditions, relations, states, and invariants, never the definition again.
+- An entity is named by its glossary heading and linked to its entry.
 - Define what each relation **means**, not how it is implemented.
 - State transitions: source state, trigger, guard, target state. Table or list.
 - No language-specific types, class names, or method signatures. Domain vocabulary only.

@@ -53,8 +53,6 @@ paths:
 
 ### Content
 - Concepts only. No implementation details, APIs, commands, or code.
-- A term's definition lives only in its glossary entry. A Core Concepts entry links that entry and never restates the definition.
-- A concept without a glossary entry gets one in the same change.
 - No formal semantics (state transitions, invariants, edge direction rules) -- those go in `model.md`.
 - Technical specifications link to `design.md`. Domain semantics link to `model.md`.
 
