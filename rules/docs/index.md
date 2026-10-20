@@ -12,7 +12,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 ## Scope
 
 - One `index.md` per documentation directory that contains 3+ files or any split documents; update it after any development stage that adds or renames a file.
-- Contains file list with one-line descriptions. No domain content, no concepts, no code.
+- Contains file list with one-line descriptions. No code.
 - Loaded first when an agent enters a documentation directory. All other files loaded on demand.
 
 ## Structure
@@ -32,7 +32,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - H1: module name + role. One line.
 - One table. Columns: File (relative path), Content (one-line description).
 - File column: exact filename, no path prefix.
-- Content column: under 80 characters. States what the file covers, not what it is.
+- Content column: under 80 characters.
 - Rows ordered: concept → model → design → spec → impl.
 - Never list a local record (`docs/decisions/`, `docs/todo/`, `docs/audit/`). Index lists committed docs only.
 
