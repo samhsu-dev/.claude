@@ -25,7 +25,7 @@ The registry of a project's established terms: which terms it holds, how a new t
 
 ## Name Sources
 
-A concept takes the name the highest-ranked source gives that same concept:
+Except for the core terms governed by Naming Steps, a concept takes the name the highest-ranked source gives that same concept:
 
 1. A name widely accepted in the literature.
 2. The reference manual or standard of the language or system the project analyzes or implements.
@@ -51,7 +51,7 @@ A new term is named in three steps, in order:
 - The terms of one locus share one role noun.
 - A state or attribute recorded on the element stays out of the element's name.
 - An umbrella term names only a class with a behavior of its own.
-- A project with a central algorithm declares its core terms in the glossary routing file: the names of the algorithm and its states. Core terms keep their names. A literature name for the same mechanism is cited in the entry as its method or as a similar concept, never used as the name. A literature name for what a value stands for serves as the role noun.
+- Core terms keep their names ahead of Name Sources; their project declarations follow Files. A literature name for the same mechanism is cited in the entry as its method or as a similar concept, never used as the name. A literature name for what a value stands for serves as the role noun.
 - A class named in the project's own publication stays a class in the glossary. It never becomes the name of one implementation element.
 
 ## Files
