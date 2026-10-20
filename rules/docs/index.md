@@ -31,7 +31,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 - H1: module name + role. One line.
 - One table. Columns: File (relative path), Content (one-line description).
-- File column: exact filename, no path prefix.
+- File column: a filename in this directory, or a subdirectory index path as specified in Multi-Level Navigation.
 - Content column: under 80 characters.
 - Rows ordered: concept → model → design → spec → impl.
 - Index lists committed docs only; local record policy: `CLAUDE.md` Local Records.
@@ -61,7 +61,7 @@ Split by domain concept. Never by section heading, file type, or mechanical line
 - No domain content. "Graph node types and their semantic roles" not a definition of what the node types are.
 - No redundancy with file content. The description says what topic the file covers; the file itself has the content.
 - No hierarchy or nesting. Flat table. No subsections, no grouping headers.
-- No external links. All entries point to files in the same directory.
+- No external links. Entries target files in this directory or the subdirectory indexes specified in Multi-Level Navigation.
 
 ## Multi-Level Navigation
 
