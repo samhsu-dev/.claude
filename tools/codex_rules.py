@@ -12,7 +12,7 @@ gate <run-dir> [project-root]
     under <run-dir> writes, was read. Writes rules-missing.txt and exits 1 when one was not.
 doccheck <repo> <file>...
     Runs the documentation check hook on each file as it now stands in <repo> and prints its findings,
-    one per line with line numbers removed, so an applier can diff the findings before and after a patch.
+    one per line with line numbers removed, so the main agent can check a file it wrote before committing.
 
 The run directory is the Codex working directory, so Codex loads its AGENTS.md after the global one.
 The pointer list stays far below Codex's default project_doc_max_bytes, so no rule text is cut off.
@@ -107,13 +107,13 @@ def pack(run_dir, project):
         "",
         *[f"- `{f}`" for f in always],
         "",
-        "You are a worker of the hierarchy that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
-        "inputs, write directory and return format. You never launch other runs and never write the target "
-        "repository or its Git metadata.",
+        "You take part in the discussion that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
+        "inputs, output directory and return format. You return findings, analysis or design as text. You never launch "
+        "other runs and never edit a file, write the target repository, or run a Git command.",
         "",
-        "## Before Writing or Reviewing a File",
+        "## Before Reviewing a File",
         "",
-        "Before you write, patch or review a file whose path matches a glob, read every rule file listed for it "
+        "Before you review or analyze a file whose path matches a glob, read every rule file listed for it "
         "with a shell command, the global one before the project one.",
         "",
         "| Rule file | Globs |",
@@ -126,10 +126,11 @@ def pack(run_dir, project):
         "",
         *[f"- `{s}`: {d}" for s, d in skills()],
         "",
-        "## Checks the Hooks Would Run",
+        "## Checks the Main Agent Will Run",
         "",
-        "Claude Code hooks do not run here. The applier runs the documentation check on every file a patch "
-        "writes and rejects new findings, and it lints every commit message. Meet both before you return.",
+        "Claude Code hooks do not run here, and you write no files. The main agent runs the documentation check "
+        "on every file it writes from your findings and lints every commit message, so any file you propose must "
+        "meet both.",
         "",
     ]
     (run_dir / "AGENTS.md").write_text("\n".join(lines))

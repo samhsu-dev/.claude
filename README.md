@@ -39,7 +39,7 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `workflow/change-policy.md` | always | When code and public API may change |
 | `workflow/committing.md` | always | Commit message, staging, cadence, attribution |
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
-| `workflow/multi-agent.md` | always | Role discussion, model routing, task consolidation, run ledger and serial patch integration |
+| `workflow/multi-agent.md` | always | Read-only delegated discussion and design; role stages, model routing, run ledger; the main agent makes every edit |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |
@@ -73,7 +73,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 | Script | Used by | Does |
 |--------|---------|------|
-| `tools/codex_rules.py` | the main agent launching a Codex run, and the applier | `pack` writes the run's `AGENTS.md` that points Codex to the rules and skills; `gate` checks the run's log for a read of every rule its patched files need; `doccheck` runs `hooks/doc_check.py` on files so the applier can reject new findings |
+| `tools/codex_rules.py` | the main agent launching a Codex run | `pack` writes the run's `AGENTS.md` and `rules.json` pointing Codex to the rules and skills; `gate` confirms the run's log shows it read every rule it was required to load; `doccheck` runs `hooks/doc_check.py` on named files and prints their findings |
 
 Project data comes from the project: `doc_check.py` reads the forbidden terms of the repository it edits, so one script serves every repository.
 
