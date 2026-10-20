@@ -35,7 +35,7 @@ Per algorithm:
 
 - Pseudocode uses domain vocabulary from `model.md`, not implementation names.
 - One algorithm per heading. Multiple algorithms grouped by concern.
-- No language-specific syntax. Pseudocode: unambiguous but language-neutral.
+- Pseudocode is unambiguous.
 - Edge cases and degenerate inputs documented after main steps.
 - Reference `model.md` for entity/state definitions used in steps.
 
