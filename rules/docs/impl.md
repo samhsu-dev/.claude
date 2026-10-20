@@ -27,7 +27,7 @@ Sections in order; include only if they have content:
 
 ## 3. When to write
 
-- API needed → **APIs**. Library needed → **Libraries**. Developer instruction → **Developer instructions**. User correction → update immediately.
+- API needed → **APIs**. Library needed → **Libraries**. Developer instruction → **Developer instructions**.
 - All investigation findings (API behavior, gotchas, version constraints) go into `impl.md` immediately. Not in conversation only.
 - No design duplication. No long examples or tutorials.
 
@@ -35,4 +35,4 @@ Sections in order; include only if they have content:
 
 - One to two lines per API: canonical import + when/gotcha. Remove when design no longer uses it.
 - Developer instructions: concrete only. Update/remove when workflow changes.
-- On user correction: update, deduplicate, remove obsolete. Design stays in design file.
+- On user correction: update immediately, deduplicate, remove obsolete. Design stays in design file.
