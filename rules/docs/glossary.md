@@ -61,7 +61,7 @@ A new term is named in three steps, in order:
 - The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor, Commit. One row per rename or removal.
-- A glossary file is at most 200 lines. A file past 200 lines splits by concern and the routing table gains a row.
+- After a glossary file splits, add its new files to the routing table.
 
 ## Layers
 

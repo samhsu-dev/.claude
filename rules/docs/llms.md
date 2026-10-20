@@ -141,4 +141,3 @@ For every sentence: "Does the caller need this to use the API correctly?" No →
 - Every link in `llms.txt` resolves to an existing file.
 - Every `llms/*.md` file is referenced from `llms.txt`.
 - `full.txt` matches the concatenation of `llms.txt` + all referenced files.
-- No file exceeds 200 lines.

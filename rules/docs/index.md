@@ -38,7 +38,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 ## When to Split
 
-- Any doc file exceeding 200 lines: split by concern using prefix naming.
+- Shared size limits and prefix naming: `CLAUDE.md` Documentation Naming.
 - Split by concept, not by section heading. Each file covers one self-contained topic.
 - After splitting: delete the original monolithic file. Update `index.md`.
 
@@ -54,18 +54,7 @@ Split by domain concept. Never by section heading, file type, or mechanical line
 
 ## Naming Convention
 
-Split files use `<type>-<topic>.md` prefix naming:
-
-| Type | Single | Split |
-|------|--------|-------|
-| Concept | `concept.md` | `concept-<topic>.md` |
-| Model | `model.md` | `model-<topic>.md` |
-| Design | `design.md` | `design-<topic>.md` |
-| Spec | `spec.md` | `spec-<topic>.md` |
-| Implementation | `impl.md` | `impl-<topic>.md` |
-
 - Topic name: noun or noun phrase. No verbs, no abbreviations.
-- Prefix matches the document type rule (`model-` triggers `model.md` rules, `design-` triggers `design.md` rules).
 
 ## Content Rules
 
@@ -85,4 +74,3 @@ Split files use `<type>-<topic>.md` prefix naming:
 - Every committed doc file in the directory appears in `index.md`.
 - Every entry in `index.md` points to an existing file.
 - No local record appears in `index.md`.
-- No file exceeds 200 lines. Split and update `index.md` when exceeded.
