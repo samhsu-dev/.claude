@@ -54,7 +54,7 @@ No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 
 The maintainer reloads context each session and trusts types over execution. Design for that reader.
 
-- **Name the concept** — A recurring argument clump becomes a parameter object; a closed-value scalar becomes an enum; a distinct concern becomes its own type.
+- **Name the concept** — A closed-value scalar becomes an enum; a distinct concern becomes its own type. Argument grouping contracts: `code/quality.md`.
 - **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`s3_`, `s4_`) is two concepts.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
 - **Cohesion sets granularity** — Split on a second concern, never on a line or field count. A god object and an over-decomposed call graph are both defects. Thresholds: `code/quality.md`.

@@ -33,7 +33,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Call only own methods, parameter methods, locally created objects, direct attributes.
 - No duplicate logic blocks. Two identical blocks → extract function.
 - No feature envy — a function accessing another object's fields more than its own belongs on that object.
-- No data clumps — fields always passed together → group into a type.
+- No data clumps — recurring argument clumps become parameter objects; fields always passed together become a type.
 
 ## No Stale Code
 - No dead code. No commented-out code.
