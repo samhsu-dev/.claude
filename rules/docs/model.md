@@ -37,7 +37,6 @@ Sections in order; include only if they have content:
 - An entity is named by its glossary heading and linked to its entry. The entry states what it is; `model.md` states only its existence conditions, relations, states, and invariants, never the definition again.
 - Define what each relation **means**, not how it is implemented.
 - State transitions: source state, trigger, guard, target state. Table or list.
-- Invariants: precise and falsifiable. "Every X has at least one Y" not "X should have Y."
 - No language-specific types, class names, or method signatures. Domain vocabulary only.
 - Reference `concept.md` for rationale. Reference `design.md` for implementation mapping.
 
