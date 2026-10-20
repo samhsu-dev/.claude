@@ -90,7 +90,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Allowed input set defined per function.
 - Validated at entry. Violation = raise/throw.
 - Invariants as executable checks, not comments.
-- Single validation point at boundary. Core logic accepts verified data only.
+- Single validation point at boundary. Core logic accepts verified data only; never re-validate that data deep inside code.
 - Single access path for optional/variant fields.
 - Same violation → same exception type at same layer.
 
@@ -99,7 +99,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
 - No conditional branches added solely to handle one caller's edge case — fix the design.
 - No adapter/shim layers around code you control — change the source.
-- No defensive copies or re-validation deep inside code that already validated at the boundary.
+- No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
 ## Post-Edit Verification (Mandatory)
 After every code modification, review all changed files for:
