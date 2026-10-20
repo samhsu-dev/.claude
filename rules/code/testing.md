@@ -24,7 +24,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 ### Coverage targets
 - **Statement coverage**: every line executed.
 - **Branch coverage**: every true/false path taken.
-- Target: >= 90% branch coverage on changed modules. `src` only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
+- Target: >= 90% branch coverage on changed modules. Production source roots named by the project configuration only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
 
 ## 3. Layout
 - The test tree mirrors the source tree. The project rule names its root and file-name pattern.
