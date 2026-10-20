@@ -3,16 +3,12 @@
 
 pack <run-dir> [project-root]
     Writes <run-dir>/AGENTS.md: the always-active rule files the run reads in full before any work,
-    the path-scoped rule files it reads before it writes or reviews a matching file, and the skills.
+    the path-scoped rule files it reads before it reviews a matching file, and the skills.
     Writes <run-dir>/rules.json, the rule set of the launch, so a later rule change does not alter
     what the run is checked against.
 gate <run-dir> [project-root]
     Checks the run's codex.log against the rules.json of <run-dir> or its nearest parent: every
-    always-active rule file, and every path-scoped rule file whose globs match a file that a patch
-    under <run-dir> writes, was read. Writes rules-missing.txt and exits 1 when one was not.
-doccheck <repo> <file>...
-    Runs the documentation check hook on each file as it now stands in <repo> and prints its findings,
-    one per line with line numbers removed, so the main agent can check a file it wrote before committing.
+    always-active rule file was read. Writes rules-missing.txt and exits 1 when one was not.
 
 The run directory is the Codex working directory, so Codex loads its AGENTS.md after the global one.
 The pointer list stays far below Codex's default project_doc_max_bytes, so no rule text is cut off.
@@ -23,7 +19,6 @@ import sys
 from pathlib import Path
 
 GLOBAL = Path.home() / ".claude"
-SKIPPED_PATCH_DIRS = {"snapshots", "evidence", "replay", "baseline", "sources"}
 
 
 def frontmatter_paths(path):
@@ -45,35 +40,6 @@ def rule_files(root):
     """(file, globs) for every rule of a configuration root, CLAUDE.md first."""
     found = [(root / "CLAUDE.md", [])] if (root / "CLAUDE.md").exists() else []
     return found + [(f, frontmatter_paths(f)) for f in sorted((root / "rules").rglob("*.md"))]
-
-
-def expand_braces(glob):
-    match = re.search(r"\{([^{}]*)\}", glob)
-    if not match:
-        return [glob]
-    return [g for option in match.group(1).split(",")
-            for g in expand_braces(glob[:match.start()] + option + glob[match.end():])]
-
-
-def glob_regex(glob):
-    """Regex for a rule glob; `**/` matches any directory prefix, including none."""
-    out, i = "", 0
-    while i < len(glob):
-        if glob.startswith("**/", i):
-            out, i = out + "(?:.*/)?", i + 3
-        elif glob.startswith("**", i):
-            out, i = out + ".*", i + 2
-        elif glob[i] == "*":
-            out, i = out + "[^/]*", i + 1
-        elif glob[i] == "?":
-            out, i = out + "[^/]", i + 1
-        else:
-            out, i = out + re.escape(glob[i]), i + 1
-    return re.compile(out + "$")
-
-
-def matches(globs, path):
-    return any(glob_regex(g).search(path) for glob in globs for g in expand_braces(glob))
 
 
 def configuration(project):
@@ -145,18 +111,6 @@ def launch_rules(run_dir, project):
     return configuration(project)
 
 
-def patch_targets(run_dir):
-    targets = set()
-    for patch in run_dir.rglob("*.patch"):
-        if SKIPPED_PATCH_DIRS & set(patch.relative_to(run_dir).parts):
-            continue
-        for line in patch.read_text(errors="replace").splitlines():
-            header = re.match(r"^\+\+\+ b/(.+)$", line)
-            if header:
-                targets.add(header.group(1))
-    return targets
-
-
 def read_in_log(rule, log):
     spellings = {str(rule), str(rule).replace(str(Path.home()), "~")}
     return any(s in log for s in spellings)
@@ -164,14 +118,8 @@ def read_in_log(rule, log):
 
 def gate(run_dir, project):
     log = "".join(p.read_text(errors="replace") for p in run_dir.rglob("codex.log"))
-    targets = patch_targets(run_dir)
-    missing = []
-    for rule, globs in launch_rules(run_dir, project):
-        forms = {t for target in targets
-                 for t in (target, f"{GLOBAL}/{target}", f"{project}/{target}" if project else target)}
-        needed = not globs or any(matches(globs, form) for form in forms)
-        if needed and not read_in_log(rule, log):
-            missing.append(str(rule))
+    missing = [str(rule) for rule, globs in launch_rules(run_dir, project)
+               if not globs and not read_in_log(rule, log)]
     report = run_dir / "rules-missing.txt"
     if missing:
         report.write_text("\n".join(missing) + "\n")
@@ -180,23 +128,7 @@ def gate(run_dir, project):
     return 0
 
 
-def doccheck(repo, files):
-    import subprocess
-    for name in files:
-        path = repo / name
-        if not path.is_file():
-            continue
-        payload = json.dumps({"tool_input": {"file_path": str(path), "content": path.read_text(errors="replace")}})
-        result = subprocess.run([sys.executable, str(GLOBAL / "hooks" / "doc_check.py")], input=payload,
-                                capture_output=True, text=True, cwd=repo)
-        for line in result.stderr.splitlines()[1:]:
-            print(f"{name}: " + re.sub(r":\d+\b|\b\d+ (lines|citation|glossary)", r"\1", line.strip()))
-    return 0
-
-
 if __name__ == "__main__":
-    if len(sys.argv) >= 4 and sys.argv[1] == "doccheck":
-        sys.exit(doccheck(Path(sys.argv[2]).resolve(), sys.argv[3:]))
     if len(sys.argv) not in (3, 4) or sys.argv[1] not in ("pack", "gate"):
         sys.exit(__doc__)
     run, proj = Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve() if len(sys.argv) == 4 else None

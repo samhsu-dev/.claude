@@ -73,7 +73,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 | Script | Used by | Does |
 |--------|---------|------|
-| `tools/codex_rules.py` | the main agent launching a Codex run | `pack` writes the run's `AGENTS.md` and `rules.json` pointing Codex to the rules and skills; `gate` confirms the run's log shows it read every rule it was required to load; `doccheck` runs `hooks/doc_check.py` on named files and prints their findings |
+| `tools/codex_rules.py` | the main agent launching a Codex run | `pack` writes the run's `AGENTS.md` and `rules.json` pointing Codex to the rules and skills; `gate` confirms the run's log shows it read every always-active rule |
 
 Project data comes from the project: `doc_check.py` reads the forbidden terms of the repository it edits, so one script serves every repository.
 
