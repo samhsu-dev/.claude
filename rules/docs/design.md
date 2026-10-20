@@ -14,7 +14,7 @@ Sections in this order:
 
 | Section | Content |
 |--------|--------|
-| **Design Overview** | Types/classes; relationships (one-way only); abstract types; exceptions/errors; dependency roles. |
+| **Design Overview** | Types/classes; relationships; abstract types; exceptions/errors; dependency roles. |
 | **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
 | **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
 | **Exception / Error Types** | Each type and when raised. |
@@ -25,7 +25,7 @@ No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 
 **Overview format**:
 - **Classes**: `ClassA`, `ClassB`, `ClassC`
-- **Relationships**: `ClassA` extends `ClassB`, `ClassA` contains `ClassC` (one-way; no A↔B)
+- **Relationships**: `ClassA` extends `ClassB`, `ClassA` contains `ClassC`
 - **Abstract**: `ClassE` (implemented by `ClassF`, `ClassG`)
 - **Exceptions**: `ExceptionH` extends `ExceptionI`, raised by `ClassA`
 - **Dependency roles**: Data holders: `ClassC`. Orchestrator: `ClassA`. Helpers: `ClassB`.
