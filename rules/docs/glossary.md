@@ -76,7 +76,7 @@ One entry per term: an H3 heading followed by fields in this order.
 ```markdown
 ### <Long form> (<ABBREVIATION>)
 - **Is a:** <parent entry>
-- **Definition:** <one to three sentences>
+- **Definition:** <definition>
 - **Example:** `<minimal input>` → <the term's instance in it>
 - **Source:** `<path>` `<symbol>`
 - **Reference:** [@<key>] `<symbol>` | [@<key>, "<section>"] — same | similar | clash | none
