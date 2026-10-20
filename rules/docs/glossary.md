@@ -94,7 +94,7 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Reference, Literature, and Tools cite by bibliography key (`rules/docs/bibliography.md`). Reference and Tools name a symbol, a manual section, or a page title: never a URL, a directory path, or a line number. A file name is added only when the symbol alone is ambiguous. `hooks/doc_check.py` reports a URL, a path, or a line number outside Source and Example, and a citation field without a key.
 - No field carries a date, a decision ID or a commit. The project's local decision log records the decision that fixed a name or a definition.
-- Definition and Source are required. Is a is required when an entry is the parent. Example is required by its rule above. The other fields are present when one exists.
+- Definition and Source are required. Fields without a presence condition above are present when a source exists.
 
 ## Order
 
