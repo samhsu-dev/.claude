@@ -30,7 +30,7 @@ Sections in this order:
 | 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
 | 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
 | 7 | **Citation** | BibTeX block requesting citation of the project's associated paper. Placeholder until the paper is released. |
-| 8 | **License** | SPDX identifier `GPL-2.0`. Always last. |
+| 8 | **License** | License section below. Always last. |
 
 ### Optional Sections
 
@@ -59,8 +59,7 @@ No table of contents.
 
 ## License
 
-- All projects use `GPL-2.0` (GNU General Public License v2.0). Never MIT.
-- License section states the SPDX identifier `GPL-2.0` and links to the `LICENSE` file.
+- License section states the repository's SPDX identifier and links to its `LICENSE` file.
 
 ## Citation
 
