@@ -27,7 +27,7 @@ docs/
 
 - `llms.txt` is the entry point. Agents read this first.
 - `llms/<module>.md` files are referenced from `llms.txt` via Markdown links.
-- `llms/full.txt` concatenates `llms.txt` + all `llms/*.md` content. Regenerate on any change.
+- Aggregate format and regeneration: full.txt Structure.
 
 ## llms.txt Structure (L0 Index)
 
@@ -94,7 +94,7 @@ Each `llms/<module>.md` file:
 - Separator: `\n\n---\n\n# Referenced Documents\n\n`
 - Each inlined file: `## Source: llms/<module>.md\n\n<content>\n\n---\n\n`
 - Truncate files over 200 lines with `... (truncated, N total lines)`.
-- Regenerate with a script. Never hand-edit.
+- Regenerate with a script after every change to `llms.txt` or any `llms/*.md`. Never hand-edit.
 
 ## Language Rules
 
@@ -109,7 +109,6 @@ Each `llms/<module>.md` file:
 
 - No prose paragraphs in L0 or L1. Lists and tables only. Exception: L0 body text (max 3 sentences).
 - No redundancy between L0 and L1. L0 says what exists; L1 says how to use it.
-- Update `full.txt` after every change to `llms.txt` or any `llms/*.md`.
 
 ### Include (Usage-Facing)
 - What to call: function signatures, class constructors, CLI commands.
