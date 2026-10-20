@@ -29,7 +29,7 @@ Sections in this order:
 | 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
 | 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
 | 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
-| 7 | **Citation** | BibTeX block requesting citation of the project's associated paper. Placeholder until the paper is released. |
+| 7 | **Citation** | For a project with an associated work; format below. |
 | 8 | **License** | License section below. Always last. |
 
 ### Optional Sections
@@ -63,20 +63,7 @@ No table of contents.
 
 ## Citation
 
-- Citation section is mandatory. It requests that every project using the library cite the project's associated paper.
-- Content is a fenced ```bibtex``` block.
-- Paper not yet released → placeholder BibTeX entry until release:
-
-```bibtex
-@misc{citation_placeholder,
-  title  = {{TODO: paper title — not yet released}},
-  author = {{TODO: authors}},
-  year   = {{TODO}},
-  note   = {Paper not yet released. Citation entry will be updated on publication.}
-}
-```
-
-- Replace placeholder fields with real metadata when the paper is published.
+- Citation content: the associated work's BibTeX entry in a fenced `bibtex` block; the project rule supplies the work requirement and release parameters.
 
 ## Rules
 
