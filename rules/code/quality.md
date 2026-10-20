@@ -109,7 +109,6 @@ After every code modification, review all changed files for:
 Fix every finding before considering the change complete. No exceptions.
 
 ## API Design
-- No infrastructure dependencies.
 - Exception-driven error handling.
 - Data containers hold data. No embedded behavior.
 - Application logic as explicit functions.
