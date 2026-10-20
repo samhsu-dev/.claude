@@ -108,7 +108,6 @@ After every code modification, review all changed files for:
 Fix every finding before considering the change complete. No exceptions.
 
 ## API Design
-- Call core module APIs directly. No wrapping layers.
 - No infrastructure dependencies.
 - Exception-driven error handling.
 - Data containers hold data. No embedded behavior.
