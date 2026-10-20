@@ -11,7 +11,7 @@ Audience: developers evaluating or using this library. Not maintainers, not cont
 
 ## Principle
 
-Cognitive funnel: broadest to most specific. Each section is an exit point — readers stop when their question is answered. The developer decision flow: name → description → example → install → API → adopt.
+Cognitive funnel: broadest to most specific. Each section is an exit point — readers stop when their question is answered. Section order follows Required Sections.
 
 A developer understands what the repo does within 10 seconds: title, one-line description, usage example.
 
@@ -34,7 +34,7 @@ Sections in this order:
 
 ### Optional Sections
 
-Insert between Usage and License. Include only when the README lacks context without them:
+Insert between Usage and License, except for the Badges position below. Include only when the README lacks context without them:
 
 - **Background** — Motivation and context. When the problem or naming is non-obvious.
 - **Contributing** — Link to `CONTRIBUTING.md` or one-line statement.
