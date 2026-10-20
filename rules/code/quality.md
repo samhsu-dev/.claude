@@ -12,7 +12,6 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Guard clauses to minimize nesting. Max 2 levels of indentation in function body.
 - `continue` over nested `if` in loops.
 - `break` on condition.
-- Flat logic. No deep nesting.
 - No boolean parameters that switch behavior — split into two functions.
 - No flag variables tracking state across a loop — extract to function or use early exit.
 
