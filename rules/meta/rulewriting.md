@@ -12,7 +12,6 @@ paths:
 - `paths:` YAML frontmatter → loaded when Claude reads matching files. No `paths:` → always active.
 - One topic per file. Descriptive filename.
 - Discovered recursively in `.claude/rules/`. Subdirectories supported.
-- Contradicting rules across files → Claude picks one arbitrarily. Prevent this.
 - Rules are context, not enforcement. A rule a script, a linter, or a hook can check is enforced there. The rule file keeps one line stating the rule and naming the check; reasons and examples go.
 - CLAUDE.md holds no directory tree or file listing. The file system is the listing; a human-facing listing goes in README.md.
 
@@ -74,7 +73,7 @@ paths:
 
 ## Conflict Resolution
 
-- Rules within one file: no contradictions.
+- Rules within one file or across files: no contradictions.
 - Global rules are language-agnostic defaults. Project rules specify language/community conventions.
 - User-level and project rules load together; the platform gives neither precedence.
 - A project rule that sets another value for a metric a global rule sets names the replaced global rule in the same bullet: "Replaces global `code/quality.md`: functions under 20 lines."
