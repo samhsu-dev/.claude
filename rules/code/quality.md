@@ -88,9 +88,8 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Input Contract & Invariants
 - Allowed input set defined per function.
-- Validated at entry. Violation = raise/throw.
+- Single validation point for the allowed input set at the system or trust boundary; a violation raises/throws. Core logic accepts verified data only; never re-validate that data deep inside code.
 - Invariants as executable checks, not comments.
-- Single validation point at boundary. Core logic accepts verified data only; never re-validate that data deep inside code.
 - Single access path for optional/variant fields.
 - Same violation → same exception type at same layer.
 
