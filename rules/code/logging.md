@@ -18,7 +18,7 @@ Assign level by actionability, not by code location. Levels follow OpenTelemetry
 | WARN | Anomaly that does not stop the operation; the signal a search or scan exists to surface. |
 | INFO | State transition a reader follows in normal operation: start, end, resource loaded, milestone reached. |
 | DEBUG | Diagnostic detail for one decision, still human-readable in volume. |
-| TRACE | Full execution flow; off by default. Per-iteration success records belong here, never DEBUG. |
+| TRACE | Full execution flow; off by default. Frequency limits follow High-Frequency Paths. |
 
 - Test before emit: a record whose loss hides no problem is one level too high.
 - Expected-success outcomes are not WARN or ERROR.
@@ -54,8 +54,8 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 ## High-Frequency Paths
 
-- Log state transitions, not iterations. A loop logs when a value flips, not every pass.
-- Aggregate at loop exit; never emit one record per iteration.
+- Outside the TRACE exception below, log state transitions, not iterations.
+- Aggregate at loop exit. Exception: per-iteration diagnostics use TRACE with the frequency bound below, never DEBUG.
 - Rate-limit or sample any record that can fire more than once per second.
 - A record's frequency is set by its caller, not its wording. A per-call summary line ("N passed, M failed") is high-frequency when the function runs in a hot loop. Level it by call frequency, not by whether it reads like a summary.
 
