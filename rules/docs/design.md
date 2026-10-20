@@ -20,6 +20,8 @@ Sections in this order:
 | **Exception / Error Types** | Each type and when raised. |
 | **Open Gaps** | One bullet per decided behavior the code lacks or contradicts: the decided behavior, the code symbol, the model or spec section that decides it. Omit if none. |
 
+Never delete decided design text because no caller exists.
+
 No domain entity semantics, state transition rules, or structural invariants -- those go in `model.md`.
 No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 
