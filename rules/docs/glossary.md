@@ -13,7 +13,7 @@ The registry of a project's established terms: which terms it holds, how a new t
 ## Selection
 
 - An entry exists for a term whose meaning a reader of the repository needs and cannot take from general CS or security usage: a concept the project defines, or a concept of the literature, the analyzed system's manual, or its reference implementation that the documents use with that source's meaning.
-- No entry for a general programming word `communication/terminology.md` exempts, nor for a CS or security term used with its textbook meaning: Interface Segregation Principle.
+- No entry for a general programming word, nor for a CS or security term used with its textbook meaning: Interface Segregation Principle.
 - No entry for a keyword of the analyzed language.
 - No entry for an identifier that names no concept of the domain: a helper class, an index, a monitor, an internal variable, field, counter or ID format, a module or package name. Its owner is the design doc.
 - No entry for a compound whose meaning follows from its words in general usage: builtin entity, caller label, initial stack.

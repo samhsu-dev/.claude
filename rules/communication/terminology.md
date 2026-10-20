@@ -19,8 +19,8 @@ These rules bind every surface the agent writes, with no exception: chat replies
 
 - The project glossary is the single registry of established terms: `docs/glossary.md` and the `docs/glossary-*.md` files it routes to. Exception: a project rule names another path when the project keeps its glossary elsewhere.
 - A concept the glossary names is referred to only by that name, in every output language alike.
-- Every domain term in output has a glossary entry. General programming words (function, variable, class, loop, exception, call) need none. An identifier quoted as code needs an entry when it names a domain concept.
-- A new concept gets its glossary entry on first use, in the same change that introduces it.
+- Glossary entry obligations and exemptions: `rules/docs/glossary.md` Selection.
+- A new concept selected for registration gets its glossary entry on first use, in the same change that introduces it.
 - Until that procedure establishes a name, use an existing term or a plain clause.
 - A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A reader is helped by its definition, its citation, or a clause beside it. A common word in its place reads as wrong to a reader of the field.
 - One term names one concept, and one concept has one term, so a search for the term finds every use of the concept. An audit checks both directions.
