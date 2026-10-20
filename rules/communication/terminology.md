@@ -32,5 +32,5 @@ These rules bind every surface the agent writes, with no exception: chat replies
 
 - Every naming rule serves readability; one term per concept is a means to it. For a generic or coined word, when a rule and the reader's understanding pull apart, the reader wins. A literature, domain or core term keeps its name (Established Terms).
 - A generic word whose meaning the context fixes is not split by the one-term rule and needs no question.
-- An abstract noun a reader new to the repository cannot parse without the glossary is replaced by a plain clause or the identifier.
+- A generic or coined abstract noun a reader new to the repository cannot parse without the glossary is replaced by a plain clause or the identifier; literature, domain and core terms follow Established Terms.
 - After a change that renames or rewords terms, every changed sentence is reread in full. A sentence that reads stiffly, is ambiguous, or needs the glossary to parse is rewritten.
