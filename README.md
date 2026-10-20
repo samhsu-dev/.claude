@@ -1,6 +1,6 @@
 # .claude
 
-> The user-level Claude Code directory: rules and skills that load in every project.
+> The user-level Claude Code directory: shared agent rules and skills.
 
 Language-independent agent rules and skills for Claude Code, organized by the artifact they constrain.
 
@@ -10,11 +10,11 @@ Language-independent agent rules and skills for Claude Code, organized by the ar
 git clone https://github.com/samhsu-dev/.claude ~/.claude
 ```
 
-Claude Code reads `~/.claude/CLAUDE.md`, `~/.claude/rules/`, and `~/.claude/skills/` at session start.
+Skill invocation controls: [Skill Writing Standards](rules/meta/skilling.md#frontmatter).
 
 ## Usage
 
-Rules apply by themselves. Skills run on request:
+Skill procedures and usage triggers:
 
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
