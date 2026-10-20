@@ -34,7 +34,7 @@ Each fact has one owning document; every other document links it and never resta
 | Types, functions, open gaps between code and decided design | `design.md` |
 | External APIs | `impl.md` |
 
-A committed document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision" or "agent decision" markers. Decision records follow Local Records; a commit records when a fact changed.
+A committed document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision", "agent decision", "revises" or "keeps every decision" markers. Decision records follow Local Records; a commit records when a fact changed.
 
 ## Local Records
 
