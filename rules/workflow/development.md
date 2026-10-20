@@ -45,4 +45,4 @@ Phase pipeline for feature development. Always active. The content rules of each
 
 ## Index
 
-- A directory with 3+ documentation files has an `index.md`, updated after any phase that adds or renames a file.
+- Index creation and updates after a stage adds or renames a file: `rules/docs/index.md`.

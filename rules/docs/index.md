@@ -11,7 +11,7 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 
 ## Scope
 
-- One `index.md` per documentation directory that contains 3+ files or any split documents (`concept-*.md`, `model-*.md`, `design-*.md`, `spec-*.md`, `impl-*.md`).
+- One `index.md` per documentation directory that contains 3+ files or any split documents; update it after any development stage that adds or renames a file.
 - Contains file list with one-line descriptions. No domain content, no concepts, no code.
 - Loaded first when an agent enters a documentation directory. All other files loaded on demand.
 
