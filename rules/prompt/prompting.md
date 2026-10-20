@@ -27,7 +27,6 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 | 9 | Context / Data | Long input data, wrapped in XML tags | Instructions |
 | 10 | Final | Restate single most important rule; anchor query last | New rules |
 
-- Data block placement: long input data goes in section 9, above the anchored query, never before the instructions.
 - For prompts over 20k tokens: mirror the highest-priority constraint at both top and bottom.
 
 ## Information Placement
@@ -40,7 +39,6 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 
 ## Constraints
 
-- Constraints sit in section 3, adjacent to the task, before examples and output format.
 - Group constraints into few hierarchical blocks. Never a flat list of many imperative lines.
 - Maximum attention degrades past ~20 instructions. Split excess rules across pipeline stages, not into one prompt.
 - No per-line emphasis inflation ("CRITICAL", "MUST", "ALWAYS"). Emphatic inflation lowers adherence.
