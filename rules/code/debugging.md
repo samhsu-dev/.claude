@@ -12,7 +12,7 @@ Full procedure: `/debug` skill.
 
 - Write a failing reproduction test before changing implementation code.
 - Read the full traceback before changing code.
-- Fix root cause. Never patch symptoms.
+- Root-cause repair: `workflow/change-policy.md`.
 - No guessing. Verify every hypothesis with assertions, logs, or tests.
 - No silent fallbacks. Internal `map[key] ?: default` masks bugs — throw on missing key.
 - Keep reproduction tests permanently. Never delete after fix.
