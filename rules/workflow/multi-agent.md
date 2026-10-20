@@ -18,7 +18,7 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 - Tasks sharing a cause merge when one deliverable and acceptance gate cover them; tasks that need another task's output are ordered.
 - Workers return consolidation findings after each analysis; the main agent reconciles them before the next launch.
 - Independent tasks run in parallel only when their inputs are complete and fixed and their write sets are disjoint; no task consumes an input still being produced.
-- Tasks targeting the same files run in order or return patches for the single applier; concurrent patches use the same fixed base and are reconciled serially.
+- Tasks targeting the same files run in order or return patches; patch reconciliation follows Run Isolation and Integration.
 
 ## Roles per Stage
 
@@ -73,6 +73,6 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 - Every worker persists its result before the main agent reads it and returns patches plus a summary containing evidence, limits, verification and next step; no-change results return an empty patch set.
 - Each batch has one waiter that waits for every handle and sends one completion notification with results and failures; no polling by the main agent or wrapper workers.
 - Research artifacts, vetted analogues, citation-audit verdicts and approved source additions feed matching design-review/audit roles for a second pass and the update plan; all research finishes before document-update patches are applied.
-- Only one applier writes the target tree and Git metadata; it takes a stack only from a run that passed the rules gate, checks patch bases, reconciles overlaps, applies, runs `tools/codex_rules.py doccheck` on every written file and rejects a new finding, lints and commits serially through the project's quality gate.
+- Only one applier writes the target tree and Git metadata; concurrent patches use the same fixed base. The applier takes a stack only from a run that passed the rules gate, checks patch bases, reconciles overlaps, applies, runs `tools/codex_rules.py doccheck` on every written file and rejects a new finding, lints and commits serially through the project's quality gate.
 - The applier skips protected files and records them as unresolved; staging by name and Git-write checks belong to `workflow/git-safety.md`, commit procedure and cadence to `workflow/committing.md`.
 - Failed or missing outputs block dependent tasks; independent verification follows integration, and the ledger records the remaining work before a batch closes.
