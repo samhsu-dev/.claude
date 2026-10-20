@@ -68,7 +68,7 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 ## Multi-Stage Consistency
 
 - All stages share one identical system preamble: role, scope, XML tag taxonomy, output conventions.
-- All stages use the same section order and the same section labels. One concept = one label across every stage.
+- All stages use the same section order and the same section labels.
 - Stage N tags its output; stage N+1 consumes those tags verbatim. Tag names are identical across stages.
 - Recall stage: wide net, bounded top-k, "include anything plausibly relevant, do not filter." A candidate dropped here is unrecoverable.
 - Precision stage: verify strictly, abstain on doubt. Emit `{decision, confidence, abstain_reason}`.
@@ -77,19 +77,13 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 
 ## Terminology
 
-- One concept, one term, across all stage prompts. No synonym drift (no `EXCLUDE` in one stage and `out_of_scope` in another for the same act).
 - A coined or domain-specific term gets a one-clause definition at first use.
 - Common programming terms (array access, property access, DB query) receive no definition.
-- A domain rule appearing in two stages is stated once in the shared preamble, not copied per stage.
+- A rule shared by stages is sourced once in the shared preamble, never hard-coded in multiple stage files.
 
 ## Anti-Patterns
 
-- Instruction stacking: many flat imperative lines diluting attention. Group or split.
-- Taxonomy drift: same concept under different labels across stages.
-- Schema decoupling: prompt and parsed schema describe different fields.
-- Rule duplication: one rule hard-coded in multiple stage files. Source it once.
 - Hidden prompt: an LLM call whose prompt is an inline code string, not a prompt carrier file. Every LLM call's prompt lives in a carrier.
-- Hollow contract: a documented output field the prompt never requests and the schema never parses.
 
 ## AI-Agent Structural Patterns
 
