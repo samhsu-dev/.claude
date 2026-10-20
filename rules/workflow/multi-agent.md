@@ -38,7 +38,7 @@ How the main agent runs work across Codex CLI runs and Claude subagents. Always 
 - Full design reviews collect each module owner's provided/required interfaces and handoff defects in one sheet before role reviewers read all sheets; the chief consolidates their replies by root cause.
 - Architect review uses `docs/design.md` for maintainability, semantic type boundaries and abstraction, and `communication/terminology.md` for naming; it also checks domain policy stays outside reusable mechanisms.
 - A design-only review returns design/implementation-document patches; algorithm findings enter discussion and code differences follow `docs/design.md` Open Gaps, with no algorithm or code edits in that review.
-- The new-reader role and its acceptance gate follow `workflow/development.md` Reader Review; the chief routes its corrections through the applier.
+- The chief routes new-reader corrections through the applier.
 
 ## No Ad Hoc Solutions
 
