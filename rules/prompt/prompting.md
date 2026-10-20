@@ -35,7 +35,6 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 - A rule stated in two sections is one rule in the wrong place. Delete the copy that is not in the owning section.
 - A section that exists to hold the exception to a rule stated elsewhere is a patch. Fold it into the rule.
 - A prompt states only what the model cannot derive: our policy, our environment, our data's provenance, our measured frequencies. Domain facts and common terms the model already applies are omitted.
-- Section 10's restatement carries exactly one rule. Restating more than one is duplication, not emphasis.
 
 ## Constraints
 
