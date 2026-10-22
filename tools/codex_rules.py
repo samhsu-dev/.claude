@@ -11,6 +11,8 @@ gate <run-dir> [project-root]
     always-active rule file was read. Writes rules-missing.txt and exits 1 when one was not.
 
 The run directory is the Codex working directory, so Codex loads its AGENTS.md after the global one.
+It lies outside every Git work tree, so no agent instruction file lands in a project; a run that writes
+a worktree reaches it with `codex exec --add-dir <worktree>`.
 The pointer list stays far below Codex's default project_doc_max_bytes, so no rule text is cut off.
 """
 import json
@@ -54,7 +56,15 @@ def skills():
         yield skill, described.group(1) if described else ""
 
 
+def work_tree(path):
+    """The Git work tree holding path, or None; a worktree marks its root with a .git file."""
+    return next((d for d in [path, *path.parents] if (d / ".git").exists()), None)
+
+
 def pack(run_dir, project):
+    tree = work_tree(run_dir)
+    if tree:
+        sys.exit(f"pack: run directory {run_dir} lies inside the work tree {tree}; use a run directory outside it")
     rules = configuration(project)
     always = [f for f, globs in rules if not globs]
     scoped = [(f, globs) for f, globs in rules if globs]
@@ -74,8 +84,8 @@ def pack(run_dir, project):
         *[f"- `{f}`" for f in always],
         "",
         "You take part in the discussion that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
-        "inputs, output directory and return format. You return findings, analysis or design as text. You never launch "
-        "other runs and never edit a file, write the target repository, or run a Git command.",
+        "inputs, output directory and return format. You return findings, analysis or design as text, and write files "
+        "only where your brief names them. You never launch other runs and never run a Git command.",
         "",
         "## Before Reviewing a File",
         "",
@@ -94,9 +104,9 @@ def pack(run_dir, project):
         "",
         "## Checks the Main Agent Will Run",
         "",
-        "Claude Code hooks do not run here, and you write no files. The main agent runs the documentation check "
-        "on every file it writes from your findings and lints every commit message, so any file you propose must "
-        "meet both.",
+        "Claude Code hooks do not run here. The main agent or the module lead runs the documentation check and the "
+        "quality gate on every file written from your work and lints every commit message, so any file you write "
+        "or propose must meet them.",
         "",
     ]
     (run_dir / "AGENTS.md").write_text("\n".join(lines))
