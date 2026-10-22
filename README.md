@@ -39,7 +39,7 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `workflow/change-policy.md` | always | When code and public API may change |
 | `workflow/committing.md` | always | Commit message, staging, cadence, attribution |
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
-| `workflow/multi-agent.md` | always | Read-only delegated discussion and design; role stages, model routing, run ledger; the main agent makes every edit |
+| `workflow/multi-agent.md` | always | Delegated discussion, design and parallel implementation; role table with model and effort, worktree merge flow, run ledger; the main agent edits only small or non-modular work |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |
