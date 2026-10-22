@@ -1,17 +1,39 @@
-# Multi-Agent Discussion and Design
+# Multi-Agent Discussion, Design and Implementation
 
-Codex CLI runs and Claude subagents discuss and design; the main agent alone modifies the repository. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
+Codex CLI runs and Claude subagents discuss, design, implement and test; on a modular project the main agent plans, dispatches, merges and talks to the user. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
 
 ---
 
 ## Division of Labor
 
-- A delegated run returns findings, analysis, design, options, recommendations or refutations as text. It never edits a file, writes the target tree, or runs a Git command.
-- The main agent performs every repository edit and every commit itself, directly, after the discussion concludes. No patch stack, no applier, no delegated edit.
-- Multi-agent runs serve one purpose: designing complex algorithms and discussing, researching and reviewing them. The repository is read-only to every delegated run.
-- A change that requires seeing several files at once — deduplication, conflict resolution, a cross-file rename, a corpus-wide edit — the main agent makes directly, never split across agents.
-- A single call or a direct edit is the default. A delegated discussion launches only when its parallel viewpoints or breadth exceed one call, and the task's value pays for the added cost.
-- The main agent runs the quality gate — doc check and lint — on every file it writes before committing.
+- Scope picks the editor. On a small project, or for a change that cannot be split by module or file, the main agent edits and commits directly. On a project whose modules or files develop independently, implementation runs in parallel under Implementation Organization, and the main agent writes no code or document itself.
+- Discussion, research, design and review runs are read-only and return text.
+- An implementation run edits only inside its own git worktree and branch. It never merges, pushes, or writes the shared working tree or another run's worktree.
+- A change that requires seeing several files at once — deduplication, conflict resolution, a cross-file rename, a corpus-wide edit — goes to one run, never split across runs.
+- A single call or a direct edit is the default for small work. A delegated run launches only when its parallel viewpoints, breadth or independent write set exceed one call, and the task's value pays for the added cost.
+- Whoever writes a file runs the quality gate — tests, lint, doc check — on it before committing.
+
+## Implementation Organization
+
+Every module has one lead, and every role has its own scope and authority.
+
+| Role | Model, effort | Scope | Authority |
+|---|---|---|---|
+| Main agent | session model | Task board, schedule, merge queue, user communication | Dispatches runs, fast-forwards finished branches, runs the full gate after each merge; edits nothing |
+| Project lead | Sonnet 5.5 `xhigh` | All modules | Checks that every task is done and that code matches the decided algorithm and documents; reports each gap to the main agent; read-only |
+| Module lead | Sonnet 5.5 `high` | One module's tasks and worktree | Splits tasks by difficulty, assigns engineers, reviews their diffs against the code and rule standards, fixes bugs the tests find |
+| Engineer | Sonnet 5.5 `medium` or `low`; Haiku 5.5 `medium` or `low` | One task's write set in its module's worktree | Writes the test first, implements, runs the gate, commits |
+| Test engineer | Codex `gpt-6.1-sol` `max` | A module once its tasks land | Writes edge-case tests from the design documents; failures go to the module lead |
+| Senior architects; chief architect | Sonnet 5.5 `xhigh`; Opus 5.5 `max` | Interface choices and algorithm questions | Architects discuss; the chief decides and states corrections for the owning lead |
+| New reader | Sonnet 5.5 `low`; Haiku 5.5 `medium` or `low` | Finished documents | Reports every place it cannot follow; read-only |
+| Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, implementation analysis | Read-only |
+
+- Model and effort follow task difficulty: a mechanical task goes to Haiku 5.5 or Sonnet 5.5 `low`, a moderate task to Sonnet 5.5 `medium`, an algorithmic task to an analyst run first and then a Sonnet 5.5 `high` or Opus 5.5 `high` implementer.
+- Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
+- Running implementers hold pairwise disjoint write sets. A file two tasks touch has one owner or a fixed order. Cross-module contracts are frozen before their consumers start.
+- A branch merges after it is rebased onto the integration head and passes its gate, its module lead's review and an independent read-only reviewer. The main agent fast-forwards it and runs the full gate. A rebase conflict goes to the user, never auto-resolved.
+- The task board lists every task with its write set, dependencies, difficulty and assigned role. Whenever a run finishes, the main agent dispatches the next ready task and keeps the concurrency cap filled; the cap follows the machine's build capacity.
+- Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work.
 
 ## Run Ledger
 
@@ -40,12 +62,12 @@ Codex CLI runs and Claude subagents discuss and design; the main agent alone mod
 | Analysis | Algorithm designer, security expert, performance/precision reviewer, affected module owners | Complete affected-item inventory, research, current contracts | Cause groups, all-member and boundary checks, cost/precision/security tradeoffs |
 | Design | Module owners, architect, algorithm designer, engineer | All module interface sheets, analysis and research | Contract corrections and abstraction assessment |
 | Decision | Relevant reviewers and chief | Discussed proposals, adversarial results, recorded decisions | Agreed options, recommendation and worked example; disposition under the project decision rule |
-| Review | Independent critic, security/performance/precision reviewers, chief; new reader last | Candidate design, evidence, the main agent's integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, chief's corrections and reader findings |
+| Review | Independent critic, security/performance/precision reviewers, chief; new reader last | Candidate design, evidence, the integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, chief's corrections and reader findings |
 
 - Full design reviews collect each module owner's provided/required interfaces and handoff defects in one sheet before role reviewers read all sheets; the chief consolidates their replies by root cause.
 - Architect review uses `docs/design.md` for maintainability, semantic type boundaries and abstraction, and `communication/terminology.md` for naming; it also checks domain policy stays outside reusable mechanisms.
-- A design review returns design/implementation findings as text; algorithm findings enter discussion and code differences follow `docs/design.md` Open Gaps. The main agent makes any resulting edit.
-- The main agent applies new-reader corrections itself.
+- A design review returns design/implementation findings as text; algorithm findings enter discussion and code differences follow `docs/design.md` Open Gaps. The owner of the file makes any resulting edit.
+- New-reader corrections go to the owner of the document.
 
 ## No Ad Hoc Solutions
 
@@ -60,24 +82,23 @@ Codex CLI runs and Claude subagents discuss and design; the main agent alone mod
 - Decision authority and question format come from the project decision rule.
 - A user-decided item reaches the user only after panel discussion, a check against recorded decisions, and panel agreement on the options, recommended option and worked example.
 - The chief decides agent-decidable items without asking and records the outcome; the ledger links the project's decision record.
-- After a user decision, the main agent records and implements it itself, then continues the next independent discussion; recording and implementation are never delegated.
+- After a user decision, the main agent records it in the same turn and dispatches its implementation, then continues the next independent discussion.
 - Decision record placement and document ownership follow `CLAUDE.md`.
 
 ## Model Routing
 
-- Each delegated run names the model its discussion needs; the main agent itself holds every file edit and commit.
-- Reasoning, research, root-cause analysis, algorithm design, mathematics, question drafting and checking run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; no Claude wrapper agent. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
-- Multiple senior architects use Sonnet 5.5 at `xhigh` for synthesis and software-design discussion; one chief architect uses Opus 5.5 at `max` to decide and to state design/implementation corrections for the main agent to write.
-- A code review convenes a Sonnet 5.5 reader that critiques the main agent's diff read-only and returns findings, not edits.
+- Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
+- Reasoning, research, root-cause analysis, algorithm design, mathematics, question drafting and checking run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`. A Codex run launches from Bash by the main agent or by the lead that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
+- A code review convenes a Sonnet 5.5 reader that critiques a branch's diff read-only and returns findings, not edits.
 - The main thread reads only each run's summary file and requests missing evidence through a follow-up run; it never re-derives returned analyses.
 - Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
 
 ## Run Isolation
 
-- Run directories live in persistent scratch storage outside temporary directories; each run's working directory and sandbox are its own unique output directory, never the target tree.
+- Run directories live in persistent scratch storage outside temporary directories; each discussion run's working directory and sandbox are its own unique output directory, never the target tree. An implementation run's working directory is its own worktree.
 - Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules and the path-scoped rules for the files its topic touches. Its findings count only when its log shows a read of every rule its topic relies on.
 - A launch brief carries the ledger entry plus the question and the return format.
 - Every run persists its findings before the main agent reads them and returns a summary with evidence, limits and next step.
 - Each batch has one waiter that waits for every handle and sends one completion notification with findings and failures; no polling.
-- Research artifacts, vetted analogues and citation-audit verdicts feed matching review roles for a second pass; the main agent edits the documents after the discussion concludes.
+- Research artifacts, vetted analogues and citation-audit verdicts feed matching review roles for a second pass; the owning lead edits the documents after the discussion concludes.
 - Failed or missing findings block dependent discussions; the ledger records the remaining work before a batch closes.
