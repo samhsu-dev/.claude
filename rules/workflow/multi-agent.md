@@ -27,6 +27,7 @@ Codex CLI runs and Claude subagents discuss, design, implement and test; on a mo
   3. Every contract it consumes is merged into the integration branch.
   4. Its result is checkable by the quality gate and an independent review.
 - A task that fails a check waits, or joins the run that owns its chain, in order. Filling a concurrency cap is never a goal.
+- At most three implementation chains run at once.
 - A brief quotes, with path and line, every decided document sentence the task implements; it never paraphrases a rule. The implementer reads the cited documents itself.
 - A fix round goes back to the agent that wrote the code, which keeps its context; a new agent takes over only when that agent is gone.
 
@@ -49,8 +50,21 @@ Every role has its own scope and authority.
 - The task board lists every task with its write set, dependencies, difficulty, assigned role, branch and the Parallel Dispatch checks. When a run finishes, the main agent dispatches the next task that passes those checks.
 - Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work.
 
+## Finding Triage
+
+- A reviewer reports the problems the branch's diff introduces and the violations of the decided sentences its task implements. A pre-existing problem goes to an appendix and never decides the verdict.
+- Each finding carries a severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style.
+- Each finding carries a difficulty: mechanical, local or algorithmic.
+- Each finding carries an urgency: U0 blocks a merge or the gate; U1 lies on the critical path of the current program step; U2 is an in-scope leaf; U3 lies outside the current step's scope and goes to its module's task doc, never to the board.
+- A branch takes at most two review rounds. After that only an S1 finding the diff introduces blocks its merge; every other finding goes to a task doc or a board row.
+- A mechanical S1 or S2 fix returns to the implementer in the same round and merges on the gate and the main agent's diff check, with no new review.
+- A finding whose cause lies outside the branch's write set becomes its own row with that write set.
+
 ## Branch Lifecycle
 
+- A branch is named `wt/<task-id>` and carries one task. From creation its `branch.<name>.description` holds the task ID, the goal and the agent handle.
+- Every run commits before it ends, red work under a `wip:` subject. After an interruption the main agent commits the run's work in progress on its branch.
+- A pointer bump and the consumer change that needs it share one commit. The main agent pushes each submodule commit to a submodule branch named after the task when the superproject commit lands.
 - A branch is rebased in place under its own name; a task never re-cuts its work onto a new branch name.
 - Right after a branch's fast-forward and full gate, the main agent removes its worktree and deletes the branch with `git branch -d`, run from a checkout whose HEAD is the integration branch.
 - A worktree is removed only after its tracked, untracked and ignored files and every submodule are clean or disposable build output.
@@ -61,6 +75,7 @@ Every role has its own scope and authority.
 
 - The ledger records per task: review rounds, rework commits, wall time and Claude tokens.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
+- A daily retrospective reads these numbers, the run registry and the board growth, names the largest process problem with its numbers, and applies at most one change.
 
 ## Run Ledger
 
@@ -68,7 +83,9 @@ Every role has its own scope and authority.
 - The ledger holds the verbatim question, numbered user directives, hierarchy, roles, inputs and their versions, dependencies and next steps.
 - Before launch, a ledger entry fixes task ID, parent, role, model, effort, inputs, output directory, dependencies and the question to answer; the handle is added when assigned.
 - Every finding, failure and decision updates the ledger with evidence, status and next step; proposed, agreed and independently verified remain distinct states.
-- After context compaction, the main agent rereads the ledger before acting; the ledger takes precedence over the compacted summary.
+- A run registry holds one row per delegated run: handle, task, model and effort, branch, output file, status, last progress and next action. The row is written before launch and updated on every notification.
+- The ledger keeps the current state in one short file and the history in an archive; the board lists open rows only, and a closed row moves to the board archive.
+- After context compaction, the main agent rereads the run registry, then the current ledger, before acting; both take precedence over the compacted summary.
 
 ## Consolidation
 
@@ -80,7 +97,8 @@ Every role has its own scope and authority.
 ## Roles per Stage
 
 - The main agent selects roles with distinct viewpoints for the stage's questions and records the selection; no fixed full panel.
-- Every discussion starts with independent proposals, then each role reads the other positions and answers their claims with evidence; one chief resolves disagreements and records the disposition.
+- Discussion depth follows difficulty. The full proposal, rebuttal and chief rounds run for an algorithm, a core principle, or a mechanism or interface the decided documents do not name. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
+- Every full discussion starts with independent proposals, then each role reads the other positions and answers their claims with evidence; one chief resolves disagreements and records the disposition.
 - Stage discussions overlay the phase gates owned by `workflow/development.md`; they grant no permission to skip or reorder those gates.
 
 | Stage | Roles selected for the question | Reads | Outputs |
@@ -115,6 +133,7 @@ Every role has its own scope and authority.
 ## Model Routing
 
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
+- After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
 - Reasoning, research, root-cause analysis, algorithm design, mathematics, question drafting and checking run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
 - A code review is a Codex reviewer run that critiques a branch's diff read-only and returns findings, not edits.
 - The main thread reads only each run's summary file and requests missing evidence through a follow-up run; it never re-derives returned analyses.
