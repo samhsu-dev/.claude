@@ -1,6 +1,6 @@
 # Multi-Agent Discussion, Design and Implementation
 
-Codex CLI runs and Claude subagents discuss, design, implement and test; on a modular project the main agent plans, dispatches, merges and talks to the user. One agent loop is the default; a separate run needs a reason under When to Split. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
+Codex CLI runs and Claude subagents discuss, design, implement and test; on a modular project the main agent plans, dispatches, merges and talks to the user. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
 
 ---
 
@@ -29,7 +29,6 @@ Codex CLI runs and Claude subagents discuss, design, implement and test; on a mo
 - A task that fails a check waits, or joins the run that owns its chain, in order. Filling a concurrency cap is never a goal.
 - At most three implementation chains run at once.
 - A brief quotes, with path and line, every decided document sentence the task implements; it never paraphrases a rule. The implementer reads the cited documents itself.
-- A fix round goes back to the agent that wrote the code, which keeps its context; a new agent takes over only when that agent is gone.
 
 ## Implementation Organization
 
@@ -38,7 +37,7 @@ Every role has its own scope and authority.
 | Role | Model, effort | Scope | Authority |
 |---|---|---|---|
 | Main agent | session model | Task board, ledger, merge queue, branch cleanup, user communication | Dispatches runs that pass Parallel Dispatch, fast-forwards finished branches, runs the full gate after each merge; edits nothing on a modular project |
-| Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch |
+| Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
 | Reviewer | Codex `gpt-6.1-sol` `max` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
 | Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, algorithm plans, implementation analysis | Precedes an algorithmic task's implementer; read-only |
 | Senior architects; chief architect | Sonnet 5.5 `xhigh`; Opus 5.5 `max` | Interface choices and algorithm questions the analyst and reviewer leave open | Architects discuss; the chief decides and states corrections for the implementer |
@@ -48,7 +47,7 @@ Every role has its own scope and authority.
 - A file two tasks touch has one owner or a fixed order. Cross-module contracts merge before their consumers start.
 - A branch merges after it is rebased onto the integration head and passes its gate and an independent reviewer. The main agent fast-forwards it and runs the full gate. A rebase conflict goes to the user, never auto-resolved.
 - The task board lists every task with its write set, dependencies, difficulty, assigned role, branch and the Parallel Dispatch checks. When a run finishes, the main agent dispatches the next task that passes those checks.
-- Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work.
+- Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work; missing evidence comes from a follow-up run, never from re-deriving the analysis.
 
 ## Finding Triage
 
@@ -135,8 +134,6 @@ Every role has its own scope and authority.
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
 - After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
 - Reasoning, research, root-cause analysis, algorithm design, mathematics, question drafting and checking run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
-- A code review is a Codex reviewer run that critiques a branch's diff read-only and returns findings, not edits.
-- The main thread reads only each run's summary file and requests missing evidence through a follow-up run; it never re-derives returned analyses.
 - Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
 
 ## Run Isolation
@@ -144,7 +141,7 @@ Every role has its own scope and authority.
 - Run directories live in persistent scratch storage outside temporary directories; each discussion run's working directory and sandbox are its own unique output directory, never the target tree. An implementation run's working directory is its own worktree.
 - Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules and the path-scoped rules for the files its topic touches. Its findings count only when its log shows a read of every rule its topic relies on.
 - A launch brief carries the ledger entry plus the question and the return format.
-- Every run persists its findings before the main agent reads them and returns a summary with evidence, limits and next step.
+- A run's summary carries evidence, limits and next step.
 - A Codex run launches as a tracked background command, so its exit notifies the main agent. A waiter for several runs starts only after each run's launch record exists, and sends one completion notification with findings and failures; no polling.
 - Research artifacts, vetted analogues and citation-audit verdicts feed matching review roles for a second pass; the owning implementer edits the documents after the discussion concludes.
 - Failed or missing findings block dependent discussions; the ledger records the remaining work before a batch closes.
