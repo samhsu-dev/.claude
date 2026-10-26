@@ -29,6 +29,7 @@ Codex CLI runs and Claude subagents discuss, design, implement and test; on a mo
 - A task that fails a check waits, or joins the run that owns its chain, in order. Filling a concurrency cap is never a goal.
 - At most three implementation chains run at once.
 - A brief quotes, with path and line, every decided document sentence the task implements; it never paraphrases a rule. The implementer reads the cited documents itself.
+- The implementer implements every sentence its brief quotes. A sentence it cannot implement inside its write set stops the run with a report; it is never recorded as an open gap of the code.
 
 ## Implementation Organization
 
@@ -57,7 +58,7 @@ Every role has its own scope and authority.
 - Each finding carries an urgency: U0 blocks a merge or the gate; U1 lies on the critical path of the current program step; U2 is an in-scope leaf; U3 lies outside the current step's scope and goes to its module's task doc, never to the board.
 - A branch takes at most two review rounds. After that only an S1 finding the diff introduces blocks its merge; every other finding goes to a task doc or a board row.
 - A mechanical S1 or S2 fix returns to the implementer in the same round and merges on the gate and the main agent's diff check, with no new review.
-- A finding whose cause lies outside the branch's write set becomes its own row with that write set.
+- A finding whose cause lies outside the branch's write set becomes its own row with that write set. When the branch's diff newly exposes it on a program the integration head analyzes, the branch merges after that row.
 
 ## Branch Lifecycle
 
@@ -72,7 +73,7 @@ Every role has its own scope and authority.
 
 ## Measurement
 
-- The ledger records per task: review rounds, rework commits, wall time and Claude tokens.
+- The ledger records per task: review rounds, rework commits, wall time and Claude tokens. A chief or other decision run is also measured from its transcript: tool calls by kind, repeated calls, and the minute of its first result write.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
 - A daily retrospective reads these numbers, the run registry and the board growth, names the largest process problem with its numbers, and applies at most one change.
 
@@ -98,6 +99,9 @@ Every role has its own scope and authority.
 - The main agent selects roles with distinct viewpoints for the stage's questions and records the selection; no fixed full panel.
 - Discussion depth follows difficulty. The full proposal, rebuttal and chief rounds run for an algorithm, a core principle, or a mechanism or interface the decided documents do not name. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
 - Every full discussion starts with independent proposals, then each role reads the other positions and answers their claims with evidence; one chief resolves disagreements and records the disposition.
+- The evidence a topic's decision needs (decision records, document lines, history hits, program outputs, corpus counts) is gathered once, by the first stage that drafts options, into the task's evidence file (Working Files). Every later stage cites its rows and adds a row only for a fact the file lacks; no stage repeats a search a row records.
+- The chief decides from the role results and the evidence file within the time box its brief sets. It runs no search or program of its own; a fact it lacks becomes a follow-up question in its result, and the choice that needs the fact waits for the answer.
+- One Codex run checks a chief's result: it tries to refute each choice and answers the follow-up questions together, since both read the same inputs.
 - Stage discussions overlay the phase gates owned by `workflow/development.md`; they grant no permission to skip or reorder those gates.
 
 | Stage | Roles selected for the question | Reads | Outputs |
@@ -145,3 +149,11 @@ Every role has its own scope and authority.
 - A Codex run launches as a tracked background command, so its exit notifies the main agent. A waiter for several runs starts only after each run's launch record exists, and sends one completion notification with findings and failures; no polling.
 - Research artifacts, vetted analogues and citation-audit verdicts feed matching review roles for a second pass; the owning implementer edits the documents after the discussion concludes.
 - Failed or missing findings block dependent discussions; the ledger records the remaining work before a batch closes.
+
+## Working Files
+
+- Each board task has one working directory in the run storage, named by its task ID, with one subdirectory per run and the task's evidence file. It lives while the task's row is open and moves to the run storage archive when the row closes.
+- The evidence file holds one row per established fact: kind (decision record, document line, code line, history hit, program output, corpus count), the claim in one sentence, its source (path and line, commit, or command), the exact quoted text or complete output, and the run that read it.
+- A run reads the evidence file before it searches, and writes new rows only in its own run directory. After the run ends, the main agent merges them into the task's file with `tools/evidence.py merge`, which keeps one row per kind and source and marks a row whose value disagrees with the kept one as a conflict; no model edits the merged file.
+- A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. The merge marks it, and a stage that relies on it reads the source again and writes a new row.
+- A fact a decision record needs (its example, the output, the counts) is copied into that record when the decision is recorded; no record or document depends on a working directory.
