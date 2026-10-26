@@ -1,11 +1,13 @@
 ---
 paths:
-  - "**/*test*"
+  - "**/tests/**/*.py"
+  - "**/test_*.py"
+  - "**/conftest.py"
 ---
 
 # Python Testing
 
-Python/pytest conventions.
+Python/pytest conventions. Extends global `code/testing.md`.
 
 ---
 
@@ -14,6 +16,7 @@ Python/pytest conventions.
 Pytest implementations of black-box test design:
 
 ### Equivalence partitioning + boundary analysis via parametrize
+```python
 @pytest.mark.parametrize("month,valid", [
     (0, False),   # below minimum
     (1, True),    # minimum boundary
@@ -27,20 +30,26 @@ def test_validate_month(month: int, valid: bool) -> None:
     else:
         with pytest.raises(ValueError):
             validate_month(month)
+```
 
 ---
 
 ## Layout
 
-- Shared fixtures in tests/conftest.py. Subdirectory fixtures in tests/<subdir>/conftest.py.
+- Test root: `tests/` at repo root, outside `src/`. It mirrors the package tree: `src/<import_name>/<sub>/_<module>.py` is tested in `tests/<sub>/test_<module>.py`, the leading `_` dropped.
+- Shared fixtures in `tests/conftest.py`. Subdirectory fixtures in `tests/<subdir>/conftest.py`.
 
 ## Discovery
 
-- Files: test_*.py or *_test.py.
-- Functions prefixed with test_.
+- Files: `test_*.py`.
+- Functions prefixed with `test_`.
 - Plain functions with fixtures by default.
 - Test classes: `Test` prefix, stateless grouping of one component's behavior families only.
-- No unittest.TestCase. No `__init__` in test classes. No class attributes holding shared state.
+- No `unittest.TestCase`. No `__init__` in test classes. No class attributes holding shared state.
+
+## Naming
+
+- `test_<component>_<condition>_<expected>`.
 
 ## Fixtures
 
@@ -52,36 +61,52 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 ### Patterns
 - Yield fixtures for teardown.
-- tmp_path: unique Path per test.
-- monkeypatch: env vars and attribute patching. Auto-reverted.
-- capsys: stdout/stderr capture.
+- `tmp_path`: unique `Path` per test.
+- `monkeypatch`: env vars and attribute patching. Auto-reverted.
+- `capsys`: stdout/stderr capture.
 - Fixtures return fresh objects. No shared mutable state.
 
 ### conftest.py
 - Auto-discovered. No import needed.
 - One per directory. Scoped to that directory and below.
 
+## Mocking
+
+- Test doubles via `unittest.mock.create_autospec(Target, instance=True)`. A bare `Mock` accepts calls the real API rejects.
+- `mock.patch` targets the name where it is looked up (`pkg.consumer.name`), not where it is defined.
+
 ## Assertions
 
-- assert x == y -- pytest rewrites for detailed output.
-- pytest.raises(Type) with field check.
-- pytest.approx() for floats.
-- No unittest assertions. Plain assert.
+- `assert x == y` -- pytest rewrites for detailed output.
+- `pytest.raises(Type)` with field check.
+- `pytest.approx()` for floats.
+- No unittest assertions. Plain `assert`.
 
 ## Parametrize
 
-- @pytest.mark.parametrize for data-driven tests.
-- @pytest.fixture(params=[...]) for fixture variants.
+- `@pytest.mark.parametrize` for data-driven tests.
+- `@pytest.fixture(params=[...])` for fixture variants.
 
 ## Execution
 
-- uv run pytest -- all tests.
-- uv run pytest -x --tb=short -- stop on first failure.
-- uv run pytest tests/<subdir>/ -- one directory.
-- uv run pytest -k "test_keyword" -- keyword match.
+- `uv run pytest` -- all tests.
+- `uv run pytest -x --tb=short` -- stop on first failure.
+- `uv run pytest tests/<subdir>/` -- one directory.
+- `uv run pytest -k "test_keyword"` -- keyword match.
+- `uv run pytest --cov` -- branch coverage with missing lines; fails below `fail_under`.
 
 ## Configuration
 
+```toml
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["<import_name>"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+```
