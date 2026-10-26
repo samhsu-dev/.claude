@@ -90,6 +90,14 @@ Every role has its own scope and authority.
 - The ledger keeps the current state in one short file and the history in an archive; the board lists open rows only, and a closed row moves to the board archive.
 - After context compaction, the main agent rereads the run registry, then the current ledger, before acting; both take precedence over the compacted summary.
 
+## Credential Outage
+
+- A zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
+- A run appends each finished step to its output file as it goes, so a stopped run resumes from its last step.
+- Before the sign-in session ends: no new Claude run starts, each running Claude run commits its work in progress and records its last finished step, the ledger takes a checkpoint entry, and the user is asked to sign in again.
+- During an outage Codex runs continue; nothing that needs a Claude turn is retried.
+- On restore: a recovery report lists each open row's state and every result landed since the outage start; each stopped Claude run resumes with SendMessage from its checkpoint, landed results are consumed, and no finished work restarts.
+
 ## Consolidation
 
 - Before every launch and after every analysis, the main agent compares open questions for shared inputs and root causes, and records merge or order with reasons in the ledger.
