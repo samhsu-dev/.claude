@@ -30,7 +30,7 @@ Every solution, an agent decision or an option offered to the user, passes each 
 - It fixes the root cause: the problem is traced to the phase rule, graph relation or mechanism that produces it, the design is rethought there, and one change solves every item with that cause. No patch: no special case for one builtin, one PHP construct or one test, and no edge, node or walk added beside the cause to cover one symptom.
 - It loses no capability: on each PHP example it states what the analysis reports before and after, which shows precision and recall do not drop, and it states the nodes, edges, walks or run time it adds to each phase.
 - A node is never modified after its creation.
-- Its result on each PHP example matches PHP 8.5.11 output.
+- Its result on each PHP example matches the output of the local PHP 8.5.12 CLI (`php -n`).
 - A solution with a known limitation is preceded by a survey of the literature, tools, other fields and known algorithms for the same problem.
 - Code is the lowest-confidence source. A difference between code and a decided doc is a code gap, never evidence against the doc.
 
