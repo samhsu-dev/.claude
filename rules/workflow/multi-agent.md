@@ -52,12 +52,15 @@ Every role has its own scope and authority.
 
 ## Finding Triage
 
-- A reviewer reports the problems the branch's diff introduces and the violations of the decided sentences its task implements. A pre-existing problem goes to an appendix and never decides the verdict.
+- A reviewer reports the problems the branch's diff introduces and the violations of the decided sentences its task implements. A pre-existing problem, a case outside the valid inputs, or a request for behavior beyond those sentences goes to an appendix and never decides the verdict or widens the branch's acceptance.
 - Each finding carries a severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style.
 - Each finding carries a difficulty: mechanical, local or algorithmic.
 - Each finding carries an urgency: U0 blocks a merge or the gate; U1 lies on the critical path of the current program step; U2 is an in-scope leaf; U3 lies outside the current step's scope and goes to its module's task doc, never to the board.
-- A branch takes at most two review rounds. After that only an S1 finding the diff introduces blocks its merge; every other finding goes to a task doc or a board row.
-- A mechanical S1 or S2 fix returns to the implementer in the same round and merges on the gate and the main agent's diff check, with no new review.
+- Before each review round, the main agent records what the pending diff changes and picks the check from it:
+  1. A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text): one independent review of the whole task against its decided sentences and program output. A plan, chief or choice check never replaces it.
+  2. A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder: a targeted independent check of the whole cause and its boundary cases, with every reproduction of the earlier rounds.
+  3. A fix that changes only assertions or fixtures of decided behavior, wording or links, and adds no semantic sentence, helper algorithm, source path or caller: the gate and the main agent's diff check, which confirms each reproduction fails on the base and passes on the fix. No new review.
+- A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by a program output or a decided sentence, blocks its merge, and it closes through check 2 or 3; every other finding goes to a task doc or a board row.
 - A finding whose cause lies outside the branch's write set becomes its own row with that write set. When the branch's diff newly exposes it on a program the integration head analyzes, the branch merges after that row.
 
 ## Branch Lifecycle
