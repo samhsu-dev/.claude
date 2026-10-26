@@ -5,7 +5,7 @@ paths:
 
 # Python README Badges
 
-Extends global `readme.md`. Badge set, format, and placement for Python
+Extends global `docs/readme.md`. Badge set, format, and placement for Python
 packages. Overrides the global **Badges** bullet for Python projects.
 
 ---
