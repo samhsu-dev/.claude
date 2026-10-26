@@ -39,7 +39,7 @@ Every role has its own scope and authority.
 |---|---|---|---|
 | Main agent | session model | Task board, ledger, merge queue, branch cleanup, user communication | Dispatches runs that pass Parallel Dispatch, fast-forwards finished branches, runs the full gate after each merge; edits nothing on a modular project |
 | Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
-| Reviewer | Codex `gpt-6.1-sol` `max` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
+| Reviewer | Codex `gpt-6.1-sol` `high` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
 | Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, algorithm plans, implementation analysis | Precedes an algorithmic task's implementer; read-only |
 | Senior architects; chief architect | Sonnet 5.5 `xhigh`; Codex `gpt-6.1-sol` `max` | Interface choices and algorithm questions the analyst and reviewer leave open | Architects discuss; the chief decides and states corrections for the implementer |
 | New reader | Sonnet 5.5 `low`; Haiku 5.5 `medium` or `low` | Finished documents | Reports every place it cannot follow; read-only |
@@ -148,7 +148,7 @@ Every role has its own scope and authority.
 
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
 - After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
-- Reasoning, research, root-cause analysis, algorithm design, mathematics, question drafting and checking run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
+- Reasoning, research, root-cause analysis, algorithm design, mathematics, discussion, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, choice checks and count runs use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
 - Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
 
 ## Run Isolation
