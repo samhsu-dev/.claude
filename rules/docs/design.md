@@ -6,18 +6,19 @@ paths:
 
 # Python Design Standards
 
-Python-specific design rules. PEP 8 / PEP 20 / PEP 257 / PEP 484 / PEP 544.
+Python-specific design rules. Extends global `docs/design.md`. PEP 8 / PEP 20 / PEP 257 / PEP 484 / PEP 544.
 
 ---
 
 ## Type Selection
 
-- @dataclass for data holders. @dataclass(frozen=True) for immutable data holders.
-- BaseModel for data requiring runtime validation or schema generation.
-- TypedDict for typed dictionary shapes (TOML/JSON config).
-- Protocol + @runtime_checkable for structural subtyping without shared state.
-- ABC + @abstractmethod for type hierarchies with shared state.
-- NewType for zero-overhead type distinctions.
+- `@dataclass` for data holders. `@dataclass(frozen=True)` for immutable data holders.
+- `BaseModel` for data requiring runtime validation or schema generation.
+- `TypedDict` for typed dictionary shapes (TOML/JSON config).
+- `Enum` for a closed set of domain values. `Literal` only for values an external interface fixes or an `@overload` selects.
+- `Protocol` + `@runtime_checkable` for structural subtyping without shared state.
+- `ABC` + `@abstractmethod` for type hierarchies with shared state.
+- `NewType` for zero-overhead type distinctions.
 
 ## Module Structure
 
@@ -31,20 +32,19 @@ Python-specific design rules. PEP 8 / PEP 20 / PEP 257 / PEP 484 / PEP 544.
 
 ## Exception Design
 
-- Derive from Exception, not BaseException.
+- Derive from `Exception`, not `BaseException`.
 - Hierarchy by how callers catch, not where raised.
 - Structured context fields (step, reason). No bare strings.
 - Third-party exceptions mapped at boundary.
-- Misuse errors separate from runtime errors.
+- Misuse errors separate from runtime errors: caller misuse of the package's API raises a builtin (`TypeError` or `ValueError` for a bad argument, `RuntimeError` for a call in the wrong state); runtime failures raise domain exceptions. No caller catches a misuse error.
 
 ## API Design
 
 - All branches return a value, or none do.
 - Factory functions when construction has configuration or variants.
-- Properties for O(1) access. Methods for computation.
+- Properties for O(1) access without side effects. Methods for computation.
 
 ## Typing Patterns
 
-- TypeVar(bound=) for generic functions on a type hierarchy.
-- @overload when return type depends on input type.
-- Literal for finite value sets.
+- `TypeVar(bound=)` for generic functions on a type hierarchy.
+- `@overload` when return type depends on input type.
