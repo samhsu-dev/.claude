@@ -156,7 +156,7 @@ Every role has its own scope and authority.
 ## Working Files
 
 - Each board task has one working directory in the run storage, named by its task ID, with one subdirectory per run and the task's evidence file. It lives while the task's row is open and moves to the run storage archive when the row closes.
-- The evidence file holds one row per established fact: kind (decision record, document line, code line, history hit, program output, corpus count), the claim in one sentence, its source (path and line, commit, or command), the exact quoted text or complete output, and the run that read it.
+- The evidence file holds one row per established fact: kind, spelled as `tools/evidence.py` checks it (`decision` record, `doc` line, `code` line, `history` hit, `php` program output, `corpus` count), the claim in one sentence, its source (path and line, commit, or command), the exact quoted text or complete output, and the run that read it.
 - A run reads the evidence file before it searches, and writes new rows only in its own run directory. After the run ends, the main agent merges them into the task's file with `tools/evidence.py merge`, which keeps one row per kind and source and marks a row whose value disagrees with the kept one as a conflict; no model edits the merged file.
 - A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. The merge marks it, and a stage that relies on it reads the source again and writes a new row.
 - A fact a decision record needs (its example, the output, the counts) is copied into that record when the decision is recorded; no record or document depends on a working directory.
