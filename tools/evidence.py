@@ -60,6 +60,8 @@ def problem(row):
     for field in ("claim", "source"):
         if not row.get(field):
             return f"missing {field}"
+        if not isinstance(row[field], str):
+            return f"{field} is not a string"
     if kind in QUOTED and not row.get("quote"):
         return "missing quote"
     if kind in {"php", "history", "corpus"} and "value" not in row:
