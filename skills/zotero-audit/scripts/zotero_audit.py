@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Read-only metadata audit of a local Zotero library. Snapshots zotero.sqlite (immutable open, never the live file
-for writes), runs local checks, optionally verifies papers against Crossref, and prints one JSON report.
+"""Read-only metadata audit of a local Zotero library. Copies zotero.sqlite with its write-ahead log (never opens
+the live file), runs local checks, optionally verifies papers against Crossref, and prints one JSON report.
 
 Usage: zotero_audit.py [--crossref] [--library NAME_OR_ID] [--limit N] [--db PATH]
 Env:   ZOTERO_AUDIT_MAILTO  contact address sent to Crossref's polite pool (optional).
@@ -43,12 +43,17 @@ def author_overlap(local, cr):
 
 
 def snapshot(db):
+    """Copy the database with its write-ahead log; opening the copy replays the log, so writes Zotero has not
+    checkpointed yet are visible. The log is copied first and the copy is retried while either file changes."""
     out = os.path.join(tempfile.mkdtemp(prefix="zotero-audit-"), "zotero.sqlite")
-    src = sqlite3.connect(f"file:{db}?immutable=1", uri=True)
-    dst = sqlite3.connect(out)
-    src.backup(dst)
-    src.close()
-    return dst, os.path.dirname(out)
+    pair = [(p, out + p[len(db):]) for p in (db + "-wal", db) if os.path.exists(p)]
+    for _ in range(3):
+        before = [os.stat(p).st_mtime_ns for p, _ in pair]
+        for p, q in pair:
+            shutil.copyfile(p, q)
+        if before == [os.stat(p).st_mtime_ns for p, _ in pair]:
+            break
+    return sqlite3.connect(out), os.path.dirname(out)
 
 
 def libraries(c):

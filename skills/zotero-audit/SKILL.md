@@ -18,7 +18,7 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_O
 ```
 
 - Write the report into the session scratchpad, not the user's project.
-- The script snapshots `~/Zotero/zotero.sqlite` with an immutable open. It never touches Zotero credential stores.
+- The script copies `~/Zotero/zotero.sqlite` and its write-ahead log and reads the copy, so writes Zotero has not checkpointed yet are visible. It never opens the live file and never touches Zotero credential stores.
 - Sources: Crossref (authoritative record per DOI), DOI handle API (DataCite DOIs), Semantic Scholar (arXiv ID and title → DOI links). `SEMANTIC_SCHOLAR_API_KEY` raises its rate limit; without it requests are spaced 3 s apart.
 - A full Crossref run takes several minutes. Run it in the background. Bound cost with `--library` or `--limit`, never with a timeout.
 
