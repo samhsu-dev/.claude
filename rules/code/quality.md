@@ -5,64 +5,72 @@ paths:
 
 # Python Code Quality
 
-Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
+Python-specific rules and toolchain. Extends global `code/quality.md`. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 
 ---
+
+## Naming
+
+- PEP 8 naming: `CapWords` classes and type variables, `lowercase_with_underscores` functions, methods and variables, exception names ending in `Error`. ruff `N` checks it.
+- Acronyms in `CapWords`: all letters capitalized (`HTTPServerError`, not `HttpServerError`).
+
+## Formatting
+
+- Layout is the `uv run ruff format` output: 88-character lines, double quotes, 4-space indentation. ruff `E501` checks the lines the formatter cannot wrap.
 
 ## Imports
 
 - Relative imports for internal modules.
-- ruff rule set I (isort-compatible) for sorting. Groups: stdlib, third-party, local -- blank line between each.
+- ruff rule set `I` (isort-compatible) for sorting. Groups: stdlib, third-party, local -- blank line between each.
 - No wildcard imports.
-- __all__ and __version__ after module docstring, before imports (except from __future__).
+- `__all__` and `__version__` after module docstring, before imports (except `from __future__`).
 
 ## Error Handling
 
-- raise ... from exc to chain. raise ... from None to suppress.
-- Domain exceptions with structured fields. Defined in _exceptions.py.
-- try blocks cover minimum code.
+- `raise ... from exc` to chain. `raise ... from None` to suppress.
+- `try` blocks cover minimum code.
 
 ## Python Idioms
 
-- is / is not for None (PEP 8).
-- if not seq: for empty check.
-- .startswith() / .endswith(). Not slicing.
-- isinstance(). Not type() is.
-- def for named functions. No lambda assignment.
+- `is` / `is not` for `None` (PEP 8).
+- `if not seq:` for empty check.
+- `.startswith()` / `.endswith()`. Not slicing.
+- `isinstance()`. Not `type() is`.
+- `def` for named functions. No lambda assignment.
 
 ## Performance Idioms
 
-- set/dict for membership tests.
+- `set` / `dict` for membership tests.
 - Generator expressions for single-pass. List comprehensions for reuse.
-- ''.join(parts) in loops. Not +=.
-- tuple/frozenset for fixed data.
+- `''.join(parts)` in loops. Not `+=`.
+- `tuple` / `frozenset` for fixed data.
 
 ## Resource Management
 
-- Context managers for resource lifecycle. No __del__.
-- @functools.cache / @functools.lru_cache for pure-function memoization.
+- Context managers for resource lifecycle. No `__del__`.
+- `@functools.cache` / `@functools.lru_cache` for pure-function memoization.
 
 ## Type Hints
 
-- from __future__ import annotations in every module.
-- X | None. Not Optional[X]. list[str]. Not List[str].
-- Sequence, Mapping, Callable from collections.abc in signatures.
-- __init__ returns -> None.
-- TypeVar string matches variable: T = TypeVar('T').
-- No TYPE_CHECKING. Circular dependencies fixed at module structure level.
+- `from __future__ import annotations` in every module.
+- `X | None`. Not `Optional[X]`. `list[str]`. Not `List[str]`.
+- `Sequence`, `Mapping`, `Callable` from `collections.abc` in signatures.
+- `__init__` returns `-> None`.
+- `TypeVar` string matches variable: `T = TypeVar('T')`.
+- No `TYPE_CHECKING`. Circular dependencies fixed at module structure level.
 
 ## No Weak Types
 
-- TypedDict / dataclass / BaseModel for structured data.
-- External API boundaries: cast or validate Any to concrete types.
+- `TypedDict` / dataclass / `BaseModel` for structured data.
+- External API boundaries: cast or validate `Any` to concrete types.
 
 ## Docstrings
 
-- """Triple double quotes""".
-- Google style: summary, Args:, Returns:, Raises:.
+- `"""Triple double quotes"""`.
+- Google style: summary, `Args:`, `Returns:`, `Raises:`.
 - One-line: imperative mood, period, no signature repetition.
-- Multi-line: summary, blank line, elaboration. Closing """ on own line.
-- Classes: summary, Attributes: (public), constraints.
+- Multi-line: summary, blank line, elaboration. Closing `"""` on own line.
+- Classes: summary, `Attributes:` (public), constraints.
 - 72 characters per line.
 
 ---
@@ -70,13 +78,13 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 ## Quality Workflow
 
 ### Before editing
-- uv run ruff check <target> -- check existing violations.
+- `uv run ruff check <target>` -- check existing violations.
 
 ### After editing
-- uv run ruff format <target>.
-- uv run ruff check <target> -- zero violations.
-- uv run mypy --strict <target>.
-- uv run pytest -- all pass.
+- `uv run ruff format <target>`.
+- `uv run ruff check <target>` -- zero violations.
+- `uv run mypy --strict <target>`.
+- `uv run pytest` -- all pass.
 
 ---
 
@@ -84,8 +92,9 @@ Python-specific rules and toolchain. PEP 8 / PEP 20 / PEP 257 / PEP 484.
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| ruff | uv run ruff format | Formatter (black-compatible) |
-| ruff | uv run ruff check | Linter + import sorter (rule sets E, W, F, I, N, UP, B, C4, SIM) |
-| mypy | uv run mypy --strict | Type checker |
-| pytest | uv run pytest | Test runner |
-| uv | uv run, uv add, uv sync | Package manager |
+| ruff | `uv run ruff format` | Formatter (black-compatible) |
+| ruff | `uv run ruff check` | Linter + import sorter (rule sets `E`, `W`, `F`, `I`, `N`, `UP`, `B`, `C4`, `SIM`) |
+| mypy | `uv run mypy --strict` | Type checker |
+| pytest | `uv run pytest` | Test runner |
+| pytest-cov | `uv run pytest --cov` | Branch coverage report |
+| uv | `uv run`, `uv add`, `uv sync` | Package manager |
