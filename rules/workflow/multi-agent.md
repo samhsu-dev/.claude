@@ -41,7 +41,7 @@ Every role has its own scope and authority.
 | Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
 | Reviewer | Codex `gpt-6.1-sol` `max` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
 | Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, algorithm plans, implementation analysis | Precedes an algorithmic task's implementer; read-only |
-| Senior architects; chief architect | Sonnet 5.5 `xhigh`; Opus 5.5 `max` | Interface choices and algorithm questions the analyst and reviewer leave open | Architects discuss; the chief decides and states corrections for the implementer |
+| Senior architects; chief architect | Sonnet 5.5 `xhigh`; Codex `gpt-6.1-sol` `max` | Interface choices and algorithm questions the analyst and reviewer leave open | Architects discuss; the chief decides and states corrections for the implementer |
 | New reader | Sonnet 5.5 `low`; Haiku 5.5 `medium` or `low` | Finished documents | Reports every place it cannot follow; read-only |
 
 - Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
