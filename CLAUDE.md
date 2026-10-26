@@ -1,31 +1,6 @@
 # Project Rules
 
-Python project. Global rules (`~/.claude/rules/`) provide language-agnostic standards. Project rules below add Python-specific guidance.
-
-## Structure
-
-```
-.claude/
-├── CLAUDE.md               # This file
-└── rules/
-    ├── code/               # Writing code
-    │   ├── quality.md      # Python code quality and toolchain (*.py)
-    │   ├── constants.md    # Value placement: constant vs config vs data file (*.py)
-    │   ├── organization.md # Python module naming, package layout, workspaces, entry points (*.py)
-    │   ├── testing.md      # Pytest conventions (test files)
-    │   └── debugging.md    # Python debugging tools (*.py, test files)
-    │
-    ├── docs/               # Writing documentation
-    │   ├── design.md       # Python design standards (design.md, design-*.md)
-    │   ├── impl.md         # Python impl.md conventions (impl.md, impl-*.md)
-    │   └── todo.md         # Python task conventions (todo.md)
-    │
-    └── workflow/           # Operational processes
-        ├── committing.md   # Project commit and push rules
-        └── releasing.md    # Release standards by distribution type (pyproject.toml, uv.lock, workflows)
-```
-
-Rules use `paths:` frontmatter to load only when working with matching files.
+Python/uv project. Global rules (`~/.claude/rules/`) provide language-agnostic standards. Project rules in `.claude/rules/` add Python-specific guidance.
 
 ## Workflow
 
