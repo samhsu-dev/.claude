@@ -12,7 +12,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 
 ## Type Selection
 
-- `data class` for value holders (equality by properties, `copy()`, destructuring). Properties immutable (`val`) by default.
+- `data class` for value holders (equality by properties, `copy()`, destructuring).
 - `sealed class` / `sealed interface` for closed type hierarchies (exhaustive `when`).
 - `enum class` for finite fixed sets of constants.
 - `interface` for contracts and structural abstraction. Over abstract class when no shared state.
@@ -33,7 +33,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 
 ## Class Design
 
-- Primary constructor for required dependencies. Default values for optional parameters.
+- Primary constructor for required dependencies.
 - `init` blocks for validation. `require()` / `check()` inside `init`.
 - `companion object` for factory methods and constants associated with a class.
 - Delegation (`by`) over inheritance for composing behavior.
@@ -41,14 +41,12 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 
 ## Interface Design
 
-- Small, focused interfaces. One responsibility per interface.
 - Default implementations for methods with obvious common behavior.
 - Properties in interfaces for contract-level state.
 - `fun interface` (SAM) for single-method interfaces consumed as lambdas.
 
 ## Sealed Hierarchies
 
-- `sealed` when all subtypes are known at compile time.
 - Subclasses in same file (sealed class) or same package (sealed interface).
 - Exhaustive `when` — no `else` branch. Compiler enforces completeness.
 
@@ -57,12 +55,12 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 - Inherit from `Exception`, not `Throwable` or `Error`.
 - Hierarchy by how callers catch, not where raised.
 - Structured context: named properties on exception classes, not bare message strings.
-- Third-party exceptions mapped at boundary. Internal code raises domain exceptions only.
+- Third-party exceptions mapped at boundary.
 - Misuse errors separate from runtime errors: caller misuse raises through `require()` / `check()` (`IllegalArgumentException` / `IllegalStateException`); runtime failures raise domain exceptions. No caller catches a misuse error.
 
 ## API Design
 
-- Default parameter values over overloads.
+- Default-parameter contracts: `rules/code/quality.md` Idiomatic Kotlin.
 - Extension functions for operations that do not need private access.
 - Properties for O(1) access without side effects. Functions for computation.
 - Builder DSL (`apply` / typed receivers) for complex object construction.

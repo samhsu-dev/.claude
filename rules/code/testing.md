@@ -97,6 +97,5 @@ tasks.test {
 
 ## Mocking
 
-- Mock at system boundaries only. Real objects for internal collaborators.
 - MockK for Kotlin-idiomatic mocking when needed: `mockk<T>()`, `every { }`, `verify { }`.
 - `spyk` for partial mocks. `relaxed = true` for stubs.

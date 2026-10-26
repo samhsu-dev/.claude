@@ -5,8 +5,6 @@ Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnost
 ## Build System
 
 - Gradle with Kotlin DSL (`build.gradle.kts`). Multi-module build declared in `settings.gradle.kts`.
-- Build command: `./gradlew build`.
-- Test command: `./gradlew test`.
 
 ## Workflow
 

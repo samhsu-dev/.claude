@@ -11,7 +11,6 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Naming
 
-- Packages: all lowercase, no underscores.
 - Classes/Objects: PascalCase.
 - Functions/Properties/Variables: camelCase.
 - Constants (`const val`, top-level/object `val` with no custom getter): UPPER_SNAKE_CASE.
@@ -42,15 +41,14 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 - `?.` for safe access. `?:` for defaults. `as?` for safe casts.
 - `!!` only when provably non-null through business logic the compiler cannot verify. Never on untrusted external data. Never in public APIs.
-- `?.let { }` for non-null execution blocks.
 - `filterNotNull()` to remove nulls from collections.
 - Public functions and properties: explicit Kotlin types for Java interop platform types.
 
 ## Idiomatic Kotlin
 
 - `val` over `var`. Immutable collections (`listOf`, `setOf`, `mapOf`) over mutable.
-- Default parameter values over function overloads.
-- Expression bodies (`fun foo() = expr`) for single-expression functions.
+- Default parameter values for optional parameters, over function overloads.
+- Expression bodies (`fun foo(): Type = expr`) for single-expression functions.
 - String templates (`"$name"`) over concatenation. Multiline strings with `trimIndent()`.
 - `if` for binary conditions. `when` for 3+ branches. Both as expressions where applicable.
 - `require()` for argument validation. `check()` for state validation. `error()` for illegal states.
@@ -94,11 +92,10 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 ## Code Smells
 
 - Abstract class with no abstract members → concrete class or interface.
-- Data class with mutable properties or non-conversion functions.
-- `protected` members in final (non-`open`) classes.
+- Data class with mutable properties.
 - Utility class with public constructor → private constructor.
 - Functions returning only a constant → `const val`.
-- Explicit `Unit` return type → omit.
+- Replaces global `code/quality.md` return-type annotations for `Unit`: omit `Unit` unless the Visibility requirements in `rules/code/organization.md` require an explicit return type.
 - Redundant `constructor` keyword.
 - Object literals implementing single method → lambda.
 

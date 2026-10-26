@@ -18,7 +18,6 @@ Kotlin realization of global `rules/code/organization.md`. kotlinlang.org naming
 
 - Kotlin source files: PascalCase with `.kt` extension. Overrides the global lowercase-underscore rule — Kotlin community convention.
 - A file holding one primary class is named after the class: `Parser.kt`.
-- A file holding multiple related declarations is named after the responsibility it owns, not after any one class.
 
 ## Module Layout
 
@@ -28,7 +27,6 @@ Gradle default source sets per module:
 |------|----------|
 | `src/main/kotlin/` | Production sources, packages mirror directory structure |
 | `src/main/resources/` | Bundled resource files |
-| `src/test/kotlin/` | Tests, mirroring main packages |
 | `src/test/resources/` | Test data files |
 
 - Repo root holds `settings.gradle.kts`, `gradle.properties`, `gradle/libs.versions.toml`, and the Gradle wrapper.
@@ -56,5 +54,5 @@ Public = used by other modules or by consumers of a published module. Internal =
 
 ## Resources
 
-- Resource files in `src/main/resources/`, namespaced by package path.
+- Bundled resources are namespaced by package path.
 - Read resources via the classloader: `javaClass.getResourceAsStream(...)`. Never via `File` path arithmetic against the working directory.

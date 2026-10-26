@@ -26,13 +26,9 @@ private val logger = LoggerFactory.getLogger(MyClass::class.java)
 ```
 
 - One logger per class via `LoggerFactory.getLogger`.
-- `debug` for flow tracing. `info` for state transitions. `error` for failures.
-- Include structured context: `logger.error("Failed to process node={}, reason={}", nodeId, reason)`.
-- No sensitive data in logs.
 
 ## Common Pitfalls
 
-- Empty `catch` blocks swallow exceptions. Always log or rethrow.
 - Missing `cause` parameter: `throw DomainException("msg", cause = e)`.
 - `lateinit` access before initialization → `UninitializedPropertyAccessException`.
 - Platform type nullability: Java methods returning null assigned to non-null Kotlin types.
