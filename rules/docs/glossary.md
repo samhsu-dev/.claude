@@ -58,7 +58,7 @@ A new term is named in three steps, in order:
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
 - The project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, its layers, each with its commit) are agent instructions. They live in the project rule `.claude/rules/docs/glossary.md`, never in a repository document.
-- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `CLAUDE.md` Local Records.
 - After a glossary file splits, add its new files to the routing table.

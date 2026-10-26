@@ -23,7 +23,7 @@ Shared bibliography storage and citation syntax. Glossary field relations: `rule
 
 ## File
 
-- One bibliography per repository: `docs/references.bib`, in BibLaTeX syntax. The glossary routing file names it; the project rule names the Zotero collection it is exported from.
+- One bibliography per repository: `docs/references.bib`, in BibLaTeX syntax. The glossary routing file names it and the Zotero collection it is exported from.
 - The bibliography is a Better BibTeX auto-export (Better BibLaTeX translator) of the project's Zotero collection. It is never edited by hand: a source is added or changed as a Zotero item in that collection.
 - One item per source. A source cited twice is one item cited twice.
 - A paper item holds authors, title, venue, year, pages, and DOI, checked against the DOI registry.
