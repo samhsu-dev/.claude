@@ -67,7 +67,7 @@ Every role has its own scope and authority.
 
 - A branch is named `wt/<task-id>` and carries one task. From creation its `branch.<name>.description` holds the task ID, the goal and the agent handle.
 - Every run commits before it ends, red work under a `wip:` subject. After an interruption the main agent commits the run's work in progress on its branch.
-- A pointer bump and the consumer change that needs it share one commit. The main agent pushes each submodule commit to a submodule branch named after the task when the superproject commit lands.
+- A pointer bump and the consumer change that needs it share one commit. The main agent pushes each submodule commit to a submodule branch named after the task, and when the superproject commit lands, to the submodule branch the project rules name for the integration branch, before the superproject push.
 - A branch is rebased in place under its own name; a task never re-cuts its work onto a new branch name.
 - Right after a branch's fast-forward and full gate, the main agent removes its worktree and deletes the branch with `git branch -d`, run from a checkout whose HEAD is the integration branch.
 - A worktree is removed only after its tracked, untracked and ignored files and every submodule are clean or disposable build output.
