@@ -46,7 +46,7 @@ Every role has its own scope and authority.
 
 - Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
 - A file two tasks touch has one owner or a fixed order. Cross-module contracts merge before their consumers start.
-- A branch merges after it is rebased onto the integration head and passes its gate and an independent reviewer. The main agent fast-forwards it and runs the full gate. A rebase conflict goes to the user, never auto-resolved.
+- A branch merges after it is rebased onto the integration head and passes its gate and an independent reviewer. The main agent fast-forwards it and runs the full gate. A rebase conflict goes to the user, never auto-resolved. Exception: a conflict confined to submodule pointers, where the task's submodule commits were first rebased onto the commits the integration head records and `git range-diff` shows them patch-identical; the main agent sets each pointer to the rebased submodule commit of the same step.
 - The task board lists every task with its write set, dependencies, difficulty, assigned role, branch and the Parallel Dispatch checks. When a run finishes, the main agent dispatches the next task that passes those checks.
 - Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work; missing evidence comes from a follow-up run, never from re-deriving the analysis.
 
