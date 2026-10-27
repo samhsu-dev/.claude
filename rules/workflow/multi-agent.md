@@ -104,6 +104,7 @@ Every role has its own scope and authority.
 - Questions sharing a cause merge into one discussion; a question that needs another's answer is ordered after it.
 - Independent discussions run in parallel only when their inputs are complete and fixed; no discussion consumes an answer still being produced.
 - Each run returns consolidation findings after its analysis; the main agent reconciles them before the next launch.
+- A consolidation pass runs every six hours: an independent read-only run lists the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches whose checks passed. The main agent applies the merges, moves and state changes, merges each ready branch, and records the open-row count before and after. A row that implements a decided sentence closes only into a row that implements the same sentence.
 
 ## Roles per Stage
 
