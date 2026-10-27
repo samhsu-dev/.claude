@@ -109,8 +109,9 @@ Every role has its own scope and authority.
 ## Roles per Stage
 
 - The main agent selects roles with distinct viewpoints for the stage's questions and records the selection; no fixed full panel.
-- Discussion depth follows difficulty. The full proposal, rebuttal and chief rounds run for an algorithm, a core principle, or a mechanism or interface the decided documents do not name. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
-- Every full discussion starts with independent proposals, then each role reads the other positions and answers their claims with evidence; one chief resolves disagreements and records the disposition. When every role agrees after the rebuttals on the options and the recommendation, no chief runs: the proofs the roles still hold open go to one Codex run, which also writes the question text or the decision entry.
+- Discussion depth follows difficulty. A design question (an algorithm, a core principle, or a mechanism or interface the decided documents do not name) takes one design run and one independent refutation. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
+- The design run reads the evidence file and writes one section per selected viewpoint, each ending in its own option and recommendation; then the claims on which the sections disagree, each settled by an evidence row; then the decision, or the question text, and the decision entry. One model holding several viewpoints in one context matches a multi-agent discussion at a fraction of its runs, and rebuttal rounds add little beyond independent answers.
+- The refutation runs in a fresh context with the question, the evidence file and the candidate rule, not the design run's reasoning, and tries to refute the rule with counterexamples, invariant and cost checks. A refutation returns to the design run once. One that still stands, or a design run whose viewpoints disagree on the option, escalates: independent proposals, one per viewpoint, then one chief; no rebuttal round.
 - The evidence a topic's decision needs (decision records, document lines, history hits, program outputs, corpus counts) is gathered once, by the first stage that drafts options, into the task's evidence file (Working Files). Every later stage cites its rows and adds a row only for a fact the file lacks; no stage repeats a search a row records.
 - The chief decides from the role results and the evidence file within the time box its brief sets. It runs no search or program of its own; a fact it lacks becomes a follow-up question in its result, and the choice that needs the fact waits for the answer.
 - One Codex run checks a chief's result: it tries to refute each choice and answers the follow-up questions together, since both read the same inputs.
@@ -134,13 +135,13 @@ Every role has its own scope and authority.
 - Before any fix, the root-cause gate applies the root-cause and capability rules of `workflow/change-policy.md`: it validates the consolidation groups and asks whether one mechanism solves each group, checking existing mechanisms first.
 - The gate rejects per-item special cases under `code/quality.md` No Patch-Style Code; a distinct mechanism requires evidence that the problem differs and a design rationale in its owning document.
 - Before proposing a solution with a known limitation, researchers survey literature, industrial tools, cross-domain methods, closed-form mathematics and known algorithms, and return cited alternatives and remaining limits.
-- Analysis covers every affected item and boundary case against research, repository conventions and recorded decisions before options leave the panel.
+- Analysis covers every affected item and boundary case against research, repository conventions and recorded decisions before options leave the design run.
 - An independent adversarial verifier attempts to refute every solution with counterexamples and invariant, security, precision and cost checks; unresolved refutations return to analysis.
 
 ## Decisions Before the User
 
 - Decision authority and question format come from the project decision rule.
-- A user-decided item reaches the user only after panel discussion, a check against recorded decisions, and panel agreement on the options, recommended option and worked example.
+- A user-decided item reaches the user only after its design run and refutation, a check against recorded decisions, and agreement on the options, recommended option and worked example.
 - The chief decides agent-decidable items without asking and records the outcome; the ledger links the project's decision record.
 - After a user decision, the main agent records it in the same turn and dispatches its implementation, then continues the next independent discussion.
 - Decision record placement and document ownership follow `CLAUDE.md`.
