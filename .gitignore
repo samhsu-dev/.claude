@@ -12,6 +12,8 @@
 !skills/**
 !tools/
 !tools/**
+!tests/
+!tests/**
 
 # Track .gitignore itself
 !.gitignore

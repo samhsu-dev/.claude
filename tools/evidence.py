@@ -133,8 +133,11 @@ def render(rows):
 
 
 def write(task, rows):
-    (task / MERGED).write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
-    (task / RENDERED).write_text(render(rows))
+    # A row holds a lone surrogate for each source byte that is not UTF-8; backslashreplace writes
+    # it as \udcXX, which inside a JSON string is the escape json.loads reads back to the same value.
+    text = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
+    (task / MERGED).write_text(text, errors="backslashreplace")
+    (task / RENDERED).write_text(render(rows), errors="backslashreplace")
 
 
 def merge(task, root):
