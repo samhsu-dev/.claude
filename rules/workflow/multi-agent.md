@@ -154,6 +154,7 @@ Every role has its own scope and authority.
 ## Run Isolation
 
 - Run directories live in persistent scratch storage outside temporary directories; each discussion run's working directory and sandbox are its own unique output directory, never the target tree. An implementation run's working directory is its own worktree.
+- A worktree lives outside the repository folder: an editor or language server opened on the repository walks the whole folder and would index every worktree's sources.
 - Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules and the path-scoped rules for the files its topic touches. Its findings count only when its log shows a read of every rule its topic relies on.
 - A launch brief carries the ledger entry plus the question and the return format.
 - A run's summary carries evidence, limits and next step.
