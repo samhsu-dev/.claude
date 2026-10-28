@@ -34,7 +34,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 ## Class Design
 
 - Primary constructor for required dependencies.
-- Use `init` with `require()` or `check()` when construction is the single validation boundary. Global `code/quality.md` owns validation placement.
+- `init` blocks for validation. `require()` / `check()` inside `init`.
 - `companion object` for factory methods and constants associated with a class.
 - Delegation (`by`) over inheritance for composing behavior.
 - `open` only when subclassing is intended. Classes final by default.
@@ -56,7 +56,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 - Hierarchy by how callers catch, not where raised.
 - Structured context: named properties on exception classes, not bare message strings.
 - Third-party exceptions mapped at boundary.
-- Misuse errors separate from runtime errors: caller misuse raises through `require()` / `check()` (`IllegalArgumentException` / `IllegalStateException`); unexpected runtime failures raise domain exceptions. Expected runtime failures follow API Design. No caller catches a misuse error.
+- Misuse errors separate from runtime errors: caller misuse raises through `require()` / `check()` (`IllegalArgumentException` / `IllegalStateException`); runtime failures raise domain exceptions. No caller catches a misuse error.
 
 ## API Design
 
@@ -64,7 +64,7 @@ Kotlin-specific design rules. Extends global `docs/design.md`. kotlinlang.org co
 - Extension functions for operations that do not need private access.
 - Properties for O(1) access without side effects. Functions for computation.
 - Builder DSL (`apply` / typed receivers) for complex object construction.
-- Replaces global `code/quality.md` failure signaling for expected runtime failures: use `Result<T>` or a sealed result. Unexpected failures use exceptions. Misuse errors follow Exception Design.
+- `Result<T>` or sealed class for expected failures. Exceptions for unexpected failures.
 
 ## Generics
 

@@ -16,7 +16,7 @@ Kotlin realization of global `rules/code/organization.md`. kotlinlang.org naming
 
 ## File Naming
 
-- Replaces global `code/organization.md` filename stems: Kotlin source files use PascalCase with `.kt`.
+- Kotlin source files: PascalCase with `.kt` extension. Overrides the global lowercase-underscore rule — Kotlin community convention.
 - A file holding one primary class is named after the class: `Parser.kt`.
 
 ## Module Layout
@@ -50,7 +50,7 @@ Public = used by other modules or by consumers of a published module. Internal =
 ## Entry Points
 
 - The CLI module applies the `application` plugin; the entry class is set via `application { mainClass }` in `build.gradle.kts`.
-- `fun main` follows global `code/organization.md` Entry Points. Business logic lives in library modules.
+- `fun main` contains argument parsing and delegation only. Business logic lives in library modules.
 
 ## Resources
 

@@ -13,7 +13,7 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 - Classes/Objects: PascalCase.
 - Functions/Properties/Variables: camelCase.
-- Constant naming and placement: `code/constants.md`.
+- Constants (`const val`, top-level/object `val` with no custom getter): UPPER_SNAKE_CASE.
 - Backing properties: `private val _elementList` / `val elementList`.
 - Type parameters: single capital letter (`T`, `E`, `K`, `V`).
 - Acronyms: two-letter uppercase both (`IOStream`). Longer capitalize first only (`XmlHttpRequest`).
@@ -39,7 +39,7 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Null Safety
 
-- `?.` for safe access, `?:` for a contractually optional value, and `as?` for safe casts. Missing required values follow global `code/quality.md` Error Handling.
+- `?.` for safe access. `?:` for defaults. `as?` for safe casts.
 - `!!` only when provably non-null through business logic the compiler cannot verify. Never on untrusted external data. Never in public APIs.
 - `filterNotNull()` to remove nulls from collections.
 - Public functions and properties: explicit Kotlin types for Java interop platform types.
@@ -87,14 +87,14 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 ## Complexity Thresholds (detekt)
 
 - The detekt default thresholds apply: `buildUponDefaultConfig = true` and `maxIssues: 0` in `config/detekt/detekt.yml`. `./gradlew detekt` enforces them.
-- Replaces global `code/quality.md` function length, parameter count and indentation thresholds, and global `code/organization.md` file length, with the detekt thresholds above.
+- Replaces global `code/quality.md`: functions under 20 lines, max 3 parameters, max 2 indentation levels. Replaces global `code/organization.md`: files under 300 lines.
 
 ## Code Smells
 
 - Abstract class with no abstract members → concrete class or interface.
 - Data class with mutable properties.
-- A utility grouping uses the stateless `object` form in `docs/design.md` Type Selection; it has no public constructor.
-- A function returning a compile-time constant becomes `const val`. A fixed runtime value becomes `val` under `code/constants.md`.
+- Utility class with public constructor → private constructor.
+- Functions returning only a constant → `const val`.
 - Replaces global `code/quality.md` return-type annotations for `Unit`: omit `Unit` unless the Visibility requirements in `rules/code/organization.md` require an explicit return type.
 - Redundant `constructor` keyword.
 - Object literals implementing single method → lambda.
@@ -108,7 +108,7 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ### After editing
 - `./gradlew detekt` — no new violations.
-- `./gradlew test` — unit tests pass; run any separate integration suite as part of the all-tests task gate.
+- `./gradlew test` — all pass.
 - `./gradlew build` — compiles clean.
 
 ---

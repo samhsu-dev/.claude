@@ -1,8 +1,11 @@
-# Kotlin Profile
+# Project Rules
 
-This profile extends the global rules with Kotlin and Gradle conventions.
-Project values bind through global Parameter Binding.
+Kotlin/Gradle project. Global rules (`~/.claude/rules/`) provide language-agnostic standards. Project rules in `.claude/rules/` add Kotlin-specific guidance.
 
 ## Build System
 
-- Use Gradle with Kotlin DSL. Multi-module declarations follow `rules/code/organization.md` Multi-Module Repository.
+- Gradle with Kotlin DSL (`build.gradle.kts`). Multi-module build declared in `settings.gradle.kts`.
+
+## Workflow
+
+- No summary/README generation after task completion. Update existing files only.
