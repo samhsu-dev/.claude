@@ -42,7 +42,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 ## Parallel Dispatch
 
 - A task runs beside others only when its board row records each check:
-  1. Every decision it implements is recorded.
+  1. Every user-decidable decision it implements is recorded.
   2. Its write set is disjoint from every running task's write set.
   3. Every contract it consumes is merged into the integration branch.
   4. Its result is checkable by the quality gate and an independent review.
