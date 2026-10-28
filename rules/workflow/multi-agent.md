@@ -83,7 +83,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 ## Consolidation
 
 - Before every launch, the main agent compares open tasks and questions for shared inputs, write sets and root causes. Those sharing a cause merge into one chain; one that needs another's result is ordered after it; the choice is recorded with its reason.
-- Every six hours an independent read-only pass lists the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. The main agent applies the merges, moves and state changes, merges each ready branch and records the open-row count before and after. A row that implements a decided sentence closes only into a row that implements the same sentence.
+- Every six hours the main agent itself lists the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. It applies the merges, moves and state changes, merges each ready branch and records the open-row count before and after. A row that implements a decided sentence closes only into a row that implements the same sentence.
 
 ## Credential Outage
 
