@@ -36,7 +36,7 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 ## Layout
 
-- Test root: `tests/` at repo root, outside `src/`. It mirrors the package tree: `src/<import_name>/<sub>/_<module>.py` is tested in `tests/<sub>/test_<module>.py`, the leading `_` dropped.
+- Test root: `tests/` at repo root, outside `src/`. `src/<import_name>/<sub>/_<module>.py` is tested in `tests/<sub>/test_<module>.py`, the leading `_` dropped. Global `code/testing.md` Layout owns the mirroring.
 - Shared fixtures in `tests/conftest.py`. Subdirectory fixtures in `tests/<subdir>/conftest.py`.
 
 ## Discovery
@@ -44,7 +44,7 @@ def test_validate_month(month: int, valid: bool) -> None:
 - Files: `test_*.py`.
 - Functions prefixed with `test_`.
 - Plain functions with fixtures by default.
-- Test classes: `Test` prefix, stateless grouping of one component's behavior families only.
+- Replaces global `code/testing.md` Structure on classes: a test class is allowed as stateless grouping of one component's behavior families, with `Test` prefix.
 - No `unittest.TestCase`. No `__init__` in test classes. No class attributes holding shared state.
 
 ## Naming
@@ -64,7 +64,7 @@ def test_validate_month(month: int, valid: bool) -> None:
 - `tmp_path`: unique `Path` per test.
 - `monkeypatch`: env vars and attribute patching. Auto-reverted.
 - `capsys`: stdout/stderr capture.
-- Fixtures return fresh objects. No shared mutable state.
+- Fixtures return fresh objects to meet global `code/testing.md` Maintenance.
 
 ### conftest.py
 - Auto-discovered. No import needed.
@@ -89,7 +89,7 @@ def test_validate_month(month: int, valid: bool) -> None:
 
 ## Execution
 
-- `uv run pytest` -- all tests.
+- Replaces global `code/testing.md` Execution unit-only default and Types separate execution: `uv run pytest` -- all tests.
 - `uv run pytest -x --tb=short` -- stop on first failure.
 - `uv run pytest tests/<subdir>/` -- one directory.
 - `uv run pytest -k "test_keyword"` -- keyword match.

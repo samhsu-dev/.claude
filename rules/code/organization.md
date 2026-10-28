@@ -56,7 +56,6 @@ Public = used by consumers of the package. Internal = used only within the packa
 
 - One `__init__.py` per package with explicit `__all__`.
 - `__init__.py` contains re-exports, `__all__`, and `__version__` only. No logic.
-- Internal modules prefixed with `_`. Public API re-exported from `__init__.py`.
 - Exceptions in `_exceptions.py`. Types in `_types.py` when numerous.
 
 ## Entry Points

@@ -11,10 +11,7 @@ Python-specific task conventions. Extends global `docs/todo.md`.
 
 ## Quality Gate
 
-Project commands for the global quality gate:
-- Lint and format: `uv run ruff format`, then `uv run ruff check` -- zero violations.
-- Type check: `uv run mypy --strict` -- zero errors.
-- Tests: `uv run pytest` -- all pass.
+The global task checklist uses `code/quality.md` Quality Workflow for lint and format, type check and tests.
 
 ## Conventions
 

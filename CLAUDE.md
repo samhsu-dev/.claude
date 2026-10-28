@@ -1,7 +1,8 @@
-# Project Rules
+# Python Profile
 
-Python/uv project. Global rules (`~/.claude/rules/`) provide language-agnostic standards. Project rules in `.claude/rules/` add Python-specific guidance.
+This profile extends the global rules with Python and uv conventions.
+Project values bind through global Parameter Binding.
 
-## Workflow
+## Build System
 
-- No summary/README generation after task completion. Update existing files only.
+- Use uv with `pyproject.toml`. Multi-project declarations follow `rules/code/organization.md` Multi-Project Repository.

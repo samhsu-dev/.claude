@@ -30,7 +30,6 @@ Apply in order. First match wins.
 - The config object is constructed once at the entry point from CLI arguments, environment, or TOML, then passed explicitly through the call chain.
 - Core logic never reads argv, environment variables, or config files. It receives the config object.
 - No module-level globals and no loose dicts for run-settings.
-- A liveness backstop deadline is never a run-setting (`resource-bounds.md`).
 
 ## Data Files
 

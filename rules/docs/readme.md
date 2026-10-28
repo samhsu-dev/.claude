@@ -20,7 +20,7 @@ packages. Overrides the global **Badges** bullet for Python projects.
 
 - Badges occupy one row immediately below the title, before the description. Overrides the global "after description, before install" placement.
 - One blank line above and below the row.
-- One row only. A second row is a badge wall, forbidden by global `readme.md`.
+- One row only. A second row is a badge wall, forbidden by global `docs/readme.md` Rules.
 
 ## Badge Set
 
@@ -42,7 +42,7 @@ Excluded as low-information: download counts, code-style/logo badges, "PRs welco
 
 ## Backing-State Gate
 
-- A badge appears only after its backing service returns real status. A badge rendering `invalid`, `unknown`, or `no status` is forbidden (global: no broken links).
+- A badge appears only after its backing service returns real status. A badge rendering `invalid`, `unknown`, or `no status` is forbidden.
 - PyPI and Python-versions badges: present only after the distribution is published to PyPI. Absent for a package carrying `Private :: Do Not Upload`.
 - Coverage badge: value comes from `coverage.json` (`pytest --cov-report=json`, field `totals.percent_covered`). A CI workflow on `main` writes a shields `endpoint` JSON from that value and hosts it in-repo. No third-party coverage service.
 - Coverage and CI badges: present only after that workflow runs on `main`.
@@ -58,4 +58,4 @@ Excluded as low-information: download counts, code-style/logo badges, "PRs welco
 
 - `[![<alt>](<shields-url>)](<target-url>)`. Every badge is a link; no bare image.
 - `<alt>` names the metric: `PyPI`, `Python`, `codecov`, `CI`, `License`.
-- shields.io is the source. The coverage badge uses shields `endpoint` reading the repo-hosted coverage JSON; no third-party coverage service.
+- shields.io is the source.
