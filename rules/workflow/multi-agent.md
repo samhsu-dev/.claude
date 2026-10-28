@@ -55,6 +55,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 - A reviewer reports the problems the diff introduces and the violations of the decided sentences its task implements. A pre-existing problem, a case outside the valid inputs, or a request for behavior beyond those sentences goes to an appendix, never decides the verdict, and becomes a row of its module's task doc.
 - Severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style.
 - A review applies `rules/docs/design.md` to maintainability, semantic type boundaries and abstraction, and `rules/communication/terminology.md` to naming; domain policy stays outside reusable mechanisms.
+- A reviewer reports one finding per cause, naming every site of the diff that shares it, and checks the author's site list against its own search; a missed site is a finding of that cause.
 - Before each review round, the main agent picks the check from what the pending diff changes:
   1. A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text) or decides a design question: one independent full review against the decided sentences and program output.
   2. A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder: a targeted check of the whole cause and its boundary cases with every earlier reproduction, in the earlier reviewer's resumed session.
@@ -82,7 +83,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 
 ## Consolidation
 
-- Before every launch, the main agent compares open tasks and questions for shared inputs, write sets and root causes. Those sharing a cause merge into one chain; one that needs another's result is ordered after it; the choice is recorded with its reason.
+- Before every launch, the main agent compares open tasks and questions for shared inputs, write sets and root causes. Rows that share a cause merge into one row, landed on one branch and checked by one review; one that needs another's result is ordered after it; the choice is recorded with its reason.
 - Every six hours the main agent itself lists the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. It applies the merges, moves and state changes, merges each ready branch and records the open-row count before and after. A row that implements a decided sentence closes only into a row that implements the same sentence.
 
 ## Credential Outage
