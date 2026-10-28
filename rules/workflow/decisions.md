@@ -18,6 +18,16 @@ Rules for deciding an open design item: who decides it, what a solution conforms
 - A name read off an existing graph type identifier, as function entity off `ENTITY_FUNCTION`, is agent-decidable and applied without a question.
 - A user question asks only the core choice in plain words, with one example; the mechanism details that follow from the choice are agent decisions.
 
+## How an Item Is Decided
+
+An open design item takes the design run and the refutation of the global `workflow/multi-agent.md` Roles per Stage, with these project parameters:
+
+- The design run weighs three viewpoints, fewer only when the item touches fewer: code architect (node and edge identity, ownership of a relation, public API), algorithm designer (the three phases, termination, per-phase cost), static security analysis expert (taint flow, precision and recall, prior tools). Each viewpoint's section ends in its own option.
+- The design run makes the searches of Before Asking steps 1-3 and the counts of step 8 once, into the task's evidence file. The refutation and any chief cite its rows and repeat none.
+- The design run and the refutation each check the candidate rule against every item of Solution Conformance. A refutation counts only with a PHP example and its `php -n` output, a decided sentence, or a code line.
+- The design run triages the item under Who Decides. An agent-decidable item is decided once the refutation finds no counterexample; a user-decidable item reaches the user in the Question Format only after the refutation.
+- A refutation that holds returns to the design run once. A second one that holds, or viewpoints that still disagree on the option, escalate to independent proposals, one per viewpoint, and one chief; no rebuttal round.
+
 ## Solution Conformance
 
 Every solution, an agent decision or an option offered to the user, passes each check:
@@ -57,7 +67,7 @@ Every question to the user and every option list is preceded by these steps, in 
 
 ## Recording
 
-- The decision log is the local record `docs/decisions/`. An entry holds the decision ID, user or agent, the question, the options, the choice, the reason, the PHP example with its output, the PHPCVEs counts with the counting method, the decisions it revises and every commit that records it. An open item is an entry with no choice yet, and the same entry takes the choice when it is decided.
+- The decision log is the local record `docs/decisions/`. An entry holds the decision ID, user or agent, the question, the options, the viewpoints the design run weighed, the refutation result, the choice, the reason, the PHP example with its output, the PHPCVEs counts with the counting method, the decisions it revises and every commit that records it. An open item is an entry with no choice yet, and the same entry takes the choice when it is decided.
 - A user decision is written in the same turn it is made: its log entry, and the resulting rule into the committed doc of the affected module as current design.
 - An agent decision is written into its log entry and its rule into the committed doc, and committed at once. Its log entry states "keeps every decision" or the revised decisions, the existing data or mechanism it reuses, and the rejected alternatives.
 - A committed doc and a commit message carry no decision ID, no commit citation, and no "user decision", "agent decision", "revises" or "keeps every decision" marker. A doc states the rule; its reason stays only when a reader needs it to understand the design, as plain prose in the owning concept or model section. A commit message states what changed and why in plain words; the log entry maps the decision to the commit.
