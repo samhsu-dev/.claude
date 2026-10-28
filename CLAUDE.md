@@ -55,7 +55,7 @@ Records that serve only the developers at work live in three local directories, 
 - A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
 - Each directory holds one file per module, named after the module (`catalog-import.md` for `docs/catalog/import/`), split by concern past 200 lines, and an `index.md` listing its files.
 - Dates, decision IDs and commit hashes are allowed in local records only.
-- A decision entry holds its ID and authority, question, options, viewpoint recommendations, refutation result, choice and reason.
+- A decision entry holds its ID and authority, question, options, viewpoint recommendations, the refutation result when a refutation ran, choice and reason.
 - It also holds examples and complete reference outputs, corpus counts and counting method, revised decisions and all recording commits.
 - It records reused data or mechanisms, rejected alternatives, and whether earlier decisions are kept or which sentences change.
 - An open entry has no choice. Fill that entry when the question is decided.

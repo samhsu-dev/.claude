@@ -4,7 +4,7 @@
 pack <run-dir> [project-root] [--lean]
     Writes <run-dir>/AGENTS.md: the always-active rule files the run reads in full before any work,
     the path-scoped rule files it reads before it reviews a matching file, and the skills.
-    --lean packs an implementation run: it leaves out the coordination rules only the main agent
+    --lean packs a chain session: it leaves out the coordination rules only the main agent
     applies, and lets the run commit on its own branch.
     Writes <run-dir>/rules.json, the rule set of the launch, so a later rule change does not alter
     what the run is checked against.
@@ -24,12 +24,14 @@ from pathlib import Path
 
 GLOBAL = Path.home() / ".claude"
 COORDINATION = {GLOBAL / "rules/workflow/multi-agent.md", GLOBAL / "rules/workflow/development.md"}
-DISCUSSION_ROLE = ("You take part in the discussion that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
+DISCUSSION_ROLE = ("You are a read-only run of the work that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
                    "inputs, output directory and return format. You return findings, analysis or design as text, and write files "
                    "only where your brief names them. You never launch other runs and never run a Git command.")
-IMPLEMENTATION_ROLE = ("You implement one task chain: your brief fixes the worktree, inputs, output file and return format. "
-                       "You write only that worktree and your run directory, commit on the worktree's branch, and never push, "
-                       "merge, rebase or launch other runs.")
+IMPLEMENTATION_ROLE = ("You are the chain session of one task chain: your brief fixes the worktree, inputs, progress file and "
+                       "return format. You append each finished step to the progress file, decide the chain's agent-decidable "
+                       "design questions under `rules/workflow/decisions.md` Decision Runs, and stop an item whose question is "
+                       "user-decidable. You write only that worktree and your run directory, commit on the worktree's branch, "
+                       "and never push, merge, rebase or launch other runs.")
 
 
 def frontmatter_paths(path):
