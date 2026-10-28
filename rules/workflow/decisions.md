@@ -35,7 +35,7 @@ Development phase gates remain owned by `workflow/development.md`.
 - The chain session of a task decides each agent-decidable item inside that task, in its own context. A user-decidable item is drafted the same way by the chain session that meets it. A question no chain owns, or one several tasks implement, takes one design run at `execution.background` maximum effort, supplied by `rules/project/execution.md`; its session then implements the first of those tasks.
 - The drafter weighs three viewpoints, fewer only when the item touches fewer. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
 - It then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
-- An agent-decidable decision is written as a rule into its owning document in the same commit, with its decision entry. The task's next full review checks it against Solution Checks; no separate refutation runs.
+- An agent-decidable decision is recorded under Recording. The task's next full review checks it against Solution Checks; no separate refutation runs.
 - A user-decidable draft takes one refutation run at `execution.background` high effort in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
@@ -72,7 +72,7 @@ Development phase gates remain owned by `workflow/development.md`.
 
 - Record fields and placement follow `CLAUDE.md` Local Records. Current design and provenance follow Documentation Ownership.
 - Record a user decision and update its owning design text in the same turn.
-- An agent decision is written into its decision entry and its rule into the committed document, and committed at once under `workflow/committing.md` by the chain session that decided it.
+- The chain session that decides an agent decision writes its rule into the owning document and commits it at once under `workflow/committing.md`. It writes the decision entry into its progress file; the main agent moves the entry into the decision log, which is never committed.
 - After a user decision is recorded, the main agent resumes the drafting session to implement it and continues the next independent work.
 - Write a new edge case in the same turn. Put its example in the owning document's Edge Cases section when its rule is decided; otherwise use the open decision entry.
 - A new conformance rule reviews every logged agent decision. Revise a failing decision under Authority or take it to the user.
