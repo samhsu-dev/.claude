@@ -47,6 +47,7 @@ Development phase gates remain owned by `workflow/development.md`.
 - A missing fact becomes a follow-up question. A choice depending on it waits for the answer.
 - A chief's result takes one refutation, which also answers the chief's follow-up questions, since both read the same inputs.
 - The design run or chief decides an agent-decidable item. A user-decidable item reaches the user in Question Format after this process.
+- Once the decision holds, the design run's session resumes as the implementer of the task that implements it; after a chief's decision, the design run's session implements the chief's choice.
 - Judge this process over the next five decisions by runs per decision, wall time and decisions a later review overturns.
 - Count launched contexts as runs. Record resumptions separately. Measure wall time from evidence preparation through the recorded decision.
 - The run ledger owns measurements under `workflow/multi-agent.md` Measurement.

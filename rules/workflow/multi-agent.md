@@ -9,7 +9,7 @@ Worker runs discuss, design, implement and test. `execution` is supplied by `rul
 ## Division of Labor
 
 - Scope picks the editor. On a small project, or for a change that cannot be split by module or file, the main agent edits and commits directly. On a project whose modules or files develop independently, the main agent writes no code or document itself; implementation runs under Parallel Dispatch.
-- Discussion, research, design and review runs are read-only and return text.
+- Discussion, research, design and review runs are read-only and return text. A design or analyst run whose result one task implements then continues as that task's implementer: its session resumes with write access to the task's worktree, so the task's context is built once.
 - An implementation run edits only inside its own git worktree and branch. It never merges, pushes, or writes the shared working tree or another run's worktree.
 - A change that requires seeing several files at once — deduplication, conflict resolution, a cross-file rename, a corpus-wide edit — goes to one run, never split across runs.
 - Whoever writes a file runs the task quality gate, including tests, lint and the documentation check for the written files, before committing.
@@ -19,7 +19,7 @@ Worker runs discuss, design, implement and test. `execution` is supplied by `rul
 - One agent loop is the default: the main agent works directly, or one implementer owns a whole task chain — plan, tests, code and fix rounds — in one context.
 - A separate run is justified only by one of: context the main loop must not hold, whose result fits a one-screen summary; parallel work whose context is disposable once it lands; independent verification (review, adversarial check); an isolated write set or permission. The task's value pays for the added cost.
 - Work splits by context, never by role or problem type. Tasks that share files, contracts or decisions stay in one run, in order.
-- Every handoff loses detail, so a task keeps the shortest chain: decided documents, implementer, independent reviewer, implementer. A task whose design the decided documents already state gets no intermediate plan document; an analyst plan precedes only an algorithmic task.
+- Every handoff loses detail, so a task keeps the shortest chain: the run that built its context implements it, an independent reviewer checks it, and the same implementer takes the fix rounds. Only the refutation and the review take fresh contexts. A task whose design the decided documents already state gets no intermediate plan document; an analyst plan precedes only an algorithmic task.
 
 ## Parallel Dispatch
 
@@ -40,9 +40,9 @@ Model and effort routing belongs to Model Routing. Decision-run authority belong
 | Role | Scope and authority |
 |---|---|
 | Main agent | Owns the board, ledger, merge queue, branch cleanup and user communication. Dispatches runs that pass Parallel Dispatch, fast-forwards finished branches and runs the full gate after each merge; edits nothing on a modular project. |
-| Implementer | Owns one task chain in its own worktree. Reads the cited documents, writes the test first, implements, runs the gate, commits and takes every fix round of its branch; a new agent takes over only when it is gone. |
+| Implementer | Owns one task chain in its own worktree. Reads the cited documents, writes the test first, implements, runs the gate, commits and takes every fix round of its branch; a new agent takes over only when it is gone. It is the task's design or analyst session when one exists; a fresh implementer starts only for a task without one, for a decision several tasks implement, or when that session's context is full. |
 | Reviewer | Independently checks the finished diff against decided documents and real output. Returns MERGE or FIX-FIRST. Writes each edge case as a reproduction the implementer adds as a test. Read-only. |
-| Analyst | Owns research, mathematics, implementation analysis and the algorithm steps of a task whose design is decided. Precedes algorithmic implementation; read-only. A design question goes to the design run. |
+| Analyst | Owns research, mathematics, implementation analysis and the algorithm steps of a task whose design is decided. Precedes algorithmic implementation; read-only until its plan is done, then continues as the implementer. A design question goes to the design run. |
 | Decision roles | Handle every design question: an interface choice, an algorithm, or a mechanism the decided documents do not name. Authority follows `workflow/decisions.md` Decision Runs. |
 | New reader | `workflow/development.md` Reader Review. Read-only. |
 
@@ -61,7 +61,7 @@ Model and effort routing belongs to Model Routing. Decision-run authority belong
 - Each finding carries an urgency: U0 blocks a merge or the gate; U1 lies on the critical path of the current program step; U2 is an in-scope leaf; U3 lies outside the current step's scope and goes to its module's task doc, never to the board.
 - Before each review round, the main agent records what the pending diff changes and picks the check from it:
   1. A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text): one independent review of the whole task against its decided sentences and program output. A plan, chief or refutation never replaces it.
-  2. A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder: a targeted independent check of the whole cause and its boundary cases, with every reproduction of the earlier rounds.
+  2. A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder: a targeted independent check of the whole cause and its boundary cases, with every reproduction of the earlier rounds. The earlier round's reviewer session resumes for it.
   3. A fix that changes only assertions or fixtures of decided behavior, wording or links, and adds no semantic sentence, helper algorithm, source path or caller: the gate and the main agent's diff check, which confirms each reproduction fails on the base and passes on the fix. No new review.
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by a program output or a decided sentence, blocks its merge, and it closes through check 2 or 3; every other finding goes to a task doc or a board row.
 - A finding whose cause lies outside the branch's write set becomes its own row with that write set. When the branch's diff newly exposes it on a program the integration head analyzes, the branch merges after that row.
