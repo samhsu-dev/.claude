@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 from project_rules import fields, rule_directory
 HOST = ".codex" if Path(__file__).resolve().parents[1].name == ".codex" else ".claude"
 TERMINOLOGY = (Path(HOST) / "rules/project/terminology.md",)
+VALUE_FILES = tuple(f".{host}/rules/project/terminology.md" for host in ("claude", "codex"))
 DOC_TYPES = re.compile(r"^(concept|model|design|spec|impl|glossary)(-[\w-]+)?\.md$")
 CODE_SPAN = re.compile(r"`[^`\n]*`")
 AGENT_CONFIG = re.compile(r"(?<![\w.])~?/?\.(?:claude|codex)/")
@@ -61,9 +62,9 @@ def term_pattern(term):
 def term_hits(path, text):
     """Lines of the written text that use a forbidden term outside a code span."""
     hits = []
+    if any(path.match(value_file) for value_file in VALUE_FILES):
+        return []
     for rule_file in terminology_files(path):
-        if os.path.samefile(path, rule_file):
-            continue
         for term, exempt in forbidden_terms(rule_file):
             pattern = term_pattern(term)
             masks = [term_pattern(phrase) for phrase in exempt]
