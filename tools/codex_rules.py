@@ -32,6 +32,11 @@ IMPLEMENTATION_ROLE = ("You are the chain session of one task chain: your brief 
                        "design questions under `rules/workflow/decisions.md` Decision Runs, and stop an item whose question is "
                        "user-decidable. You write only that worktree and your run directory, commit on the worktree's branch, "
                        "and never push, merge, rebase or launch other runs.")
+DISCUSSION_CHECKS = ("Claude Code hooks do not run here. Whoever writes a file from your work runs the documentation check "
+                     "and the quality gate on it and lints its commit message, so any file you write or propose must meet them.")
+IMPLEMENTATION_CHECKS = ("Claude Code hooks do not run here. Before each commit you run the documentation check and the "
+                         "quality gate your brief names on every file you wrote, and check the commit message against "
+                         "`rules/workflow/committing.md`.")
 
 
 def frontmatter_paths(path):
@@ -115,11 +120,9 @@ def pack(run_dir, project, lean=False):
         "",
         *[f"- `{s}`: {d}" for s, d in skills()],
         "",
-        "## Checks the Main Agent Will Run",
+        "## Checks Before a Commit",
         "",
-        "Claude Code hooks do not run here. The main agent or the module lead runs the documentation check and the "
-        "quality gate on every file written from your work and lints every commit message, so any file you write "
-        "or propose must meet them.",
+        IMPLEMENTATION_CHECKS if lean else DISCUSSION_CHECKS,
         "",
     ]
     (run_dir / "AGENTS.md").write_text("\n".join(lines))
