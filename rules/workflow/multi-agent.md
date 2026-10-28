@@ -152,7 +152,7 @@ Every role has its own scope and authority.
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
 - After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
 - Reasoning, research, root-cause analysis, algorithm design, mathematics, the design run, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, refutations, count runs and new readers use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one.
-- Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
+- Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same refutation.
 
 ## Run Isolation
 
