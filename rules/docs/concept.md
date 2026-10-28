@@ -47,6 +47,13 @@ paths:
 - **Boundary:** [edge case]
 - **Interaction:** [collaboration with other modules]
 
+### 5. Rationale and Rejected Alternatives
+Optional. One entry per design choice the module rests on:
+- **Choice:** [why this concept or mechanism, one or two sentences]
+- **Rejected:** [each alternative and why it was rejected; no decision ID, no commit]
+
+No open question lives here; an undecided point goes to the Open Gaps section of `design.md`.
+
 ---
 
 ## Generation Rules
