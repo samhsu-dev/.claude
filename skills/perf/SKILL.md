@@ -11,7 +11,7 @@ allowed-tools:
 argument-hint: "[optional target file, function, or optimization ID]"
 ---
 
-Run the 8-step performance optimization pipeline. All state tracked in `docs/performance.md`.
+Run the 8-step performance optimization pipeline. Resolve the affected module's task record under the native entrypoint's Local Records once and use that path for every record read/write in this procedure. The native entrypoint is `CLAUDE.md`.
 
 ## Step 1 — Identify Candidates
 
@@ -27,7 +27,7 @@ Record each candidate:
 
 | Field | Format |
 |-------|--------|
-| ID | `P<round>-<seq>` (increment from last used round in `docs/performance.md`) |
+| ID | `P<round>-<seq>` (increment from last used round in the resolved module task record) |
 | Title | Short description |
 | File(s) | Affected source files |
 | Hypothesis | What the change does and expected effect |
@@ -50,7 +50,7 @@ Present the ranked list to the user. Wait for approval before proceeding.
 
 Run the project's benchmark suite. Capture fresh numbers.
 
-- If `docs/performance.md` has a recorded baseline, compare. Differ >5% → update and investigate before proceeding.
+- If the resolved module task record has a recorded baseline, compare. Differ >5% → update and investigate before proceeding.
 - If no baseline exists, record this as the initial baseline.
 
 ### Benchmark Reliability
@@ -88,7 +88,7 @@ Report the decision to the user with numbers.
 
 ## Step 7 — Document
 
-Update `docs/performance.md`:
+Update the resolved module task record:
 
 - **KEEP**: Move candidate from Candidates to Completed Optimizations. Update Current Baseline.
 - **REVERT**: Move to Evaluated & Rejected. Record result and reason. Revert source files.
@@ -96,7 +96,7 @@ Update `docs/performance.md`:
 
 After round: update Remaining Bottlenecks and Key Insights.
 
-### `docs/performance.md` Structure
+### Module task record structure
 
 ```
 ## Current Baseline
@@ -112,8 +112,8 @@ After round: update Remaining Bottlenecks and Key Insights.
 
 One optimization per commit. Use `/commit` skill or stage manually:
 
-- **KEEP**: `perf(<ID>): <title>` — stage source + `docs/performance.md`.
-- **REVERT**: revert source, stage `docs/performance.md`, `perf(<ID>): reject — <reason>`.
+- **KEEP**: `perf(<ID>): <title>` — stage source only; keep the module task record uncommitted.
+- **REVERT**: revert through a new commit under `workflow/git-safety.md`; record the result in the uncommitted module task record.
 
 ## Safety
 

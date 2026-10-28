@@ -46,7 +46,11 @@ def rule_files(root):
 
 def configuration(project):
     roots = [GLOBAL] + ([project / ".claude"] if project else [])
-    return [(f, globs) for root in roots for f, globs in rule_files(root)]
+    rules = [(f, globs) for root in roots for f, globs in rule_files(root)
+             if not (root / "rules/project").resolve() in f.resolve().parents]
+    directory = project / ".codex/rules/project" if project else None
+    project_rules = sorted(directory.rglob("*.md")) if directory and directory.is_dir() else []
+    return rules + [(path, []) for path in project_rules]
 
 
 def skills():

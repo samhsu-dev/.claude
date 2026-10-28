@@ -8,7 +8,7 @@ paths:
 
 ## Platform Constraints
 
-- Under 200 lines per file. Longer files reduce adherence.
+- At most 200 lines per file. Longer files reduce adherence.
 - `paths:` YAML frontmatter → loaded when Claude reads matching files. No `paths:` → always active.
 - One topic per file. Descriptive filename.
 - Discovered recursively in `.claude/rules/`. Subdirectories supported.
@@ -20,8 +20,8 @@ paths:
 - An agent performing one task loads the minimum number of rule files that covers every requirement of that task.
 - Rules that always co-apply to one task type live in one file. Rules for unrelated task types live in separate files.
 - `paths:` globs match exactly the files whose editing requires the rule. No broader, no narrower.
-- A rule file is understandable without loading any other file. Cross-references route to adjacent concerns; they never complete this file's own rules.
-- Always-active status (no `paths:`) is reserved for rules governing every task. A rule needed by one task type gets `paths:`.
+- A file states its own rules completely. A cross-reference names an owning file and section for another concern; load that owner before applying its rule.
+- Always-active status (no `paths:`) is reserved for rules governing every task. A rule needed by one task type gets `paths:`. Exception: value-only project files under `rules/project/` are always active under global Parameter Binding, including task-specific values; minimum context includes those values and only the procedures needed by the task.
 - File-count test before adding or splitting a rule file: for each task type, count the rule files it forces into context. A change that raises the count without adding a requirement is wrong.
 
 ## Repository Layout
@@ -57,7 +57,7 @@ paths:
 
 - Title states the domain.
 - Sections group related rules. One topic per section.
-- Two heading levels maximum (## and ###).
+- Use H1 for the title, H2 for sections and H3 for subsections. No deeper heading.
 - The rule most often violated comes first in its section. Adherence drops for later rules as the rule count grows.
 - Tables for structured data. Lists for rules. Code blocks for patterns.
 - No redundancy within one file.
@@ -66,7 +66,7 @@ paths:
 ## Content
 
 - Every rule is actionable. Cannot be verified or applied → remove.
-- Every rule is concrete. "Functions under 20 lines" not "keep functions short".
+- Every rule states an observable condition and required action.
 - Every rule is necessary. Removing it changes nothing → remove.
 - No tautologies. "Use meaningful names" adds no information.
 - No examples of what not to do unless the wrong pattern is non-obvious.
@@ -74,7 +74,7 @@ paths:
 ## Conflict Resolution
 
 - Rules within one file or across files: no contradictions.
-- Global rules are language-agnostic defaults. Project rules specify language/community conventions.
-- User-level and project rules load together; the platform gives neither precedence.
+- Global rules are language- and project-independent. Language profiles hold only language conventions. Project parameters hold only project values.
+- Instruction precedence and existing authorization follow the global entry point's Loading and precedence. A language or project rule names the global setting it overrides.
 - A project rule that sets another value for a metric a global rule sets names the replaced global rule in the same bullet: "Replaces global `code/quality.md`: functions under 20 lines."
 - Edge cases: one rule states the priority. "X. Exception: Y when Z."

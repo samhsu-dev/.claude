@@ -37,10 +37,8 @@ Run the project's configured linter (e.g., `uv run pylint`, `./gradlew detekt`).
 Read each scoped file. Check against:
 
 ### Structure
-- Functions under 20 lines.
-- Max 3 parameters per function.
-- One responsibility per file. Files under 300 lines.
-- Max 2 levels of indentation in function body.
+- Apply `rules/code/quality.md` Control Flow and Code Structure, including the active language profile's named threshold replacements.
+- Apply `rules/code/organization.md` File Responsibility, including its standalone-tool exception and the active language profile's named file-size replacement.
 
 ### Smells
 - Primitive obsession — raw strings/ints representing domain concepts.

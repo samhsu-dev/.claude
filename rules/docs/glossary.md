@@ -6,22 +6,23 @@ paths:
 
 # Glossary Standards
 
-The registry of a project's established terms: which terms it holds, how a new term is named, and how the registry is laid out. Which terms output may use: `communication/terminology.md`. Basis: ANSI/NISO Z39.19-2005 (R2010) §5.3.5 term selection by warrant, §8.3 hierarchical relations; W3C SKOS Reference, documentation and mapping properties.
+Parameter `glossary` is supplied by the project rule files under `rules/project/`; linked values retain their named owners.
+
+The registry of a project's established terms: which terms it holds, how a new term is named, and how the registry is laid out. Which terms output may use: `communication/terminology.md`. Source versions: `rule-references.json`. Basis: ANSI/NISO Z39.19 §5.3.5 term selection by warrant, §8.3 hierarchical relations; W3C SKOS Reference, documentation and mapping properties.
 
 ---
 
 ## Selection
 
-- An entry exists for a term whose meaning a reader of the repository needs and cannot take from general CS or security usage: a concept the project defines, or a concept of the literature, the analyzed system's manual, or its reference implementation that the documents use with that source's meaning.
-- No entry for a general programming word, nor for a CS or security term used with its textbook meaning: Interface Segregation Principle.
-- No entry for a keyword of the analyzed language.
+- Every domain term in output has a glossary entry. General programming words (function, variable, class, loop, exception, call) need none. An identifier quoted as code needs an entry when it names a domain concept.
+- No entry for a keyword of the analyzed language unless it names a domain concept.
 - No entry for an identifier that names no concept of the domain: a helper class, an index, a monitor, an internal variable, field, counter or ID format, a module or package name. Its owner is the design doc.
-- No entry for a compound whose meaning follows from its words in general usage: builtin entity, caller label, initial stack.
+- A compound that names a domain concept follows the entry obligation above; a general programming phrase needs none.
 - No entry for a named external artifact: a paper, a tool, a dataset. Its owner is the bibliography.
-- No entry for a shorthand one document uses in its own prose.
-- An entry stays only when removing it leaves a sentence of some document ambiguous or unexplained.
+- No entry for a shorthand one document uses in its own prose unless it names a domain concept.
+- Entry removal preserves the domain-term entry obligation above.
 - A coined term whose meaning its parts, an existing name, or a plain clause state as well gets no entry and is not used. A new noun bundling several existing things is the typical case. Selection runs before Name Sources.
-- Removing an entry never removes the term from the prose: a textbook or literature term stays in the text with its textbook meaning, and only its entry goes.
+- Removing an exempt entry never removes the term from prose. Domain terms, including textbook and literature terms, retain their entries.
 
 ## Name Sources
 
@@ -34,7 +35,7 @@ Except for the core terms governed by Naming Steps, a concept takes the name the
 5. The repository's own name.
 6. A name only one tool uses.
 
-- Ranks 2 and 3 apply when the project analyzes or implements a language or system. The project rule names them.
+- Ranks 2 and 3 apply when the project analyzes or implements a language or system. Their values are `glossary.name_sources`.
 - A source counts only where its word names the same concept. The same word for another concept is a clash, never a name source.
 - A candidate name that already names another glossary concept is reported to the user with both entries.
 - A borrowed word with no literature source in its glossary entry is a coined term.
@@ -42,7 +43,7 @@ Except for the core terms governed by Naming Steps, a concept takes the name the
 
 ## Naming Steps
 
-A new term is named in three steps, in order:
+An existing source name is selected in three steps, in order; the coinage prohibition in `communication/terminology.md` still applies:
 
 1. **Locate.** The structure the term belongs to — the model, graph, or table, and the element kind within it — gives the head noun.
 2. **Classify.** The semantics of the analyzed system fixes the term's locus: for a value in program analysis, the program point at which the language produces it.
@@ -57,7 +58,7 @@ A new term is named in three steps, in order:
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- The project's naming decisions (its rank 2 and rank 3 name sources, its naming-step parameters, its core terms, its top classes, its layers, each with its commit) are agent instructions. They live in the project rule `.claude/rules/docs/glossary.md`, never in a repository document.
+- Naming values come from `glossary` in the project rule files under `rules/project/`. Their provenance follows `CLAUDE.md` Local Records.
 - The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `CLAUDE.md` Local Records.
@@ -65,7 +66,7 @@ A new term is named in three steps, in order:
 
 ## Layers
 
-- The glossary files form layers, read from the general to the specific. Default order: architecture (modules, phases); infrastructure (storage, input and output, settings, dispatch); the model of the analyzed language or system; one schema file per data structure (a graph, a model, a table) with its element types and their attributes; the core algorithm; analysis semantics, one file per concern; the procedure of each phase; outputs (facts, reports). The project rule names the project's layers and the commit that fixed them.
+- Read glossary layers from general to specific in `glossary.layers` order. Without a project order, use architecture, infrastructure, analyzed-system model, one schema file per data structure (a graph, a model, a table) with its element types and their attributes, core algorithm, analysis semantics, phase procedures and outputs.
 - An element type of a structure, or an attribute of one, goes to that structure's schema file. A rule for writing a structure goes to infrastructure. A step of one phase goes to that phase's procedure file.
 - Any other entry goes to the file of the concern its Definition states, whatever structure its Is a names. A semantic term whose Is a is an AST node type, such as a read of a variable, stays with its concern, not in the AST schema file.
 
@@ -86,10 +87,10 @@ One entry per term: an H3 heading followed by fields in this order.
 
 - **Heading:** one term as used in prose, or one identifier in backticks. An abbreviation follows the long form in parentheses. The identifier that implements a prose term is named in Source, never in the heading. A heading never names two terms.
 - **Is a:** the parent entry, or the enumeration member in backticks, such that "<heading> is a <parent>" holds and both name the same kind of concept: two operations, two data, two rules. Omitted when no entry is the parent. A part never names its whole here; the Definition states the whole.
-- **Definition:** one sentence of plain prose: the genus and the distinguishing property. The genus is the Is a entry, or a plain CS word (operation, graph, rule) when Is a is omitted. Written from the design doc section that decides the term; from the implementing symbol when no doc section decides it. No citation, no history.
+- **Definition:** one plain sentence with the genus and distinguishing property. The genus is the Is a entry or a plain domain word. Use the owning document section under `CLAUDE.md` Documentation Ownership, or the implementing symbol when no document decides it. No citation. Provenance stays in Local Records.
 - **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for a term with no code, the element the doc section specifies. Required when an input yields an instance of the term (a value, a node, an edge, a label, a construct); omitted otherwise.
 - **Source:** every file and symbol that implements the term, separated by `;`. A term with no code: the doc and its section. A term whose code differs from the decided design, or whose code the design removed: the doc section, then the code symbol; the Open Gaps section of that design doc states the difference. Every Source resolves to the named location; `hooks/doc_check.py` reports one that does not.
-- **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when the project names ranks 2 and 3.
+- **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when those sources are configured.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Shared citation syntax: `rules/docs/bibliography.md`. Glossary locators name a symbol, manual section, or page title; a file name is added only when the symbol alone is ambiguous. No URL, path, or line number outside Source and Example, and no citation field without a key; `hooks/doc_check.py` reports these violations.
@@ -114,3 +115,15 @@ One entry per term: an H3 heading followed by fields in this order.
 - A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none` with an optional parenthetical reason. A `|` inside a cell is escaped as `\|`.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.
+
+## Project Values
+
+- Apply `glossary.literature_min_year` and `glossary.naming_cutoff_work` when selecting naming sources.
+- A paper later than the cutoff work is similar at most; it is never a name source.
+- Check the counterparts in `glossary.tools` for the same or a similar concept.
+- Include a paper meeting `glossary.literature_min_year` and an industrial counterpart when each exists.
+- Locate and Classify use `glossary.head_kinds` and `glossary.loci`.
+- Core names, protected borrowed terms, top classes and exact headings come from `glossary`. Name the algorithm's own data from its core terms; `glossary.algorithm_data_names` supplies established data names.
+- Classify values into configured top classes by their listed loci.
+
+- Use configured word forms and state membership for named project values.
