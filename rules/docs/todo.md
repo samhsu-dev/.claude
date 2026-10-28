@@ -11,10 +11,7 @@ Kotlin-specific task conventions. Extends global `docs/todo.md`.
 
 ## Quality Gate
 
-Project commands for the global quality gate:
-- Linter: `./gradlew detekt` — no new violations.
-- Test runner: `./gradlew test` — all pass.
-- Compilation and build verification: `./gradlew build` — compiles clean; required in every task's quality gate.
+The global task checklist uses `code/quality.md` Quality Workflow. Its `./gradlew build` step is required for each task.
 
 ## Conventions
 

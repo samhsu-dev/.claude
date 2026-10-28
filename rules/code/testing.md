@@ -32,7 +32,7 @@ fun `validate month boundary`(month: Int, valid: Boolean) {
 
 ## Layout
 
-- Test root: `src/test/kotlin/`. Mirror source packages.
+- Test root: `src/test/kotlin/`. Global `code/testing.md` owns source-tree mirroring.
 - Files: `{ClassName}Test.kt`.
 
 ## Discovery
@@ -45,8 +45,8 @@ fun `validate month boundary`(month: Int, valid: Boolean) {
 
 - `lateinit var` for test fixtures initialized in `@BeforeEach`. Avoids nullable types.
 - `@BeforeAll` / `@AfterAll` in `companion object` with `@JvmStatic`.
-- `@TempDir` for temporary directories. Auto-cleaned.
-- Fresh objects per test. No shared mutable state across tests.
+- Use `@TempDir` for the temporary-resource contract in global `code/testing.md`.
+- Use fresh fixture objects per test to meet global `code/testing.md` Maintenance.
 
 ```kotlin
 internal class ParserTest {
@@ -65,7 +65,7 @@ internal class ParserTest {
 - `assertThrows<ExceptionType> { block }` for error cases.
 - `assertAll` for grouped assertions verifying one behavior.
 - `kotlin.test.assertFailsWith<T>` as Kotlin-idiomatic alternative.
-- No boolean-only assertions when specific assertions exist.
+- Assertion specificity: global `code/testing.md` Assertions.
 
 ## Parameterized Tests
 
@@ -81,10 +81,10 @@ internal class ParserTest {
 
 ## Execution
 
-- `./gradlew test` -- all tests.
+- Replaces global `code/testing.md` Execution unit-only default and Types separate execution: `./gradlew test` -- all tests.
 - `./gradlew test --tests "*.ParserTest"` -- single class.
 - `./gradlew test --tests "*.ParserTest.should*"` -- pattern match.
-- `./gradlew test --info` -- verbose output.
+- Verbose diagnostics: `code/debugging.md` Tools.
 
 ## Configuration
 
