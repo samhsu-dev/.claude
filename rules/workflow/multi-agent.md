@@ -98,7 +98,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 |---|---|
 | Main agent | session model |
 | Chain session | `execution.implementer.mechanical`, `execution.implementer.moderate` or `execution.implementer.algorithmic`, by the chain's hardest task |
-| Drafter without a chain, research, analysis | `execution.background` at its maximum effort |
+| Research, analysis | `execution.background` at its maximum effort |
 | Review, refutation, count run, new reader | `execution.background` at its high effort |
 
 - After each launch or resume, check the transcript model; stop and relaunch a run on an older generation than required.

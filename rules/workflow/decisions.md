@@ -32,7 +32,7 @@ Development phase gates remain owned by `workflow/development.md`.
 
 ## Decision Runs
 
-- The chain session of a task decides each agent-decidable item inside that task, in its own context. A user-decidable item is drafted the same way by the chain session that meets it. A question no chain owns, or one several tasks implement, takes one design run at `execution.background` maximum effort, supplied by `rules/project/execution.md`; its session then implements the first of those tasks.
+- The chain session of a task decides each agent-decidable item inside that task, in its own context. A user-decidable item is drafted the same way by the chain session that meets it. A question no chain owns, or one several tasks implement, takes one design run, launched as the chain session of the first of those tasks on the model `workflow/multi-agent.md` Model Routing gives that chain; its session then implements that task.
 - The drafter weighs three viewpoints, fewer only when the item touches fewer. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
 - It then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
 - An agent-decidable decision is recorded under Recording. The task's next full review checks it against Solution Checks; no separate refutation runs.
