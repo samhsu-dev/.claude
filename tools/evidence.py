@@ -8,13 +8,14 @@ A task's working directory holds one subdirectory per run and the merged evidenc
     <task-dir>/<run>/evidence.jsonl    rows one run established, one JSON object per line
 
 Row fields:
-    kind    decision | doc | code | history | php | corpus
+    kind    decision | doc | code | history | program | corpus
     claim   the fact in one sentence
-    source  path:line or path:first-last (decision, doc, code), the program path (php),
+    source  path:line or path:first-last (decision, doc, code), the program path (program),
             the command with its commit or corpus release (history, corpus)
     quote   decision, doc, code: the exact text at source
-    value   php: complete stdout; history: the hits; corpus: the counts and the counting method
-    php     php rows: the interpreter version line
+    value   program: complete stdout; history: the hits; corpus: the counts and the counting method
+    runtime program rows: the first line from version_command
+    version_command  argv for the reference runtime version command\n    program_sha  program bytes at execution; merge reuses a known snapshot for legacy rows
     run     filled by merge from the run directory name when absent
 
 Commands:
@@ -23,96 +24,14 @@ Commands:
     evidence.py brief <task-dir>                print the instructions a run brief carries
 Relative paths in source resolve against --root (default: the current directory).
 """
-
 import argparse
-import hashlib
 import json
-import re
-import subprocess
 import sys
-from functools import cache
 from pathlib import Path
-
-KINDS = {"decision", "doc", "code", "history", "php", "corpus"}
-QUOTED = {"decision", "doc", "code"}
+from evidence_rows import KINDS as KINDS, QUOTED as QUOTED, parameters as parameters, load as load, problem as problem, source_path as source_path, sha as sha, interpreter as interpreter, squash as squash, stale as stale, same as same, check as check, observed_hash as observed_hash, duplicate as duplicate
 MERGED = "evidence-merged.jsonl"
 RENDERED = "EVIDENCE.md"
 RUN_FILE = "evidence.jsonl"
-
-
-def load(path):
-    if not path.exists():
-        return []
-    rows = []
-    for n, line in enumerate(path.read_text().splitlines(), 1):
-        if line.strip():
-            try:
-                rows.append(json.loads(line))
-            except json.JSONDecodeError as e:
-                sys.exit(f"{path}:{n}: {e}")
-    return rows
-
-
-def problem(row):
-    kind = row.get("kind")
-    if kind not in KINDS:
-        return f"kind {kind!r} not in {sorted(KINDS)}"
-    for field in ("claim", "source"):
-        if not row.get(field):
-            return f"missing {field}"
-        if not isinstance(row[field], str):
-            return f"{field} is not a string"
-    if kind in QUOTED and not row.get("quote"):
-        return "missing quote"
-    if kind in {"php", "history", "corpus"} and "value" not in row:
-        return "missing value"
-    return None
-
-
-def source_path(row, root):
-    raw = row["source"] if row["kind"] == "php" else re.sub(r":\d+(-\d+)?$", "", row["source"])
-    path = Path(raw)
-    return path if path.is_absolute() else root / path
-
-
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
-
-
-@cache
-def interpreter():
-    try:
-        out = subprocess.run(["php", "-v"], capture_output=True, text=True, check=False).stdout
-    except OSError:
-        return None
-    return out.splitlines()[0] if out else None
-
-
-def squash(text):
-    return " ".join(text.split())
-
-
-def stale(row, root):
-    kind = row["kind"]
-    if kind in QUOTED:
-        path = source_path(row, root)
-        return not path.is_file() or squash(row["quote"]) not in squash(path.read_text(errors="replace"))
-    if kind == "php":
-        moved = row.get("php") and row["php"] != interpreter()
-        return bool(moved) or sha(source_path(row, root)) != row.get("program_sha")
-    return False
-
-
-def same(a, b):
-    return a.get("quote") == b.get("quote") and a.get("value") == b.get("value")
-
-
-def check(rows, root):
-    for row in rows:
-        if row.get("status") != "conflict":
-            row["status"] = "stale" if stale(row, root) else "fresh"
-
-
 def render(rows):
     out = ["# Evidence", "", "| ID | kind | status | claim | source | run |", "|---|---|---|---|---|---|"]
     for r in rows:
@@ -125,43 +44,43 @@ def render(rows):
         if body in (None, ""):
             continue
         out += ["", f"## {r['id']}", ""]
-        if r.get("php"):
-            out.append(f"Interpreter: {r['php']}")
+        if r.get("runtime"):
+            out.append(f"Runtime: {r['runtime']}")
             out.append("")
         out += ["```", str(body).rstrip("\n"), "```"]
     return "\n".join(out) + "\n"
-
-
 def write(task, rows):
     # A row holds a lone surrogate for each source byte that is not UTF-8; backslashreplace writes
     # it as \udcXX, which inside a JSON string is the escape json.loads reads back to the same value.
     text = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
     (task / MERGED).write_text(text, errors="backslashreplace")
     (task / RENDERED).write_text(render(rows), errors="backslashreplace")
-
-
 def merge(task, root):
-    rows = load(task / MERGED)
-    kept = {(r["kind"], r["source"]): r for r in rows if r.get("status") != "conflict"}
+    rows = load(task / MERGED, root)
+    check(rows, root)
+    kept = {(r["kind"], r["source"]): r for r in rows if r.get("status") not in {"conflict", "stale"}}
     added = dup = conflict = 0
     errors = []
     for run_file in sorted(task.glob(f"*/**/{RUN_FILE}")):
         run = str(run_file.parent.relative_to(task))
-        for n, row in enumerate(load(run_file), 1):
+        for n, row in enumerate(load(run_file, root), 1):
             why = problem(row)
             if why:
                 errors.append(f"{run_file}:{n}: {why}")
                 continue
             row.setdefault("run", run)
-            if row["kind"] == "php":
-                row["program_sha"] = sha(source_path(row, root))
+            if row["kind"] == "program":
+                row["program_sha"] = observed_hash(row, rows, root)
             key = (row["kind"], row["source"])
-            if any(same(r, row) for r in rows if (r["kind"], r["source"]) == key):
+            row["status"] = "stale" if stale(row, root) else "fresh"
+            old = kept.get(key)
+            if duplicate(row, rows, old):
                 dup += 1
                 continue
-            old = kept.get(key)
             row["id"] = f"E{len(rows) + 1}"
-            if old is not None:
+            if row["status"] == "stale":
+                added += 1
+            elif old is not None:
                 row["status"], row["conflicts"] = "conflict", old["id"]
                 conflict += 1
             else:
@@ -175,19 +94,15 @@ def merge(task, root):
     for e in errors:
         print("rejected", e)
     return 1 if errors else 0
-
-
 def brief(task):
     merged = (task / RENDERED).resolve()
     print(f"""Evidence: read {merged} before any search; cite its rows by ID and never repeat a search a fresh row records.
 For each fact you establish that the file lacks, append one JSON object per line to {RUN_FILE} in your working directory:
   {{"kind": "doc|code|decision", "claim": "...", "source": "path:line", "quote": "exact text at that line"}}
-  {{"kind": "php", "claim": "...", "source": "program path", "php": "php -v first line", "value": "complete stdout"}}
+  {{"kind": "program", "claim": "...", "source": "program path", "runtime": "version command first line", "version_command": ["runtime", "--version"], "program_sha": "SHA-256 of program bytes at execution", "value": "complete stdout"}}
   {{"kind": "history|corpus", "claim": "...", "source": "command, with commit or corpus release", "value": "hits or counts, with the counting method"}}
 Paths are relative to the integration worktree or absolute. Do not edit {MERGED} or {RENDERED}.""")
     return 0
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("command", choices=["merge", "check", "brief"])
@@ -200,13 +115,11 @@ def main():
     if args.command == "merge":
         return merge(task, args.root.resolve())
     if args.command == "check":
-        rows = load(task / MERGED)
+        rows = load(task / MERGED, args.root.resolve())
         check(rows, args.root.resolve())
         write(task, rows)
         print(f"rows {len(rows)} stale {sum(r['status'] == 'stale' for r in rows)}")
         return 0
     return brief(task)
-
-
 if __name__ == "__main__":
     sys.exit(main())

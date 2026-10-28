@@ -33,9 +33,10 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 ## Error Records
 
+- Error messages include context (function, parameters, state). Record Content redaction applies.
 - A failure is logged exactly once, at the layer that handles it. A layer that propagates an error never logs it.
 - Propagation sites attach context (operation, parameters, entity IDs) to the error object; context reaches the handling boundary inside the error, not as log records.
-- Every ERROR record carries the exception type and stack trace, the operation attempted, and the inputs and state permitted by Record Content for reproducing the failure.
+- Every ERROR record carries exception type, stack trace, operation, and reproducible inputs and state. Redact secrets, credentials, tokens and PII throughout those fields under Record Content.
 - Every ERROR record carries the identifiers of the affected unit of work and entities.
 - A failed unit's summary record carries the error identifier, linking summary to failure detail.
 
@@ -56,7 +57,7 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 - Outside the TRACE exception below, log state transitions, not iterations.
 - Aggregate at loop exit. Exception: per-iteration diagnostics use TRACE with the frequency bound below, never DEBUG.
-- Rate-limit or sample any record that can fire more than once per second.
+- Rate-limit or sample repeatable diagnostics above one record per second. Required unit summaries and failure outcomes remain complete.
 - A record's frequency is set by its caller, not its wording. A per-call summary line ("N passed, M failed") is high-frequency when the function runs in a hot loop. Level it by call frequency, not by whether it reads like a summary.
 
 ## Record Content

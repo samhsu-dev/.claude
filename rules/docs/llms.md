@@ -90,7 +90,8 @@ Each `llms/<module>.md` file:
 
 ## full.txt Structure (L2)
 
-- Starts with `llms.txt` content verbatim.
+- Line limits follow the global entry point's Documentation Naming, including `full.txt`.
+- Starts with `llms.txt` content verbatim. Generate the complete aggregate only when it fits that cap; when it exceeds the cap, report the line count and reduce the input documents before generation.
 - Separator: `\n\n---\n\n# Referenced Documents\n\n`
 - Each inlined file: `## Source: llms/<module>.md\n\n<content>\n\n---\n\n`
 - Truncate files over 200 lines with `... (truncated, N total lines)`.

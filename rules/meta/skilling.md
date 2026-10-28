@@ -59,7 +59,7 @@ skill-name/
 
 `` !`command` `` executes before Claude sees content. Output replaces placeholder.
 
-- Runs as the current OS user with full permissions.
+- Runs with the current host permissions and sandbox limits.
 - Failed commands produce empty replacement.
 - Disabled by policy: `"disableSkillShellExecution": true`.
 
@@ -101,7 +101,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 ### Threat Model
 
-Skills run with the user's full OS permissions. A malicious skill can:
+Skills use the host permissions granted to the session. When those permissions allow it, a malicious skill can:
 - Read any file (`~/.ssh`, `~/.aws`, `.env`) via `Read` or `Bash(cat)`.
 - Exfiltrate data via `WebFetch`, `Bash(curl)`, or MCP tools.
 - Modify git history, install packages, create persistence.
