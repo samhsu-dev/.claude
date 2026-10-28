@@ -11,7 +11,7 @@ Rules governing how cost, runtime, and process liveness are bounded.
 
 ## Where the Bound Lives
 
-- Bound cost through input scope, file count, item count or granularity. Never use a wall-clock kill to tune cost; Liveness Backstops governs a wedged process.
+- Bound cost by reducing input — scope, file count, item count, granularity. Never by killing a running computation on a wall-clock deadline.
 - A deadline that kills a process producing all-or-nothing output is forbidden on a mandatory step. Its abort yields zero output, which fails the whole operation.
 
 ## Liveness Backstops
@@ -22,9 +22,9 @@ Rules governing how cost, runtime, and process liveness are bounded.
 ## Degradation
 
 - Degradation of a mandatory step produces a cheaper-but-complete result. Skipping the step or continuing with empty output is failure, not degradation.
-- A step is mandatory when the operation cannot finish without its output. Identify mandatory steps before adding a bound.
+- A mandatory step is one whose output is the sole input to a downstream step; its absence fails the operation. Identify it before adding any bound.
 
 ## Sub-Tool Limits
 
 - Use a sub-tool's own per-unit limits (per-file timeout, per-item budget) that skip the slow unit and return partial results. Never wrap the whole sub-tool in an external kill that returns nothing.
-- Keep partial output and report recoverable per-unit errors as warnings. Whole-tool failure is fatal. A mandatory operation still has to meet Degradation.
+- Treat a sub-tool's recoverable per-unit errors (per-file timeout, partial parse) as warnings and keep partial results. Reserve fatal handling for whole-tool failure.

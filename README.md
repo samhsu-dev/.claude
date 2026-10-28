@@ -7,10 +7,8 @@ Language-independent agent rules and skills for Claude Code, organized by the ar
 ## Install
 
 ```bash
-git clone https://github.com/<profile.repository> ~/.claude
+git clone https://github.com/samhsu-dev/.claude ~/.claude
 ```
-
-The project rule files under `rules/project/` supply `profile.repository` and profile branch identities.
 
 Skill invocation controls: [Skill Writing Standards](rules/meta/skilling.md#frontmatter).
 
@@ -41,8 +39,7 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `workflow/change-policy.md` | always | When code and public API may change |
 | `workflow/committing.md` | always | Commit message, staging, cadence, attribution |
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
-| `workflow/multi-agent.md` | always | Delegated work and integration |
-| `workflow/decisions.md` | always | Decision authority, evidence and questions |
+| `workflow/multi-agent.md` | always | Delegated discussion, design and implementation; one agent loop by default, split only by context, parallel dispatch only for tasks passing four checks; role table with model and effort, branch lifecycle, run ledger, per-task rework measurement |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |
@@ -69,17 +66,17 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 | Script | Event | Checks |
 |--------|-------|--------|
-| `hooks/git_guard.py` | before a git command | Enforces `workflow/git-safety.md` and `workflow/committing.md` |
-| `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `CLAUDE.md` and `rules/docs/`; reads project markdown values |
+| `hooks/git_guard.py` | before a git command | Blocks the operations `workflow/git-safety.md` prohibits; blocks a commit whose subject breaks Conventional Commits or 72 chars, or that carries an attribution trailer |
+| `hooks/doc_check.py` | after a file write | Reports a doc or rule file past its line limit, a forbidden term from the project's `.claude/rules/communication/terminology.md`, a glossary Source path that does not resolve, a URL, path or line number in a glossary citation, a glossary citation field without a key, and a citation key the bibliography does not hold |
 
 ## Tools
 
 | Script | Used by | Does |
 |--------|---------|------|
-| `tools/codex_rules.py` | run launcher | `pack` writes rule routes including all native Codex project rules; `gate` checks logged always-active paths, with the read inspection required by `workflow/multi-agent.md` |
-| `tools/evidence.py` | task coordinator | Evidence schema, merge, freshness and brief commands |
+| `tools/codex_rules.py` | the main agent launching a Codex run | `pack` writes the run's `AGENTS.md` and `rules.json` pointing Codex to the rules and skills; `gate` confirms the run's log shows it read every always-active rule |
+| `tools/evidence.py` | the main agent after each run of a task, and when writing a run brief | `merge` folds the rows runs wrote into the task evidence file, keeping one row per kind and source, marking conflicts and stale rows; `check` recomputes stale marks; `brief` prints the instructions a run brief carries |
 
-The project rule files under `rules/project/` supply project values. See [Parameter Binding](CLAUDE.md#parameter-binding) for native project roots and fixed section formats. Project additions stay outside the shared language profile.
+Project data comes from the project: `doc_check.py` reads the forbidden terms of the repository it edits, so one script serves every repository.
 
 ## License
 

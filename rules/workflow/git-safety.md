@@ -23,17 +23,16 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 ## Before Any Git Write Operation
 
 1. `git status` — verify working tree state.
-2. Verify no other agent has uncommitted changes in the same files.
-3. For staging, add specific files by name. Other Git writes do not stage files.
+2. Stage specific files by name.
+3. Verify no other agent has uncommitted changes in the same files.
 
 ## Branch Operations
 
 - Never switch branches without explicit user instruction.
-- Delete a branch only on explicit user instruction, using `git branch -d`; it refuses to delete unmerged branches. Exception: right after a task branch's fast-forward and full gate, the applier removes its worktree and deletes the branch with `git branch -d` from the integration checkout, only when tracked, untracked and ignored files and every submodule are clean or disposable build output.
+- Delete a branch only on explicit user instruction, using `git branch -d`; it refuses to delete unmerged branches.
 
 ## Conflict Resolution
 
 - Never silently discard conflicting changes.
-- Pull or rebase conflicts go to the user. Never auto-resolve.
-- Exception: the main agent may set rebased submodule pointers for the same implementation step when those commits were rebased onto the integration head's recorded commits and `git range-diff` proves the patches identical.
+- `git pull` or `git rebase` conflicts: report to user. No auto-resolve.
 - `git rebase --abort` or `git merge --abort`: requires explicit user approval.

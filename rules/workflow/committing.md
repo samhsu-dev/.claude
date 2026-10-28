@@ -1,14 +1,12 @@
 # Git Commit Standards
 
-Guardrails active at all times.
+Guardrails active at all times. Full commit procedure: `/commit` skill.
 
 ---
 
 ## Commit Message Format
 
 Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-char hard limit. `hooks/git_guard.py` checks the subject.
-
-- A commit message carries no decision ID, commit citation or "user decision", "agent decision", "revises" or "keeps every decision" marker. State what changed and why in plain words.
 
 ## Staging
 

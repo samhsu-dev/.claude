@@ -11,8 +11,8 @@ gate <run-dir> [project-root]
     always-active rule file was read. Writes rules-missing.txt and exits 1 when one was not.
 
 The run directory is the Codex working directory, so Codex loads its AGENTS.md after the global one.
-It lies outside every Git work tree, so no agent instruction file lands in a project.
-Workers return patches from their output directory; only the single applier writes the target tree.
+It lies outside every Git work tree, so no agent instruction file lands in a project; a run that writes
+a worktree reaches it with `codex exec --add-dir <worktree>`.
 The pointer list stays far below Codex's default project_doc_max_bytes, so no rule text is cut off.
 """
 import json
@@ -46,11 +46,7 @@ def rule_files(root):
 
 def configuration(project):
     roots = [GLOBAL] + ([project / ".claude"] if project else [])
-    rules = [(f, globs) for root in roots for f, globs in rule_files(root)
-             if not (root / "rules/project").resolve() in f.resolve().parents]
-    directory = project / ".codex/rules/project" if project else None
-    project_rules = sorted(directory.rglob("*.md")) if directory and directory.is_dir() else []
-    return rules + [(path, []) for path in project_rules]
+    return [(f, globs) for root in roots for f, globs in rule_files(root)]
 
 
 def skills():

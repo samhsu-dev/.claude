@@ -28,7 +28,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 3. Layout
 - The test tree mirrors the source tree. The project rule names its root and file-name pattern.
-- One test file per component. File splitting and the size trigger follow `code/organization.md`.
+- One test file per component. Split by responsibility past 300 lines.
 - Shared fixtures per test directory, in the framework's fixture mechanism.
 
 ## 4. Types
@@ -76,10 +76,3 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Tests alongside new/changed code in the same change set.
 - Independent tests. No shared mutable state.
 - Deduplicate via helpers, fixtures, factories.
-
-## Reproductions
-
-- Before repairing a defect, write a reproduction test that fails on the unfixed implementation.
-- Keep reproduction tests permanently.
-
-- A delegated implementer writes tests before implementation.

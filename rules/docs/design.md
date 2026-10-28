@@ -18,11 +18,12 @@ Sections in this order:
 | **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
 | **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
 | **Exception / Error Types** | Each type and when raised. |
-| **Open Gaps** | Undecided points, each stated as an open question; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
+| **Open Gaps** | One bullet per decided behavior the code lacks or contradicts: the decided behavior, the code symbol, the model or spec section that decides it. Omit if none. |
 
 Never delete decided design text because no caller exists.
 
-Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+No domain entity semantics, state transition rules, or structural invariants -- those go in `model.md`.
+No algorithm steps, pseudocode, or complexity analysis -- those go in `spec.md`.
 
 **Overview format**:
 - **Classes**: `ClassA`, `ClassB`, `ClassC`
@@ -43,22 +44,22 @@ Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
 - **D** — Depend on abstractions, not concretes.
 
 ### Foundational
-- **KISS** — Select the design with the fewest mechanisms that satisfies the same requirement and capability constraints.
-- Scope of abstractions and configuration: `code/quality.md` Code Smells.
-- **DRY** — One authoritative representation per piece of knowledge. Reuse existing data and mechanisms before adding a representation, walk, cache, map or edge.
+- **KISS** — Simplest design that satisfies the requirement.
+- **YAGNI** — Implement only what is needed now.
+- **DRY** — One authoritative representation per piece of knowledge.
 - **Separation of Concerns** — One concern per module. No overlap.
 - Method access contracts: `code/quality.md` Code Structure.
 - **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
-- Failure signaling: `code/quality.md` Error Handling.
+- **Fail-fast** — Detect and report errors at the earliest point.
 
 ### Naturalness and maintainability
 
 The maintainer reloads context each session and trusts types over execution. Design for that reader.
 
-- Domain wrappers and argument grouping: `code/quality.md`. A closed-value scalar uses an enum.
+- **Name the concept** — A closed-value scalar becomes an enum; a distinct concern becomes its own type. Argument grouping contracts: `code/quality.md`.
 - **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`input_`, `output_`) is two concepts.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
-- Granularity follows `code/organization.md` File Responsibility and `code/quality.md` Code Smells.
+- **Cohesion sets granularity** — Split on a second concern, never on a line or field count. A god object and an over-decomposed call graph are both defects. Thresholds: `code/quality.md`.
 - **Contract lives in types** — Named fields over optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
 - **Absence is not failure** — "No result" and "failed" are distinguishable by type, never a shared empty or `None`.
 
@@ -70,5 +71,5 @@ The maintainer reloads context each session and trusts types over execution. Des
 - Data holders contain only primitives, enums, or other data holders.
 - One orchestrator per workflow. Helpers are stateless and receive inputs by argument.
 - Files with shared concern grouped into one directory as an internal submodule. One public entry point per directory.
-- External API verification and recording: `docs/impl.md`.
+- Verify external library API via DeepWiki/Context7 or minimal test before use. Record findings in `impl.md`.
 

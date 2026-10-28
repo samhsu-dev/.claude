@@ -1,18 +1,16 @@
 # Multi-Agent Discussion, Design and Implementation
 
-Parameters `integration` and `evidence` are supplied by the project rule files under `rules/project/`, in `integration.md` and `evidence.md`; `reference` is owned by `evidence.md`.
-
-Worker runs discuss, design, implement and test. `execution` is supplied by `rules/project/execution.md`. The main agent coordinates delegated work. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
+Codex CLI runs and Claude subagents discuss, design, implement and test; on a modular project the main agent plans, dispatches, merges and talks to the user. Always active; applies when work is delegated. Shared working-tree safety: `workflow/git-safety.md`.
 
 ---
 
 ## Division of Labor
 
-- Scope picks the applier. On a small project or an indivisible change, the main agent applies directly. On a modular project, implementation workers return patches under Parallel Dispatch to the single applier.
-- Workers never write the target tree or Git metadata; their unique output directory is their write sandbox. Discussion, research and analysis return text; implementation, recording and design-only review return patches plus summaries.
-- Only one applier writes the target tree and Git metadata. Concurrent patches use the same fixed base; the applier checks patch bases, reconciles overlaps and integrates serially.
+- Scope picks the editor. On a small project, or for a change that cannot be split by module or file, the main agent edits and commits directly. On a project whose modules or files develop independently, the main agent writes no code or document itself; implementation runs under Parallel Dispatch.
+- Discussion, research, design and review runs are read-only and return text.
+- An implementation run edits only inside its own git worktree and branch. It never merges, pushes, or writes the shared working tree or another run's worktree.
 - A change that requires seeing several files at once — deduplication, conflict resolution, a cross-file rename, a corpus-wide edit — goes to one run, never split across runs.
-- Whoever writes a file runs the task quality gate, including tests, lint and the documentation check for the written files, before committing.
+- Whoever writes a file runs the quality gate — tests, lint, doc check — on it before committing.
 
 ## When to Split
 
@@ -35,21 +33,20 @@ Worker runs discuss, design, implement and test. `execution` is supplied by `rul
 
 ## Implementation Organization
 
-Model and effort routing belongs to Model Routing. Decision-run authority belongs to `workflow/decisions.md`.
+Every role has its own scope and authority.
 
-| Role | Scope and authority |
-|---|---|
-| Main agent | Owns the board, ledger, merge queue and user communication. Dispatches ready work and assigns the single applier under Division of Labor. |
-| Applier | Accepts patches only from a run that passed the rules gate; checks bases, reconciles overlaps, applies, runs the documentation check on every written file and rejects a new finding, lints and commits serially through the task gate. Owns branch integration and cleanup. |
-| Implementer | Owns one patch task chain and every fix round in its output directory. Reads cited documents, follows `code/testing.md`, returns patches, verification and a summary. A replacement takes over only when the original run is gone. |
-| Reviewer | Independently checks the finished diff against decided documents and real output. Returns MERGE or FIX-FIRST. Each edge case is a reproduction for the implementer. Read-only. |
-| Analyst | Owns research, mathematics, implementation analysis and the algorithm steps of a task whose design is decided. Precedes algorithmic implementation; read-only. A design question goes to the design run. |
-| Decision roles | Handle every design question: an interface choice, an algorithm, or a mechanism the decided documents do not name. Authority follows `workflow/decisions.md` Decision Runs. |
-| New reader | `workflow/development.md` Reader Review. Read-only. |
+| Role | Model, effort | Scope | Authority |
+|---|---|---|---|
+| Main agent | session model | Task board, ledger, merge queue, branch cleanup, user communication | Dispatches runs that pass Parallel Dispatch, fast-forwards finished branches, runs the full gate after each merge; edits nothing on a modular project |
+| Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
+| Reviewer | Codex `gpt-6.1-sol` `high` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
+| Analyst | Codex `gpt-6.1-sol` `max` | Research, mathematics, implementation analysis, and the algorithm steps of a task whose design is decided | Precedes an algorithmic task's implementer; read-only; a design question goes to the design run |
+| Design run; refutation; chief | Codex `gpt-6.1-sol` `max`; Codex `gpt-6.1-sol` `high`; Codex `gpt-6.1-sol` `max` | Every design question: an interface choice, an algorithm, or a mechanism the decided documents do not name | The design run weighs every viewpoint and decides, the refutation tries to refute its rule, a chief decides only an escalated item; each states corrections for the implementer |
+| New reader | Codex `gpt-6.1-sol` `high` | Finished documents | Reports every place it cannot follow; read-only |
 
 - Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
-- Shared-file ordering and contract readiness follow Parallel Dispatch.
-- Rebase a finished branch onto `integration.branch` and pass its gate and required independent review. The applier fast-forwards it and runs the full gate. Conflict handling belongs to `workflow/git-safety.md`.
+- A file two tasks touch has one owner or a fixed order. Cross-module contracts merge before their consumers start.
+- A branch merges after it is rebased onto the integration head and passes its gate and an independent reviewer. The main agent fast-forwards it and runs the full gate. A rebase conflict goes to the user, never auto-resolved. Exception: a conflict confined to submodule pointers, where the task's submodule commits were first rebased onto the commits the integration head records and `git range-diff` shows them patch-identical; the main agent sets each pointer to the rebased submodule commit of the same step.
 - The task board lists every task with its write set, dependencies, difficulty, assigned role, branch and the Parallel Dispatch checks. When a run finishes, the main agent dispatches the next task that passes those checks.
 - A split or a consolidation moves every acceptance item and dependency to the row that keeps it, and removes each parent or covered row in the same board update.
 - Each run writes its details to its output file and returns a summary of at most one screen; the main agent reads only summaries, so its context holds coordination, not work; missing evidence comes from a follow-up run, never from re-deriving the analysis.
@@ -69,31 +66,27 @@ Model and effort routing belongs to Model Routing. Decision-run authority belong
 
 ## Branch Lifecycle
 
-- A branch uses `integration.task_branch_pattern` and carries one task. From creation its `branch.<name>.description` holds the task ID, the goal and the agent handle.
-- The applier commits implementation work before the task ends, using `wip:` for failing work; after interruption it commits pending implementation work on that branch. Workers checkpoint their output and never commit.
-- A pointer bump and its dependent consumer change share one commit.
-- During implementation, the applier pushes submodule commits only to the task-named branch.
-- At integration, the superproject records each submodule's `integration.submodule_branch` head. Fast-forward that branch to the recorded commit and push it before pushing `integration.branch`. A failed fast-forward goes to the user.
-- Delete a task-named submodule branch only after its commits reach that branch and deletion is authorized under `workflow/git-safety.md`.
-- Before each push, fetch and rebase onto `integration.upstream`. Never push unresolved conflicts.
+- A branch is named `wt/<task-id>` and carries one task. From creation its `branch.<name>.description` holds the task ID, the goal and the agent handle.
+- Every run commits before it ends, red work under a `wip:` subject. After an interruption the main agent commits the run's work in progress on its branch.
+- A pointer bump and the consumer change that needs it share one commit. The main agent pushes each submodule commit to a submodule branch named after the task, and when the superproject commit lands, to the submodule branch the project rules name for the integration branch, before the superproject push.
 - A branch is rebased in place under its own name; a task never re-cuts its work onto a new branch name.
-- After fast-forward and the full gate, remove the worktree when Branch Lifecycle cleanup conditions hold. Branch deletion follows `workflow/git-safety.md`; run it from the integration checkout when authorized.
+- Right after a branch's fast-forward and full gate, the main agent removes its worktree and deletes the branch with `git branch -d`, run from a checkout whose HEAD is the integration branch.
 - A worktree is removed only after its tracked, untracked and ignored files and every submodule are clean or disposable build output.
-- After every merge, reconcile branches absent from the open board line by line against integration. Recover or explain missing content. Deletion remains subject to `workflow/git-safety.md`; the agent never uses a prohibited command.
+- After every merge, the branches not merged into the integration branch match the board's open rows. An extra branch is compared line by line against the integration branch; content absent there is recovered or explained before the user deletes the branch with `-D`.
 - A rejected implementation's branch stays only while a board row names it as reference.
 
 ## Measurement
 
-- The ledger records review rounds, rework commits, wall time, the `execution.token_measure`, decision-run counts and later overturns. Decision transcripts also supply tool calls by kind, repeated calls and time to first result write.
+- The ledger records per task: review rounds, rework commits, wall time and Claude tokens. A chief or other decision run is also measured from its transcript: tool calls by kind, repeated calls, and the minute of its first result write.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
 - A daily retrospective reads these numbers, the run registry and the board growth, names the largest process problem with its numbers, and applies at most one change.
 
 ## Run Ledger
 
 - The main agent owns user communication and a persistent run ledger; a complex discussion forms a hierarchy of main agent, runs and independent checkers.
-- The ledger holds the verbatim question, numbered user directives, hierarchy, roles, gate order, protected files, versioned inputs, dependencies and next steps.
-- Before launch, the ledger fixes task ID, parent, role, model, effort, versioned inputs, output directory, target files, dependencies, question and acceptance criteria. Add the handle when assigned.
-- Every finding, result, failure, gate and decision updates the ledger with evidence, status and next step. Keep proposed, agreed, applied, committed and independently verified distinct.
+- The ledger holds the verbatim question, numbered user directives, hierarchy, roles, inputs and their versions, dependencies and next steps.
+- Before launch, a ledger entry fixes task ID, parent, role, model, effort, inputs, output directory, dependencies and the question to answer; the handle is added when assigned.
+- Every finding, failure and decision updates the ledger with evidence, status and next step; proposed, agreed and independently verified remain distinct states.
 - A run registry holds one row per delegated run: handle, task, model and effort, branch, output file, status, last progress and next action. The row is written before launch and updated on every notification.
 - The ledger keeps the current state in one short file and the history in an archive; the board lists open rows only, and a closed row moves to the board archive.
 - After context compaction, the main agent rereads the run registry, then the current ledger, before acting; both take precedence over the compacted summary.
@@ -102,9 +95,9 @@ Model and effort routing belongs to Model Routing. Decision-run authority belong
 
 - A zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
 - A run appends each finished step to its output file as it goes, so a stopped run resumes from its last step.
-- Before the sign-in session ends: no new run on `execution.outage_provider` starts; the applier commits pending implementation work, every worker checkpoints its last finished step in its output, the ledger takes a checkpoint entry, and the user is asked to sign in again.
-- During an outage, runs on `execution.continuing_provider` continue; nothing requiring a turn on `execution.outage_provider` is retried.
-- On restore: a recovery report lists each open row's state and every result landed since the outage start; each stopped run on `execution.outage_provider` resumes with the native message tool from its checkpoint, landed results are consumed, and no finished work restarts.
+- Before the sign-in session ends: no new Claude run starts, each running Claude run commits its work in progress and records its last finished step, the ledger takes a checkpoint entry, and the user is asked to sign in again.
+- During an outage Codex runs continue; nothing that needs a Claude turn is retried.
+- On restore: a recovery report lists each open row's state and every result landed since the outage start; each stopped Claude run resumes with SendMessage from its checkpoint, landed results are consumed, and no finished work restarts.
 
 ## Consolidation
 
@@ -116,67 +109,66 @@ Model and effort routing belongs to Model Routing. Decision-run authority belong
 
 ## Roles per Stage
 
-- The main agent selects the viewpoints the stage's questions need and records the selection; no fixed full panel. In a design run each viewpoint is a section, not a separate run. The decision-run sequence belongs to `workflow/decisions.md`.
-- A local change takes the implementer and one independent review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
-- Stage discussions follow the phase gates in `workflow/development.md`.
+- The main agent selects the viewpoints the stage's questions need and records the selection; no fixed full panel. In a design run each viewpoint is a section, not a separate run.
+- Discussion depth follows difficulty. A design question (an algorithm, a core principle, or a mechanism or interface the decided documents do not name) takes one design run and one independent refutation. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
+- The design run reads the evidence file and writes one section per selected viewpoint, each ending in its own option and recommendation; then the claims on which the sections disagree, each decided by an evidence row; then the decision, or the question text, and the decision entry. One model holding several viewpoints in one context matches a multi-agent discussion at a fraction of its runs, and rebuttal rounds add little beyond independent answers.
+- The refutation runs in a fresh context with the question, the evidence file and the candidate rule, not the design run's reasoning, and tries to refute the rule with counterexamples, invariant and cost checks. A refutation returns to the design run once. One that still stands, or a design run whose viewpoints disagree on the option, escalates: independent proposals, one per viewpoint, then one chief; no rebuttal round.
+- The evidence a topic's decision needs (decision records, document lines, history hits, program outputs, corpus counts) is gathered once, by the first stage that drafts options, into the task's evidence file (Working Files). Every later stage cites its rows and adds a row only for a fact the file lacks; no stage repeats a search a row records.
+- The chief of an escalated item decides from the proposals, the refutation and the evidence file within the time box its brief sets. It runs no search or program of its own; a fact it lacks becomes a follow-up question in its result, and the choice that needs the fact waits for the answer.
+- A chief's result takes one refutation, which also answers the chief's follow-up questions, since both read the same inputs.
+- Stage discussions overlay the phase gates owned by `workflow/development.md`; they grant no permission to skip or reorder those gates.
 
 | Stage | Viewpoints selected for the question | Reads | Outputs |
 |---|---|---|---|
 | Research | Researcher, security expert, cross-domain researcher | Question, recorded decisions, literature, tools, reference implementations | Cited findings, analogous mechanisms, limits and counterexamples |
 | Analysis | Algorithm designer, security expert, performance/precision reviewer, affected module owners | Complete affected-item inventory, research, current contracts | Cause groups, all-member and boundary checks, cost/precision/security tradeoffs |
 | Design | Module owners, architect, algorithm designer, engineer | Every module owner's interface section, analysis and research | Contract corrections and abstraction assessment |
-| Decision | `workflow/decisions.md` | Question and evidence | Decision or user question |
+| Decision | Design run and refutation; chief on escalation | Design-run sections, refutation results, recorded decisions | Agreed options, recommendation and worked example; disposition under the project decision rule |
 | Review | Independent critic, security/performance/precision reviewers, chief on escalation only; new reader last | Candidate design, evidence, the integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, the chief's corrections on escalation, and reader findings |
 
 - In a full design review, the design run gives each affected module owner one section with its provided and required interfaces and its handoff defects; every other viewpoint reads all of those sections, and the refutation groups its findings by root cause.
-- Architect review applies `rules/docs/design.md` to maintainability, semantic type boundaries and abstraction, and `rules/communication/terminology.md` to naming. Keep domain policy outside reusable mechanisms.
-- A design-only review returns design/implementation-document patches. Algorithm findings enter discussion and code differences follow `rules/docs/design.md` Open Gaps, with no algorithm or code edits in that review. The single applier integrates patches.
-- New-reader corrections go through the single applier.
+- Architect review uses `docs/design.md` for maintainability, semantic type boundaries and abstraction, and `communication/terminology.md` for naming; it also checks domain policy stays outside reusable mechanisms.
+- A design review returns design/implementation findings as text; algorithm findings enter discussion and code differences follow `docs/design.md` Open Gaps. The owner of the file makes any resulting edit.
+- New-reader corrections go to the owner of the document.
 
-## Solution Review
+## No Ad Hoc Solutions
 
-- Apply `workflow/change-policy.md` to every fix and `code/quality.md` No Patch-Style Code to its implementation.
-- Validate cause groups before repair. A distinct mechanism needs evidence that the problem differs and a rationale in its owning document.
-- Open design items, independent refutations and their return/escalation sequence, decision authority, questions and recording follow `workflow/decisions.md`.
-- The design run or analyst performs the known-limitation survey required by `workflow/decisions.md` Solution Checks.
-- The ledger links the decision record placed under `CLAUDE.md` Local Records.
+- Before any fix, the root-cause gate applies the root-cause and capability rules of `workflow/change-policy.md`: it validates the consolidation groups and asks whether one mechanism solves each group, checking existing mechanisms first.
+- The gate rejects per-item special cases under `code/quality.md` No Patch-Style Code; a distinct mechanism requires evidence that the problem differs and a design rationale in its owning document.
+- Before proposing a solution with a known limitation, the design run or the analyst surveys literature, industrial tools, cross-domain methods, closed-form mathematics and known algorithms, and returns cited alternatives and remaining limits.
+- Analysis covers every affected item and boundary case against research, repository conventions and recorded decisions before options leave the design run.
+- An independent refutation attempts to refute every solution with counterexamples and invariant, security, precision and cost checks; a refuted rule returns to the design run once, then escalates (Roles per Stage).
+
+## Decisions Before the User
+
+- Decision authority and question format come from the project decision rule.
+- A user-decided item reaches the user only after its design run and refutation, a check against recorded decisions, and agreement on the options, recommended option and worked example.
+- The design run, or the chief of an escalated item, decides agent-decidable items without asking and records the outcome; the ledger links the project's decision record.
+- After a user decision, the main agent records it in the same turn and dispatches its implementation, then continues the next independent discussion.
+- Decision record placement and document ownership follow `CLAUDE.md`.
 
 ## Model Routing
 
-| Task | Model and effort |
-|---|---|
-| Main agent | session model |
-| Code workers | `execution.code_workers` |
-| Recording | `execution.recording` |
-| Reasoning, research, analysis, mathematics, algorithm plans and question drafting | `execution.background` at its maximum effort |
-| Review, refutations and count runs | `execution.background` at its high effort |
-| Decision contexts | `workflow/decisions.md` Decision Runs |
-| New reader | `execution.background` at its high effort |
-
-- Record task difficulty and model before launch. Record whether `execution.background.agent` can execute it; use `execution.code_agent` for required tools it lacks or for code work under the table.
-- After launch or resume, check the transcript model. Stop and relaunch a run using an older generation than required.
-- The main agent launches needed background work directly through the shell. No worker exists only to wrap another provider's run.
-- Export source material to research runs that lack a tool. Every proposal passes the same refutation.
+- Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
+- After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
+- Reasoning, research, root-cause analysis, algorithm design, mathematics, the design run, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, refutations, count runs and new readers use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one.
+- Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same refutation.
 
 ## Run Isolation
 
-- Run directories live in persistent scratch storage outside temporary directories. Every worker's working directory and sandbox are its unique output directory, never the target tree. Only the applier edits the integration worktree.
+- Run directories live in persistent scratch storage outside temporary directories; each discussion run's working directory and sandbox are its own unique output directory, never the target tree. An implementation run's working directory is its own worktree.
 - A worktree lives outside the repository folder: an editor or language server opened on the repository walks the whole folder and would index every worktree's sources.
-- `tools/codex_rules.py pack` writes the rule-reading instructions, including every project markdown rule under `<repository>/.codex/rules/project/`, into the run directory. Read always-active rules and every scoped rule the topic needs. Findings count only after the log shows those reads; `gate` checks always-active path mentions, so scoped reads and actual read commands still need inspection.
-- A launch brief carries the ledger entry, question, project root, target files, exclusions, protected files, dependencies, acceptance criteria and return format.
-- Persist the result before returning patches plus a summary containing evidence, limits, verification and next step. A no-change result returns an empty patch set.
-- A background run launches as a tracked background command, so its exit notifies the main agent. A waiter for several runs starts only after each run's launch record exists, and sends one completion notification with findings and failures; no polling.
-- Research artifacts, vetted analogues and citation-audit verdicts become rows of the task's evidence file, which the matching refutation or review reads; all research finishes before the applier integrates document patches.
+- Every Codex run loads the agent rules, which Codex never reads on its own: `tools/codex_rules.py pack` writes its working directory's `AGENTS.md`, listing the always-active rules and the path-scoped rules for the files its topic touches. Its findings count only when its log shows a read of every rule its topic relies on.
+- A launch brief carries the ledger entry plus the question and the return format.
+- A run's summary carries evidence, limits and next step.
+- A Codex run launches as a tracked background command, so its exit notifies the main agent. A waiter for several runs starts only after each run's launch record exists, and sends one completion notification with findings and failures; no polling.
+- Research artifacts, vetted analogues and citation-audit verdicts become rows of the task's evidence file, which the matching refutation or review reads; the owning implementer edits the documents after the discussion concludes.
 - Failed or missing findings block dependent discussions; the ledger records the remaining work before a batch closes.
 
 ## Working Files
 
 - Each board task has one working directory in the run storage, named by its task ID, with one subdirectory per run and the task's evidence file. It lives while the task's row is open and moves to the run storage archive when the row closes.
-- Evidence row fields, generic kinds and validation belong to `tools/evidence.py`. `evidence` binds the project meanings and reference runtime. One row holds one established fact.
-- A run reads the evidence file before it searches, and writes new rows only in its own run directory. After the run ends, the main agent merges them into the task's file with `tools/evidence.py merge`, which keeps one current row per kind and source and marks a row whose value disagrees with the kept one as a conflict; no model edits the merged file.
+- The evidence file holds one row per established fact: kind, spelled as `tools/evidence.py` checks it (`decision` record, `doc` line, `code` line, `history` hit, `php` program output, `corpus` count), the claim in one sentence, its source (path and line, commit, or command), the exact quoted text or complete output, and the run that read it.
+- A run reads the evidence file before it searches, and writes new rows only in its own run directory. After the run ends, the main agent merges them into the task's file with `tools/evidence.py merge`, which keeps one row per kind and source and marks a row whose value disagrees with the kept one as a conflict; no model edits the merged file.
 - A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. The merge marks it, and a stage that relies on it reads the source again and writes a new row.
-- Durable evidence placement follows `CLAUDE.md` Local Records.
-
-- The first stage drafting options gathers needed facts once. Later stages cite fresh rows and add only missing facts; never repeat a search a fresh row records.
-
-- Never edit protected files named by a brief. Report a needed protected edit as unresolved.
+- A fact a decision record needs (its example, the output, the counts) is copied into that record when the decision is recorded; no record or document depends on a working directory.

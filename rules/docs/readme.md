@@ -5,8 +5,6 @@ paths:
 
 # README Standards
 
-Parameter `readme` is supplied by the project rule files under `rules/project/`, in `readme.md`.
-
 Audience: developers evaluating or using this library. Not maintainers, not contributors.
 
 ---
@@ -61,12 +59,11 @@ No table of contents.
 
 ## License
 
-- License section states `readme.license`, the repository's SPDX identifier, and links to its `LICENSE` file.
+- License section states the repository's SPDX identifier and links to its `LICENSE` file.
 
 ## Citation
 
-- `readme.citation_required` controls whether an associated-work citation is mandatory.
-- Use the associated work's BibTeX in a fenced `bibtex` block. Unreleased work uses `readme.citation_placeholder` until publication; replace its fields on release.
+- Citation content: the associated work's BibTeX entry in a fenced `bibtex` block; the project rule supplies the work requirement and release parameters.
 
 ## Rules
 
@@ -77,5 +74,3 @@ No table of contents.
 - No vague descriptions ("A utility library", "A tool for developers").
 - Blockquote (`>`) only for the Name line. No blockquote elsewhere.
 - No generic section names ("Miscellaneous", "Extra", "Other").
-
-- When citation is required, include `readme.citation_request`.

@@ -14,7 +14,11 @@ IEEE 1016 Information viewpoint + State dynamics viewpoint. Formalizes domain se
 
 - One `model.md` per module meeting When Required; apply When Not Required as the exception.
 - Same directory as paired `concept.md` and `design.md`.
-- Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+- Contains domain entity semantics, state models, invariants, relation semantics.
+- No software structure (classes, methods, fields) -- stays in `design.md`.
+- No problem context or scenarios -- stays in `concept.md`.
+- No algorithm steps or pseudocode -- goes in `spec.md`.
+- No library APIs or coding notes -- stays in `impl.md`.
 
 ## Required Sections
 

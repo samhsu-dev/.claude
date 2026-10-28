@@ -38,7 +38,9 @@ paths:
 **Data Contracts**
 - **With [Module A]:** [data exchanged, shared terminology]
 
-**Internal Processing Flow** — Link the algorithm owner under `CLAUDE.md` Documentation Ownership; describe only module interactions here.
+**Internal Processing Flow**
+1. [Step name] — [what happens]
+2. ...
 
 ### 4. Scenarios
 - **Typical:** [normal operation]
@@ -48,7 +50,7 @@ paths:
 ### 5. Rationale and Rejected Alternatives
 Optional. One entry per design choice the module rests on:
 - **Choice:** [why this concept or mechanism, one or two sentences]
-- **Rejected:** [each alternative and why it was rejected; provenance follows `CLAUDE.md` Documentation Ownership]
+- **Rejected:** [each alternative and why it was rejected; no decision ID, no commit]
 
 No open question lives here; an undecided point goes to the Open Gaps section of `design.md`.
 
@@ -58,7 +60,8 @@ No open question lives here; an undecided point goes to the Open Gaps section of
 
 ### Content
 - Concepts only. No implementation details, APIs, commands, or code.
-- Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+- No formal semantics (state transitions, invariants, edge direction rules) -- those go in `model.md`.
+- Technical specifications link to `design.md`. Domain semantics link to `model.md`.
 
 ### Format
 - Headings, bullet points, bold text, diagrams for structure.

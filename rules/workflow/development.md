@@ -1,7 +1,5 @@
 # Development Workflow
 
-Parameter `completion` is supplied by the project rule files under `rules/project/`, in `completion.md`.
-
 Phase pipeline for feature development. Always active. The content rules of each document live in `rules/docs/<type>.md`.
 
 ---
@@ -21,8 +19,8 @@ Phase pipeline for feature development. Always active. The content rules of each
 
 - Each phase reads the documents of the earlier phases as input.
 - A skipped phase states its skip reason in the next document.
-- Research follows `docs/impl.md` for external API verification and recording.
-- Code follows the cadence in `workflow/committing.md`.
+- Research verifies every external API via documentation, DeepWiki, Context7, or a minimal test, and records each finding in `impl.md` at once.
+- Code commits each task the moment it lands runnable, before the next task starts.
 
 ## Existing Codebase Changes
 
@@ -34,7 +32,7 @@ Phase pipeline for feature development. Always active. The content rules of each
 
 ## Phase Transitions
 
-- Move forward after each gate. Invalidated assumptions return to the earliest affected phase, including when Research invalidates Design. Revise that phase and its downstream documents before continuing.
+- Forward only. Exception: Research findings that invalidate a design assumption return to Design, and `design.md` is revised before work continues.
 - A backward step states its reason.
 - Each phase completes before the next begins.
 
@@ -48,5 +46,3 @@ Phase pipeline for feature development. Always active. The content rules of each
 ## Index
 
 - Index creation and updates after a stage adds or renames a file: `rules/docs/index.md`.
-
-- At task completion, `completion` controls creation of summary and README files. An existing-files-only setting applies to those completion artifacts.
