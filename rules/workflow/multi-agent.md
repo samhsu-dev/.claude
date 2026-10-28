@@ -41,7 +41,7 @@ Every role has its own scope and authority.
 | Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
 | Reviewer | Codex `gpt-6.1-sol` `high` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
 | Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, algorithm plans, implementation analysis | Precedes an algorithmic task's implementer; read-only |
-| Senior architects; chief architect | Sonnet 5.5 `xhigh`; Codex `gpt-6.1-sol` `max` | Interface choices and algorithm questions the analyst and reviewer leave open | Architects discuss; the chief decides and states corrections for the implementer |
+| Design run; refutation; chief | Codex `gpt-6.1-sol` `max`; Codex `gpt-6.1-sol` `high`; Codex `gpt-6.1-sol` `max` | Interface choices and algorithm questions the analyst and reviewer leave open | The design run weighs every viewpoint and decides, the refutation tries to refute its rule, a chief decides only an escalated item; each states corrections for the implementer |
 | New reader | Sonnet 5.5 `low`; Haiku 5.5 `medium` or `low` | Finished documents | Reports every place it cannot follow; read-only |
 
 - Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
@@ -114,8 +114,8 @@ Every role has its own scope and authority.
 - The design run reads the evidence file and writes one section per selected viewpoint, each ending in its own option and recommendation; then the claims on which the sections disagree, each decided by an evidence row; then the decision, or the question text, and the decision entry. One model holding several viewpoints in one context matches a multi-agent discussion at a fraction of its runs, and rebuttal rounds add little beyond independent answers.
 - The refutation runs in a fresh context with the question, the evidence file and the candidate rule, not the design run's reasoning, and tries to refute the rule with counterexamples, invariant and cost checks. A refutation returns to the design run once. One that still stands, or a design run whose viewpoints disagree on the option, escalates: independent proposals, one per viewpoint, then one chief; no rebuttal round.
 - The evidence a topic's decision needs (decision records, document lines, history hits, program outputs, corpus counts) is gathered once, by the first stage that drafts options, into the task's evidence file (Working Files). Every later stage cites its rows and adds a row only for a fact the file lacks; no stage repeats a search a row records.
-- The chief decides from the role results and the evidence file within the time box its brief sets. It runs no search or program of its own; a fact it lacks becomes a follow-up question in its result, and the choice that needs the fact waits for the answer.
-- One Codex run checks a chief's result: it tries to refute each choice and answers the follow-up questions together, since both read the same inputs.
+- The chief of an escalated item decides from the proposals, the refutation and the evidence file within the time box its brief sets. It runs no search or program of its own; a fact it lacks becomes a follow-up question in its result, and the choice that needs the fact waits for the answer.
+- A chief's result takes one refutation, which also answers the chief's follow-up questions, since both read the same inputs.
 - Stage discussions overlay the phase gates owned by `workflow/development.md`; they grant no permission to skip or reorder those gates.
 
 | Stage | Roles selected for the question | Reads | Outputs |
@@ -123,7 +123,7 @@ Every role has its own scope and authority.
 | Research | Researcher, security expert, cross-domain researcher | Question, recorded decisions, literature, tools, reference implementations | Cited findings, analogous mechanisms, limits and counterexamples |
 | Analysis | Algorithm designer, security expert, performance/precision reviewer, affected module owners | Complete affected-item inventory, research, current contracts | Cause groups, all-member and boundary checks, cost/precision/security tradeoffs |
 | Design | Module owners, architect, algorithm designer, engineer | All module interface sheets, analysis and research | Contract corrections and abstraction assessment |
-| Decision | Relevant reviewers and chief | Discussed proposals, adversarial results, recorded decisions | Agreed options, recommendation and worked example; disposition under the project decision rule |
+| Decision | Design run and refutation; chief on escalation | Design-run sections, refutation results, recorded decisions | Agreed options, recommendation and worked example; disposition under the project decision rule |
 | Review | Independent critic, security/performance/precision reviewers, chief; new reader last | Candidate design, evidence, the integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, chief's corrections and reader findings |
 
 - Full design reviews collect each module owner's provided/required interfaces and handoff defects in one sheet before role reviewers read all sheets; the chief consolidates their replies by root cause.
@@ -143,7 +143,7 @@ Every role has its own scope and authority.
 
 - Decision authority and question format come from the project decision rule.
 - A user-decided item reaches the user only after its design run and refutation, a check against recorded decisions, and agreement on the options, recommended option and worked example.
-- The chief decides agent-decidable items without asking and records the outcome; the ledger links the project's decision record.
+- The design run, or the chief of an escalated item, decides agent-decidable items without asking and records the outcome; the ledger links the project's decision record.
 - After a user decision, the main agent records it in the same turn and dispatches its implementation, then continues the next independent discussion.
 - Decision record placement and document ownership follow `CLAUDE.md`.
 
@@ -151,7 +151,7 @@ Every role has its own scope and authority.
 
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
 - After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
-- Reasoning, research, root-cause analysis, algorithm design, mathematics, discussion, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, choice checks and count runs use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one. Divergent mathematics, literature and open-design discussions add such a run as an independent participant.
+- Reasoning, research, root-cause analysis, algorithm design, mathematics, the design run, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, refutations, choice checks and count runs use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one.
 - Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
 
 ## Run Isolation
