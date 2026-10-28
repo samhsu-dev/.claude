@@ -40,9 +40,9 @@ Every role has its own scope and authority.
 | Main agent | session model | Task board, ledger, merge queue, branch cleanup, user communication | Dispatches runs that pass Parallel Dispatch, fast-forwards finished branches, runs the full gate after each merge; edits nothing on a modular project |
 | Implementer | Haiku 5.5 or Sonnet 5.5 `low` for mechanical tasks; Sonnet 5.5 `medium` for moderate tasks; Sonnet 5.5 `high` or Opus 5.5 `high` for algorithmic tasks | One task chain in its own worktree | Reads the cited documents, writes the test first, implements, runs the gate, commits, takes every fix round of its branch (a new agent takes over only when it is gone) |
 | Reviewer | Codex `gpt-6.1-sol` `high` | One finished branch | Checks the diff against the decided documents and real program output, writes each edge case as a reproduction the implementer adds as a test, returns MERGE or FIX-FIRST; read-only |
-| Analyst | Codex `gpt-6.1-sol` `max` | Reasoning, mathematics, research, algorithm plans, implementation analysis | Precedes an algorithmic task's implementer; read-only |
-| Design run; refutation; chief | Codex `gpt-6.1-sol` `max`; Codex `gpt-6.1-sol` `high`; Codex `gpt-6.1-sol` `max` | Interface choices and algorithm questions the analyst and reviewer leave open | The design run weighs every viewpoint and decides, the refutation tries to refute its rule, a chief decides only an escalated item; each states corrections for the implementer |
-| New reader | Sonnet 5.5 `low`; Haiku 5.5 `medium` or `low` | Finished documents | Reports every place it cannot follow; read-only |
+| Analyst | Codex `gpt-6.1-sol` `max` | Research, mathematics, implementation analysis, and the algorithm steps of a task whose design is decided | Precedes an algorithmic task's implementer; read-only; a design question goes to the design run |
+| Design run; refutation; chief | Codex `gpt-6.1-sol` `max`; Codex `gpt-6.1-sol` `high`; Codex `gpt-6.1-sol` `max` | Every design question: an interface choice, an algorithm, or a mechanism the decided documents do not name | The design run weighs every viewpoint and decides, the refutation tries to refute its rule, a chief decides only an escalated item; each states corrections for the implementer |
+| New reader | Codex `gpt-6.1-sol` `high` | Finished documents | Reports every place it cannot follow; read-only |
 
 - Each worktree and branch is cut from the integration branch head, with every submodule at the commit that head records.
 - A file two tasks touch has one owner or a fixed order. Cross-module contracts merge before their consumers start.
@@ -58,7 +58,7 @@ Every role has its own scope and authority.
 - Each finding carries a difficulty: mechanical, local or algorithmic.
 - Each finding carries an urgency: U0 blocks a merge or the gate; U1 lies on the critical path of the current program step; U2 is an in-scope leaf; U3 lies outside the current step's scope and goes to its module's task doc, never to the board.
 - Before each review round, the main agent records what the pending diff changes and picks the check from it:
-  1. A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text): one independent review of the whole task against its decided sentences and program output. A plan, chief or choice check never replaces it.
+  1. A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text): one independent review of the whole task against its decided sentences and program output. A plan, chief or refutation never replaces it.
   2. A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder: a targeted independent check of the whole cause and its boundary cases, with every reproduction of the earlier rounds.
   3. A fix that changes only assertions or fixtures of decided behavior, wording or links, and adds no semantic sentence, helper algorithm, source path or caller: the gate and the main agent's diff check, which confirms each reproduction fails on the base and passes on the fix. No new review.
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by a program output or a decided sentence, blocks its merge, and it closes through check 2 or 3; every other finding goes to a task doc or a board row.
@@ -83,7 +83,7 @@ Every role has its own scope and authority.
 
 ## Run Ledger
 
-- The main agent owns user communication and a persistent run ledger; a complex discussion forms a hierarchy of main agent, track leads and independent checkers.
+- The main agent owns user communication and a persistent run ledger; a complex discussion forms a hierarchy of main agent, runs and independent checkers.
 - The ledger holds the verbatim question, numbered user directives, hierarchy, roles, inputs and their versions, dependencies and next steps.
 - Before launch, a ledger entry fixes task ID, parent, role, model, effort, inputs, output directory, dependencies and the question to answer; the handle is added when assigned.
 - Every finding, failure and decision updates the ledger with evidence, status and next step; proposed, agreed and independently verified remain distinct states.
@@ -109,7 +109,7 @@ Every role has its own scope and authority.
 
 ## Roles per Stage
 
-- The main agent selects roles with distinct viewpoints for the stage's questions and records the selection; no fixed full panel.
+- The main agent selects the viewpoints the stage's questions need and records the selection; no fixed full panel. In a design run each viewpoint is a section, not a separate run.
 - Discussion depth follows difficulty. A design question (an algorithm, a core principle, or a mechanism or interface the decided documents do not name) takes one design run and one independent refutation. A local change takes the implementer and one review. A mechanical change takes a low-cost implementer, the gate and the main agent's diff check.
 - The design run reads the evidence file and writes one section per selected viewpoint, each ending in its own option and recommendation; then the claims on which the sections disagree, each decided by an evidence row; then the decision, or the question text, and the decision entry. One model holding several viewpoints in one context matches a multi-agent discussion at a fraction of its runs, and rebuttal rounds add little beyond independent answers.
 - The refutation runs in a fresh context with the question, the evidence file and the candidate rule, not the design run's reasoning, and tries to refute the rule with counterexamples, invariant and cost checks. A refutation returns to the design run once. One that still stands, or a design run whose viewpoints disagree on the option, escalates: independent proposals, one per viewpoint, then one chief; no rebuttal round.
@@ -118,15 +118,15 @@ Every role has its own scope and authority.
 - A chief's result takes one refutation, which also answers the chief's follow-up questions, since both read the same inputs.
 - Stage discussions overlay the phase gates owned by `workflow/development.md`; they grant no permission to skip or reorder those gates.
 
-| Stage | Roles selected for the question | Reads | Outputs |
+| Stage | Viewpoints selected for the question | Reads | Outputs |
 |---|---|---|---|
 | Research | Researcher, security expert, cross-domain researcher | Question, recorded decisions, literature, tools, reference implementations | Cited findings, analogous mechanisms, limits and counterexamples |
 | Analysis | Algorithm designer, security expert, performance/precision reviewer, affected module owners | Complete affected-item inventory, research, current contracts | Cause groups, all-member and boundary checks, cost/precision/security tradeoffs |
-| Design | Module owners, architect, algorithm designer, engineer | All module interface sheets, analysis and research | Contract corrections and abstraction assessment |
+| Design | Module owners, architect, algorithm designer, engineer | Every module owner's interface section, analysis and research | Contract corrections and abstraction assessment |
 | Decision | Design run and refutation; chief on escalation | Design-run sections, refutation results, recorded decisions | Agreed options, recommendation and worked example; disposition under the project decision rule |
-| Review | Independent critic, security/performance/precision reviewers, chief; new reader last | Candidate design, evidence, the integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, chief's corrections and reader findings |
+| Review | Independent critic, security/performance/precision reviewers, chief on escalation only; new reader last | Candidate design, evidence, the integrated edits; reader inputs owned by `workflow/development.md` Reader Review | Refutations, verification evidence, the chief's corrections on escalation, and reader findings |
 
-- Full design reviews collect each module owner's provided/required interfaces and handoff defects in one sheet before role reviewers read all sheets; the chief consolidates their replies by root cause.
+- In a full design review, the design run gives each affected module owner one section with its provided and required interfaces and its handoff defects; every other viewpoint reads all of those sections, and the refutation groups its findings by root cause.
 - Architect review uses `docs/design.md` for maintainability, semantic type boundaries and abstraction, and `communication/terminology.md` for naming; it also checks domain policy stays outside reusable mechanisms.
 - A design review returns design/implementation findings as text; algorithm findings enter discussion and code differences follow `docs/design.md` Open Gaps. The owner of the file makes any resulting edit.
 - New-reader corrections go to the owner of the document.
@@ -135,9 +135,9 @@ Every role has its own scope and authority.
 
 - Before any fix, the root-cause gate applies the root-cause and capability rules of `workflow/change-policy.md`: it validates the consolidation groups and asks whether one mechanism solves each group, checking existing mechanisms first.
 - The gate rejects per-item special cases under `code/quality.md` No Patch-Style Code; a distinct mechanism requires evidence that the problem differs and a design rationale in its owning document.
-- Before proposing a solution with a known limitation, researchers survey literature, industrial tools, cross-domain methods, closed-form mathematics and known algorithms, and return cited alternatives and remaining limits.
+- Before proposing a solution with a known limitation, the design run or the analyst surveys literature, industrial tools, cross-domain methods, closed-form mathematics and known algorithms, and returns cited alternatives and remaining limits.
 - Analysis covers every affected item and boundary case against research, repository conventions and recorded decisions before options leave the design run.
-- An independent adversarial verifier attempts to refute every solution with counterexamples and invariant, security, precision and cost checks; unresolved refutations return to analysis.
+- An independent refutation attempts to refute every solution with counterexamples and invariant, security, precision and cost checks; a refuted rule returns to the design run once, then escalates (Roles per Stage).
 
 ## Decisions Before the User
 
@@ -151,7 +151,7 @@ Every role has its own scope and authority.
 
 - Each delegated run names its model and effort by task difficulty, per the Implementation Organization table.
 - After each launch or resume, the main agent checks the model the run's transcript records. A run on an older model generation than the table names is stopped and relaunched.
-- Reasoning, research, root-cause analysis, algorithm design, mathematics, the design run, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, refutations, choice checks and count runs use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one.
+- Reasoning, research, root-cause analysis, algorithm design, mathematics, the design run, question drafting and the chief run through background Codex CLI, with explicit model `gpt-6.1-sol` and reasoning effort `max`; review, refutations, count runs and new readers use the same model at `high`. A Codex run launches from Bash by the main agent or by the implementer that needs it; no Claude agent exists only to wrap one.
 - Tool-dependent research receives exported source material when the run lacks the tool; every proposal passes the same critics.
 
 ## Run Isolation
@@ -162,7 +162,7 @@ Every role has its own scope and authority.
 - A launch brief carries the ledger entry plus the question and the return format.
 - A run's summary carries evidence, limits and next step.
 - A Codex run launches as a tracked background command, so its exit notifies the main agent. A waiter for several runs starts only after each run's launch record exists, and sends one completion notification with findings and failures; no polling.
-- Research artifacts, vetted analogues and citation-audit verdicts feed matching review roles for a second pass; the owning implementer edits the documents after the discussion concludes.
+- Research artifacts, vetted analogues and citation-audit verdicts become rows of the task's evidence file, which the matching refutation or review reads; the owning implementer edits the documents after the discussion concludes.
 - Failed or missing findings block dependent discussions; the ledger records the remaining work before a batch closes.
 
 ## Working Files
