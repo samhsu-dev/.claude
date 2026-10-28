@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Agent rules for a Codex run. Codex loads only AGENTS.md files, never the rules Claude Code loads.
 
-pack <run-dir> [project-root]
+pack <run-dir> [project-root] [--lean]
     Writes <run-dir>/AGENTS.md: the always-active rule files the run reads in full before any work,
     the path-scoped rule files it reads before it reviews a matching file, and the skills.
+    --lean packs an implementation run: it leaves out the coordination rules only the main agent
+    applies, and lets the run commit on its own branch.
     Writes <run-dir>/rules.json, the rule set of the launch, so a later rule change does not alter
     what the run is checked against.
 gate <run-dir> [project-root]
@@ -21,6 +23,13 @@ import sys
 from pathlib import Path
 
 GLOBAL = Path.home() / ".claude"
+COORDINATION = {GLOBAL / "rules/workflow/multi-agent.md", GLOBAL / "rules/workflow/development.md"}
+DISCUSSION_ROLE = ("You take part in the discussion that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
+                   "inputs, output directory and return format. You return findings, analysis or design as text, and write files "
+                   "only where your brief names them. You never launch other runs and never run a Git command.")
+IMPLEMENTATION_ROLE = ("You implement one task chain: your brief fixes the worktree, inputs, output file and return format. "
+                       "You write only that worktree and your run directory, commit on the worktree's branch, and never push, "
+                       "merge, rebase or launch other runs.")
 
 
 def frontmatter_paths(path):
@@ -65,11 +74,11 @@ def work_tree(path):
     return next((d for d in [path, *path.parents] if (d / ".git").exists()), None)
 
 
-def pack(run_dir, project):
+def pack(run_dir, project, lean=False):
     tree = work_tree(run_dir)
     if tree:
         sys.exit(f"pack: run directory {run_dir} lies inside the work tree {tree}; use a run directory outside it")
-    rules = configuration(project)
+    rules = [(f, globs) for f, globs in configuration(project) if not (lean and f in COORDINATION)]
     always = [f for f, globs in rules if not globs]
     scoped = [(f, globs) for f, globs in rules if globs]
     lines = [
@@ -87,9 +96,7 @@ def pack(run_dir, project):
         "",
         *[f"- `{f}`" for f in always],
         "",
-        "You take part in the discussion that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
-        "inputs, output directory and return format. You return findings, analysis or design as text, and write files "
-        "only where your brief names them. You never launch other runs and never run a Git command.",
+        IMPLEMENTATION_ROLE if lean else DISCUSSION_ROLE,
         "",
         "## Before Reviewing a File",
         "",
@@ -143,7 +150,9 @@ def gate(run_dir, project):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (3, 4) or sys.argv[1] not in ("pack", "gate"):
+    lean = "--lean" in sys.argv
+    args = [a for a in sys.argv[1:] if a != "--lean"]
+    if len(args) not in (2, 3) or args[0] not in ("pack", "gate") or (lean and args[0] != "pack"):
         sys.exit(__doc__)
-    run, proj = Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve() if len(sys.argv) == 4 else None
-    sys.exit(pack(run, proj) or 0 if sys.argv[1] == "pack" else gate(run, proj))
+    run, proj = Path(args[1]).resolve(), Path(args[2]).resolve() if len(args) == 3 else None
+    sys.exit(pack(run, proj, lean) or 0 if args[0] == "pack" else gate(run, proj))
