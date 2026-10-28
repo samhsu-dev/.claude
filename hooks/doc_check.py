@@ -74,15 +74,21 @@ def local_record(path):
 
 
 def forbidden_terms(rule_file):
-    """Quoted words after `never` in each bullet of the Forbidden Substitutions section."""
+    """(term, exemptions) pairs: quoted words after `never` in each bullet of the
+    Forbidden Substitutions section, each with the quoted phrases after `Exception:`
+    in the same bullet, which the checker masks before matching the term."""
     section = re.search(r"^## Forbidden Substitutions\n(.*?)(?=^## |\Z)", rule_file.read_text(), re.S | re.M)
     if not section:
         return []
     terms = []
     for bullet in re.findall(r"^- (.+)$", section.group(1), re.M):
         clause = re.search(r"\bnever\b(.*?)(?:\.\s|\.$|$)", bullet)
-        if clause:
-            terms += re.findall(r"\"([^\"]+)\"", clause.group(1))
+        if not clause:
+            continue
+        exempt = []
+        for exception in re.findall(r"\bException:(.*?)(?:\.\s|\.$|$)", bullet):
+            exempt += re.findall(r"\"([^\"]+)\"", exception)
+        terms += [(term, exempt) for term in re.findall(r"\"([^\"]+)\"", clause.group(1))]
     return terms
 
 
@@ -100,10 +106,14 @@ def term_hits(path, text):
     for rule_file in terminology_files(path):
         if os.path.samefile(path, rule_file):
             continue
-        for term in forbidden_terms(rule_file):
+        for term, exempt in forbidden_terms(rule_file):
             pattern = term_pattern(term)
+            masks = [term_pattern(phrase) for phrase in exempt]
             for line in text.splitlines():
-                if pattern.search(CODE_SPAN.sub("", line)):
+                stripped = CODE_SPAN.sub("", line)
+                for mask in masks:
+                    stripped = mask.sub("", stripped)
+                if pattern.search(stripped):
                     hits.append(f'"{term}" ({rule_file}): {line.strip()[:120]}')
     return hits
 
