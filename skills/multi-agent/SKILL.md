@@ -51,7 +51,9 @@ Pick the check before each review round from what the pending diff changes:
 
 - A review runs at `execution.review.<difficulty>` of its board row. Exception: the first full review of a change to a semantic sentence of an `algorithm.core_principles` entry runs at `execution.background.max_effort`.
 - An S1 finding that a later review or run finds and an earlier review of the same module missed raises that module's review effort one entry of `execution.review.levels` for its next tasks, up to the last entry. The ledger records the module's raised level.
-- The reviewer brief names the Review Checklist of skill `chain-session`, which defines the severities.
+- The reviewer brief names the Review Checklist of skill `chain-session`, which defines the severities and real inputs; its acceptance criteria list only the task's real inputs.
+- After each FIX-FIRST and before the fix round, record on the board row one line per finding: the task goal it serves and the real output it changes. A finding without that line gets no fix round; it becomes its own row or is dropped.
+- A second FIX-FIRST on the same component, or a fix that needs a new dependency, parser or module, stops the chain until the main agent restates the task's scope.
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the targeted check or the diff check.
 - A finding whose cause lies outside the branch's write set becomes its own row. When the branch newly exposes it on a program the integration head analyzes, the branch merges after that row.
 - The merge report gives the user the phase counts of a change that broke a decided bound of zero added work (`rules/workflow/change-policy.md`).

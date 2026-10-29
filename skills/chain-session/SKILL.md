@@ -29,8 +29,8 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 
 ## Review Checklist
 
-- Report the problems the diff introduces and the violations of the decided sentences its task implements. A pre-existing problem, a case outside the valid inputs, or a request for behavior beyond those sentences goes to an appendix, never decides the verdict, and becomes a row of its module's task doc.
-- Severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style.
+- Report the problems the diff introduces and the violations of the decided sentences its task implements. A pre-existing problem, a case outside the product's valid inputs, or a request for behavior beyond those sentences goes to an appendix, never decides the verdict, and becomes a row of its module's task doc.
+- Severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style. S1 and S2 need a real input: a file in the repository, a decided sentence, or a valid input of the product's public API. A problem that only a constructed input triggers in a tool that serves only development is S3 and never blocks the merge.
 - Apply `rules/docs/design.md` to maintainability, semantic type boundaries and abstraction, and `rules/communication/terminology.md` to naming; domain policy stays outside reusable mechanisms.
 - Report one finding per cause, naming every site of the diff that shares it, and check the author's site list against your own search; a missed site is a finding of that cause.
 - Write each edge case as a reproduction the chain session adds as a test.
