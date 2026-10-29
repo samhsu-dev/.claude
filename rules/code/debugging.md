@@ -13,7 +13,7 @@ TypeScript-specific debugging tools and patterns. Extends global `code/debugging
 ## Tools
 
 - `debugger`, `console.log()` and `console.trace()` traces stay local. Remove before commit.
-- `node --inspect-brk --enable-source-maps dist/<entry>.js` -- debugger on the build output, mapped to the TypeScript source.
+- `node --inspect-brk --enable-source-maps dist/<entry>.js` -- debugger on the build output, mapped to the TypeScript source through the `sourceMap` output of `tsc`.
 - `npx vitest --inspect-brk --no-file-parallelism <file>` -- debugger on tests.
 - `npx vitest run --bail=1` -- stop on first failure.
 
@@ -27,4 +27,3 @@ TypeScript-specific debugging tools and patterns. Extends global `code/debugging
 
 - `JSON.stringify(error)` yields `{}`. Log the error object under `err`, never its serialized string.
 - `try`/`catch` catches a rejection only of an awaited promise.
-- `node:assert` is not stripped. Production checks use `if (!x) throw`.
