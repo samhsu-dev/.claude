@@ -50,7 +50,6 @@ Public = reachable by consumers of the package. Internal = used only within the 
 | Subpath | listed in the `exports` map | absent from `exports`; Node.js refuses the import |
 
 - The `exports` map is the single source of truth for a published package's public API.
-- No `_` prefix for internal symbols. Visibility comes from the entry re-export.
 
 ## Module Design
 

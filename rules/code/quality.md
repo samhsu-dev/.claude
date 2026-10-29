@@ -42,7 +42,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 - `??` for defaulting, `?.` for optional access. Not `||` or nested guards.
 - `interface` for object shapes. `type` for unions, tuples, mapped and conditional types.
 - `foo?: T` for an optional property. A type alias never bakes in `| undefined`.
-- `T[]` for simple element types. `readonly T[]` for parameters the function does not mutate.
+- `T[]` for simple element types.
 - `for...of` for iteration. No `for...in` on arrays.
 - `function` declarations for named functions. Arrow functions for callbacks.
 - A `switch` over a closed set handles every member. `@typescript-eslint/switch-exhaustiveness-check` checks it (Toolchain).
@@ -84,7 +84,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 
 - `private` / `protected` / `readonly` modifiers. No `#private` fields, no explicit `public`.
 - Constructor assigns fields explicitly. No parameter properties (`erasableSyntaxOnly`).
-- Getters are pure and O(1). An accessor without logic becomes a plain property.
+- An accessor without logic becomes a plain property. Getter contract: `rules/docs/design.md` API Design.
 - Module-local functions over private static methods.
 - No decorator definitions. Framework-supplied decorators only.
 
@@ -97,7 +97,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 
 ## Disallowed
 
-- `var`, `with`, `eval`, `new Function(...)`, `const enum`.
+- `var`, `with`, `eval`, `new Function(...)`.
 - Mutating builtins or prototypes.
 - `debugger` and `console.*` in committed code. ESLint `no-debugger` and `no-console` check them (Toolchain). Exception: a CLI's user-facing output module.
 
