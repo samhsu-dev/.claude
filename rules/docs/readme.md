@@ -5,7 +5,7 @@ paths:
 
 # TypeScript README Badges
 
-Extends global `readme.md`. Badge set, format, and placement for npm
+Extends global `docs/readme.md`. Badge set, format, and placement for npm
 packages. Overrides the global **Badges** bullet for TypeScript projects.
 
 ---
@@ -20,7 +20,7 @@ packages. Overrides the global **Badges** bullet for TypeScript projects.
 
 - Badges occupy one row immediately below the title, before the description. Overrides the global "after description, before install" placement.
 - One blank line above and below the row.
-- One row only. A second row is a badge wall, forbidden by global `readme.md`.
+- One row only. A second row is a badge wall, forbidden by global `docs/readme.md` Rules.
 
 ## Badge Set
 
@@ -42,7 +42,7 @@ Excluded as low-information: download counts, bundle-size, code-style/logo badge
 
 ## Backing-State Gate
 
-- A badge appears only after its backing service returns real status. A badge rendering `invalid`, `unknown`, or `no status` is forbidden (global: no broken links).
+- A badge appears only after its backing service returns real status. A badge rendering `invalid`, `unknown`, or `no status` is forbidden.
 - npm and Node-versions badges: present only after the package is published to npm. Absent for a package marked `"private": true`.
 - Node-versions badge additionally requires `engines.node` in the published package.json; shields reads it from the registry.
 - Coverage badge: value comes from the CI coverage run (`vitest run --coverage`, json-summary reporter, field `total.branches.pct`). A CI workflow on `main` writes a shields `endpoint` JSON from that value and hosts it in-repo. No third-party coverage service.
@@ -59,4 +59,4 @@ Excluded as low-information: download counts, bundle-size, code-style/logo badge
 
 - `[![<alt>](<shields-url>)](<target-url>)`. Every badge is a link; no bare image.
 - `<alt>` names the metric: `npm`, `node`, `coverage`, `CI`, `License`.
-- shields.io is the source. The coverage badge uses shields `endpoint` reading the repo-hosted coverage JSON; no third-party coverage service.
+- shields.io is the source.
