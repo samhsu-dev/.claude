@@ -75,7 +75,7 @@ How the main agent runs delegated work. Always active; applies when work is dele
 
 ## Records
 
-- The main agent keeps a run ledger: the verbatim question, numbered user directives, chains, gate order, protected files, versioned inputs, dependencies and next steps. The current state stays in one short file and the history in an archive; the board lists open rows only. Proposed, applied, committed and independently verified stay distinct states.
+- The main agent keeps a run ledger: the verbatim question, numbered user directives, chains, gate order, protected files, versioned inputs, dependencies and next steps. The ledger, the run registry and the board hold the current state only, one short line per row, each within a byte budget a zero-token check enforces; history, closed rows and full directive text move to their archive when they are written. The board and the run registry list open rows only. Proposed, applied, committed and independently verified stay distinct states.
 - A run registry holds one row per delegated run: handle, task, model and effort, branch, progress file, status and next action. The row is written before launch and updated on every notification.
 - After context compaction, the main agent rereads the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - The main agent reads only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
