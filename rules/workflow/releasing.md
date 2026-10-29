@@ -62,7 +62,7 @@ Releases run through CI (see Tag-Driven CI). The local steps end at the tag push
 3. Tag the release commit `v<version>`; in a workspace, `<package>@<version>` per released package.
 4. Push the commit and tag. CI builds, validates (publint, attw, pack inspection), publishes with provenance, and finishes after approval.
 
-Manual fallback (CI unavailable): build, run publint and attw on the packed tarball, inspect `npm pack --dry-run`, publish with `npm publish --provenance` from a granular token.
+Manual fallback (CI unavailable): build, run publint and attw on the packed tarball, inspect `npm pack --dry-run`, publish with `npm publish` from a granular token. Provenance needs a supported cloud CI runner, so a manual publish carries none.
 
 ## Tag-Driven CI
 
