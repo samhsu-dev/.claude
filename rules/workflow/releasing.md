@@ -17,7 +17,7 @@ Release standards by distribution type. Project-specific release facts — packa
 
 | Type | Module format | Consumers |
 |------|---------------|-----------|
-| ESM-only | `"type": "module"`, no `require` condition | Node >= 20.19, bundlers, evergreen runtimes |
+| ESM-only | `"type": "module"`, no `require` condition | Node >= 22.12 (`require(esm)` unflagged), bundlers, evergreen runtimes |
 | Dual ESM+CJS | separate `.mjs`/`.cjs` builds behind conditional exports | legacy Node or entrenched CJS user base |
 | Workspace multi-package | several packages from one pnpm workspace | union of each member's consumers |
 
@@ -25,7 +25,7 @@ New packages are ESM-only. Dual format only on explicit user instruction naming 
 
 ## All Distributions
 
-- `"engines.node": ">=20"` in every package. tsconfig target and lib match this floor. The floor raises only on explicit user instruction.
+- `"engines": { "node": ">=22.12" }` in every package. `tsconfig.json` extends the matching runtime base `@tsconfig/node22`. The floor raises only on explicit user instruction.
 - A version published to npm is burned. Never unpublish and re-upload under the same version; bump instead.
 - Quality gate green before the version-bump commit: formatter, linter, type checker, tests.
 - Version bump, lockfile update, and dependent-pin updates land in one commit.
