@@ -6,68 +6,67 @@ paths:
 
 # TypeScript File Naming and Organization
 
-TypeScript realization of global `rules/code/organization.md`. ESM-first; layout per current npm ecosystem defaults.
+TypeScript realization of global `code/organization.md`. ESM packages; layout per npm and Node.js module defaults.
 
 ---
 
-## File and Directory Naming
+## File Naming
 
-- File names: kebab-case -- schema-utils.ts, scope-check.ts. One primary export per file, file named after it.
-- Directory names: kebab-case, plural for collections of peers (agents/, handlers/).
-- Test files: `rules/code/testing.md`.
+- Replaces global `code/organization.md` File Naming stem convention: file and directory names are kebab-case: `scope-check.ts`, `http-client/`.
+- Test files: `rules/code/testing.md` Layout.
 
 ## Package Layout
 
-A single-project repo keeps source in `src/`, build output in `dist/`. Repo root holds `package.json`, `tsconfig.json`, the lockfile, `README.md`.
+A single-project repo keeps source in `src/` and build output in `dist/`. Repo root holds `package.json`, `tsconfig.json`, the lockfile, `README.md`.
 
-| Project type | Entry | Distribution |
-|--------------|-------|--------------|
-| Application: run in place, never published | src/index.ts bootstraps | "private": true; no exports map |
-| CLI: installed executable | src/cli.ts exposing main(), registered in "bin" | files: ["dist"] |
-| Library: imported by other projects | src/index.ts re-exports public API | files: ["dist"] + exports map + shipped .d.ts |
+| Project type | Entry | `package.json` |
+|--------------|-------|----------------|
+| Application: run in place, never published | `src/main.ts` | `"private": true`, no `exports` |
+| CLI: installed executable | `src/bin.ts` | `"bin"` maps the command to `dist/bin.js`; `"files": ["dist"]` |
+| Library: imported by other projects | `src/index.ts` | `"exports"` map, `"files": ["dist"]`, shipped `.d.ts` |
 
-- `"type": "module"` in every new package. ESM-only by default; dual ESM+CJS only per `rules/workflow/releasing.md`.
-- `tests/` at repo root, outside `src/`. Test layout: `rules/code/testing.md`.
+- `"type": "module"` in every package. Module format per `rules/workflow/releasing.md` Distribution Types.
 - `dist/` is generated: gitignored, never edited, never imported from source.
+- Test tree: `rules/code/testing.md` Layout.
 
 ## Multi-Project Repository
 
 A repo containing multiple packages is a pnpm workspace.
 
-- Root `package.json` is `"private": true`. `pnpm-workspace.yaml` declares `packages: ["packages/*"]`. One `pnpm-lock.yaml` at repo root. Never per-package lockfiles.
-- Members live under `packages/`. Each member holds its own `package.json`, `tsconfig.json` extending the root config, and `src/`.
-- A member depends on another member via the workspace protocol: `"sibling": "workspace:*"`. pnpm rewrites it to a real version on publish.
+- Root `package.json` is `"private": true`. `pnpm-workspace.yaml` declares `packages: ["packages/*"]`. One `pnpm-lock.yaml` at repo root. No per-package lockfiles.
+- Members live under `packages/<name>/`. Each member holds its own `package.json`, a `tsconfig.json` extending the root config, `src/` and `tests/`.
+- A member depends on another member through the workspace protocol: `"<name>": "workspace:*"`.
 - Per-member commands use `--filter`: `pnpm --filter <name> run build`.
 
 ## Visibility
 
-Public = reachable by consumers. Internal = used only within the package.
+Public = reachable by consumers of the package. Internal = used only within the package.
+
+- A symbol is internal until a consumer outside the package exists. Public only for the package's intended API.
 
 | Construct | Public | Internal |
 |-----------|--------|----------|
-| Module | re-exported from src/index.ts | under src/internal/, never re-exported |
-| Symbol | exported and re-exported at entry | exported only for same-package imports |
-| Subpath | listed in "exports" map | absent from "exports" -- unresolvable by consumers |
+| Module | re-exported from `src/index.ts` | not re-exported |
+| Symbol | re-exported from `src/index.ts` | `export` only for same-package imports, or not exported |
+| Subpath | listed in the `exports` map | absent from `exports`; Node.js refuses the import |
 
-- The `exports` map is the single source of truth for a published package's public surface. Unlisted subpaths throw on import.
-- For applications, src/index.ts and the modules it wires are the surface; everything else is internal.
-- No underscore prefix for internal symbols. Internality comes from not being exported at the entry point.
+- The `exports` map is the single source of truth for a published package's public API.
+- No `_` prefix for internal symbols. Visibility comes from the entry re-export.
 
 ## Module Design
 
-- src/index.ts contains re-exports only. No logic.
-- One module, one responsibility. A module needing "and" in its description splits.
-- Errors in errors.ts. Shared types in types.ts when numerous; otherwise types live beside their logic.
-- No circular imports. A cycle is fixed at module structure level, not with lazy import.
+- One `index.ts` per directory that a consumer imports, re-exporting that directory's public symbols. No logic.
+- Errors in `errors.ts`. Types in `types.ts` when numerous; otherwise beside their logic.
+- The dependency direction between directories is a dependency-cruiser `forbidden` rule in `.dependency-cruiser.js`.
 
 ## Entry Points
 
-- CLI entry: src/cli.ts exposing main(). "bin" maps the command name to dist/cli.js.
-- The bin file body is the main() call: `void main();` behind the `#!/usr/bin/env node` shebang. No logic.
-- Server entry: src/index.ts constructs config, wires modules, starts the listener.
+- CLI entry: `src/cli.ts` exporting `main(argv: readonly string[]): Promise<number>`.
+- The executable file `src/bin.ts` holds the `#!/usr/bin/env node` line and the `main()` call only: `process.exitCode = await main(process.argv.slice(2));`. No logic.
+- Application entry: `src/main.ts` builds the config object, the logger and the module graph, then starts the work.
 
 ## Package Data
 
-- Resource files (data files, templates) in src/resources/. Copied to dist by the build.
-- Resolve package data via import.meta.dirname (or fileURLToPath(import.meta.url)). Never via cwd-relative paths, never via __dirname in ESM.
-- files field includes dist/ only; resources ship inside it.
+- Resource files (data files, templates) in `src/resources/`. The build copies them into `dist/resources/`.
+- Resolve package data relative to the module: `new URL("./resources/words.json", import.meta.url)`. Never via `process.cwd()` or `__dirname`.
+- `"files": ["dist"]` ships the resources inside `dist/`.
