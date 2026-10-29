@@ -35,6 +35,7 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 - Check each fix against `workflow/change-policy.md`: it changes the rule, mechanism or data that produces the fault, and one change covers every item of that cause; a check, branch or special case beside the cause is a finding.
 - A new engine, index, pass or helper that duplicates an existing relation, phase result, mechanism or sibling idiom is a finding that names what it should reuse.
 - New or changed names, signatures, result types, error and outcome shapes follow their sibling interfaces and the glossary; a divergence is a finding that names the sibling.
+- Read each changed call site without its declaration and each changed signature against its readers: a literal whose meaning the call hides, a setting every caller must restate, or a parameter no code reads is a finding under `rules/code/quality.md` API Design.
 - Report one finding per cause, naming every site of the diff that shares it, and check the author's site list against your own search; a missed site is a finding of that cause.
 - Write each edge case as a reproduction the chain session adds as a test.
 - Return MERGE or FIX-FIRST.

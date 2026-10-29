@@ -109,6 +109,10 @@ Fix every finding before considering the change complete. No exceptions.
 
 ## API Design
 - Error signaling: Error Handling.
+- A call reads without its declaration. A literal whose meaning the call does not show (a bare `true`, `false`, `null` or number) is passed by name, or its parameter becomes an enum or an options type.
+- A setting has a default that serves the common case, so a caller it does not concern never names it.
+- A signature names what its function's job needs. A parameter, field or setting enters an interface in the change that adds its first reader; a value threaded through signatures that nothing reads is speculative generality.
+- One concern has one mechanism. Before adding a parameter style, options type, dispatch, registry, result or error shape, find how sibling code handles the same concern and reuse it; a genuine difference is named in the design document.
 - Data containers hold data. No embedded behavior.
 - Application logic as explicit functions.
 
