@@ -13,7 +13,6 @@ TypeScript realization of global `code/organization.md`. ESM packages; layout pe
 ## File Naming
 
 - Replaces global `code/organization.md` File Naming stem convention: file and directory names are kebab-case: `scope-check.ts`, `http-client/`.
-- Test files: `rules/code/testing.md` Layout.
 
 ## Package Layout
 
