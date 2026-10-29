@@ -20,7 +20,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    2. Its write set, stated at module level, is disjoint from every running task's write set.
    3. Every contract it consumes is merged into `integration.branch`.
    4. Its result is checkable by the quality gate and an independent review.
-7. Hold a task that fails a check, or add it to the chain that owns its files. At most three chains run at once; filling that cap is never a goal.
+7. Hold a task that fails a check, or add it to the chain that owns its files. The number of concurrent chains has no fixed cap: every task that passes the checks of step 6 may run.
 8. Write the brief: the task or question, project root, write set or target files, exclusions, protected files, dependencies, acceptance criteria and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
 10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.
