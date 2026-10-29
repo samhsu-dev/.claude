@@ -6,19 +6,11 @@ paths:
 
 # TypeScript Implementation Documents
 
-TypeScript-specific `impl.md` conventions.
+TypeScript-specific `impl.md` conventions. Extends global `docs/impl.md`.
 
 ---
 
-## API Entry Format
-
-**[library]** `import { Thing } from 'library'` -- when/gotcha.
-
-Example:
-**[zod]** `schema.safeParse(input)` -- returns { success, data | error }; .parse() throws ZodError.
-**[undici]** `fetch(url, { signal: AbortSignal.timeout(10_000) })` -- no default timeout; omitting signal hangs on a dead peer.
-
 ## Library Entry Format
 
-- library_name >= version -- purpose. Install via the repo package manager (`npm install library_name` / `pnpm add library_name`).
-- Type coverage stated per library: ships own types, @types/* package, or untyped (wrapper required at boundary).
+- `library_name >= version` -- purpose. `pnpm add library_name`, or `npm install library_name` under npm.
+- Type coverage stated per library: ships its own types, a `@types/*` package, or untyped (typed wrapper at the boundary).
