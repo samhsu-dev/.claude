@@ -1,7 +1,5 @@
 # Git Commit Standards
 
-Guardrails active at all times.
-
 ---
 
 ## Commit Message Format

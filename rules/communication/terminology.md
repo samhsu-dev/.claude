@@ -2,7 +2,7 @@
 
 Parameters `domain` and `terminology` are supplied by the project rule files under `rules/project/`; `glossary.path` comes from `rules/project/glossary.md`.
 
-Rules governing the vocabulary used in all agent output. Always active. How a new term is named and how the glossary files are laid out: `rules/docs/glossary.md`.
+Rules governing the vocabulary used in all agent output. How a new term is named and how the glossary files are laid out: `rules/docs/glossary.md`.
 
 ---
 

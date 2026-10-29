@@ -16,7 +16,6 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 | `git checkout -- file` | `git diff file` to inspect, then edit manually |
 | `git commit --amend` | Create a new fixup commit |
 | `git push --force` | `git push` (fail = investigate, never force) |
-| `git branch -D` | See Branch Operations for deletion permission |
 | `git stash` | Commit WIP to a temporary branch |
 | `git clean` | Remove known files by name with `rm` |
 
