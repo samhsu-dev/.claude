@@ -6,112 +6,126 @@ paths:
 
 # TypeScript Code Quality
 
-TypeScript-specific rules and toolchain. Google TypeScript Style Guide / TS handbook / typescript-eslint strict.
+TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Google TypeScript Style Guide / TypeScript handbook / typescript-eslint `strictTypeChecked`.
 
 ---
 
 ## Naming
 
-- UpperCamelCase: classes, interfaces, type aliases, enums, type parameters.
-- lowerCamelCase: variables, parameters, functions, methods, properties.
-- CONSTANT_CASE: module-level constants and enum members.
-- No underscore prefix or suffix. No Hungarian notation. No I-prefix on interfaces.
-- Acronyms as words: loadHttpUrl, not loadHTTPURL.
+- `UpperCamelCase` classes, interfaces, type aliases, type parameters and closed-set objects (`rules/docs/design.md` Type Selection). `lowerCamelCase` functions, methods, variables, parameters and properties. `CONSTANT_CASE` module-level constants and closed-set members.
+- Acronyms as words: `loadHttpUrl`, not `loadHTTPURL`.
+- No `_` prefix or suffix, no `I` prefix on interfaces, no Hungarian notation.
+
+## Formatting
+
+- Layout is the `prettier --write` output with default options: 80-character lines, double quotes, 2-space indentation, semicolons, trailing commas. No `.prettierrc` overrides.
 
 ## Imports and Exports
 
-- Named exports only. No default exports.
-- import type { X } for type-only imports. verbatimModuleSyntax enforces it.
-- Relative imports for internal modules, with explicit .js extension under NodeNext resolution.
-- Import groups: node: builtins, third-party, local -- blank line between each.
-- ES module syntax only. No namespace, no require, no import x = require().
+- Named exports only. `no-restricted-exports` with every `restrictDefaultExports` option checks it. Exception: a tool config file whose tool reads the default export (`eslint.config.js`, `vitest.config.ts`).
+- Relative imports for internal modules, with the `.js` extension of the emitted file: `./parser.js`. A directory import names its index file: `./parser/index.js`.
+- `import type` for type-only imports. `verbatimModuleSyntax` checks it.
+- Groups: `node:` builtins, third-party, local -- blank line between each. Builtins always carry the `node:` prefix.
+- ES module syntax only. No `require`, no `import x = require()`, no `namespace`.
+- No circular imports. dependency-cruiser `no-circular` checks it. A cycle is fixed at module structure level, never with a dynamic `import()`.
 
 ## Error Handling
 
-- Throw Error subclasses only. Never strings or plain objects.
-- new Error(msg, { cause: exc }) to chain.
-- Domain errors with structured fields. Defined in errors.ts.
-- catch binds unknown. Narrow before use.
-- try blocks cover minimum code. An intentionally empty catch carries a comment stating why.
+- Throw `Error` subclasses only. `@typescript-eslint/only-throw-error` checks it.
+- `new DomainError(msg, { cause: err })` to chain. Never drop the caught error.
+- `catch (err: unknown)`; narrow with `instanceof` before use.
+- `try` blocks cover minimum code.
 
 ## TypeScript Idioms
 
-- === / !==. Exception: == null to match null and undefined together.
-- ?? for defaulting. Not ||.
-- ?. over nested existence guards.
-- interface for object types. type for unions, tuples, mapped and conditional types.
-- foo?: T over foo: T | undefined. Type aliases never bake in | null / | undefined.
-- as const array plus derived union for finite value sets. enum permitted; const enum never.
-- T[] for simple element types. Array<T> for complex ones.
-- for...of for arrays. Unfiltered for...in never.
-- function declarations for named functions. Arrow functions for callbacks and expressions.
-- Primitive types lowercase: string, number, boolean. Wrapper types String/Number/Boolean/Object never.
+- `===` / `!==`. Exception: `== null` matches `null` and `undefined` together.
+- `??` for defaulting, `?.` for optional access. Not `||` or nested guards.
+- `interface` for object shapes. `type` for unions, tuples, mapped and conditional types.
+- `foo?: T` for an optional property. A type alias never bakes in `| undefined`.
+- `T[]` for simple element types. `readonly T[]` for parameters the function does not mutate.
+- `for...of` for iteration. No `for...in` on arrays.
+- `function` declarations for named functions. Arrow functions for callbacks.
+- A `switch` over a closed set handles every member. `@typescript-eslint/switch-exhaustiveness-check` checks it.
 
 ## Async
 
-- async/await. Not .then chains.
-- No floating promises: every promise is awaited, returned, or explicitly discarded with void.
-- Arrays of promises go through Promise.all / allSettled / race.
-- No async callback passed where a void return is expected.
+- `async`/`await`. Not `.then` chains.
+- Every promise is awaited, returned, or discarded with `void`. `@typescript-eslint/no-floating-promises` checks it.
+- Independent promises run together through `Promise.all` / `Promise.allSettled`.
+- A caller-cancellable operation takes an `AbortSignal` and passes it to every I/O call.
+
+## Performance Idioms
+
+- `Set` / `Map` for membership and keyed lookup. Not `Array.includes` in a loop, not a plain object as a dictionary.
+- `array.join("")` for strings built in a loop.
+- `Object.freeze` / `as const` for fixed data.
+
+## Resource Management
+
+- `using` / `await using` with `Symbol.dispose` / `Symbol.asyncDispose` for resource lifecycle. `try`/`finally` for an API without a dispose method.
+- Memoization of a pure function in a `Map` keyed by its argument, owned by the module that owns the function.
+
+## Types
+
+- `@tsconfig/strictest` plus the runtime base (`rules/workflow/releasing.md` All Distributions) in `tsconfig.json` `extends`.
+- `erasableSyntaxOnly: true`: no `enum`, no runtime `namespace`, no parameter properties, no `import =`.
+- `verbatimModuleSyntax: true`. `types` lists every ambient package (`["node"]`).
+- Node code: `module` `nodenext`. Bundled browser code: `module` `preserve`, `moduleResolution` `bundler`. A published library never uses bundler resolution.
+- `readonly` on every property and parameter array the code does not mutate.
 
 ## No Weak Types
 
-- No any. unknown for values held but not inspected, narrowed before use.
-- No non-null assertion (!). No as assertion without a comment stating the invariant that makes it safe.
-- External data (HTTP bodies, files, env, queue messages) parsed at the boundary via schema (zod). Types derive from schemas: z.infer<typeof schema>.
+- No `any`, no non-null `!`. `strictTypeChecked` checks both. `unknown` for values held but not inspected.
+- No `as` assertion without a comment stating the invariant that makes it safe. Exception: `as const`.
+- External data (HTTP bodies, files, env, queue messages) is parsed at the boundary through a zod schema: `import * as z from "zod"`. The type derives from the schema: `type User = z.infer<typeof User>`.
+- `satisfies` for a typed constant that keeps its literal type.
 
 ## Classes
 
-- private / protected modifiers. No #private fields. No explicit public.
-- Parameter properties for constructor assignment. No empty constructors.
-- readonly on every property never reassigned outside the constructor.
-- Getters are pure and O(1). An accessor without added logic becomes a plain property.
+- `private` / `protected` / `readonly` modifiers. No `#private` fields, no explicit `public`.
+- Constructor assigns fields explicitly. No parameter properties (`erasableSyntaxOnly`).
+- Getters are pure and O(1). An accessor without logic becomes a plain property.
 - Module-local functions over private static methods.
+- No decorator definitions. Framework-supplied decorators only.
 
 ## Docs (TSDoc)
 
-- /** ... */ for every top-level export. // for implementation comments.
-- No types in @param / @returns. TypeScript carries them.
-- No tag restating a keyword: no @private, @override, @enum.
-- @deprecated includes the replacement for call sites.
+- `/** ... */` on every exported symbol: summary sentence, `@param name - description`, `@returns`, `@throws {ErrorType}`.
+- No types in tags. TypeScript carries them.
+- No tag restating a keyword: no `@private`, `@override`, `@enum`.
+- `@deprecated` names the replacement.
 
 ## Disallowed
 
-- var, with, eval, Function(...) constructor.
-- debugger statements in committed code.
+- `var`, `with`, `eval`, `new Function(...)`, `const enum`.
 - Mutating builtins or prototypes.
-- Defining decorators. Framework-supplied decorators only.
-- Relying on automatic semicolon insertion. Semicolons required.
+- `debugger` and `console.*` in committed code. ESLint `no-debugger` and `no-console` check them. Exception: a CLI's user-facing output module.
 
 ---
-
-## Compiler Options
-
-- Base: @tsconfig/strictest -- strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes, noImplicitOverride, noImplicitReturns, noFallthroughCasesInSwitch, noUnusedLocals, noUnusedParameters, isolatedModules.
-- verbatimModuleSyntax: true.
-- Node code: module and moduleResolution nodenext. Bundled code: module preserve, moduleResolution bundler. Published libraries never use bundler resolution.
 
 ## Quality Workflow
 
 ### Before editing
-- eslint <target> -- check existing violations.
+- `npx eslint <target>` -- check existing violations.
 
 ### After editing
-- prettier --write <target>.
-- eslint <target> -- zero violations.
-- tsc --noEmit.
-- vitest run -- all pass.
+- `npx prettier --write <target>`.
+- `npx eslint <target>` -- zero violations.
+- `npx tsc --noEmit`.
+- `npx depcruise src` -- zero violations.
+- `npx vitest run` -- all pass.
 
 ---
 
 ## Toolchain
 
-Run tools through the repo package manager (npx / pnpm exec). Lockfile determines the manager: package-lock.json -> npm, pnpm-lock.yaml -> pnpm. Never mix lockfiles.
+Run tools through the repository package manager: `npx` under npm, `pnpm exec` under pnpm.
 
 | Tool | Command | Purpose |
 |------|---------|---------|
-| prettier | prettier --write | Formatter |
-| eslint + typescript-eslint | eslint . | Linter, flat config, strictTypeChecked + stylisticTypeChecked |
-| tsc | tsc --noEmit | Type checker (@tsconfig/strictest base) |
-| vitest | vitest run | Test runner |
+| prettier | `prettier --write` | Formatter |
+| eslint + typescript-eslint | `eslint .` | Linter: `eslint.config.js` through `defineConfig` from `eslint/config`, `strictTypeChecked` + `stylisticTypeChecked`, `parserOptions.projectService: true` |
+| typescript | `tsc --noEmit` | Type checker. The `typescript` version satisfies the typescript-eslint `peerDependencies` range |
+| dependency-cruiser | `depcruise src` | Import graph: `no-circular` and the project's layer rules in `.dependency-cruiser.js` |
+| vitest + @vitest/coverage-v8 | `vitest run --coverage` | Test runner and branch coverage report |
 | zod | -- | Boundary validation |
