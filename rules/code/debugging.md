@@ -2,30 +2,29 @@
 paths:
   - "**/*.ts"
   - "**/*.tsx"
-  - "**/*test*"
 ---
 
 # TypeScript Debugging
 
-TypeScript-specific debugging tools and patterns.
+TypeScript-specific debugging tools and patterns. Extends global `code/debugging.md`.
 
 ---
 
 ## Tools
 
-- node --inspect-brk + debugger statement for interactive debugging. Remove debugger before commit.
-- error.cause chain read in full: for (let e = err; e; e = e.cause) before changing code.
-- vitest run --bail=1 -- stop on first failure.
-- vitest run --reporter=verbose -- per-test output.
-- vitest --inspect-brk --no-file-parallelism -- debugger on tests.
+- `debugger`, `console.log()` and `console.trace()` traces stay local. Remove before commit.
+- `node --inspect-brk <entry>.ts` -- debugger on a script. Node strips the types.
+- `npx vitest --inspect-brk --no-file-parallelism <file>` -- debugger on tests.
+- `npx vitest run --bail=1` -- stop on first failure.
 
 ## Logging
 
-- One structured logger per process, injected or imported from a single logging module. No scattered console.log.
+- One pino root logger, created once in the entry point's `main()` with level, `redact` paths and transport. Modules receive it and derive `logger.child({ module: "<name>" })`.
+- Library modules create no logger and no transport. They take a logger from the caller.
+- An error is logged under the `err` key: `logger.error({ err }, "<message>")`. The serializer keeps `message`, `stack` and `cause`.
 
 ## Common Pitfalls
 
-- A floating promise swallows its rejection. Await or return every promise; --unhandled-rejections=strict surfaces the rest.
-- JSON.stringify(error) yields {}. Log error.message, error.stack, error.cause explicitly or via the logger's error serializer.
-- node:assert is not stripped in production. Guard clauses with typed throws replace assert in library code.
-- try/catch around await catches rejections. try/catch around an unawaited call does not.
+- `JSON.stringify(error)` yields `{}`. Log the error object under `err`, never its serialized string.
+- `try`/`catch` catches a rejection only of an awaited promise.
+- `node:assert` is not stripped. Production checks use `if (!x) throw`.
