@@ -22,7 +22,7 @@ docs/
 ├── llms.txt          # L0 index — always loaded first
 ├── llms/             # L1 module docs — loaded on demand
 │   ├── <module>.md   # One file per module/component
-│   └── full.txt      # L2 all L1 content inlined — single-load option
+│   └── full.txt      # L2 llms.txt and all L1 files concatenated — single-load option
 ```
 
 - `llms.txt` is the entry point. Agents read this first.
@@ -90,12 +90,9 @@ Each `llms/<module>.md` file:
 
 ## full.txt Structure (L2)
 
-- Line limits follow the global entry point's Documentation Naming, including `full.txt`.
-- Starts with `llms.txt` content verbatim. Generate the complete aggregate only when it fits that cap; when it exceeds the cap, report the line count and reduce the input documents before generation.
-- Separator: `\n\n---\n\n# Referenced Documents\n\n`
-- Each inlined file: `## Source: llms/<module>.md\n\n<content>\n\n---\n\n`
-- Truncate files over 200 lines with `... (truncated, N total lines)`.
-- Regenerate with a script after every change to `llms.txt` or any `llms/*.md`. Never hand-edit.
+- `full.txt` is the plain concatenation `cat docs/llms.txt docs/llms/*.md > docs/llms/full.txt`. No script and no rewriting: each link keeps the form its source file gives it.
+- Regenerate it with that command after every change to `llms.txt` or any `llms/*.md`. Never hand-edit.
+- Line limits follow the global entry point's Documentation Naming, including `full.txt`. When the concatenation exceeds that cap, report the line count and reduce the input documents.
 
 ## Language Rules
 
@@ -140,4 +137,4 @@ For every sentence: "Does the caller need this to use the API correctly?" No →
 
 - Every link in `llms.txt` resolves to an existing file.
 - Every `llms/*.md` file is referenced from `llms.txt`.
-- `full.txt` matches the concatenation of `llms.txt` + all referenced files.
+- `full.txt` equals the output of the concatenation command.
