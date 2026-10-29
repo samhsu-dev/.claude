@@ -66,7 +66,7 @@ test.for([
 
 ## Mocking
 
-- Module doubles via `vi.mock(import("../src/<sub>/<module>.js"))`. The promise form types the factory against the real module and follows file moves.
+- Module doubles via `vi.mock(import("../../src/<sub>/<module>.js"))` from `tests/<sub>/`. The promise form types the factory against the real module and follows file moves.
 - Typed access to a mocked export through `vi.mocked(fn)`. No `as` cast to a mock type.
 - `vi.spyOn(obj, "method")` for an observed method on a real object.
 - `vi.mock` is hoisted above imports. Variables a factory reads come from `vi.hoisted()`.
