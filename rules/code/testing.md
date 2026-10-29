@@ -96,6 +96,8 @@ test.for([
 
 ## Configuration
 
+Vitest 5 or later: inline projects inherit the root `test` options (`extends` defaults to `true`), so `mockReset`, `restoreMocks` and `unstubEnvs` reach both projects.
+
 ```typescript
 import { defineConfig } from "vitest/config";
 
