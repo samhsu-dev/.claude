@@ -51,6 +51,7 @@ Pick the check before each review round from what the pending diff changes:
 | A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder | A targeted check of the whole cause and its boundary cases with every earlier reproduction, in the earlier reviewer's resumed session |
 | A fix that changes only assertions or fixtures of decided behavior, wording or links | The gate and the main agent's diff check, which confirms each reproduction fails on the base and passes on the fix |
 
+- A task whose board row is mechanical and whose diff changes at most 200 lines takes the main agent's diff check and the gate in place of the independent full review; every other first landing keeps the independent full review.
 - A review runs at `execution.review.<difficulty>` of its board row. Exception: the first full review of a change to a semantic sentence of an `algorithm.core_principles` entry runs at `execution.background.max_effort`.
 - An S1 finding that a later review or run finds and an earlier review of the same module missed raises that module's review effort one entry of `execution.review.levels` for its next tasks, up to the last entry. The ledger records the module's raised level.
 - The reviewer brief names the Review Checklist of skill `chain-session`, which defines the severities and real inputs; its acceptance criteria list only the task's real inputs.
