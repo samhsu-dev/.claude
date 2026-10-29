@@ -4,8 +4,8 @@
 pack <run-dir> [project-root] [--lean]
     Writes <run-dir>/AGENTS.md: the always-active rule files the run reads in full before any work,
     the path-scoped rule files it reads before it reviews a matching file, and the skills.
-    --lean packs a chain session: it leaves out the coordination rules only the main agent
-    applies, and lets the run commit on its own branch.
+    --lean packs a chain session: it adds the chain-session skill to the required reads and lets
+    the run commit on its own branch.
     Writes <run-dir>/rules.json, the rule set of the launch, so a later rule change does not alter
     what the run is checked against.
 gate <run-dir> [project-root]
@@ -23,15 +23,14 @@ import sys
 from pathlib import Path
 
 GLOBAL = Path.home() / ".claude"
-COORDINATION = {GLOBAL / "rules/workflow/multi-agent.md", GLOBAL / "rules/workflow/development.md"}
+CHAIN_SESSION = GLOBAL / "skills/chain-session/SKILL.md"
 DISCUSSION_ROLE = ("You are a read-only run of the work that `rules/workflow/multi-agent.md` describes: your brief fixes your role, "
                    "inputs, output directory and return format. You return findings, analysis or design as text, and write files "
                    "only where your brief names them. You never launch other runs and never run a Git command.")
 IMPLEMENTATION_ROLE = ("You are the chain session of one task chain: your brief fixes the worktree, inputs, progress file and "
-                       "return format. You append each finished step to the progress file, decide the chain's agent-decidable "
-                       "design questions under `rules/workflow/decisions.md` Decision Runs, and stop an item whose question is "
-                       "user-decidable. You write only that worktree and your run directory, commit on the worktree's branch, "
-                       "and never push, merge, rebase or launch other runs.")
+                       "return format. You follow `skills/chain-session/SKILL.md` and decide the chain's agent-decidable "
+                       "design questions under `skills/decisions/SKILL.md`. You write only that worktree and your run "
+                       "directory, commit on the worktree's branch, and never push, merge, rebase or launch other runs.")
 DISCUSSION_CHECKS = ("Claude Code hooks do not run here. Whoever writes a file from your work runs the documentation check "
                      "and the quality gate on it and lints its commit message, so any file you write or propose must meet them.")
 IMPLEMENTATION_CHECKS = ("Claude Code hooks do not run here. Before each commit you run the documentation check and the "
@@ -85,7 +84,7 @@ def pack(run_dir, project, lean=False):
     tree = work_tree(run_dir)
     if tree:
         sys.exit(f"pack: run directory {run_dir} lies inside the work tree {tree}; use a run directory outside it")
-    rules = [(f, globs) for f, globs in configuration(project) if not (lean and f in COORDINATION)]
+    rules = configuration(project) + ([(CHAIN_SESSION, [])] if lean else [])
     always = [f for f, globs in rules if not globs]
     scoped = [(f, globs) for f, globs in rules if globs]
     lines = [

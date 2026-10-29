@@ -4,7 +4,6 @@
 
 Explicit user instructions and higher-priority session instructions take precedence over this profile. Existing user authorization satisfies workflow approval gates within that authorized scope.
 Language- and project-independent rules and skills. A language profile adds only language conventions.
-Project values bind through Parameter Binding below.
 Existing project rules remain separate from the shared language profile.
 
 ## Documentation Naming
@@ -55,9 +54,8 @@ Records that serve only the developers at work live in three local directories, 
 - A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
 - Each directory holds one file per module, named after the module (`catalog-import.md` for `docs/catalog/import/`), split by concern past 200 lines, and an `index.md` listing its files.
 - Dates, decision IDs and commit hashes are allowed in local records only.
-- A decision entry holds its ID and authority, question, options, viewpoint recommendations, the refutation result when a refutation ran, choice and reason.
-- It also holds examples and complete reference outputs, corpus counts and counting method, revised decisions and all recording commits.
-- It records reused data or mechanisms, rejected alternatives, and whether earlier decisions are kept or which sentences change.
+- A decision entry holds its ID and authority, question, choice and reason, the rejected alternatives and all recording commits.
+- A user-decidable entry also holds the options, viewpoint recommendations, the refutation result, examples with complete reference outputs, corpus counts with the counting method, the reused data or mechanisms, and whether earlier decisions are kept or which sentences change.
 - An open entry has no choice. Fill that entry when the question is decided.
 - Copy evidence needed by the entry into it; a record never depends on a run directory.
 - A committed document never names or links a local record, and no committed fact depends on one.
@@ -78,14 +76,14 @@ Tools read the fixed headings and formats declared in these project rules. Parse
 
 | Parameters | Project owner under `rules/project/` | Consuming rule |
 |---|---|---|
-| `project`; `paths`; `algorithm`; `usage_corpus`; `scoring_corpus`; `viewpoints` | `decisions.md` | `rules/workflow/decisions.md` |
-| `reference`; `evidence` | `evidence.md` | `rules/workflow/decisions.md`; `rules/workflow/multi-agent.md`; `tools/evidence.py` |
+| `paths`; `algorithm`; `usage_corpus`; `scoring_corpus`; `viewpoints` | `decisions.md` | `rules/workflow/decisions.md`; `rules/workflow/change-policy.md`; `skills/decisions/SKILL.md`; `skills/multi-agent/SKILL.md` |
+| `reference`; `evidence` | `evidence.md` | `rules/workflow/decisions.md`; `skills/decisions/SKILL.md`; `tools/evidence.py` |
 | `domain`; `terminology` | `terminology.md` | `rules/communication/terminology.md`; `hooks/doc_check.py` |
-| `glossary` | `glossary.md` | `rules/docs/glossary.md`; `rules/communication/terminology.md` |
+| `glossary` | `glossary.md` | `rules/docs/glossary.md`; `rules/communication/terminology.md`; `skills/decisions/SKILL.md` |
 | `bibliography` | `bibliography.md` | `rules/docs/bibliography.md`; `hooks/doc_check.py` |
 | `readme` | `readme.md` | `rules/docs/readme.md` |
-| `integration` | `integration.md` | `rules/workflow/multi-agent.md` |
+| `integration` | `integration.md` | `skills/multi-agent/SKILL.md` |
 | `agent_prompt` | `prompts.md` | `rules/prompt/prompting.md` |
 | `completion` | `completion.md` | `rules/workflow/development.md` |
 | `profile` | `profile.md` | Native entry points; installation |
-| `execution` | `execution.md` | `rules/workflow/multi-agent.md`; `rules/workflow/decisions.md` |
+| `execution` | `execution.md` | `skills/multi-agent/SKILL.md`; `skills/decisions/SKILL.md` |
