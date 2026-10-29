@@ -85,6 +85,9 @@ Pick the check before each review round from what the pending diff changes:
 ## Consolidation
 
 - Daily, without delegating, list the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. Apply the merges, moves and state changes, merge each ready branch and record the open-row count before and after.
+- The same pass splits each row larger than one branch lifetime or holding more than one behavior into independently mergeable parts, each one behavior with its tests; an activation lands its dormant parts first and the switch last, and each acceptance item and dependency moves to the part that owns it.
+- For each row more than three open rows wait on, it names what each waiting row consumes, as a contract, file or decided sentence, and the smallest slice or commit that provides it, and replaces a whole-row dependency by that slice when the write sets are disjoint.
+- After each merge, the rows that named the merged row are checked again for a shared cause, a met dependency and a narrower dependency.
 - A row that implements a decided sentence closes only into a row that implements the same sentence.
 
 ## Credential Outage
