@@ -43,13 +43,13 @@ test.for([
 ## Discovery
 
 - Files: `*.test.ts`. Functions and hooks imported from `vitest`. No `globals: true`.
-- `test()` only. No `it()` alias.
-- `describe()` names the component. No nesting deeper than two levels.
+- Top-level `test()` by default. No `it()` alias.
+- Replaces global `code/testing.md` Structure on suites: a `describe()` block is allowed as stateless grouping of one component's behavior families, because `describe.for` runs a group of tests over each variant. No nesting deeper than two levels.
 - No shared mutable state at module scope of a test file.
 
 ## Naming
 
-- `describe("<component>")` holding `test("<condition> <expected>")`: `test("month 13 throws RangeError")`.
+- `test("<component> <condition> <expected>")`: `test("validateMonth 13 throws RangeError")`. Inside `describe("<component>")`, the test name drops the component.
 
 ## Fixtures
 
