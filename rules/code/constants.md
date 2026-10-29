@@ -20,27 +20,26 @@ Apply in order. First match wins.
 
 ## Constants
 
-- Invariants — thresholds, buffer sizes, header names, magic byte lengths, fixed domain sets — are UPPER_SNAKE_CASE const declarations in the module that owns the consuming logic.
-- Fixed domain sets use as const: `const STATES = ['open', 'closed'] as const`. The union type derives from it: `type State = (typeof STATES)[number]`.
+- Invariants — thresholds, buffer sizes, header names, magic byte lengths — are `CONSTANT_CASE` `const` declarations in the module that owns the consuming logic.
+- A fixed domain set is a closed-set object: `rules/docs/design.md` Type Selection.
 - Every constant carries a comment stating what fixes its value.
 - A constant used by multiple modules has one owner module. Consumers import it.
-- Never move an invariant into a config object, JSON, or environment variable. A runtime-read invariant loses static type checking, grep discoverability, and same-diff locality with its logic, and turns a fixed value into a misconfiguration surface.
+- Never move an invariant into a config object, JSON file, or environment variable. A runtime-read invariant loses static type checking, grep discoverability, and same-diff locality with its logic, and turns a fixed value into a misconfiguration surface.
 
 ## Run-Settings
 
-- Run-settings — time budgets, concurrency, targets, verbosity, endpoints — live in one readonly config interface per entry point.
-- The config object is constructed once at the entry point from CLI arguments, environment, or a config file, validated through a schema (zod), then passed explicitly through the call chain.
-- Core logic never reads process.argv, process.env, or config files. It receives the config object.
-- No module-level mutable state and no loose Record<string, unknown> for run-settings.
-- A liveness backstop deadline is never a run-setting (`resource-bounds.md`).
+- Run-settings — time budgets, concurrency, targets, verbosity, endpoints — live in one `Readonly` config object per entry point, typed by its zod schema.
+- The config object is parsed once at the entry point from CLI arguments, environment, or a JSON file, then passed explicitly through the call chain.
+- Core logic never reads `process.argv`, `process.env`, or config files. It receives the config object.
+- No module-level mutable state and no loose `Record<string, unknown>` for run-settings.
 
 ## Data Files
 
 - Bulk payloads — word lists, lookup tables, fixture-like data — live in external JSON files, never in TypeScript source. File location: `rules/code/organization.md` Package Data.
-- A data file is loaded at one boundary and parsed into typed structures via schema validation. Core logic receives typed data, never raw parse output.
+- A data file is read at one boundary and parsed through a zod schema into typed structures. Core logic receives typed data, never raw `JSON.parse` output.
 
 ## Promotion
 
 - "An operator might tune it later" does not make a value a run-setting. A value is a run-setting when a concrete run requires a different value without a code change.
-- Promotion keeps the constant as the default: the config field defaults to the in-code constant.
+- Promotion keeps the constant as the default: the schema field defaults to the in-code constant through `.default(CONSTANT)`.
 - A config field no run overrides returns to a constant.
