@@ -21,7 +21,7 @@ TypeScript-specific debugging tools and patterns. Extends global `code/debugging
 
 - One pino root logger, created once in the entry point's `main()` with level, `redact` paths and transport. Modules receive it and derive `logger.child({ module: "<name>" })`.
 - Library modules create no logger and no transport. They take a logger from the caller.
-- An error is logged under the `err` key: `logger.error({ err }, "<message>")`. The serializer keeps `message`, `stack` and `cause`.
+- An error is logged under the `err` key: `logger.error({ err }, "<message>")`. The `err` serializer keeps `type`, `message` and `stack`.
 
 ## Common Pitfalls
 
