@@ -32,7 +32,7 @@ TypeScript-specific design rules. Extends global `docs/design.md`. Google TypeSc
 
 ## Exception Design
 
-- Derive from `Error`. Set `name` to the class name. Pass `cause` through the constructor options.
+- Derive from `Error`. Set `name` to the class name.
 - Hierarchy by how callers catch, not where thrown.
 - Structured context fields (step, reason). No bare message strings.
 - Third-party errors mapped to domain errors at the boundary.
@@ -47,6 +47,6 @@ TypeScript-specific design rules. Extends global `docs/design.md`. Google TypeSc
 
 ## Typing Patterns
 
-- Generic functions constrain with `extends` when the body relies on structure. No type parameter used only once.
+- Generic functions constrain with `extends` when the body relies on structure. No type parameter used only once: `@typescript-eslint/no-unnecessary-type-parameters` in `strictTypeChecked` checks it.
 - Overloads when the return type depends on the input type, ordered specific to general.
 - Template literal type for a structured finite string space.
