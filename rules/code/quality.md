@@ -90,7 +90,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 
 ## Docs (TSDoc)
 
-- `/** ... */` on every exported symbol: summary sentence, `@param name - description`, `@returns`, `@throws {@link ErrorType} - condition`.
+- `/** ... */` on every exported symbol: summary sentence, `@param name - description`, `@returns`, `@throws {@link ErrorType} <condition>`.
 - No type annotations in tags. TypeScript carries them. `@throws` names the error class through `{@link}`.
 - No tag restating a keyword: no `@private`, `@override`, `@enum`.
 - `@deprecated` names the replacement.
