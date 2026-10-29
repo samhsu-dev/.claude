@@ -92,7 +92,7 @@ Each `llms/<module>.md` file:
 
 - `full.txt` is the plain concatenation `cat docs/llms.txt docs/llms/*.md > docs/llms/full.txt`. No script and no rewriting: each link keeps the form its source file gives it.
 - Regenerate it with that command after every change to `llms.txt` or any `llms/*.md`. Never hand-edit.
-- Line limits follow the global entry point's Documentation Naming, including `full.txt`. When the concatenation exceeds that cap, report the line count and reduce the input documents.
+- `llms.txt` and each `llms/*.md` follow the line limit of the global entry point's Documentation Naming. `full.txt` has no line limit.
 
 ## Language Rules
 
