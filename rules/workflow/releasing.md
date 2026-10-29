@@ -41,7 +41,7 @@ New packages are ESM-only. Dual format only on explicit user instruction naming 
 
 ## Dual ESM+CJS Packages
 
-- Conditional exports per entry: `"types"`, `"import"` (`.mjs`), `"require"` (`.cjs`), `"default"` last. Order is most-specific first; Node matches object order.
+- Conditional exports per entry: `"import"` holding `"types"` (`.d.mts`) then `"default"` (`.mjs`), `"require"` holding `"types"` (`.d.cts`) then `"default"` (`.cjs`). One shared `"types"` across both conditions masquerades one format as the other. Node matches object order.
 - One build produces both formats plus declarations (tsdown `--format esm,cjs --dts`).
 - attw clean under node16 resolution in both modes. No masquerading verdicts.
 - Dual-package hazard: no module-level singleton state; a consumer may load both instances.
