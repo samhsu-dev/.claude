@@ -45,7 +45,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 - `T[]` for simple element types. `readonly T[]` for parameters the function does not mutate.
 - `for...of` for iteration. No `for...in` on arrays.
 - `function` declarations for named functions. Arrow functions for callbacks.
-- A `switch` over a closed set handles every member. `@typescript-eslint/switch-exhaustiveness-check` checks it.
+- A `switch` over a closed set handles every member. `@typescript-eslint/switch-exhaustiveness-check` checks it (Toolchain).
 
 ## Async
 
@@ -99,7 +99,7 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 
 - `var`, `with`, `eval`, `new Function(...)`, `const enum`.
 - Mutating builtins or prototypes.
-- `debugger` and `console.*` in committed code. ESLint `no-debugger` and `no-console` check them. Exception: a CLI's user-facing output module.
+- `debugger` and `console.*` in committed code. ESLint `no-debugger` and `no-console` check them (Toolchain). Exception: a CLI's user-facing output module.
 
 ---
 
@@ -124,7 +124,7 @@ Run tools through the repository package manager: `npx` under npm, `pnpm exec` u
 | Tool | Command | Purpose |
 |------|---------|---------|
 | prettier | `prettier --write` | Formatter |
-| eslint + typescript-eslint | `eslint .` | Linter: `eslint.config.js` through `defineConfig` from `eslint/config`, `strictTypeChecked` + `stylisticTypeChecked`, `parserOptions.projectService: true` |
+| eslint + typescript-eslint | `eslint .` | Linter: `eslint.config.js` through `defineConfig` from `eslint/config`, `@eslint/js` `recommended` + `strictTypeChecked` + `stylisticTypeChecked`, `parserOptions.projectService: true`. No preset enables `no-console`, `no-restricted-exports` or `@typescript-eslint/switch-exhaustiveness-check`: the config sets each one to `error` |
 | typescript | `tsc --noEmit` | Type checker. The `typescript` version satisfies the typescript-eslint `peerDependencies` range |
 | dependency-cruiser | `depcruise src` | Import graph: `no-circular` and the project's layer rules in `.dependency-cruiser.js` |
 | vitest + @vitest/coverage-v8 | `vitest run --coverage` | Test runner and branch coverage report |
