@@ -25,6 +25,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
 8. Write the brief: the task or question, project root, write set or target files, exclusions, protected files, dependencies, acceptance criteria and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
+   - An algorithmic task's brief starts with its spec: the chain session first writes the steps and boundary cases into the owning `spec.md`, the spec takes the review before any code, and code follows the reviewed spec.
 10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.
 11. Launch the run from the shell as a tracked background command, so its exit notifies the main agent. No worker exists only to wrap another provider's run, and nothing polls; a waiter for several runs starts only after each run's launch record exists.
 12. Give a research run that lacks a tool the exported source material.
@@ -58,6 +59,7 @@ Pick the check before each review round from what the pending diff changes:
 - After each FIX-FIRST and before the fix round, record on the board row one line per finding: the task goal it serves and the real output it changes. A finding without that line gets no fix round; it becomes its own row or is dropped.
 - A second FIX-FIRST on the same component, or a fix that needs a new dependency, parser or module, stops the chain until the main agent restates the task's scope.
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the targeted check or the diff check.
+- A second introduced S1 after the full reviews stops the branch: the item goes to the user with its evidence instead of another fix round.
 - A finding whose cause lies outside the branch's write set becomes its own row. When the branch newly exposes it on a program the integration head analyzes, the branch merges after that row.
 - The merge report gives the user the phase counts of a change that broke a decided bound of zero added work (`rules/workflow/change-policy.md`).
 
