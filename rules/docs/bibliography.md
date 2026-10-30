@@ -33,7 +33,7 @@ Shared bibliography storage and citation syntax. Glossary field relations: `rule
 - A tool or reference implementation hosted as a GitHub repository has the repository's `owner/repo` full name, as GitHub spells it today, as its Title: `<owner>/<repo>`. The Zotero Title wraps the name in `<span class="nocase">…</span>`, so Better BibTeX exports it as typed instead of title-casing it (`<ExactRepositoryName>`). Its URL is that repository. A documentation site or a specification keeps the document's own title.
 - No `urldate`, `abstract`, or other access date in the export. A commit of the bibliography fixes when a pin was checked.
 - The auto-export is registered through the Better BibTeX JSON-RPC method `autoexport.add`, and a one-off export runs through `item.export`; neither needs the Zotero window.
-- Paper key: the key Better BibTeX generates with the formula `auth.lower + "_" + shorttitle(1, 0).lower.condense("_") + "_" + year`: `author_title_year`. Software and manual key: the project's own name in lowercase, pinned by a `Citation Key:` line in the item's Extra field.
+- Paper key: the key Better BibTeX generates with the formula `auth.lower + "_" + shorttitle(1, 0).lower.condense("_") + "_" + year`: `author_title_year`. Software and manual key: the project's own name in lowercase, pinned in the item's native Citation Key field; Better BibTeX ignores a `Citation Key:` line in Extra.
 - A key is never renamed. A source replaced by another gets a new key.
 
 ## Citation
