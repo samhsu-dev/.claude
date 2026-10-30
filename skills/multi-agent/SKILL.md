@@ -75,6 +75,7 @@ Pick the check before each review round from what the pending diff changes:
 
 - The run ledger holds the verbatim question, numbered user directives, chains, gate order, versioned inputs, dependencies and next steps, one short line per row; full directive text lives in its archive. Proposed, applied, committed and independently verified stay distinct states.
 - The board lists every open task with its write set, dependencies, chain, branch, difficulty and the checks. A split or consolidation moves every acceptance item and dependency to the row that keeps it and removes the covered rows in the same update.
+- A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
 - Update the run registry row on every notification.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
