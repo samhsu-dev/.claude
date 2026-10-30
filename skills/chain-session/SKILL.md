@@ -30,6 +30,7 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 ## Review Checklist
 
 - Report the problems the diff introduces and the violations of the decided sentences its task implements. A pre-existing problem, a case outside the product's valid inputs, or a request for behavior beyond those sentences goes to an appendix, never decides the verdict, and becomes a row of its module's task doc.
+- A decided sentence is read at the integration base, never at the branch head. A diff that changes or removes a sentence stating a user decision, without a user directive the brief quotes, is S1.
 - Severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style. S1 and S2 need a real input: a file in the repository, a decided sentence, or a valid input of the product's public API. A problem that only a constructed input triggers in a tool that serves only development is S3 and never blocks the merge.
 - Apply `rules/docs/design.md` to maintainability, semantic type boundaries and abstraction, and `rules/communication/terminology.md` to naming; domain policy stays outside reusable mechanisms.
 - Check each fix against `workflow/change-policy.md`: it changes the rule, mechanism or data that produces the fault, and one change covers every item of that cause; a check, branch or special case beside the cause is a finding.

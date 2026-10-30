@@ -25,6 +25,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
 8. Write the brief: the task or question, project root, write set or target files, exclusions, protected files, dependencies, acceptance criteria and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
+   - The brief quotes each user decision the task implements from its decision entry, and every other decision entry of the same module on the same concept. Before launch, the main agent runs each entry's example against the others; two entries that give different answers for one input go to the user before the task starts.
    - An algorithmic task's brief starts with its spec: the chain session first writes the steps and boundary cases into the owning `spec.md`, the spec takes the review before any code, and code follows the reviewed spec.
 10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.
 11. Launch the run from the shell as a tracked background command, so its exit notifies the main agent. No worker exists only to wrap another provider's run, and nothing polls; a waiter for several runs starts only after each run's launch record exists.
