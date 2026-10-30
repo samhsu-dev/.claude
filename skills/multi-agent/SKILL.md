@@ -64,6 +64,7 @@ Pick the check before each review round from what the pending diff changes:
 ## Branch Lifecycle
 
 - Cut each worktree and branch from the `integration.branch` head, with every submodule at the commit that head records, outside the repository folder, since an editor opened on the repository indexes the whole folder.
+- A task branch merges within `integration.branch_lifetime` of its cut. Size each row to fit it; a branch still open at that age goes to the next consolidation, which merges its finished part and splits the rest.
 - Name a branch by `integration.task_branch_pattern`; its `branch.<name>.description` holds the task ID, the goal and the session handle.
 - After an interruption, commit the run's work in progress on its branch.
 - During implementation, submodule commits are pushed only to the task-named branch. At integration, fast-forward each submodule's `integration.submodule_branch` to the commit the superproject records and push it before `integration.branch`; a failed fast-forward goes to the user.
@@ -86,7 +87,7 @@ Pick the check before each review round from what the pending diff changes:
 ## Consolidation
 
 - Daily, without delegating, list the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. Apply the merges, moves and state changes, merge each ready branch and record the open-row count before and after.
-- The same pass splits each row larger than one branch lifetime or holding more than one behavior into independently mergeable parts, each one behavior with its tests; an activation lands its dormant parts first and the switch last, and each acceptance item and dependency moves to the part that owns it.
+- The same pass splits each row larger than `integration.branch_lifetime` or holding more than one behavior into independently mergeable parts, each one behavior with its tests; an activation lands its dormant parts first and the switch last, and each acceptance item and dependency moves to the part that owns it.
 - For each row more than three open rows wait on, it names what each waiting row consumes, as a contract, file or decided sentence, and the smallest slice or commit that provides it, and replaces a whole-row dependency by that slice when the write sets are disjoint.
 - After each merge, the rows that named the merged row are checked again for a shared cause, a met dependency and a narrower dependency.
 - A row that implements a decided sentence closes only into a row that implements the same sentence.
