@@ -62,11 +62,13 @@ Pick the check before each review round from what the pending diff changes:
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the targeted check or the diff check.
 - A second introduced S1 after the full reviews stops the branch: the item goes to the user with its evidence instead of another fix round.
 - A finding whose cause lies outside the branch's write set becomes its own row. When the branch newly exposes it on a program the integration head analyzes, the branch merges after that row.
+- A deferred finding opens a board row only for a recall loss, a half-landed contract or a user-decidable question; a precision, edge-case or wording item goes to its module's task doc, and a finding that shares its cause with an open row joins that row's acceptance.
 - The merge report gives the user the phase counts of a change that broke a decided bound of zero added work (`rules/workflow/change-policy.md`).
 
 ## Branch Lifecycle
 
 - Cut each worktree and branch from the `integration.branch` head, with every submodule at the commit that head records, outside the repository folder, since an editor opened on the repository indexes the whole folder.
+- A finished part whose gate and review pass merges that day; a part that waits on a decision or another row splits into its own row and never holds the finished part.
 - A task branch merges within `integration.branch_lifetime` of its cut. Size each row to fit it; a branch still open at that age goes to the next consolidation, which merges its finished part and splits the rest.
 - Name a branch by `integration.task_branch_pattern`; its `branch.<name>.description` holds the task ID, the goal and the session handle.
 - After an interruption, commit the run's work in progress on its branch.
@@ -81,6 +83,8 @@ Pick the check before each review round from what the pending diff changes:
 - The board lists every open task with its write set, dependencies, chain, branch, difficulty and the checks. A split or consolidation moves every acceptance item and dependency to the row that keeps it and removes the covered rows in the same update.
 - A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
 - Update the run registry row on every notification.
+- A board dependency names the file or contract the row consumes from that row; an entry with neither is dropped.
+- Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
@@ -97,7 +101,8 @@ Pick the check before each review round from what the pending diff changes:
 
 ## Credential Outage
 
-- A zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
+- Before any run is held on a stop signal (expired credentials, an outage, a stale run), the signal is verified against the provider the session actually uses, from its environment settings, and against the progress of the running runs; an unconfirmed signal holds nothing.
+- Only for a provider whose sign-in session expires, a zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
 - Before the sign-in session ends: no new run on `execution.outage_provider` starts; each running write run on that provider commits its work in progress and every running run on it records its last finished step; the ledger takes a checkpoint entry, and the user is asked to sign in again.
 - During an outage, runs on `execution.continuing_provider` continue; nothing requiring a turn on `execution.outage_provider` is retried.
 - On restore, a recovery report lists each open row's state and every result landed since the outage start; each stopped run resumes in its own session from its checkpoint, and no finished work restarts.

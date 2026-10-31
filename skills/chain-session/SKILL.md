@@ -10,12 +10,13 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 1. Read every sentence the brief quotes in its own file, and implement every quoted sentence.
 2. Append each finished step to the progress file in the run directory, so a stopped session resumes from its last step.
 3. Decide and record each agent-decidable design question under skill `decisions`.
-4. Write the test first.
-5. Implement. A distinct mechanism beside an existing one for the same or a similar problem needs evidence that the problem differs and a rationale in its owning document.
-6. Before each commit, run the task quality gate on the written files: tests, lint and the documentation check.
-7. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
-8. Before review, run the Self-Check.
-9. Take every fix round in the same session.
+4. For an algorithmic task, before any code, run a root-cause probe: run the reference programs on the head, locate the rule, mechanism or data that produces the fault, and confirm it lies inside the write set. A cause outside it is a boundary question before any code.
+5. Write the test first.
+6. Implement. A distinct mechanism beside an existing one for the same or a similar problem needs evidence that the problem differs and a rationale in its owning document.
+7. Before each commit, run the task quality gate on the written files: tests, lint and the documentation check.
+8. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
+9. Before review, run the Self-Check.
+10. Take every fix round in the same session.
 
 ## Boundary Questions
 
