@@ -7,28 +7,28 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 ## Dispatch
 
-1. Before each launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows that share a cause into one row, landed on one branch and checked by one review; order a row that needs another's result after it; record the choice with its reason.
+1. Select Simple, Routine or Full under `rules/workflow/multi-agent.md` Task Modes. Route simple work to the resident agent and related work to its existing chain. Before a new launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows sharing a root cause and acceptance goal into one independently deliverable row, preserving every acceptance item; order a row that needs another's result after it; record the choice with its reason.
 2. Parallelize across independent tasks, never across the stages of one task. The stages of one task share context and the implicit decisions in its actions; every handoff between them loses detail.
 3. Keep one agent loop. A separate run is justified only by one of:
    1. an independent review or refutation, which needs a fresh context;
    2. a task with fixed inputs whose write set is disjoint from every running task's;
    3. context the main agent must not hold, whose result fits a one-screen summary.
 4. Give a change that requires seeing several files at once — deduplication, conflict resolution, a cross-file rename, a corpus-wide edit — to one run, never split across runs.
-5. Size each task to finish before its session's first automatic context compaction.
+5. Size tasks as independently checkable results. Reuse established context and evidence; context compaction alone creates no new task or agent.
 6. Launch a task beside others only when its board row records each check:
    1. Every user-decidable decision it implements is recorded.
    2. Its write set, stated at module level, is disjoint from every running task's write set.
    3. Every contract it consumes is merged into `integration.branch`.
-   4. Its result is checkable by the quality gate and an independent review.
+   4. Its result is checkable by the checks required for its task mode.
 7. Hold a task that fails a check, or add it to the chain that owns its files. The number of concurrent chains has no fixed cap: every task that passes the checks of step 6 may run.
    - Whenever a run ends or a branch merges, recheck every held row against the current diffs, not against its recorded hold reason. A shared document whose two edits touch disjoint sections does not block; a hold whose cause is gone is released.
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
-8. Write the brief: the task or question, project root, write set or target files, exclusions, protected files, dependencies, acceptance criteria and return format. The protected files are the files another running task writes, computed at launch.
+8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief: the observable result or question, required constraints and completion checks, project root, write set or target files, exclusions, protected files, dependencies and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
-   - The brief quotes each user decision the task implements from its decision entry, and every other decision entry of the same module on the same concept. Before launch, the main agent runs each entry's example against the others; two entries that give different answers for one input go to the user before the task starts.
-   - An algorithmic task's brief starts with its spec: the chain session first writes the steps and boundary cases into the owning `spec.md`, the spec takes the review before any code, and code follows the reviewed spec.
+   - Check the implemented decisions against entries governing the same affected contract. Reuse established evidence; contradictory requirements for one input go to the user before dependent work starts.
+   - Update owning text when its meaning changes. Independent specification review applies to Full; an unchanged approved specification is reused.
 10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.
-11. Launch the run from the shell as a tracked background command, so its exit notifies the main agent. No worker exists only to wrap another provider's run, and nothing polls; a waiter for several runs starts only after each run's launch record exists.
+11. Launch through the host's agent tool or a tracked background command. Retain its handle for follow-up and completion notifications. No worker exists only to wrap another run, and no model turn polls for unchanged status.
 12. Give a research run that lacks a tool the exported source material.
 
 ## Boundary Questions
@@ -39,31 +39,32 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 ## Chains
 
-- A chain is a sequence of tasks that share files, contracts or decisions. Its tasks run in order in one session.
+- Keep one resident agent for simple work and one chain context per related set of files, contracts or mechanisms. Queue tasks within each context sequentially; every request names its current input revision and permitted write set.
 - After a merge, resume the chain session for the chain's next task; its brief carries the integration diff since its last commit.
-- A fresh session replaces it after its first automatic context compaction or when the chain moves to another module.
+- After compaction, refresh the current task, decisions and revision from the progress record and continue. Replace a context when its assumptions are stale, unrelated work would dominate it, or repeated failures show it cannot reliably continue.
 
 ## Review
 
 Pick the check before each review round from what the pending diff changes:
 
-| Pending diff | Check |
-|---|---|
-| A task's first landing, or a fix that adds or changes a semantic sentence (result selection, order, identity, state or lifetime, serialization, algorithm text) or decides a design question | One independent full review against the decided sentences and program output |
-| A fix that changes a mechanism, an invariant, a shared caller, a reference identity or a decoder | A targeted check of the whole cause and its boundary cases with every earlier reproduction, in the earlier reviewer's resumed session |
-| A fix that changes only assertions or fixtures of decided behavior, wording or links | The gate and the main agent's diff check, which confirms each reproduction fails on the base and passes on the fix |
+Task Modes determines review depth. A configured project review trigger may specialize checks within Full; required correctness and integration checks still apply.
 
-- A task whose board row is mechanical and whose diff changes at most 200 lines takes the main agent's diff check and the gate in place of the independent full review; every other first landing keeps the independent full review.
+| Task mode | Check |
+|---|---|
+| Simple | Resident verifies the requested result; main agent checks the returned evidence |
+| Routine | Implementer checks affected behavior; main agent inspects the diff and evidence; a specific unresolved risk may receive a focused independent check |
+| Full | One independent review against accepted contracts and behavioral evidence; fixes within unchanged contracts take reproduction, applicable gate and main-agent diff checks |
+
+- Every mode retains required repository and integration checks. Reuse checks for the same revision; rerun affected checks after changes or new failures.
 - A review runs at `execution.review.<difficulty>` of its board row. Exception: the first full review of a change to a semantic sentence of an `algorithm.core_principles` entry runs at `execution.background.max_effort`.
 - An S1 finding that a later review or run finds and an earlier review of the same module missed raises that module's review effort one entry of `execution.review.levels` for its next tasks, up to the last entry. The ledger records the module's raised level.
 - The reviewer brief names the Review Checklist of skill `chain-session`, which defines the severities and real inputs; its acceptance criteria list only the task's real inputs.
 - After each FIX-FIRST and before the fix round, record on the board row one line per finding: the task goal it serves and the real output it changes. A finding without that line gets no fix round; it becomes its own row or is dropped.
 - A second FIX-FIRST on the same component, or a fix that needs a new dependency, parser or module, stops the chain until the main agent restates the task's scope.
-- A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the targeted check or the diff check.
+- A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the main agent's reproduction, gate and diff checks.
 - A second introduced S1 after the full reviews stops the branch: the item goes to the user with its evidence instead of another fix round.
-- A finding whose cause lies outside the branch's write set becomes its own row. When the branch newly exposes it on a program the integration head analyzes, the branch merges after that row.
-- A deferred finding opens a board row only for a recall loss, a half-landed contract or a user-decidable question; a precision, edge-case or wording item goes to its module's task doc, and a finding that shares its cause with an open row joins that row's acceptance.
-- The merge report gives the user the phase counts of a change that broke a decided bound of zero added work (`rules/workflow/change-policy.md`).
+- A finding outside the write set follows the deferred-finding classification below. A demonstrated regression of the accepted result remains blocking until a scoped repair or independently correct split removes it.
+- Route deferred findings by the project's acceptance criteria and configured `execution.triage` policy. A finding that shares an open task's cause joins that task; an unrelated improvement does not block the accepted result.
 
 ## Branch Lifecycle
 
@@ -84,7 +85,7 @@ Pick the check before each review round from what the pending diff changes:
 - A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
 - Update the run registry row on every notification.
 - A board dependency names the file or contract the row consumes from that row; an entry with neither is dropped.
-- Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
+- The resident agent handles simple tasks in a reused context. Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
@@ -93,10 +94,10 @@ Pick the check before each review round from what the pending diff changes:
 
 ## Consolidation
 
-- Daily, without delegating, list the rows that share a cause or a write set, duplicates, rows outside the current step, stale statuses and branches ready to merge. Apply the merges, moves and state changes, merge each ready branch and record the open-row count before and after.
-- The same pass splits each row larger than `integration.branch_lifetime` or holding more than one behavior into independently mergeable parts, each one behavior with its tests; an activation lands its dormant parts first and the switch last, and each acceptance item and dependency moves to the part that owns it.
-- For each row more than three open rows wait on, it names what each waiting row consumes, as a contract, file or decided sentence, and the smallest slice or commit that provides it, and replaces a whole-row dependency by that slice when the write sets are disjoint.
-- After each merge, the rows that named the merged row are checked again for a shared cause, a met dependency and a narrower dependency.
+- Consolidate when requested or required by a configured project schedule or integration step. List rows that share a cause or write set, duplicates, stale statuses and ready branches; apply only authorized merges and record state changes.
+- When consolidation is required, split a row that exceeds a configured branch lifetime or combines independently deliverable behavior. Preserve each acceptance item and dependency with the part that owns it.
+- For a blocking row, identify the contract, file or decided sentence each dependent consumes and the smallest independently correct delivery that provides it. Replace whole-row waits with that delivery when write sets are disjoint; remove an edge only after its contract is delivered.
+- After a task completes or a result integrates, lightly recheck affected rows for a shared cause, satisfied dependency, smaller delivery and newly available disjoint work. The periodic pass covers the whole board.
 - A row that implements a decided sentence closes only into a row that implements the same sentence.
 
 ## Credential Outage
@@ -126,7 +127,7 @@ Pick the check before each review round from what the pending diff changes:
 
 ## Reader Review
 
-- After every complete revision of a module's documents is committed, a new reader reads them from `index.md`: concept, model, design, impl, in that order, the documents only.
+- For a Full task with a substantial document revision, or an explicitly requested reader review, a fresh reader starts at `index.md` and follows the affected owning documents. Routine wording edits use the main agent's diff check.
 - It reports with file:line every place it cannot follow: an undefined or generic-looking term, a step it cannot trace, a diagram that differs from its text, a missing reason, a term whose meaning drifts, a class or layer that does not match what it groups, a section a maintainer cannot change safely without reading other files.
 - Acceptance: accurate semantics and sound abstraction, so the documents are easy to understand and easy to maintain.
 - A fix changes the documents, never the algorithm.

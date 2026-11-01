@@ -13,10 +13,10 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 4. For an algorithmic task, before any code, run a root-cause probe: run the reference programs on the head, locate the rule, mechanism or data that produces the fault, and confirm it lies inside the write set. A cause outside it is a boundary question before any code.
 5. Write the test first.
 6. Implement. A distinct mechanism beside an existing one for the same or a similar problem needs evidence that the problem differs and a rationale in its owning document.
-7. Before each commit, run the task quality gate on the written files: tests, lint and the documentation check.
+7. Run the affected checks required by the assigned task mode and project gate. Reuse passing evidence for an unchanged revision; required integration checks remain mandatory.
 8. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
-9. Before review, run the Self-Check.
-10. Take every fix round in the same session.
+9. Self-check the scoped diff. Routine returns it to the main agent; Full proceeds to independent review under `multi-agent`.
+10. Continue related tasks and fixes in the same context; refresh revisions and decisions after compaction or integration.
 
 ## Boundary Questions
 

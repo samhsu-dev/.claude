@@ -2,7 +2,7 @@
 
 Parameter `completion` is supplied by the project rule files under `rules/project/`, in `completion.md`.
 
-Phase pipeline for feature development. The content rules of each document live in `rules/docs/<type>.md`.
+Task modes follow `workflow/multi-agent.md` Task Modes. Simple and Routine reuse existing decisions and perform only affected steps below; Full uses the affected design stages and independent review. Outcome and scope follow `workflow/change-policy.md`. Document content follows `rules/docs/<type>.md`.
 
 ---
 

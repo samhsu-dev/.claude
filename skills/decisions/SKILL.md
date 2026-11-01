@@ -18,11 +18,11 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 
 ## Decision Runs
 
-- The chain session of a task decides each agent-decidable item inside that task, in its own context, with a short rationale: the chosen option, the evidence deciding it and the rejected alternative. No viewpoints and no refutation run; the task's next full review checks the decision against Solution Checks.
-- A user-decidable item is drafted by the chain session that meets it. A question no chain owns, or one several tasks implement, takes one design run, launched as the chain session of the first of those tasks on the model skill `multi-agent` Model Routing gives that chain; its session then implements that task.
-- The drafter of a user-decidable item weighs three viewpoints, fewer only when the item touches fewer. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
+- The chain session of a task decides each agent-decidable item inside that task, in its own context, with a short rationale: the chosen option, the evidence deciding it and the rejected alternative. No viewpoints and no refutation run; the task mode's verification checks the decision against Solution Checks.
+- Draft an open choice in its owning resident or chain context. A Simple or Routine choice that requires user authority goes directly to the user with relevant options and evidence; it creates no separate design or refutation run.
+- Only an unresolved user-decidable core choice in Full uses the design and refutation procedure below. Its drafter weighs the affected viewpoints. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
 - It then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
-- A user-decidable draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
+- A Full core-choice draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
 - A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No chief and no rebuttal round.
