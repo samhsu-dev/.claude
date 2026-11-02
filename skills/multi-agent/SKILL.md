@@ -56,8 +56,8 @@ Task Modes determines review depth. A configured project review trigger may spec
 | Full | One independent review against accepted contracts and behavioral evidence; fixes within unchanged contracts take reproduction, applicable gate and main-agent diff checks |
 
 - Every mode retains required repository and integration checks. Reuse checks for the same revision; rerun affected checks after changes or new failures.
-- A review runs at `execution.review.<difficulty>` of its board row. Exception: the first full review of a change to a semantic sentence of an `algorithm.core_principles` entry runs at `execution.background.max_effort`.
-- An S1 finding that a later review or run finds and an earlier review of the same module missed raises that module's review effort one entry of `execution.review.levels` for its next tasks, up to the last entry. The ledger records the module's raised level.
+- Independent code review uses the shared Model Routing rule; a core document change alone does not require the highest effort.
+- A later S1 missed by an earlier review requires a focused reproduction and reassessment of the unresolved reasoning; effort escalation follows Model Routing, not an automatic project ladder.
 - The reviewer brief names the Review Checklist of skill `chain-session`, which defines the severities and real inputs; its acceptance criteria list only the task's real inputs.
 - After each FIX-FIRST and before the fix round, record on the board row one line per finding: the task goal it serves and the real output it changes. A finding without that line gets no fix round; it becomes its own row or is dropped.
 - A second FIX-FIRST on the same component, or a fix that needs a new dependency, parser or module, stops the chain until the main agent restates the task's scope.
@@ -85,10 +85,10 @@ Task Modes determines review depth. A configured project review trigger may spec
 - A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
 - Update the run registry row on every notification.
 - A board dependency names the file or contract the row consumes from that row; an entry with neither is dropped.
-- The resident agent handles simple tasks in a reused context. Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
+- The resident agent handles simple work, including configured bookkeeping, under shared Model Routing. Decision authority remains with the main agent.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
-- A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
+- A script computes, per task, runs launched, resumptions, fix rounds, review rounds, tokens used by each model and wall time from git and the run logs.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
 - A daily retrospective names the largest process problem with its numbers, counts the decisions a later review overturned, and applies at most one change.
 
@@ -104,19 +104,14 @@ Task Modes determines review depth. A configured project review trigger may spec
 
 - Before any run is held on a stop signal (expired credentials, an outage, a stale run), the signal is verified against the provider the session actually uses, from its environment settings, and against the progress of the running runs; an unconfirmed signal holds nothing.
 - Only for a provider whose sign-in session expires, a zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
-- Before the sign-in session ends: no new run on `execution.outage_provider` starts; each running write run on that provider commits its work in progress and every running run on it records its last finished step; the ledger takes a checkpoint entry, and the user is asked to sign in again.
-- During an outage, runs on `execution.continuing_provider` continue; nothing requiring a turn on `execution.outage_provider` is retried.
+- Before the sign-in session ends: no new run on the affected provider starts; each running write run on that provider commits its work in progress and every running run on that provider records its last finished step; the ledger takes a checkpoint entry, and the user is asked to sign in again.
+- During an outage, unaffected runs continue; nothing requiring a turn on the affected provider is retried.
 - On restore, a recovery report lists each open row's state and every result landed since the outage start; each stopped run resumes in its own session from its checkpoint, and no finished work restarts.
 
 ## Model Routing
 
-| Run | Model and effort |
-|---|---|
-| Main agent | Session model |
-| Chain session | `execution.implementer.<difficulty>` of the chain's hardest task |
-| Reviewer | Review above |
-| Research, analysis | `execution.background` at `max_effort` |
-| Refutation, count run, new reader | `execution.background` at `high_effort` |
+- Apply the shared table and escalation criteria in `rules/workflow/multi-agent.md` Model Routing to each assigned unit. Use the host's Codex subagent tools with the selected model and effort; reuse existing context under that rule.
+- The main agent stays in its current session; delegation settings never change that session's model. Model or effort selection must be supported by the host and recorded in the run registry.
 
 ## Run Isolation
 
