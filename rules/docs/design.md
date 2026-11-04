@@ -32,11 +32,7 @@ Rust-specific design rules. Rust API Guidelines (C-* references).
 
 ## Error Design
 
-- One error enum per crate deriving `thiserror::Error` and `Debug`. Variants partition failures by how callers match, not where raised.
-- Variant fields are structured (`path: PathBuf`, `line: usize`). No preformatted `String`. Exception: an opaque message from an external system.
-- Third-party errors mapped at the boundary into a variant with `#[source]`; `#[from]` only when the mapping is one-to-one and adds no context.
-- Misuse errors (caller violated a documented precondition) panic and are listed under `# Panics`. Runtime errors (I/O, parse, external) are `Result`.
-- Public error types are `std::error::Error + Send + Sync + 'static` (C-GOOD-ERR).
+- Error enum, variant fields, boundary mapping and misuse errors: `rules/code/quality.md` Error Handling.
 - The design doc lists each variant, its fields, and the caller decision it enables.
 
 ## API Design

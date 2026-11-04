@@ -44,6 +44,10 @@ Rust API Guidelines C-CASE.
 ## Error Handling
 
 - Library crate: one enum deriving `thiserror::Error` in `error.rs`, plus `pub type Result<T> = std::result::Result<T, Error>;`. Never `Box<dyn Error>` in a public signature (C-GOOD-ERR).
+- The crate's error enum also derives `Debug`. Its variants partition failures by how callers match, not where raised. Public error types are `std::error::Error + Send + Sync + 'static` (C-GOOD-ERR).
+- Variant fields are structured (`path: PathBuf`, `line: usize`). No preformatted `String`. Exception: an opaque message from an external system.
+- Third-party errors mapped at the boundary into a variant with `#[source]`; `#[from]` only when the mapping is one-to-one and adds no context.
+- Misuse errors (caller violated a documented precondition) panic and are listed under `# Panics`. Runtime errors (I/O, parse, external) are `Result`.
 - Binary crate: `anyhow::Result` in `main` and command handlers. `.context("...")` / `.with_context(|| ...)` at every `?` that crosses a boundary and would otherwise lose the operation name.
 - `?` propagates. Never `match` on a `Result` only to return its error.
 - Causes stay in the chain via `#[source]` or `#[from]`. Never formatted into the message string.
