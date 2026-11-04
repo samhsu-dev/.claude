@@ -21,7 +21,7 @@ The registry of a project's established terms: which terms it holds, how a new t
 - No entry for a named external artifact: a paper, a tool, a dataset. Its owner is the bibliography.
 - No entry for a shorthand one document uses in its own prose unless it names a domain concept.
 - Entry removal preserves the domain-term entry obligation above.
-- A coined term whose meaning its parts, an existing name, or a plain clause state as well gets no entry and is not used. A new noun bundling several existing things is the typical case. Selection runs before Name Sources.
+- A coined term whose meaning its parts, an existing name, or a plain clause state as well gets no entry and is not used. A new noun bundling several existing things is the typical case. Two entries whose definitions overlap, or one that is a special case the other states with a plain clause, are redundant: one stays and the other folds into it or is removed. Selection runs before Name Sources.
 - Removing an exempt entry never removes the term from prose. Domain terms, including textbook and literature terms, retain their entries.
 
 ## Name Sources

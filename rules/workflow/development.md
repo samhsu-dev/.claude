@@ -10,16 +10,16 @@ Task modes follow `workflow/multi-agent.md` Task Modes. Simple and Routine reuse
 
 | # | Phase | Document | Gate | Skip when |
 |---|-------|----------|------|-----------|
-| 1 | Concept | `concept.md` | User confirms scope, terminology, boundaries | Existing scope and concepts remain unchanged |
+| 1 | Concept | `concept.md`; glossary entries for its terms | User confirms scope, terminology, boundaries | Existing scope and concepts remain unchanged |
 | 2 | Domain Model | `model.md` | User confirms entities, invariants, state rules | Applicability criteria in `rules/docs/model.md` require no model |
 | 3 | Algorithm | `spec.md` | User confirms correctness and termination | Applicability criteria in `rules/docs/spec.md` When Required and When Not Required require no spec |
 | 4 | Design | `design.md` | User confirms structure and responsibility allocation | Existing contracts and responsibilities remain unchanged |
 | 5 | Research | `impl.md` | None; agent reports findings | No unresolved external API or implementation question |
 | 6 | Plan | task doc `docs/todo/<module>.md` | User confirms task breakdown and order | Existing authorization and task order cover the work |
 | 7 | Code | source code | None; agent follows the task doc in order | Never |
-| 8 | Verify | passing quality gate | Task doc Quality Gate checklist passes | Never |
+| 8 | Verify | passing quality gate | Task doc Quality Gate checklist passes; every domain term in the changed docs has a glossary entry | Never |
 
-- Read the earlier owning documents needed by the affected stages; reuse unchanged decisions and verified evidence.
+- Read the earlier owning documents needed by the affected stages; reuse unchanged decisions and verified evidence. A stage that introduces a domain term adds its glossary entry under `communication/terminology.md` Established Terms.
 - State stage selection briefly in the task context. A skipped stage creates no document or approval step.
 - Research follows `docs/impl.md` for external API verification and recording.
 

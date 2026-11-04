@@ -26,7 +26,7 @@ Tools read the fixed headings and formats declared in these project rules. Parse
 | `paths`; `algorithm`; `usage_corpus`; `scoring_corpus`; `viewpoints` | `decisions.md` | `rules/workflow/decisions.md`; `rules/workflow/change-policy.md`; `skills/decisions/SKILL.md`; `skills/multi-agent/SKILL.md` |
 | `reference`; `evidence` | `evidence.md` | `rules/workflow/decisions.md`; `skills/decisions/SKILL.md` |
 | `domain`; `terminology` | `terminology.md` | `rules/communication/terminology.md`; `hooks/doc_check.py` |
-| `glossary` | `glossary.md` | `rules/docs/glossary.md`; `rules/communication/terminology.md`; `skills/decisions/SKILL.md` |
+| `glossary` | `glossary.md` | `rules/docs/glossary.md`; `rules/communication/terminology.md`; `skills/decisions/SKILL.md`; `skills/update-docs/SKILL.md`; `tools/codex_rules.py` |
 | `bibliography` | `bibliography.md` | `rules/docs/bibliography.md`; `hooks/doc_check.py` |
 | `readme` | `readme.md` | `rules/docs/readme.md` |
 | `integration` | `integration.md` | `skills/multi-agent/SKILL.md` |

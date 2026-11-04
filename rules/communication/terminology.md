@@ -8,7 +8,7 @@ Rules governing the vocabulary used in all agent output. How a new term is named
 
 ## Scope
 
-These rules bind every surface the agent writes, with no exception: chat replies, commit messages, documentation, code comments and docstrings, identifiers, log messages, figure titles and axis labels, and directory and file names.
+These rules bind every surface the agent writes, with no exception: chat replies, briefs to agents, agent reports and results, review findings, decision questions and refutations, commit messages, documentation, code comments and docstrings, identifiers, log messages, figure titles and axis labels, and directory and file names.
 
 ## Domain
 
@@ -19,11 +19,11 @@ These rules bind every surface the agent writes, with no exception: chat replies
 
 ## Established Terms
 
-- The project glossary is the single registry of established terms. Its path is `glossary.path`; the default is `docs/glossary.md`.
+- The project glossary is the single registry of established terms, so every stage of the work and every agent use the same terms and discussion introduces none. Its path is `glossary.path`; the default is `docs/glossary.md`. A project with documentation has one; its first documentation change creates it. A brief to another agent names that path.
 - A concept the glossary names is referred to only by that name, in every output language alike.
-- Glossary entry obligations and exemptions: `rules/docs/glossary.md` Selection.
-- A new concept gets its glossary entry on first use, in the same change that introduces it.
-- Until that procedure establishes a name, use an existing term or a plain clause.
+- An entry names a concept of the domain or of the algorithm that the documents reason about. A common-sense or general programming word and an implementation detail that `rules/docs/design.md` and the code own get none. Detail and the other exemptions: `rules/docs/glossary.md` Selection.
+- A new concept gets its glossary entry on first use, in the same change that introduces it, after showing that no existing term or plain clause carries it. The simplest established term is chosen over a new one.
+- Until that procedure establishes a name, use an existing term or a plain clause. In discussion as in documents, no ad hoc term is used.
 - A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A reader is helped by its definition, its citation, or a clause beside it. A common word in its place reads as wrong to a reader of the field.
 - One term names one concept, and one concept has one term, in prose and in domain identifiers alike, so a search for the term finds every use of the concept and its owning implementation. An identifier differs from the term only by the casing its language requires; a protected external name keeps its spelling and its glossary entry maps it to the term. An audit checks both directions.
 - A term has one spelling, hyphenation included.
