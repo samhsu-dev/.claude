@@ -135,6 +135,7 @@ Fix every finding in the changed code and its affected contracts before the chan
 - A signature names what its function's job needs. A parameter, field or setting enters an interface in the change that adds its first reader; a value threaded through signatures that nothing reads is speculative generality.
 - One concern has one mechanism. Before adding a parameter style, options type, dispatch, registry, result or error shape, find how sibling code handles the same concern and reuse it; a genuine difference is named in the design document.
 - One service has one interface. A function or algorithm is reached through one entry; a second entry offering the same service merges into the owner the design names, and its callers move to that owner. An old and a new implementation coexist only during a recorded migration whose task removes the old one.
+- Components of one kind share one interface shape. Sibling stages, passes, workshops or views are constructed, entered and read the same way, with the same verbs, parameter order, input and result conventions and the vocabulary of the glossary; a stage-specific difference is named and justified in the design document.
 - Data containers hold data. No embedded behavior.
 - Application logic as explicit functions.
 
