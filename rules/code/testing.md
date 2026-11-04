@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/*test*"
+  - "**/*Test*"
 ---
 
 # Testing Standards

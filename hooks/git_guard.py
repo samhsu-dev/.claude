@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""PreToolUse hook for Bash: blocks the git operations of rules/workflow/git-safety.md
-and commit messages that break rules/workflow/committing.md.
+"""PreToolUse hook for Bash: blocks the git operations of rules/workflow/git-safety.md,
+commit messages that break rules/workflow/committing.md, and AI attribution in
+`gh pr create` and `gh pr edit` bodies.
 
 Exit 2 blocks the call; stderr is the reason Claude reads.
 """
 import json
+import os
 import re
 import sys
 
@@ -26,10 +28,12 @@ PROHIBITED = [
 ]
 
 TRAILER = re.compile(r"^\s*(Co-Authored-By|Signed-off-by|Claude-Session)\s*:", re.I | re.M)
-AI_MARK = re.compile(r"Generated with \[Claude Code\]|noreply@anthropic\.com", re.I)
+AI_MARK = re.compile(r"Generated with \[Claude Code\]|noreply@anthropic\.com|claude\.ai/code/session", re.I)
 SUBJECT = re.compile(r"^[a-z]+(\([^)]+\))?!?: \S")
 HEREDOC = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?[^\n]*\n(.*?)\n\s*\1\b", re.S)
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
+GH_PR = r"\bgh\s+pr\s+(?:create|edit)\b"
+FILE_ARG = r"(?:^|\s)(?:{})(?:\s+|=)('[^']*'|\"[^\"]*\"|[^\s;&|]+)"
 
 
 def mask(command):
@@ -56,14 +60,37 @@ def commit_subject(command):
     return lines[0].strip() if lines else None
 
 
-def check(command):
-    """Return the list of violation messages for one Bash command."""
+def file_text(rest, flags, cwd):
+    """Text of the message file named by the first of `flags` in `rest`, or None for none or stdin."""
+    found = re.search(FILE_ARG.format(flags), rest)
+    if not found or found.group(1).strip("'\"") == "-":
+        return None
+    path = os.path.join(cwd, os.path.expanduser(found.group(1).strip("'\"")))
+    try:
+        with open(path, encoding="utf-8") as handle:
+            return handle.read()
+    except OSError:
+        return None
+
+
+def check(command, cwd="."):
+    """Return the list of violation messages for one Bash command run in `cwd`."""
     masked = mask(command)
     errors = [reason for pattern, reason in PROHIBITED if re.search(pattern, masked)]
+    if re.search(GH_PR, masked):
+        rest = re.split(GH_PR, command, maxsplit=1)[1]
+        body = command + "\n" + (file_text(rest, r"--body-file|-F", cwd) or "")
+        if TRAILER.search(body) or AI_MARK.search(body):
+            errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
     if re.search(GIT + r"commit\b", masked):
-        if TRAILER.search(command) or AI_MARK.search(command):
+        message_file = file_text(re.split(GIT + r"commit\b", command, maxsplit=1)[1], r"--file|-F", cwd)
+        message = command + "\n" + (message_file or "")
+        if TRAILER.search(message) or AI_MARK.search(message):
             errors.append("Commit message carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
         subject = commit_subject(command)
+        if subject is None and message_file:
+            lines = [line for line in message_file.splitlines() if line.strip() and not line.startswith("#")]
+            subject = lines[0].strip() if lines else None
         if subject is not None:
             if len(subject) > 72:
                 errors.append(f"Commit subject is {len(subject)} chars; the limit is 72.")
@@ -75,7 +102,7 @@ def check(command):
 def main():
     payload = json.load(sys.stdin)
     command = payload.get("tool_input", {}).get("command", "")
-    errors = check(command)
+    errors = check(command, payload.get("cwd") or os.getcwd())
     if errors:
         print("Blocked by ~/.claude/hooks/git_guard.py:\n- " + "\n- ".join(errors), file=sys.stderr)
         sys.exit(2)

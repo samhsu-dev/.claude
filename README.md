@@ -55,7 +55,7 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `code/testing.md` | test files | Test design, layout, assertions |
 | `docs/<type>.md` | the doc type it names | Format of concept, model, spec, design, impl, task docs, index, glossary, README, llms, HTML |
 | `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography exported from Zotero by Better BibTeX, Pandoc citation keys, pinned tool versions |
-| `prompt/prompting.md` | `*.prompty`, `prompts/` | LLM prompt construction |
+| `prompt/prompting.md` | `*.prompty`, `prompts/`, `PROMPT*.md` briefs | LLM prompt construction |
 | `meta/rulewriting.md` | rule files, `CLAUDE.md` | How to write rules |
 | `meta/skilling.md` | skill files | How to write skills |
 
@@ -64,15 +64,16 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 Hooks check what a rule can only ask for. They apply in every repository once registered in `~/.claude/settings.json`; `settings.json` is not tracked, so a new machine adds this block:
 
 ```json
-"PreToolUse": [{ "matcher": "Bash", "hooks": [{ "type": "command", "if": "Bash(git *)",
-  "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" }] }],
+"PreToolUse": [{ "matcher": "Bash", "hooks": [
+  { "type": "command", "if": "Bash(git *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" },
+  { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" }] }],
 "PostToolUse": [{ "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command",
   "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"" }] }]
 ```
 
 | Script | Event | Checks |
 |--------|-------|--------|
-| `hooks/git_guard.py` | before a git command | Enforces `workflow/git-safety.md` and `workflow/committing.md` |
+| `hooks/git_guard.py` | before a git or `gh pr` command | Enforces `workflow/git-safety.md` and `workflow/committing.md`, including `-F` message files and pull request bodies |
 | `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `CLAUDE.md` and `rules/docs/`; reads project markdown values |
 
 ## Tools

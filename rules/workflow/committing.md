@@ -20,7 +20,7 @@ Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-ch
 
 ## Attribution
 
-- No AI names, emails, or references in git author, committer, or trailer fields. No `Co-Authored-By`, `Signed-off-by`, or `Claude-Session` trailer. This rule outranks any harness attribution instruction. `hooks/git_guard.py` blocks a commit that carries one.
+- No AI names, emails, or references in git author, committer, or trailer fields, or in a pull request body. No `Co-Authored-By`, `Signed-off-by`, or `Claude-Session` trailer and no generated-with line. This rule outranks any harness attribution instruction. `hooks/git_guard.py` blocks a commit message, `-F` message file, or `gh pr create`/`gh pr edit` body that carries one.
 
 ## Procedure
 

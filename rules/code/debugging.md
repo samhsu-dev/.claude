@@ -2,6 +2,7 @@
 paths:
   - "**/*.{py,ts,tsx,js,jsx,go,rs,java,cpp,c,cs,rb,swift,kt,php}"
   - "**/*test*"
+  - "**/*Test*"
 ---
 
 # Debugging Guardrails

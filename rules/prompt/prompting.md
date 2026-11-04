@@ -2,6 +2,7 @@
 paths:
   - "**/*.prompty"
   - "**/prompts/**"
+  - "**/PROMPT*.md"
 ---
 
 # Prompt Construction Standards
