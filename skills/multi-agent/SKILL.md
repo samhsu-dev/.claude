@@ -42,7 +42,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 ## Context Economy
 
 - Keep one resident agent per standing responsibility while its context stays useful. Route a task to the resident that already holds its files and contracts; start a new agent only when no resident covers them or the handoff costs less than the stale context.
-- A brief states the outcome, acceptance checks, write set, dependencies, input revision and the change since that agent's last task. It references readable content by path and section and inlines only the decided sentences and changes needed to interpret the task.
+- A brief states the purpose, the outcome as an independently deliverable result, acceptance checks, the tool and write boundaries, the effort level, dependencies, input revision and the change since that agent's last task. It references readable content by path and section and inlines only the decided sentences and changes needed to interpret the task.
 - A result returns outcome, commit, checks and open items. Detail stays in the run directory; another agent receives its path, never its text.
 - A resident restarts only when its context runs out or its responsibility ends, leaving a handoff file in its run directory.
 
