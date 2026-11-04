@@ -59,7 +59,7 @@ An existing source name is selected in three steps, in order; the coinage prohib
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
 - Naming values come from `glossary` in the project rule files under `rules/project/`. Their provenance follows `rules/workflow/records.md`.
-- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
 - After a glossary file splits, add its new files to the routing table.
@@ -115,6 +115,13 @@ One entry per term: an H3 heading followed by fields in this order.
 - A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none` with an optional parenthetical reason. A `|` inside a cell is escaped as `\|`.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.
+
+## Repositories
+
+- Each repository with documentation has its own glossary. The repository that defines a concept owns its entry; no concept has entries in two glossaries.
+- A consumer refers to a dependency's term by its exact name and links its owning entry. It never redefines or renames the term.
+- The consumer's routing file holds an imported-terms table with columns Term and Owning entry: one row per dependency term its documents use, no definition. That row and the owner's entry meet the Selection obligation.
+- Link direction and link form follow `rules/docs/documentation.md` Repositories.
 
 ## Project Values
 

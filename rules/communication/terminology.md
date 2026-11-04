@@ -20,7 +20,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 ## Established Terms
 
 - The project glossary is the single registry of established terms, so every stage of the work and every agent use the same terms and discussion introduces none. Its path is `glossary.path`; the default is `docs/glossary.md`. A project with documentation has one; its first documentation change creates it. A brief to another agent names that path.
-- A concept the glossary names is referred to only by that name, in every output language alike.
+- A concept the glossary names is referred to only by that name, in every output language alike. A concept a dependency repository defines keeps the name its owning glossary gives it (`rules/docs/glossary.md` Repositories).
 - An entry names a concept of the domain or of the algorithm that the documents reason about. A common-sense or general programming word and an implementation detail that `rules/docs/design.md` and the code own get none. Detail and the other exemptions: `rules/docs/glossary.md` Selection.
 - A new concept gets its glossary entry on first use, in the same change that introduces it, after showing that no existing term or plain clause carries it. The simplest established term is chosen over a new one.
 - Until that procedure establishes a name, use an existing term or a plain clause. In discussion as in documents, no ad hoc term is used.

@@ -18,7 +18,7 @@ Sections in this order:
 | **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
 | **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
 | **Exception / Error Types** | Each type and when raised. |
-| **Open Gaps** | Undecided points, each stated as an open question; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
+| **Open Gaps** | Undecided points, each stated as an open question, a performance risk of the mechanism included, never in a separate risk document; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
 
 Never delete decided design text because no caller exists.
 

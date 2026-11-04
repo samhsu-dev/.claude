@@ -34,8 +34,17 @@ Each fact has one owning document; every other document links it and never resta
 | Why a module needs a concept, how concepts relate | `concept.md` |
 | Rules a concept obeys: relations, states, invariants | `model.md` |
 | Algorithm steps | `spec.md` |
-| Types, functions, open gaps between code and decided design | `design.md` |
+| Types, functions, open gaps between code and decided design, performance risks of a mechanism | `design.md` |
 | External APIs | `impl.md` |
 
 A committed document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision", "agent decision", "revises" or "keeps every decision" markers. Decision records follow `rules/workflow/records.md`; a commit records when a fact changed.
 Keep rationale only when readers need it to understand the design, as plain prose in the owning concept or model section.
+
+## Repositories
+
+These rules apply when a product spans several repositories: a main repository and the submodules it records, which may depend on each other.
+
+- The repository that defines a concept owns its design text and its glossary entry (`rules/docs/glossary.md` Repositories). Ownership above applies within each repository; another repository links the owner and never restates it.
+- Links and term references point only along the dependency direction: from the main repository to a submodule, and from a submodule to a repository it depends on; never back. A library's documents read standalone.
+- The main repository links into a submodule by relative path. The main repository records the submodule's commit, so the path resolves to the version the product builds.
+- A submodule links to a repository it depends on by the absolute URL of the target file at the release tag of the dependency version its build declares. A library builds and is read without the main repository's checkouts beside it, so a relative path to a sibling resolves only inside the main repository; the declared version is the dependency's pin.

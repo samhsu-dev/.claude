@@ -37,6 +37,7 @@ Check across files within the same docs subdirectory:
 3. **Cross-references valid**: every `see [file.md]` link points to an existing file.
 4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.
 5. **impl.md sync**: API entries match what `design.md` specifies; no stale references to removed functions.
+6. **Repositories**, across the main repository and its submodules under `rules/docs/documentation.md` Repositories and `rules/docs/glossary.md` Repositories: every cross-repository link resolves and uses the stated link form; no link or term reference points against the dependency direction; no concept has entries in two glossaries; every imported term exists at its owning entry.
 ## Step 4 — Plan
 Output a structured fix plan. Do NOT apply any fix before approval.
 
