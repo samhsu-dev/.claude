@@ -7,7 +7,7 @@ paths:
 
 # Kotlin Debugging
 
-Kotlin-specific debugging tools and patterns. Extends global `code/debugging.md`.
+Kotlin-specific debugging tools and patterns. The debugging procedure is skill `debug`.
 
 ---
 
