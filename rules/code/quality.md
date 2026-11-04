@@ -84,6 +84,22 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 - `..<` for open-ended ranges.
 - `sequence { }` for lazy pipelines on large collections.
 
+## Types and Errors
+
+- A `value class` (`@JvmInline`) is stored unboxed only where its declared type is the value class itself; it is boxed when used as a nullable, generic or interface type.
+- Direct subclasses of a sealed class or interface live in the same package and module as it. A `when` over a sealed type lists every subclass and has no `else` branch.
+- Exceptions inherit from `Exception`, not `Throwable` or `Error`. The hierarchy follows how callers catch, not where the exception is raised. Context goes into named properties, not only the message. A third-party exception is mapped at the module boundary.
+- Caller misuse raises through `require()` / `check()` (`IllegalArgumentException` / `IllegalStateException`), and no caller catches it. An unexpected runtime failure raises a domain exception.
+- Replaces global `code/quality.md` failure signaling for expected runtime failures: use `Result<T>` or a sealed result.
+
+## Coroutines
+
+- Every coroutine runs in a `CoroutineScope` that owns its lifecycle: the scope waits for its children and canceling it cancels them. No `GlobalScope`.
+- `launch` when no result is needed, `async`/`await` for a concurrent result.
+- `Dispatchers.Default` for CPU. `Dispatchers.IO` for I/O. Specify explicitly.
+- `suspend` functions: no "suspend" in the name.
+- `CoroutineScope` as receiver on functions that launch coroutines, not as a parameter.
+
 ## Complexity Thresholds (detekt)
 
 - The detekt default thresholds apply: `buildUponDefaultConfig = true` and `maxIssues: 0` in `config/detekt/detekt.yml`. `./gradlew detekt` enforces them.
