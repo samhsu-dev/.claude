@@ -5,7 +5,7 @@ paths:
 
 # Python Debugging
 
-Python-specific debugging tools and patterns. Extends global `code/debugging.md`.
+Python-specific debugging tools and patterns. The debugging procedure is skill `debug`.
 
 ---
 
