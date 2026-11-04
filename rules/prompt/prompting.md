@@ -9,13 +9,13 @@ paths:
 
 Parameter `agent_prompt` is supplied by the project rule files under `rules/project/`, in `prompts.md`.
 
-Rules for authoring LLM-agent prompts. Source names and target-model behavior are `agent_prompt.sources` and `agent_prompt.reasoning_trigger`, supplied by `rules/project/prompts.md`.
+Rules for authoring LLM-agent prompts. Source names and target-model reasoning control are `agent_prompt.sources` and `agent_prompt.reasoning_control`, supplied by `rules/project/prompts.md`.
 
 ---
 
 ## Section Taxonomy and Order
 
-One prompt = these sections, in this order. Omit a section only when it has no content.
+A prompt carries each section below that has content. The order is a default; another order or a merged section needs an eval on the exact target model that shows no loss.
 
 | # | Section | Content | Excluded content |
 |---|---------|---------|------------------|
@@ -28,19 +28,19 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 | 7 | Output Format | Response contract: fields, value domains, abstain path | Task restatement |
 | 8 | Examples | Few-shot demonstrations; construction follows Examples below | Novel rules not stated above |
 | 9 | Context / Data | Long input data, wrapped in XML tags | Instructions |
-| 10 | Final | Priority reminder per Information Placement; anchor query last | New rules |
+| 10 | Final | Anchor query last | New rules |
 
 ## Information Placement
 
 - One kind of information has one section. A rule, its scope, its exceptions, and its illustrations sit in the section that owns the rule.
-- A rule occurs only in its owning section. Exception: Final repeats the single highest-priority rule. For prompts over 20k tokens, that rule is first in Constraints and its only repetition is in Final.
+- A rule occurs only in its owning section. A repetition stays only where an eval on the exact target model shows it improves adherence.
 - A section that exists to hold the exception to a rule stated elsewhere is a patch. Fold it into the rule.
 - A prompt states only what the model cannot derive: our policy, our environment, our data's provenance, our measured frequencies. Domain facts and common terms the model already applies are omitted.
 
 ## Constraints
 
 - Group constraints into few hierarchical blocks. Never a flat list of many imperative lines.
-- Maximum attention degrades past ~20 instructions. Split excess rules across pipeline stages, not into one prompt.
+- Run the assembled prompt against its eval. When the eval shows dropped instructions, split rules across pipeline stages rather than adding emphasis.
 - No per-line emphasis inflation ("CRITICAL", "MUST", "ALWAYS"). Emphatic inflation lowers adherence.
 - Highest-priority rules first within each block. Middle-of-prompt rules receive least attention.
 
@@ -53,15 +53,13 @@ One prompt = these sections, in this order. Omit a section only when it has no c
 
 ## Reasoning
 
-- The Reasoning section has no content for native-thinking models.
-
-- Induce a brief planning step only when the model is non-reasoning.
-- No hand-scripted reasoning steps and no forced reasoning field on native-thinking models.
-- Apply the configured `agent_prompt.reasoning_trigger` for its named target model.
+- Set reasoning depth through the exact target model's effort or thinking control, following its provider's guide for that model; the configured `agent_prompt.reasoning_control` names it.
+- A model with native thinking gets no hand-scripted reasoning steps and no forced reasoning field; the Reasoning section then holds only task-specific planning hints an eval supports.
+- Induce a brief planning step only for a model without native thinking.
 
 ## Examples
 
-- 3–5 examples, diverse, each wrapped in `<example>` tags; group under `<examples>`.
+- Examples, when the eval shows they help, are diverse, each wrapped in `<example>` tags and grouped under `<examples>`; their number follows the distinct cases the eval covers.
 - Include one abstain / negative example when the task has an abstain path.
 - Concrete tokens in examples are illustrative. No input-specific token baked into a constraint as if it were a general rule.
 
