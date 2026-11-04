@@ -79,10 +79,10 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Collections
 
-- `filter`, `map`, `fold` over manual loops.
+- `filter`, `map`, `fold` over manual loops unless a measured hot path or the surrounding code needs a loop.
 - `for` over `forEach` unless receiver is nullable or chained.
 - `..<` for open-ended ranges.
-- `sequence { }` for lazy pipelines on large collections.
+- `asSequence()` or `sequence { }` for a multi-step pipeline on a large collection when a measurement shows the cost of its intermediate lists.
 
 ## Types and Errors
 
