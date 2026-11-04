@@ -61,7 +61,8 @@ paths:
 - The rule most often violated comes first in its section. Adherence drops for later rules as the rule count grows.
 - Tables for structured data. Lists for rules. Code blocks for patterns.
 - No redundancy within one file.
-- No redundancy across files. Each rule has one authoritative location.
+- No redundancy across files. Each rule has one authoritative location. Before adding a sentence, search for one that already states the fact and extend it.
+- A change to a rule fact updates, in the same change, every skill, hook and project value that cites or implements it. Find them by searching the configuration for the rule's file name, section heading and parameter names.
 
 ## Content
 

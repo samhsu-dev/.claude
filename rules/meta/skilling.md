@@ -85,6 +85,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 - Imperative mood. "Run the script." Not "You should run the script."
 - One task per skill. Multiple tasks = multiple skills.
+- A skill states its procedure. A standard it applies is a link to the owning rule file and section, never a restatement (`rules/meta/rulewriting.md` Structure).
 - Numbered steps. Each step = one action.
 - Tables for mappings. Lists for rules.
 - Error handling section when external calls can fail.
