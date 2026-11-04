@@ -11,109 +11,31 @@ argument-hint: "[optional path to a specific docs/ subdirectory]"
 ---
 Audit documentation files against their type-specific rulesets, produce a fix plan, and apply fixes after user approval.
 ## Step 1 — Discover Files
-1. `Glob("docs/**/*.md")` (or scoped to `$ARGUMENTS`).
-2. Classify each file by name pattern:
+1. `Glob("docs/**/*.md")` (or scoped to `$ARGUMENTS`), plus `Glob("**/*.md")` run with each existing records directory of `rules/workflow/records.md` (`docs/decisions/`, `docs/todo/`, `docs/audit/`) as its path. Those directories are git-excluded, so a listing that honors Git ignore rules misses them.
+2. Classify each file by name pattern (`rules/docs/documentation.md` Naming):
 
-| Pattern | Type | Ruleset |
-|---------|------|---------|
-| `**/concept.md`, `**/concept-*.md` | Concept | concept rules |
-| `**/model.md`, `**/model-*.md` | Domain model | model rules |
-| `**/design.md`, `**/design-*.md` | Design | design rules |
-| `**/spec.md`, `**/spec-*.md` | Algorithm spec | spec rules |
-| `**/impl.md`, `**/impl-*.md` | Implementation | impl rules |
-| `docs/todo/**` | Task | todo rules |
+| Pattern | Type | Rule file |
+|---------|------|-----------|
+| `**/concept.md`, `**/concept-*.md` | Concept | `rules/docs/concept.md` |
+| `**/model.md`, `**/model-*.md` | Domain model | `rules/docs/model.md` |
+| `**/design.md`, `**/design-*.md` | Design | `rules/docs/design.md` |
+| `**/spec.md`, `**/spec-*.md` | Algorithm spec | `rules/docs/spec.md` |
+| `**/impl.md`, `**/impl-*.md` | Implementation | `rules/docs/impl.md` |
+| `docs/todo/**` | Task | `rules/docs/todo.md` |
 | `docs/decisions/**`, `docs/audit/**` | Local record | `rules/workflow/records.md` only |
-| `**/index.md` | Index | index rules |
-| `**/glossary.md`, `**/glossary-*.md` | Glossary | glossary rules |
+| `**/index.md` | Index | `rules/docs/index.md` |
+| `**/glossary.md`, `**/glossary-*.md` | Glossary | `rules/docs/glossary.md` |
 
 Files matching no pattern: report as **unclassified** for user review.
 ## Step 2 — Audit Each File
-Read every file. Check against the rules below for its type. Record each violation with `[file:line] description`.
----
-### concept.md / concept-*.md (Concept)
-
-Load and audit every requirement of `rules/docs/concept.md`, including the linked glossary entry and the concept's role, scope and relationships; record each violation with file and line.
----
-### model.md / model-*.md (Domain Model)
-**Required sections** (in order, include only if content exists):
-1. Entities — name, semantic role, existence conditions per entity kind
-2. Relations — direction, label requirements, cardinality, meaning (table format)
-3. State Model — states, transitions, guards, terminal conditions
-4. Invariants — structural constraints, one per line, falsifiable
-5. Cross-Structure Contracts — semantic mappings between domain structures
-
-**Content rules:**
-- Define what each entity/relation **means**, not how implemented.
-- State transitions: source state, trigger, guard, target state.
-- Invariants: precise and falsifiable. "Every X has at least one Y" not "X should have Y."
-- No language-specific types, class names, or method signatures. Domain vocabulary only.
-- Reference `concept.md` for rationale. Reference `design.md` for implementation mapping.
----
-### design.md / design-*.md (Design)
-**Required sections** (in order):
-1. Design Overview — types/classes, relationships (one-way only), abstract types, exceptions, dependency roles
-2. Class / Type Specifications — per type: Responsibility, state/fields, methods (Behavior/Input/Output/errors)
-3. Function Specifications — per function: name(signature), Responsibility, Behavior, Input, Output, errors
-4. Exception / Error Types — each type and when raised
-
-**Content rules:**
-- No domain entity semantics, state transition rules, or structural invariants — those go in `model.md`.
-- No algorithm steps, pseudocode, or complexity analysis — those go in `spec.md`.
-- Dependencies one-way: A uses B → B must not use A.
-- Data holders: only primitives, enums, or other data holders.
----
-### spec.md / spec-*.md (Algorithm Specification)
-**Required sections** per algorithm:
-1. Problem — input, output, correctness condition (one paragraph)
-2. Steps — numbered pseudocode, language-independent
-3. Invariants — loop invariants, maintained properties, one per line
-4. Termination — why the algorithm halts, variant function or bound
-5. Complexity — time and space, Big-O with variables defined
-
-**Content rules:**
-- Pseudocode uses domain vocabulary from `model.md`, not implementation names.
-- No language-specific syntax.
-- Edge cases and degenerate inputs documented after main steps.
----
-### impl.md / impl-*.md (Implementation)
-**Required sections** (in order, include only if content exists):
-1. APIs — `**[Lib]** snippet` — one-line when/gotcha
-2. Libraries — name, version if fixed, purpose (one line each)
-3. Developer instructions — workflow, command, pattern, constraint (one fact per line)
-4. Design-specific — invariants, non-obvious behavior, integration notes
-
-**Content rules:**
-- One to two lines per API entry: canonical import + when/gotcha.
-- No design duplication. No long examples or tutorials.
-- Developer instructions: concrete only. Remove when workflow changes.
----
-### docs/todo/ (Task Management)
-**Rules:**
-- Action verb + object + detail. No vague titles.
-- Acceptance criteria when verifiable.
-- Explicit dependencies.
-- No new design in TODO files — reference design docs.
-- Quality gate present on every task.
----
-### index.md (Index/Navigation)
-**Rules:**
-- Every file in the directory appears in `index.md`.
-- Every entry in `index.md` points to an existing file.
-- Rows ordered: concept → model → design → spec → impl. No local record.
-- No domain content. Descriptions say what topic, not definitions.
-- No hierarchy or nesting. Flat table.
-- No file exceeds 200 lines. Split and update `index.md` when exceeded.
----
-### glossary.md / glossary-*.md (Glossary)
-**Rules:** `rules/docs/glossary.md`, loaded by path. Audit every rule in it, the routing file and the retired-names table included.
----
+Read every file. Load the rule file of its type and `rules/docs/documentation.md`, and audit every requirement in them, including each rule's own exceptions and omission conditions. Record each violation with `[file:line] description`.
 ## Step 3 — Cross-File Consistency
 Check across files within the same docs subdirectory:
 
 1. **Terminology**: every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use.
-2. **No content in wrong file**: implementation details not in `concept.md`/`model.md`; domain semantics not in `design.md`; algorithms not in `design.md`.
+2. **Ownership**: each fact lives in its owning document under `rules/docs/documentation.md` Ownership; another document links it.
 3. **Cross-references valid**: every `see [file.md]` link points to an existing file.
-4. **index.md sync**: if `index.md` exists, all sibling files listed; no orphan entries.
+4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.
 5. **impl.md sync**: API entries match what `design.md` specifies; no stale references to removed functions.
 ## Step 4 — Plan
 Output a structured fix plan. Do NOT apply any fix before approval.
