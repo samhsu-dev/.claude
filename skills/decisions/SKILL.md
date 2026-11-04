@@ -22,7 +22,7 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 - Draft an open choice in its owning resident or chain context. A Simple or Routine choice that requires user authority goes directly to the user with relevant options and evidence; it creates no separate design or refutation run.
 - Only an unresolved user-decidable core choice in Full uses the design and refutation procedure below. Its drafter weighs the affected viewpoints. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
 - It then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
-- A Full core-choice draft takes one Codex refutation run in a fresh context, with model and effort selected by shared Model Routing. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
+- A Full core-choice draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
 - A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No chief and no rebuttal round.
