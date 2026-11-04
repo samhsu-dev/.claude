@@ -18,7 +18,7 @@ Constraints on a standalone HTML page whose purpose is to be read. Rendering pro
 
 | Property | Value |
 |---|---|
-| Body size | 19px. Never below 16px |
+| Body size | 19px; 16 to 19px at viewport widths up to 640px. Never below 16px |
 | Line spacing | 1.5 to 1.6 unitless at that size |
 | Measure | 45 to 90 characters. 66 to 72 is the target |
 | Families | Two. One serif for prose, one sans for labels |
