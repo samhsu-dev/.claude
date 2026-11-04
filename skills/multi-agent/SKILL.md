@@ -7,7 +7,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 ## Dispatch
 
-1. Select Simple, Routine or Full under `rules/workflow/multi-agent.md` Task Modes. Route simple work to the resident agent and related work to its existing chain. Before a new launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows sharing a root cause and acceptance goal into one independently deliverable row, preserving every acceptance item; order a row that needs another's result after it; record the choice with its reason.
+1. Select Simple, Routine or Full under `rules/workflow/multi-agent.md` Task Modes. Do a Simple task directly when briefing costs more than the work; route other work to the resident that holds its context. Before a new launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows sharing a root cause and acceptance goal into one independently deliverable row, preserving every acceptance item; order a row that needs another's result after it; record the choice with its reason.
 2. Parallelize across independent tasks, never across the stages of one task. The stages of one task share context and the implicit decisions in its actions; every handoff between them loses detail.
 3. Keep one agent loop. A separate run is justified only by one of:
    1. an independent review or refutation, which needs a fresh context;
@@ -39,7 +39,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 ## Chains
 
-- Keep one resident agent for simple work and one chain context per related set of files, contracts or mechanisms. Queue tasks within each context sequentially; every request names its current input revision and permitted write set.
+- Keep the residents of `rules/workflow/multi-agent.md` Context Economy: one for simple work and bookkeeping, one chain per related set of files, contracts or mechanisms, one reviewer per module under review. Queue tasks within each resident sequentially; every request names its current input revision and permitted write set.
 - After a merge, resume the chain session for the chain's next task; its brief carries the integration diff since its last commit.
 - After compaction, refresh the current task, decisions and revision from the progress record and continue. Replace a context when its assumptions are stale, unrelated work would dominate it, or repeated failures show it cannot reliably continue.
 
