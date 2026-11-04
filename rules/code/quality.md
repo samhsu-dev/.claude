@@ -31,6 +31,8 @@ TypeScript-specific rules and toolchain. Extends global `code/quality.md`. Googl
 
 ## Error Handling
 
+- Errors derive from `Error` and set `name` to the class name. The hierarchy follows how callers catch, not where the error is thrown. Context goes into named fields (step, reason), not only the message. A third-party error is mapped to a domain error at the module boundary.
+- Caller misuse of the package's API throws a builtin (`TypeError` for a wrong type or shape, `RangeError` for a value outside the allowed range, `Error` for a call in the wrong state), and no caller catches it. A runtime failure throws a domain error.
 - Throw `Error` subclasses only. `@typescript-eslint/only-throw-error` checks it.
 - `new DomainError(msg, { cause: err })` to chain. Never drop the caught error.
 - `catch (err: unknown)`; narrow with `instanceof` before use.

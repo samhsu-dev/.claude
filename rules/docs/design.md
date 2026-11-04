@@ -32,11 +32,7 @@ TypeScript-specific design rules. Extends global `docs/design.md`. Google TypeSc
 
 ## Exception Design
 
-- Derive from `Error`. Set `name` to the class name.
-- Hierarchy by how callers catch, not where thrown.
-- Structured context fields (step, reason). No bare message strings.
-- Third-party errors mapped to domain errors at the boundary.
-- Misuse errors separate from runtime errors: caller misuse of the package's API throws a builtin (`TypeError` for a wrong type or shape, `RangeError` for a value outside the allowed range, `Error` for a call in the wrong state); runtime failures throw domain errors. No caller catches a misuse error.
+- Error hierarchy, context and misuse errors: `rules/code/quality.md` Error Handling.
 
 ## API Design
 
