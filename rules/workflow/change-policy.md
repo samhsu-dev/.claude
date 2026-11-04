@@ -7,7 +7,7 @@
 - Compare materially different feasible approaches by their remaining implementation, verification, runtime and maintenance costs. Include direct use or modification of existing code and data; choose the least complex approach that satisfies the result and constraints.
 - Reconsider the approach when a new dependency, repeated repair or cost growth changes that comparison. Prior effort and agent-authored plans do not justify further work or expand user authorization. When a profile rule, memory entry or plan disagrees with current code or a consumed contract, report the exact disagreement and resolve which one holds authority before a broad repair; memory and generated plans are never that authority.
 - Verify every claim used to justify the result. Investigation covers the task's requirements and affected contracts; it does not enumerate unrelated possibilities.
-- Complete the task when its result and required checks pass. Additional investigation or repeated checks need a new change, failure or unresolved concrete risk.
+- Complete the task when its result and required checks pass, and stop there. Additional investigation, repeated checks, unrelated documents, tests, refactors or review rounds need a new change, failure or unresolved concrete risk.
 
 ## Correctness and Verification
 
