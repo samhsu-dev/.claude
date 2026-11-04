@@ -4,7 +4,7 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 
 | Role | Scope |
 |---|---|
-| Main agent | Owns progress, scope and dependencies; accepts delegated results and maintains the board, records, merges, branch cleanup and user communication. |
+| Main agent | Manages: sets outcomes and priorities, dispatches, decides, accepts results, integrates and talks with the user. Delegates execution and record upkeep. |
 | Resident agent | Holds one standing responsibility in a reused context (simple work, bookkeeping, one module's chain or review) and takes its queued tasks in order. |
 | Chain session | Carries related routine or full-process tasks in a reused context and assigned worktree. |
 | Reviewer | Checks a finished diff against the decided documents and program output. Read-only. |
@@ -29,6 +29,14 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 - Only Full starts the multi-stage pipeline. A Simple or Routine task runs no design stage, refutation or independent review run.
 - After each launch or resume, check the run's transcript model; relaunch a run on an older model generation than required.
 - Project task and run records hold current state; retain history separately. Apply the project's configured record formats, size limits and existing checks.
+
+## Main Agent
+
+- The main agent keeps decisions and delegates execution. Code, documents, investigation, evidence gathering, record edits and worktree cleanup go to residents. Exception: a Simple task whose brief costs more context than the work.
+- It accepts a result from the resident's report and the evidence the report names (commit, check output, diff stat). It reads a diff hunk or file only to resolve a doubt the report leaves open, and never reads a run transcript or full log.
+- It never repeats an investigation a resident reported; a gap goes back to that resident as a question.
+- It answers boundary questions, decides agent-decidable items and batches user-decidable items into one question to the user.
+- It reports to the user the state of each running task in one line, the decisions waiting for the user, and nothing it delegated in detail.
 
 ## Context Economy
 
