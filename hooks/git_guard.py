@@ -42,12 +42,18 @@ def mask(command):
     return QUOTED.sub(" Q ", command)
 
 
-def commit_subject(command):
-    """First line of the commit message given by a heredoc or the first -m argument, or None."""
-    after = re.split(GIT + r"commit\b", command, maxsplit=1)
-    if len(after) < 2:
-        return None
-    rest = after[1]
+def commit_invocations(command):
+    """(invocation, arguments) of each `git commit` outside quoted text, its arguments ending at the next one."""
+    blanked = HEREDOC.sub(lambda m: "Q" * len(m.group(0)), command)
+    blanked = QUOTED.sub(lambda m: "Q" * len(m.group(0)), blanked)
+    found = list(re.finditer(GIT + r"commit\b", blanked))
+    for index, match in enumerate(found):
+        end = found[index + 1].start() if index + 1 < len(found) else len(command)
+        yield command[match.start():match.end()], command[match.end():end]
+
+
+def commit_subject(rest):
+    """First line of the commit message given by a heredoc or the first -m argument in `rest`, or None."""
     doc = HEREDOC.search(rest)
     message = re.search(r"(?:-m|--message)(?:\s+|=)('([^']*)'|\"((?:\\.|[^\"\\])*)\")", rest)
     if doc and (not message or doc.start() < message.end()):
@@ -89,13 +95,12 @@ def check(command, cwd="."):
         body = command + "\n" + (file_text(rest, r"--body-file|-F", cwd) or "")
         if TRAILER.search(body) or AI_MARK.search(body):
             errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-    if re.search(GIT + r"commit\b", masked):
-        invocation = re.search(GIT + r"commit\b", command)
-        message_file = file_text(command[invocation.end():], r"--file|-F", git_cwd(invocation.group(0), cwd))
-        message = command + "\n" + (message_file or "")
+    for invocation, rest in commit_invocations(command):
+        message_file = file_text(rest, r"--file|-F", git_cwd(invocation, cwd))
+        message = rest + "\n" + (message_file or "")
         if TRAILER.search(message) or AI_MARK.search(message):
             errors.append("Commit message carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-        subject = commit_subject(command)
+        subject = commit_subject(rest)
         if subject is None and message_file:
             lines = [line for line in message_file.splitlines() if line.strip() and not line.startswith("#")]
             subject = lines[0].strip() if lines else None
