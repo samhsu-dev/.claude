@@ -34,52 +34,14 @@ Run the project's configured linter (e.g., `uv run pylint`, `./gradlew detekt`).
 
 ## Step 3 — Code Smell Scan
 
-Read each scoped file. Check against:
+Read each scoped file. Audit it against every requirement of these rule files, including their exceptions and the active language profile's named replacements, and record each violation under the plan category in parentheses:
 
-### Structure
-- Apply `rules/code/quality.md` Control Flow and Code Structure, including the active language profile's named threshold replacements.
-- Apply `rules/code/organization.md` File Responsibility, including its standalone-tool exception and the active language profile's named file-size replacement.
-
-### Smells
-- Primitive obsession — raw strings/ints representing domain concepts.
-- God objects — class with >7 public methods or >5 fields.
-- Feature envy — function accessing another object's fields more than its own.
-- Data clumps — fields always passed together not grouped into a type.
-- Duplicate logic blocks — two identical blocks not extracted.
-- Magic numbers/strings — unnamed constants.
-- Middle-man classes that only delegate.
-- Speculative generality — abstractions for hypothetical futures.
-- Message chains — `a.b().c().d()`.
-
-### Bugs
-- Off-by-one in range/slice/index operations.
-- Null safety — unchecked nullable returns.
-- Resource leaks — opened resources without guaranteed close.
-- Mutation during iteration.
-- String concatenation with user-controlled input.
-- Shared mutable state without synchronization.
-
-### Logging (per `rules/code/logging.md`)
-- Level mismatch — per-iteration or expected-success records above TRACE; WARN/ERROR on expected outcomes.
-- One record per loop iteration instead of aggregation at loop exit.
-- Unstructured records — string concatenation of fields; multi-event narratives.
-- Double logging — the same failure logged at more than one layer; log-and-rethrow.
-- ERROR records missing reproduction state — operation, inputs, entity identifiers.
-- Records within a unit of work missing its correlation ID.
-- Secrets, credentials, tokens, or PII in records.
-
-### Naming & Organization (per `rules/code/organization.md`)
-- File name does not state the file's single responsibility.
-- Pattern-role names — utils, helpers, common, misc, manager, handler — as file or directory names.
-- Mixed grammatical number across file and directory names.
-- Files grouped by architectural layer where the codebase groups by feature.
-- Business logic in entry-point files or package index files.
-
-### Patch Patterns (reject)
-- Band-aid fixes with `HACK`/`FIXME`/`TODO`/`WORKAROUND` comments.
-- Shim/adapter layers around code we control.
-- Caller-specific branches.
-- Redundant deep validation already done at boundary.
+- `rules/code/quality.md` Control Flow, Code Structure and `rules/code/organization.md` File Responsibility (Code Smells).
+- `rules/code/quality.md` Code Smells, No Stale Code, Documentation, Type Safety, Agent Maintainability and API Design (Code Smells).
+- `rules/code/quality.md` Error Handling, Bug Prevention, Resource Management and Input Contract & Invariants (Bug Risks).
+- `rules/code/logging.md` (Logging).
+- `rules/code/organization.md` File Naming, Directory Organization and Entry Points (Naming & Organization).
+- `rules/code/quality.md` No Patch-Style Code and `rules/workflow/change-policy.md` Correctness and Verification (Patch Patterns).
 
 ## Step 4 — Plan
 
