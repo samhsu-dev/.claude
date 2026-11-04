@@ -22,7 +22,7 @@ Audit documentation files against their type-specific rulesets, produce a fix pl
 | `**/spec.md`, `**/spec-*.md` | Algorithm spec | spec rules |
 | `**/impl.md`, `**/impl-*.md` | Implementation | impl rules |
 | `docs/todo/**` | Task | todo rules |
-| `docs/decisions/**`, `docs/audit/**` | Local record | `CLAUDE.md` Local Records only |
+| `docs/decisions/**`, `docs/audit/**` | Local record | `rules/workflow/records.md` only |
 | `**/index.md` | Index | index rules |
 | `**/glossary.md`, `**/glossary-*.md` | Glossary | glossary rules |
 

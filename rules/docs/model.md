@@ -14,7 +14,7 @@ IEEE 1016 Information viewpoint + State dynamics viewpoint. Formalizes domain se
 
 - One `model.md` per module meeting When Required; apply When Not Required as the exception.
 - Same directory as paired `concept.md` and `design.md`.
-- Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+- Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 ## Required Sections
 

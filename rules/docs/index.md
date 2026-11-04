@@ -34,11 +34,11 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - File column: a filename in this directory, or a subdirectory index path as specified in Multi-Level Navigation.
 - Content column: under 80 characters.
 - Rows ordered: concept → model → design → spec → impl.
-- A committed navigation index lists committed docs only; indexes inside local record directories follow `CLAUDE.md` Local Records.
+- A committed navigation index lists committed docs only; indexes inside local record directories follow `rules/workflow/records.md`.
 
 ## When to Split
 
-- Shared size limits and prefix naming: `CLAUDE.md` Documentation Naming.
+- Shared size limits and prefix naming: `rules/docs/documentation.md` Naming.
 - After splitting: delete the original monolithic file. Update `index.md`.
 
 ### Split Logic
@@ -48,7 +48,7 @@ Split within a document type by domain concept, not by section heading or mechan
 - Identify the domain concepts the document covers. Each concept that can be understood independently becomes one file.
 - Related content stays together: an entity's definition, its state transitions, and its invariants belong in one file — not three files split by "entities", "states", "invariants".
 - Cross-referencing concepts that cannot be understood without each other stay in the same file.
-- Keep each fact in the document type that owns it under `CLAUDE.md` Documentation Ownership. Link other types.
+- Keep each fact in the document type that owns it under `rules/docs/documentation.md` Ownership. Link other types.
 - A file explains its own concern. Follow links for adjacent concerns; merge fragments that need sibling text to define their own concern.
 
 ## Naming Convention

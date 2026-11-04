@@ -102,4 +102,7 @@ Output a summary:
 - Never delete a bug-reproduction test after the fix.
 - Never patch symptoms. Fix root cause.
 - No silent fallbacks. Internal `map[key] ?: default` masks bugs — throw on missing key.
-- No guessing. Every hypothesis verified before acting.
+- No guessing. Every hypothesis verified before acting. Debugging evidence is an assertion, log, or test.
+- Reproduction and its retention: `rules/code/testing.md` Reproductions.
+- Root-cause repair: `rules/workflow/change-policy.md` Correctness and Verification.
+- Failure handling and missing required values: `rules/code/quality.md` Error Handling.

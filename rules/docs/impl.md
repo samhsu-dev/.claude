@@ -9,7 +9,7 @@ paths:
 ## 1. Scope
 
 - One `impl.md` per design when the affected work needs implementation research or retained external API findings. Keep it with the paired `design.md`; unchanged work creates no missing document merely to complete a template.
-- Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+- Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 - Read the paired `impl.md` when it exists and contains findings relevant to the task.
 - Before writing code that uses an external library: check `impl.md` for existing findings.
 - Format: headings + lists + inline code. One line per fact. No prose.
@@ -35,4 +35,4 @@ Sections in order; include only if they have content:
 
 - One to two lines per API: canonical import + when/gotcha. Remove when design no longer uses it.
 - Developer instructions: concrete only. Update/remove when workflow changes.
-- On user correction: update immediately, deduplicate and remove obsolete findings. Ownership follows `CLAUDE.md`.
+- On user correction: update immediately, deduplicate and remove obsolete findings. Ownership follows `rules/docs/documentation.md` Ownership.

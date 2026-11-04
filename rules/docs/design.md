@@ -22,7 +22,7 @@ Sections in this order:
 
 Never delete decided design text because no caller exists.
 
-Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
+Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 **Overview format**:
 - **Classes**: `ClassA`, `ClassB`, `ClassC`

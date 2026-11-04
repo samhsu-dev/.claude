@@ -58,10 +58,10 @@ An existing source name is selected in three steps, in order; the coinage prohib
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- Naming values come from `glossary` in the project rule files under `rules/project/`. Their provenance follows `CLAUDE.md` Local Records.
+- Naming values come from `glossary` in the project rule files under `rules/project/`. Their provenance follows `rules/workflow/records.md`.
 - The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
 - Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
-- Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `CLAUDE.md` Local Records.
+- Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
 - After a glossary file splits, add its new files to the routing table.
 
 ## Layers
@@ -87,7 +87,7 @@ One entry per term: an H3 heading followed by fields in this order.
 
 - **Heading:** one term as used in prose, or one identifier in backticks. An abbreviation follows the long form in parentheses. The identifier that implements a prose term is named in Source, never in the heading. A heading never names two terms.
 - **Is a:** the parent entry, or the enumeration member in backticks, such that "<heading> is a <parent>" holds and both name the same kind of concept: two operations, two data, two rules. Omitted when no entry is the parent. A part never names its whole here; the Definition states the whole.
-- **Definition:** one plain sentence with the genus and distinguishing property. The genus is the Is a entry or a plain domain word. Use the owning document section under `CLAUDE.md` Documentation Ownership, or the implementing symbol when no document decides it. No citation. Provenance stays in Local Records.
+- **Definition:** one plain sentence with the genus and distinguishing property. The genus is the Is a entry or a plain domain word. Use the owning document section under `rules/docs/documentation.md` Ownership, or the implementing symbol when no document decides it. No citation. Provenance stays in Local Records.
 - **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for a term with no code, the element the doc section specifies. Required when an input yields an instance of the term (a value, a node, an edge, a label, a construct); omitted otherwise.
 - **Source:** every file and symbol that implements the term, separated by `;`. A term with no code: the doc and its section. A term whose code differs from the decided design, or whose code the design removed: the doc section, then the code symbol; the Open Gaps section of that design doc states the difference. Every Source resolves to the named location; `hooks/doc_check.py` reports one that does not.
 - **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when those sources are configured.

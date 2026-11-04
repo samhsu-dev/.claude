@@ -11,7 +11,7 @@ allowed-tools:
 argument-hint: "[optional target file, function, or optimization ID]"
 ---
 
-Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task record under the native entrypoint's Local Records once and use that path for every record read/write in this procedure. The native entrypoint is `CLAUDE.md`.
+Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task record under `rules/workflow/records.md` once and use that path for every record read/write in this procedure.
 
 ## Step 1 — Identify Candidates
 

@@ -46,13 +46,14 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
 | `workflow/multi-agent.md` | always | Hard limits of delegated work |
 | `workflow/decisions.md` | always | Decision authority |
+| `workflow/records.md` | always | Local decision, task and audit records |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |
 | `code/logging.md` | code files | Logging |
 | `code/resource-bounds.md` | code and shell files | Timeouts and input bounds |
-| `code/debugging.md` | code and test files | Debugging guardrails |
 | `code/testing.md` | test files | Test design, layout, assertions |
+| `docs/documentation.md` | Markdown files | Document naming, size limit, fact ownership |
 | `docs/<type>.md` | the doc type it names | Format of concept, model, spec, design, impl, task docs, index, glossary, README, llms, HTML |
 | `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography exported from Zotero by Better BibTeX, Pandoc citation keys, pinned tool versions |
 | `prompt/prompting.md` | `*.prompty`, `prompts/`, `PROMPT*.md` briefs | LLM prompt construction |
@@ -74,7 +75,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | Script | Event | Checks |
 |--------|-------|--------|
 | `hooks/git_guard.py` | before a git or `gh pr` command | Enforces `workflow/git-safety.md` and `workflow/committing.md`, including `-F` message files and pull request bodies |
-| `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `CLAUDE.md` and `rules/docs/`; reads project markdown values |
+| `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `rules/docs/`; reads project markdown values |
 
 ## Tools
 

@@ -35,7 +35,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 ## File Organization
 
-- Record location and file naming: `CLAUDE.md` Local Records.
+- Record location and file naming: `rules/workflow/records.md`.
 - Group related tasks together.
 - Update state immediately after change.
 

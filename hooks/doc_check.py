@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """PostToolUse hook for Write, Edit, and MultiEdit: reports
-- a doc or rule file past its line limit (CLAUDE.md Documentation Naming, rules/meta/rulewriting.md),
+- a doc or rule file past its line limit (rules/docs/documentation.md Naming, rules/meta/rulewriting.md),
 - a forbidden term from the native project's rules/project/terminology.md in the written text,
 - a glossary Source path that does not resolve (rules/docs/glossary.md),
 - a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry),
 - a glossary citation field without a bibliography key (rules/docs/glossary.md Entry),
 - a citation key that the bibliography does not hold (rules/docs/bibliography.md),
-- a repository document that names a path of the agent configuration (CLAUDE.md Documentation Naming).
+- a repository document that names a path of the agent configuration (rules/docs/documentation.md Naming).
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
