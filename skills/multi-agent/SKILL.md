@@ -3,7 +3,7 @@ name: multi-agent
 description: Coordinate delegated runs as the main agent. Use before dispatching, briefing or resuming a run, choosing a review, merging a branch, after a module's documents are revised, at consolidation, or after compaction.
 ---
 
-Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-agent.md`. Parameters `integration` and `execution` come from the project rule files `integration.md` and `execution.md` under `rules/project/`, and `algorithm.core_principles` from `decisions.md`.
+Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-agent.md`. Parameters `integration` and `execution` come from the project rule files `integration.md` and `execution.md` under `rules/project/`, and `algorithm.core_principles` from `decisions.md`; read those three files before the first dispatch.
 
 ## Dispatch
 
@@ -114,7 +114,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 
 - Run directories live in persistent scratch storage outside temporary directories. Each board task has one working directory there, named by its task ID, with one subdirectory per run; it moves to the run storage archive when the row closes.
 - A read-only run's working directory and sandbox are its own run directory, never the target tree. A write run works in its own worktree.
-- `tools/codex_rules.py pack` writes the rule-reading instructions into the run directory, including every project markdown rule under `<repository>/.codex/rules/project/` and the project glossary path; `--lean` briefs a chain session and adds skill `chain-session` as a required read. Findings count only after the log shows those reads; `gate` checks always-active path mentions, so scoped reads still need inspection.
+- `tools/codex_rules.py pack` writes the rule-reading instructions into the run directory, routing each project value file under `<repository>/.codex/rules/project/` by its `paths:` frontmatter, and the project glossary path; `--lean` briefs a chain session and adds skill `chain-session` as a required read. Findings count only after the log shows those reads; `gate` checks always-active path mentions, so scoped reads still need inspection.
 - Each run persists its result and returns a summary of at most one screen with evidence, limits and next step. A failed or missing result blocks dependent work; the ledger records the remaining work before a batch closes.
 
 ## Reader Review

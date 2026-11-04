@@ -15,7 +15,7 @@ Skills are active procedures. Rules are passive guardrails. Both layers enforce 
 
 The project rule files under `rules/project/` supply project values as named parameters. They contain values only; global rules own the procedures.
 The native project roots are `<repository>/.claude/rules/project/` for Claude and `<repository>/.codex/rules/project/` for Codex.
-Every project markdown file is always active: it has no `paths:` frontmatter. Read the files under the host project's `.claude/rules/project/` before applying their parameters.
+Each project value file lists in `paths:` frontmatter the files whose work needs it and loads with a matching file; a consuming rule or skill whose procedure applies reads it from the host project's `.claude/rules/project/`. Before changing algorithm semantics, a core principle or an evaluation, read `decisions.md` there.
 Paths in values resolve against the host project unless a field names another base.
 A linked parameter uses the value at its owning bullet. Numeric suffixes preserve list order.
 Project names, domains, corpora, models, schedules, paths and integration policies live only in project values. Apply domain-specific procedures only when their corresponding parameters are configured. A missing required value is reported as missing evidence; missing optional sections create no requirement and retain only documented domain-independent defaults.

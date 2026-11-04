@@ -81,7 +81,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 | Script | Used by | Does |
 |--------|---------|------|
-| `tools/codex_rules.py` | run launcher | `pack` writes rule routes including all native Codex project rules; `--lean` adds the chain-session skill as a required read; `gate` checks logged always-active paths, with the read inspection required by skill `multi-agent` Run Isolation |
+| `tools/codex_rules.py` | run launcher | `pack` writes rule routes, routing native Codex project value files by their `paths:`; `--lean` adds the chain-session skill as a required read; `gate` checks logged always-active paths, with the read inspection required by skill `multi-agent` Run Isolation |
 | `tools/evidence.py` | task coordinator | Evidence schema, merge, freshness and brief commands |
 
 The project rule files under `rules/project/` supply project values. See [Parameter Binding](CLAUDE.md#parameter-binding) for native project roots and fixed section formats. Project additions stay outside the shared language profile.

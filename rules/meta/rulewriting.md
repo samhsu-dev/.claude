@@ -21,7 +21,7 @@ paths:
 - Rules that always co-apply to one task type live in one file. Rules for unrelated task types live in separate files.
 - `paths:` globs match exactly the files whose editing requires the rule. No broader, no narrower.
 - A file states its own rules completely. A cross-reference names an owning file and section for another concern; load that owner before applying its rule.
-- Always-active status (no `paths:`) is reserved for rules governing every task. A rule needed by one task type gets `paths:`. Exception: value-only project files under `rules/project/` are always active under global Parameter Binding, including task-specific values; minimum context includes those values and only the procedures needed by the task.
+- Always-active status (no `paths:`) is reserved for rules governing every task. A rule needed by one task type gets `paths:`. Value-only project files under `rules/project/` follow the same rule: `paths:` names the files their consumers govern.
 - File-count test before adding or splitting a rule file: for each task type, count the rule files it forces into context. A change that raises the count without adding a requirement is wrong.
 
 ## Repository Layout
