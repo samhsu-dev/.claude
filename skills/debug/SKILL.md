@@ -19,7 +19,7 @@ Gather information from `$ARGUMENTS` and conversation context:
 
 1. Read the full exception chain / error output. Identify the origin, not just the surface message.
 2. Check the exception type and its fields, not just the message string.
-3. If a test fails, read the test first — verify the test is correct before suspecting the implementation.
+3. If a test fails, read the test first and classify the failure under `rules/code/testing.md` Failures before suspecting the implementation.
 
 ## Step 2 — Reproduce
 
@@ -69,10 +69,7 @@ If the fix requires changes beyond the immediate fault:
 
 ## Step 6 — Preserve the Test
 
-The reproduction test is a permanent regression guard. Never delete it after the fix.
-
-- Ensure it follows project test conventions (layout, naming, assertions).
-- Add a file-level docstring entry if the test file uses them.
+Keep the reproduction test under `rules/code/testing.md` Reproductions, in the layout, naming and index comment of `rules/code/testing.md` and the project testing rule.
 
 ## Step 7 — Commit
 
@@ -98,11 +95,8 @@ Output a summary:
 
 ## Rules
 
-- Never change implementation code before having a failing reproduction test.
-- Never delete a bug-reproduction test after the fix.
-- Never patch symptoms. Fix root cause.
-- No silent fallbacks. Internal `map[key] ?: default` masks bugs — throw on missing key.
-- No guessing. Every hypothesis verified before acting. Debugging evidence is an assertion, log, or test.
-- Reproduction and its retention: `rules/code/testing.md` Reproductions.
+- Debugging evidence is an assertion, log, or test; verify every hypothesis with one before acting.
+- Reproduction before repair and its retention: `rules/code/testing.md` Reproductions.
+- Failing-test classification: `rules/code/testing.md` Failures.
 - Root-cause repair: `rules/workflow/change-policy.md` Correctness and Verification.
 - Failure handling and missing required values: `rules/code/quality.md` Error Handling.

@@ -12,7 +12,7 @@ argument-hint: "[path to source dir/file, or blank for all]"
 ---
 Audit and update tests for source files. Tests are derived from design documents, never from reading implementation code.
 ## Core Principle
-Tests verify documented contracts. A failing test means a bug in the code, not a test error. Never modify a test to match current code behavior — if the code deviates from the design doc, that is a bug to report.
+Tests verify documented contracts. Read the design docs before any source or test code. Assertions and the classification of a failing test: `rules/code/testing.md` Failures.
 ## Step 1 — Identify Scope
 Determine scope from `$ARGUMENTS`:
 
@@ -43,55 +43,17 @@ Extract a contract list per public function/class:
 - Algorithm edge cases (from spec.md)
 - API-specific gotchas (from impl.md)
 ## Step 3 — Coverage Audit
-For each source file, check:
-### 3a. Test file layout conformance
-- Every source file has exactly one corresponding test file (or split group). 1:1 mapping.
-- Test file path mirrors source path: `src/a/b/foo.py` → `tests/a/b/test_foo.py`.
-- Missing test file → record as **MISSING**.
-- Test file exists but at wrong path (does not mirror source) → record as **MISPLACED** with current and expected path.
-- Multiple test files covering the same source file without clear responsibility split → record as **FRAGMENTED** with paths to consolidate.
-- Test file exceeds 300 lines → record as **OVERSIZED** with recommended split by responsibility.
-#### Splitting oversized test files
-When a test file exceeds 300 lines, split by responsibility area of the source file:
+Audit each source file in scope against `rules/code/testing.md`, the project testing rule and the contract list from Step 2. Record each finding with its label:
 
-| Source | Split test files |
-|--------|-----------------|
-| `src/a/parser.py` | `tests/a/test_parser_tokenize.py`, `tests/a/test_parser_ast.py` |
-| `src/a/auth.py` | `tests/a/test_auth_login.py`, `tests/a/test_auth_permissions.py` |
-
-Naming: `test_<source_name>_<responsibility>.<ext>`.
-
-Split rules:
-- Each split file tests one responsibility area of the source file.
-- Responsibility areas come from classes, logical groups of functions, or design.md sections.
-- Shared fixtures extracted to a `conftest.py` (or equivalent) in the same test directory.
-- Every split file has its own docstring index.
-### 3b. Public function coverage
-- Every public function in the source has at least one test.
-- Match by function name in test method names.
-- Untested public function → record as **UNCOVERED**.
-### 3c. Contract coverage per function
-For each public function, verify tests cover:
-
-| Category | What to check |
-|----------|--------------|
-| Happy path | Normal input → expected output per design.md |
-| Equivalence classes | One test per input partition |
-| Boundary values | min, min-1, max, max+1 for each range |
-| Error cases | Invalid input, empty input, null (if nullable), out-of-range, wrong type |
-| Exceptions | Each documented exception type triggers correctly |
-| Invariants | State invariants from model.md hold after operation |
-| Edge cases | Degenerate inputs from spec.md |
-
-Missing category → record as **GAP** with the specific category.
-### 3d. Stale test detection
-A test is stale when:
-- It tests a function that no longer exists in source.
-- It tests behavior contradicted by current design docs.
-- It tests internal implementation details (private methods, internal state) rather than public contracts.
-- It duplicates another test (same input, same assertion, different name).
-
-Stale test → record as **STALE** with reason.
+| Label | Finding | Standard |
+|-------|---------|----------|
+| **MISSING** | Source file without a test file | `rules/code/testing.md` Layout |
+| **MISPLACED** | Test file outside the mirrored path; record current and expected path | `rules/code/testing.md` Layout; project testing rule |
+| **FRAGMENTED** | Several test files for one source file not split by responsibility; record the paths to consolidate | `rules/code/testing.md` Layout |
+| **OVERSIZED** | Test file over the size limit; record the recommended split by responsibility | `rules/code/testing.md` Layout; `rules/code/organization.md` File Responsibility |
+| **UNCOVERED** | Public function or class of the contract list without a test | Step 2 contract list |
+| **GAP** | Contract without a test for one category: documented behavior, equivalence class, boundary value, error case, documented exception, `model.md` invariant, `spec.md` edge case | `rules/code/testing.md` Test Design; Step 2 contract list |
+| **STALE** | Stale test; record the reason | `rules/code/testing.md` Maintenance and Reproductions |
 ## Step 4 — Plan
 Output a structured plan before writing any code:
 
@@ -119,31 +81,22 @@ Output a structured plan before writing any code:
 
 Wait for user approval before proceeding to Step 5.
 ## Step 5 — Reorganize and Write Tests
-For each item in the approved plan:
-### Reorganize layout issues (before writing new tests)
-1. **MISPLACED**: Move test file to the correct mirror path. Update imports. Run tests to confirm no breakage.
-2. **FRAGMENTED**: Merge all test methods for the same source file into one test file at the correct path. Deduplicate fixtures. Update file-level docstring. Delete empty originals.
-3. **OVERSIZED**: Split test file by responsibility into `test_<source>_<responsibility>.<ext>` files. Extract shared fixtures to `conftest.py` (or equivalent). Update docstrings in each new file. Delete the original oversized file.
-4. Preserve all existing test logic during reorganization. No test deletion or modification beyond import paths and file moves.
-### New test files
-1. Create test file at the correct mirror path.
-2. Add file-level docstring listing all test cases and their purpose.
-3. Use project fixture conventions for shared setup.
-### New test methods
-1. Read design doc for the function's contract (behavior, input, output, errors).
-2. Write test assertions based on the documented contract — not current code behavior.
-3. One behavior per test. Arrange → Act → Assert.
-4. Name per project convention (e.g., `test_<component>_<condition>_<expected>`).
-5. Parameterized tests for equivalence partitioning and boundary analysis.
-6. Error cases: assert expected exception type for each documented error condition.
+Apply the approved plan. Fix layout issues before writing new tests; reorganization changes only import paths, file moves and the file-level index comments, never test logic.
+### Reorganize layout issues
+1. **MISPLACED**: Move the test file to the mirrored path. Update imports. Run the tests.
+2. **FRAGMENTED**: Merge the test methods for one source file into the test file at the mirrored path. Deduplicate fixtures. Update the index comment. Delete the empty originals.
+3. **OVERSIZED**: Split the test file by responsibility under `rules/code/testing.md` Layout, named by the project testing rule. Move shared fixtures into the framework's fixture mechanism. Write each new file's index comment. Delete the original file.
+### New test files and methods
+1. Create each new test file at the mirrored path with its index comment (`rules/code/testing.md` File-Level Index Comment).
+2. Write each assertion from the function's documented contract, under `rules/code/testing.md` Test Design, Structure, Assertions and Mocking and the project testing rule.
 ### Remove stale tests
-1. Delete the test method.
-2. Update the file-level docstring.
-3. If the test file becomes empty, delete the file.
+1. Delete the test method. A reproduction test is deleted only under `rules/code/testing.md` Reproductions.
+2. Update the index comment.
+3. Delete a test file left empty.
 ## Step 6 — Verify
-1. Run project test command — all pass.
-2. If a new test fails: this is likely a bug in the source code, not a test error. Report it to the user with the design doc reference. Do not modify the test to match current behavior.
-3. Run project linter — no new violations.
+1. Run the project test command.
+2. Classify each failing test under `rules/code/testing.md` Failures. Report an implementation defect to the user with the design doc reference.
+3. Run the project linter — no new violations.
 ## Step 7 — Report
 ```
 ## Test Update Results: <scope>
@@ -157,23 +110,10 @@ For each item in the approved plan:
 - <TestFile:testMethod> — covers <function> <category>
 ### Removed (stale)
 - <TestFile:testMethod> — reason
-### Failures (potential bugs)
+### Failures (implementation defects)
 - <TestFile:testMethod> — expected per design.md: X, actual: Y
   Design ref: <doc file and section>
 ### Verification
-- tests: all pass / N failures (reported as potential bugs)
+- tests: all pass / N failures (reported as implementation defects)
 - linter: clean / N violations
 ```
-## Rules
-- Read design docs before source code. Always.
-- Test assertions come from documented contracts, not observed behavior.
-- A failing test is a bug report, not a test error. Never weaken a test to pass.
-- One behavior per test. No multi-assertion tests unless verifying one composite behavior.
-- Mock at system boundaries only. Real objects for internal collaborators.
-- No test inheritance. Plain classes with annotated methods.
-- Fresh objects per test. No shared mutable state.
-- Parameterized tests for partitioning and boundary analysis.
-- Every test file has a docstring index of its test cases.
-- 1:1 source-to-test mapping. One source file = one test file at the mirrored path.
-- Reorganize before writing. Fix layout issues (misplaced, fragmented) before adding new tests.
-- Reorganization preserves all existing test logic. No accidental test deletion during moves.

@@ -29,7 +29,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 3. Layout
 - The test tree mirrors the source tree. The project rule names its root and file-name pattern.
-- One test file per component. File splitting and the size trigger follow `code/organization.md`.
+- One test file per component. A test file over the `code/organization.md` size limit splits by the component's responsibilities, one responsibility per file; together those files are the component's test file.
 - Shared fixtures per test directory, in the framework's fixture mechanism.
 
 ## 4. Types
@@ -77,10 +77,16 @@ Language-specific test framework, layout, assertions, and execution: see project
 - Tests alongside new/changed code in the same change set.
 - Independent tests. No shared mutable state.
 - Deduplicate via helpers, fixtures, factories.
+- A test is stale when it covers a function or behavior the current design documents no longer state, tests private methods or internal state instead of a public contract, or repeats another test's input and assertion. A stale test is deleted; a reproduction test follows Reproductions.
 
 ## Reproductions
 
 - Before repairing a defect, write a reproduction test that fails on the unfixed implementation.
-- Keep reproduction tests permanently.
-
+- Keep reproduction tests permanently. Exception: a reproduction whose contract the owning design document removed is deleted with that contract, and the deletion names the document change.
 - A delegated implementer writes tests before implementation.
+
+## Failures
+
+- Assertions come from the documented contract, never from observed behavior.
+- A failing test is first checked against the accepted contract in the owning design document. A test that contradicts the contract is a test defect and is corrected to the contract; a test that matches it reports an implementation defect.
+- Never change a test to match implementation behavior that deviates from the contract.
