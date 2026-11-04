@@ -19,6 +19,10 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 | `git stash` | Commit WIP to a temporary branch |
 | `git clean` | Remove known files by name with `rm` |
 
+## Publication
+
+- A push requires explicit user authorization and follows configured project publication constraints. A local commit, passed review or merge does not authorize publication.
+
 ## Before Any Git Write Operation
 
 1. `git status` — verify working tree state.
