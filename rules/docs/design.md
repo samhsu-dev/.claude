@@ -32,11 +32,7 @@ Python-specific design rules. Extends global `docs/design.md`. PEP 8 / PEP 20 / 
 
 ## Exception Design
 
-- Derive from `Exception`, not `BaseException`.
-- Hierarchy by how callers catch, not where raised.
-- Structured context fields (step, reason). No bare strings.
-- Third-party exceptions mapped at boundary.
-- Misuse errors separate from runtime errors: caller misuse of the package's API raises a builtin (`TypeError` or `ValueError` for a bad argument, `RuntimeError` for a call in the wrong state); runtime failures raise domain exceptions. No caller catches a misuse error.
+- Exception hierarchy, context and misuse errors: `rules/code/quality.md` Error Handling.
 
 ## API Design
 

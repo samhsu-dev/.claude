@@ -27,6 +27,8 @@ Python-specific rules and toolchain. Extends global `code/quality.md`. PEP 8 / P
 
 ## Error Handling
 
+- Exceptions derive from `Exception`, not `BaseException`. The hierarchy follows how callers catch, not where the exception is raised. Context goes into named fields (step, reason), not only the message. A third-party exception is mapped at the module boundary.
+- Caller misuse of the package's API raises a builtin (`TypeError` or `ValueError` for a bad argument, `RuntimeError` for a call in the wrong state), and no caller catches it. A runtime failure raises a domain exception.
 - `raise ... from exc` to chain. `raise ... from None` to suppress.
 - `try` blocks cover minimum code.
 
