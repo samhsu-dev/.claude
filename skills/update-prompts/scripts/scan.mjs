@@ -93,16 +93,20 @@ function corpusHits(tokens, corpusPath) {
 
 // Proxy for the ~20-instruction attention budget: one directive per bullet or standalone rule
 // line. Example bodies are demonstrations of rules already counted, so they are excluded.
+// Example tags nest (<examples> holding <example index="n">), so a depth counter tracks them.
+const EXAMPLE_OPEN = /<examples?(?:\s[^>]*)?>/g;
+const EXAMPLE_CLOSE = /<\/examples?>/g;
 function directiveCount(lines, secs) {
   const exampleRanges = secs
     .filter((s) => /example/i.test(s.title))
     .map((s) => [s.line, s.line + s.words]);
   let n = 0;
-  let inExamples = false;
+  let depth = 0;
   lines.forEach((line, i) => {
     const t = line.trim();
-    if (/^<\/?examples?>/.test(t)) inExamples = /^<examples>/.test(t);
-    if (inExamples || exampleRanges.some(([a]) => i + 1 === a)) return;
+    const inside = depth > 0;
+    depth = Math.max(0, depth + (t.match(EXAMPLE_OPEN) ?? []).length - (t.match(EXAMPLE_CLOSE) ?? []).length);
+    if (inside || depth > 0 || exampleRanges.some(([a]) => i + 1 === a)) return;
     if (!t || t.startsWith("<")) return;
     if (secs.some((s) => s.line === i + 1)) return;
     n += 1;
