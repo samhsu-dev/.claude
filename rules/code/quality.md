@@ -100,11 +100,17 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Controlled-code adapters: API Design.
 - No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
+## Agent Maintainability
+- Among implementations that satisfy accepted behavior, security and resource constraints, choose the one a reader new to the repository changes correctly from its owning documents and identifiers alone.
+- Every concept a change adds or changes links to its owning document section, its identifier, its mechanism and a behavioral test. The site list sent with the diff names those four links per concept; a missing link is a finding.
+- A reviewer resolves each link from the repository alone. A link that needs the author's conversation to resolve is a finding.
+
 ## Post-Edit Verification (Mandatory)
 Before completing a coherent change, review its diff and affected contracts for:
 1. Check Code Structure and Code Smells.
 2. Check Bug Prevention.
 3. Check No Patch-Style Code.
+4. Check Agent Maintainability.
 Fix every finding in the changed code and its affected contracts before the change is complete. A finding in untouched code goes to the module's task doc.
 
 ## API Design

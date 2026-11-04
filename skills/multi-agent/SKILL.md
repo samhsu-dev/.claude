@@ -20,10 +20,10 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    2. Its write set, stated at module level, is disjoint from every running task's write set.
    3. Every contract it consumes is merged into `integration.branch`.
    4. Its result is checkable by the checks required for its task mode.
-7. Hold a task that fails a check, or add it to the chain that owns its files. The number of concurrent chains has no fixed cap: every task that passes the checks of step 6 may run.
+7. Hold a task that fails a check, or add it to the chain that owns its files. Launch a task that passes the checks of step 6 when its expected speed or quality gain exceeds its coordination cost and the configured concurrency, token, compute and spending limits admit it; otherwise queue it.
    - Whenever a run ends or a branch merges, recheck every held row against the current diffs, not against its recorded hold reason. A shared document whose two edits touch disjoint sections does not block; a hold whose cause is gone is released.
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
-8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief: the observable result or question, required constraints and completion checks, project root, write set or target files, exclusions, protected files, dependencies and return format. The protected files are the files another running task writes, computed at launch.
+8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief under `rules/workflow/multi-agent.md` Context Economy, adding the project root, exclusions, protected files and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
    - Check the implemented decisions against entries governing the same affected contract. Reuse established evidence; contradictory requirements for one input go to the user before dependent work starts.
    - Update owning text when its meaning changes. Independent specification review applies to Full; an unchanged approved specification is reused.
@@ -41,7 +41,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 - Keep the residents of `rules/workflow/multi-agent.md` Context Economy: one for simple work and bookkeeping, one chain per related set of files, contracts or mechanisms, one reviewer per module under review. Queue tasks within each resident sequentially; every request names its current input revision and permitted write set.
 - After a merge, resume the chain session for the chain's next task; its brief carries the integration diff since its last commit.
-- After compaction, refresh the current task, decisions and revision from the progress record and continue. A resident's context is replaced only under `rules/workflow/multi-agent.md` Context Economy.
+- Before compaction or a context replacement, a session writes to its progress record the current revision, task, constraints, decisions, affected contracts, completed checks, open failures and next action; afterwards it reloads that record and verifies it against the repository before continuing. A resident's context is replaced only under `rules/workflow/multi-agent.md` Context Economy.
 
 ## Review
 
@@ -70,7 +70,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 
 - Cut each worktree and branch from the `integration.branch` head, with every submodule at the commit that head records, outside the repository folder, since an editor opened on the repository indexes the whole folder.
 - A finished part whose gate and review pass merges that day; a part that waits on a decision or another row splits into its own row and never holds the finished part.
-- When `integration.branch_lifetime` is configured, size tasks to fit it; an older branch goes to the next consolidation, which merges its finished part and splits the rest.
+- When `integration.branch_lifetime` is configured, size tasks to fit it. Branch age counts from creation, waiting included. A branch that reaches the limit consolidates at once: its independently correct finished work merges after the required checks, the rest splits into bounded rows, or the ledger records why no safe finished slice exists.
 - Name a branch by `integration.task_branch_pattern`; its `branch.<name>.description` holds the task ID, the goal and the session handle.
 - After an interruption, commit the run's work in progress on its branch.
 - Only the main agent publishes, under `workflow/git-safety.md` Publication and configured project policy. When publication is authorized, publish task submodule commits to the configured task branch; at integration, fast-forward each configured submodule branch and publish it before its superproject. A failed fast-forward goes to the user.
@@ -88,14 +88,14 @@ Task Modes determines review depth. A configured project review trigger may spec
 - Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
-- A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
+- A script computes per task, from git and the run logs: runs launched, resumptions, fix and review rounds, model and effort, `execution.token_measure` split into uncached input, cached input, output and reasoning without double counting, billed cost, wall time and the accepted outcome.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
 - When the user requests a retrospective or a configured project schedule calls for one, use the recorded evidence to identify a process problem and evaluate a scoped change. No default recurring task is created.
 
 ## Consolidation
 
 - Consolidate when requested or required by a configured project schedule or integration step. List rows that share a cause or write set, duplicates, stale statuses and ready branches; apply only authorized merges and record state changes.
-- When consolidation is required, split a row that exceeds a configured branch lifetime or combines independently deliverable behavior. Preserve each acceptance item and dependency with the part that owns it.
+- When consolidation is required, split a row that combines independently deliverable behavior; a branch past its lifetime follows Branch Lifecycle. Preserve each acceptance item and dependency with the part that owns it.
 - For a blocking row, identify the contract, file or decided sentence each dependent consumes and the smallest independently correct delivery that provides it. Replace whole-row waits with that delivery when write sets are disjoint; remove an edge only after its contract is delivered.
 - After a task completes or a result integrates, lightly recheck affected rows for a shared cause, satisfied dependency, smaller delivery and newly available disjoint work. The periodic pass covers the whole board.
 - A row that implements a decided sentence closes only into a row that implements the same sentence.

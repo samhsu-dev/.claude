@@ -41,6 +41,6 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 ## Context Economy
 
 - Keep one resident agent per standing responsibility. Route a task to the resident that already holds its files and contracts; start a new agent only when no resident covers them.
-- A brief names paths, the input revision, the write set and the change since that agent's last task. It never restates content the agent can read.
+- A brief states the outcome, acceptance checks, write set, dependencies, input revision and the change since that agent's last task. It references readable content by path and section and inlines only the decided sentences and changes needed to interpret the task.
 - A result returns outcome, commit, checks and open items. Detail stays in the run directory; another agent receives its path, never its text.
 - A resident restarts only when its context runs out or its responsibility ends, leaving a handoff file in its run directory.

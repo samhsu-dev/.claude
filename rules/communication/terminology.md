@@ -25,7 +25,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - A new concept gets its glossary entry on first use, in the same change that introduces it.
 - Until that procedure establishes a name, use an existing term or a plain clause.
 - A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A reader is helped by its definition, its citation, or a clause beside it. A common word in its place reads as wrong to a reader of the field.
-- One term names one concept, and one concept has one term, so a search for the term finds every use of the concept. An audit checks both directions.
+- One term names one concept, and one concept has one term, in prose and in domain identifiers alike, so a search for the term finds every use of the concept and its owning implementation. An identifier differs from the term only by the casing its language requires; a protected external name keeps its spelling and its glossary entry maps it to the term. An audit checks both directions.
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.
 - The first use of a glossary term in a reply carries its definition in plain words.

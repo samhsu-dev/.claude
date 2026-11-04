@@ -16,7 +16,7 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 7. Run the affected checks required by the assigned task mode and project gate. Reuse passing evidence for an unchanged revision; required integration checks remain mandatory.
 8. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
 9. Self-check the scoped diff. Routine returns it to the main agent; Full proceeds to independent review under `multi-agent`.
-10. Continue related tasks and fixes in the same context; refresh revisions and decisions after compaction or integration.
+10. Continue related tasks and fixes in the same context. Around compaction, write and reload the progress record under skill `multi-agent` Chains; after integration, refresh revisions and decisions.
 
 ## Boundary Questions
 
