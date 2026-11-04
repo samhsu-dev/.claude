@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/docs/decisions/**"
+  - "**/docs/todo/**"
+  - "**/docs/audit/**"
+---
+
 # Local Records
 
 Records that serve only the developers at work live in three local directories, listed in the global Git ignore file and never committed (`rules/workflow/committing.md` Staging):
@@ -10,9 +17,8 @@ Records that serve only the developers at work live in three local directories, 
 
 - A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
 - Each directory holds one file per module, named after the module (`catalog-import.md` for `docs/catalog/import/`), split by concern past 200 lines, and an `index.md` listing its files.
-- Dates, decision IDs and commit hashes are allowed in local records only.
+- Dates, decision IDs and commit hashes are allowed here; committed files follow `rules/workflow/committing.md` Staging.
 - A decision entry holds its ID and authority, question, choice and reason, the rejected alternatives and all recording commits.
 - A user-decidable entry also holds the options, viewpoint recommendations, the refutation result, examples with their expected results and supporting evidence, impact measurements with their method when the choice depends on them, the reused data or mechanisms, and whether earlier decisions are kept or which sentences change.
 - An open entry has no choice. Fill that entry when the question is decided.
 - Copy evidence needed by the entry into it; a record never depends on a run directory.
-- A committed document never names or links a local record, and no committed fact depends on one.

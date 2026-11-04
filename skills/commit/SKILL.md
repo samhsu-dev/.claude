@@ -118,3 +118,22 @@ After all commits:
 - Stage and commit only files that belong to the current task.
 - If a file has changes from another agent's work, skip it and report to the user.
 - Attribution: `workflow/committing.md` Attribution.
+
+## Cadence
+
+- Commit each completed task at the point the tree is runnable (compiles, tests pass) and one concept is complete, before the next task starts. A working tree holding many completed tasks cannot be split into its runnable states without prohibited history rewriting.
+- A large refactor commits in stages as each runnable step lands.
+- Atomic changes (a move or rename whose halves are not independently runnable) commit as one unit, staged the moment the unit is complete.
+
+## Safe Alternatives
+
+Before any Git write, run `git status` and check that no other agent has uncommitted changes in the same files.
+
+| Prohibited | Safe alternative |
+|-------------|-----------------|
+| `git reset --hard` | Create a new revert commit |
+| `git checkout -- file` | `git diff file` to inspect, then edit manually |
+| `git commit --amend` | Create a new fixup commit |
+| `git push --force` | `git push` (fail = investigate, never force) |
+| `git stash` | Commit WIP to a temporary branch |
+| `git clean` | Remove known files by name with `rm` |

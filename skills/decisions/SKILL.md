@@ -5,6 +5,17 @@ description: Prepare, decide, ask and record an open design question. Use when a
 
 Prepare, decide, ask and record an open design question. Authority: `rules/workflow/decisions.md`. Parameters `paths`, `algorithm`, `usage_corpus`, `scoring_corpus` and `viewpoints` come from the project rule file `decisions.md` under `rules/project/`; `reference` and `evidence` from `evidence.md`; `glossary.path` from `glossary.md`; `execution` from `execution.md`. Read those four files before step 1.
 
+## Authority
+
+The user-authority conditions are `rules/workflow/decisions.md` Authority.
+
+- Triage each item as agent-decidable or user-decidable. Give a one-clause reason.
+- The agent decides other items with one evidence-supported better design, including public API shape, signatures, field names and result types.
+- A unique option matching every reference example is agent-decidable unless a user-authority condition applies.
+- Behavior-equivalent naming choices follow `docs/glossary.md`. A name derived from an existing type identifier needs no user question.
+- The agent may revise a user decision only outside the core principles, when reference output refutes the old sentence or the narrowed sentence is derived text.
+- Keep mechanism details with the agent when they follow from a core choice. Ask the user only that core choice, in plain words, with one example.
+
 ## Evidence Preparation
 
 1. Apply `workflow/change-policy.md` Outcome and Scope. Read the owning documents and decision entries for the affected contracts, including a producer or consumer whose contract an option changes.
@@ -43,7 +54,7 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 - When `algorithm.allowed_data` is configured, data flows only through those structures; no additional representation bypasses that constraint.
 - Entities listed in `algorithm.immutable_entities` are never modified after creation.
 - Check examples against the configured reference command and version, or against the accepted contract when no reference runtime exists. Record the input, expected result and verification evidence.
-- A mismatch is a limitation under `rules/workflow/decisions.md` Authority; no failing option is silently treated as conforming.
+- A mismatch is a limitation under Authority above; no failing option is silently treated as conforming.
 - Before offering a known limitation, survey literature, industrial tools, other fields, closed-form mathematics and known algorithms. Cite alternatives and remaining limits.
 - Check all affected items and boundary cases against research, repository conventions and recorded decisions.
 - Code has the lowest confidence for intended semantics. A code/doc difference is a code gap; independent reference output can establish a semantic defect.
@@ -65,5 +76,5 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 - The chain session that decides an agent decision writes its rule into the owning document and commits it at once. It writes the decision entry into its progress file; the main agent moves the entry into the decision log, which is never committed.
 - After a user decision is recorded, the main agent resumes the drafting session to implement it and continues the next independent work.
 - Write a new edge case in the same turn. Put its example in the owning document's Edge Cases section when its rule is decided; otherwise use the open decision entry.
-- A new conformance rule reviews every logged agent decision. Revise a failing decision under `rules/workflow/decisions.md` Authority or take it to the user.
+- A new conformance rule reviews every logged agent decision. Revise a failing decision under Authority above or take it to the user.
 - A decision result names the corrections for the session that implements it.

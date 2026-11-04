@@ -76,7 +76,7 @@ Keep the reproduction test under `rules/code/testing.md` Reproductions, in the l
 Commit the fix and its reproduction test together, before returning to other work.
 
 - One `fix(scope):` commit carrying the root-cause change plus the regression test — they are one concept.
-- Commit now, while the tree holds only this fix. Deferring lets the next task's edits entangle it into an unsplittable commit. Cadence rules: `workflow/committing.md`.
+- Commit now, while the tree holds only this fix. Deferring lets the next task's edits entangle it into an unsplittable commit. Cadence rules: skill `commit` Cadence.
 - Follow the `/commit` staging and safety rules. Stage by name; never `git add -A`.
 
 ## Report

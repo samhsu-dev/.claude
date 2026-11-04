@@ -5,9 +5,50 @@ description: Coordinate delegated runs as the main agent. Use before dispatching
 
 Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-agent.md`. Parameters `integration` and `execution` come from the project rule files `integration.md` and `execution.md` under `rules/project/`, and `algorithm.core_principles` from `decisions.md`; read those three files before the first dispatch.
 
+## Roles
+
+| Role | Scope |
+|---|---|
+| Main agent | Manages: sets outcomes and priorities, dispatches, decides, accepts results, integrates and talks with the user. Delegates execution and record upkeep. |
+| Resident agent | Holds one standing responsibility in a reused context (simple work, bookkeeping, one module's chain or review) and takes its queued tasks in order. |
+| Chain session | Carries related routine or full-process tasks in a reused context and assigned worktree. |
+| Reviewer | Checks a finished diff against the decided documents and program output. Read-only. |
+| Refutation | Tries to refute a user-decidable draft in a fresh context. Read-only. |
+| New reader | Reads a module's revised documents as a reader new to the repository. Read-only. |
+
+## Task Modes
+
+| Mode | Applies when | Required work |
+|---|---|---|
+| Simple | Inputs and expected result are explicit; no design choice or shared behavior changes | Resident agent executes, checks the result and reports briefly |
+| Routine | Established contracts or bounded local design determine the result; no complex core change | Reuse the owning chain context; implement, run affected checks and let the main agent inspect the diff |
+| Full | Complex work changes core semantics, architecture, termination or security contracts, or resolves a substantive conflict in those contracts | Affected design stages, implementation and independent review; refutation only for unresolved user-decidable core choices |
+
+- Select the mode from the current unit's uncertainty and consequences. File count, first landing and a parent chain's difficulty do not trigger Full.
+- Escalate only the part that meets a higher mode's criteria; retain completed work and continue independent items.
+- A branch carries one independently deliverable behavior; context reuse does not combine unrelated changes.
+- Only Full starts the multi-stage pipeline. A Simple or Routine task runs no design stage, refutation or independent review run.
+- After each launch or resume, check the run's transcript model; relaunch a run on an older model generation than required.
+- Project task and run records hold current state; retain history separately. Apply the project's configured record formats, size limits and existing checks.
+
+## Main Agent
+
+- The main agent keeps decisions and delegates execution. Code, documents, investigation, evidence gathering, record edits and worktree cleanup go to residents. Exceptions: it does a Simple task itself when briefing an agent costs more context than the work, and it edits and commits directly on a small project or for a change that cannot be split by module.
+- It accepts a result from the resident's report and the evidence the report names (commit, check output, diff stat). It reads a diff hunk, file or log excerpt when the report leaves a material doubt, when the task mode requires a diff check, or to verify launch metadata; it never re-reads a full transcript.
+- It never repeats an investigation a resident reported; a gap goes back to that resident as a question.
+- It answers boundary questions, decides agent-decidable items and batches user-decidable items into one question to the user.
+- It reports to the user the state of each running task in one line, the decisions waiting for the user, and each risk or failed check that changes what the user would do.
+
+## Context Economy
+
+- Keep one resident agent per standing responsibility while its context stays useful. Route a task to the resident that already holds its files and contracts; start a new agent only when no resident covers them or the handoff costs less than the stale context.
+- A brief states the outcome, acceptance checks, write set, dependencies, input revision and the change since that agent's last task. It references readable content by path and section and inlines only the decided sentences and changes needed to interpret the task.
+- A result returns outcome, commit, checks and open items. Detail stays in the run directory; another agent receives its path, never its text.
+- A resident restarts only when its context runs out or its responsibility ends, leaving a handoff file in its run directory.
+
 ## Dispatch
 
-1. Select Simple, Routine or Full under `rules/workflow/multi-agent.md` Task Modes. Do a Simple task directly when briefing costs more than the work; route other work to the resident that holds its context. Before a new launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows sharing a root cause and acceptance goal into one independently deliverable row, preserving every acceptance item; order a row that needs another's result after it; record the choice with its reason.
+1. Select Simple, Routine or Full under Task Modes above. Do a Simple task directly when briefing costs more than the work; route other work to the resident that holds its context. Before a new launch, compare open tasks and questions for shared inputs, write sets and root causes. Merge rows sharing a root cause and acceptance goal into one independently deliverable row, preserving every acceptance item; order a row that needs another's result after it; record the choice with its reason.
 2. Parallelize across independent tasks, never across the stages of one task. The stages of one task share context and the implicit decisions in its actions; every handoff between them loses detail.
 3. Keep one agent loop. A separate run is justified only by one of:
    1. an independent review or refutation, which needs a fresh context;
@@ -23,7 +64,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 7. Hold a task that fails a check, or add it to the chain that owns its files. Launch a task that passes the checks of step 6 when its expected speed or quality gain exceeds its coordination cost and the configured concurrency, token, compute and spending limits admit it; otherwise queue it.
    - Whenever a run ends or a branch merges, recheck every held row against the current diffs, not against its recorded hold reason. A shared document whose two edits touch disjoint sections does not block; a hold whose cause is gone is released.
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
-8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief under `rules/workflow/multi-agent.md` Context Economy, adding the project root, the glossary path (`communication/terminology.md` Established Terms), exclusions, protected files and return format. The protected files are the files another running task writes, computed at launch.
+8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief under Context Economy above, adding the project root, the glossary path (`communication/terminology.md` Established Terms), exclusions, protected files and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
    - Check the implemented decisions against entries governing the same affected contract. Reuse established evidence; contradictory requirements for one input go to the user before dependent work starts.
    - Update owning text when its meaning changes. Independent specification review applies to Full; an unchanged approved specification is reused.
@@ -39,9 +80,9 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 ## Chains
 
-- Keep the residents of `rules/workflow/multi-agent.md` Context Economy: one for simple work and bookkeeping, one chain per related set of files, contracts or mechanisms, one reviewer per module under review. Queue tasks within each resident sequentially; every request names its current input revision and permitted write set.
+- Keep the residents of Context Economy above: one for simple work and bookkeeping, one chain per related set of files, contracts or mechanisms, one reviewer per module under review. Queue tasks within each resident sequentially; every request names its current input revision and permitted write set.
 - After a merge, resume the chain session for the chain's next task; its brief carries the integration diff since its last commit.
-- Before compaction or a context replacement, a session writes to its progress record the current revision, task, constraints, decisions, affected contracts, completed checks, open failures and next action; afterwards it reloads that record and verifies it against the repository before continuing. A resident's context is replaced only under `rules/workflow/multi-agent.md` Context Economy.
+- Before compaction or a context replacement, a session writes to its progress record the current revision, task, constraints, decisions, affected contracts, completed checks, open failures and next action; afterwards it reloads that record and verifies it against the repository before continuing. A resident's context is replaced only under Context Economy above.
 
 ## Review
 
@@ -75,7 +116,8 @@ Task Modes determines review depth. A configured project review trigger may spec
 - After an interruption, commit the run's work in progress on its branch.
 - Only the main agent publishes, under `workflow/git-safety.md` Publication and configured project policy. When publication is authorized, publish task submodule commits to the configured task branch; at integration, fast-forward each configured submodule branch and publish it before its superproject. A failed fast-forward goes to the user.
 - The main agent integrates a finished branch using the configured project integration policy and Git safety rules. After its gate and review pass, run the required integration checks. Publication follows `workflow/git-safety.md`; never resolve conflicts or publish without the required authorization.
-- After the full gate, remove the worktree once its tracked, untracked and ignored files and every submodule are clean or disposable build output. A task-named submodule branch goes only after its commits reach `integration.submodule_branch`.
+- After the full gate, remove the worktree once its tracked, untracked and ignored files and every submodule are clean or disposable build output, then delete the task branch with `git branch -d` from the integration checkout. A task-named submodule branch goes only after its commits reach `integration.submodule_branch`.
+- Rebased submodule pointers for the same implementation step may be set without the user when those commits were rebased onto the integration head's recorded commits and `git range-diff` proves the patches identical.
 - After every merge, reconcile branches absent from the open board line by line against integration; recover or explain missing content. A rejected implementation's branch stays only while a board row names it as reference.
 
 ## Records

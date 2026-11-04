@@ -1,9 +1,31 @@
 ---
 name: chain-session
-description: Carry one task chain to merge-ready in its own worktree, or review a finished diff. Use when a brief makes you a chain session or a reviewer, or before an author's self-check.
+description: Carry one task chain to merge-ready, or review a finished diff. Use when a brief makes you a chain session or a reviewer, before changing design documents or code, or before a self-check.
 ---
 
 Carry one task chain from reading to merge-ready in its own worktree, or review its finished diff. Hard limits: `rules/workflow/multi-agent.md`.
+
+## Pipeline
+
+A change to design documents or code passes the affected phases below in order, whoever implements it. Simple and Routine reuse existing decisions and perform only affected steps; Full uses the affected design stages and independent review (skill `multi-agent` Task Modes). Parameter `completion` comes from the project rule file `completion.md` under `rules/project/`. Document content follows `rules/docs/<type>.md`.
+
+| # | Phase | Document | Approval | Skip when |
+|---|-------|----------|----------|-----------|
+| 1 | Concept | `concept.md`; glossary entries for its terms | User confirms scope, terminology, boundaries | Existing scope and concepts remain unchanged |
+| 2 | Domain Model | `model.md` | User confirms entities, invariants, state rules | Applicability criteria in `rules/docs/model.md` require no model |
+| 3 | Algorithm | `spec.md` | User confirms correctness and termination | Applicability criteria in `rules/docs/spec.md` When Required and When Not Required require no spec |
+| 4 | Design | `design.md` | User confirms structure and responsibility allocation | Existing contracts and responsibilities remain unchanged |
+| 5 | Research | `impl.md` | None; agent reports findings | No unresolved external API or implementation question |
+| 6 | Plan | task doc `docs/todo/<module>.md` | User confirms task breakdown and order | Existing authorization and task order cover the work |
+| 7 | Code | source code | None; agent follows the task doc in order | Never |
+| 8 | Verify | passing quality gate | Task doc Quality Gate checklist passes; every domain term in the changed docs has a glossary entry | Never |
+
+- Existing user authorization satisfies an approval within its scope. A skipped stage creates no document or approval step; state stage selection briefly in the task context.
+- Read the existing docs in the target directory and the earlier owning documents the affected stages need; reuse unchanged decisions and verified evidence. Start at the earliest phase the change affects, and complete it before work that depends on it.
+- A stage that introduces a domain term adds its glossary entry under `communication/terminology.md` Established Terms. Research follows `docs/impl.md`. Index updates after a stage adds or renames a file follow `rules/docs/index.md`.
+- Update documents in place, never recreated from scratch. A change rewrites the section that owns the fact, never a note beside it, and a concept or model change updates the downstream sentences it invalidates before implementation.
+- When evidence invalidates an assumption or changes the approach comparison, return to the earliest affected stage and update the owning text before dependent implementation.
+- At task completion, `completion` controls creation of summary and README files; an existing-files-only setting applies to those completion artifacts.
 
 ## Work Loop
 
@@ -13,7 +35,7 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 4. Apply `workflow/change-policy.md` Outcome and Scope. For a defect, locate its producing rule, mechanism or data using the reference evidence; run a probe when that cause is not established. A necessary repair outside the write set is a boundary question before editing it.
 5. For new or changed behavior, write the relevant test before implementation; a behavioral defect requires a failing reproduction under `code/testing.md`. For documentation, formatting or other reversible changes without changed behavior, use applicable checks without creating implementation-mirroring tests.
 6. Implement. A distinct mechanism beside an existing one for the same or a similar problem needs evidence that the problem differs and a rationale in its owning document.
-7. Run the affected checks required by the assigned task mode and project gate. Reuse passing evidence for an unchanged revision; required integration checks remain mandatory.
+7. Run the affected checks required by the assigned task mode (skill `multi-agent` Task Modes) and project gate. Reuse passing evidence for an unchanged revision; required integration checks remain mandatory.
 8. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
 9. Self-check the scoped diff. Routine returns it to the main agent; Full proceeds to independent review under `multi-agent`.
 10. Continue related tasks and fixes in the same context. Around compaction, write and reload the progress record under skill `multi-agent` Chains; after integration, refresh revisions and decisions.

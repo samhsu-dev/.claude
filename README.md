@@ -20,7 +20,7 @@ Skill procedures and usage triggers:
 
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
-| `/commit` | User asks to commit | Staging, classification, multi-commit workflow |
+| `/commit` | User asks to commit | Staging, classification, multi-commit workflow, cadence, safe Git alternatives |
 | `/update-codes` | User asks to update or fix code quality | Audit, plan fixes, apply after approval |
 | `/update-docs` | User asks to update or fix documentation | Audit against type rules, plan fixes, apply after approval |
 | `/update-tests` | User asks to add, audit, or update tests | Design-driven coverage audit, add missing, remove stale |
@@ -29,9 +29,9 @@ Skill procedures and usage triggers:
 | `/perf` | User asks to optimize or benchmark | Measurement-driven optimization pipeline |
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
 | `/zotero-audit` | User asks to check or clean Zotero items | Read-only metadata audit against Crossref |
-| `/multi-agent` | Main agent dispatches, reviews, merges or consolidates delegated runs | Dispatch, review rounds, branch lifecycle, records, consolidation |
-| `/chain-session` | A brief makes the agent a chain session or a reviewer | Work loop, boundary questions, self-check, review checklist |
-| `/decisions` | A design question is open | Evidence preparation, decision runs, solution checks, question format, recording |
+| `/multi-agent` | Main agent dispatches, reviews, merges or consolidates delegated runs | Roles, task modes, acceptance, briefs, dispatch, review rounds, branch lifecycle, records, consolidation |
+| `/chain-session` | A brief makes the agent a chain session or a reviewer, or a change touches design documents or code | Development pipeline, work loop, boundary questions, self-check, review checklist |
+| `/decisions` | A design question is open | Triage and agent authority, evidence preparation, decision runs, solution checks, question format, recording |
 
 ## Rules
 
@@ -40,13 +40,12 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | File | Loads for | Governs |
 |------|-----------|---------|
 | `communication/terminology.md` | always | Which terms output may use |
-| `workflow/development.md` | always | Concept → Model → Algorithm → Design → Research → Plan → Code → Verify |
 | `workflow/change-policy.md` | always | When code and public API may change |
-| `workflow/committing.md` | always | Commit message, staging, cadence, attribution |
+| `workflow/committing.md` | always | Commit message, staging, attribution |
 | `workflow/git-safety.md` | always | Prohibited git operations in a shared working tree |
 | `workflow/multi-agent.md` | always | Hard limits of delegated work |
 | `workflow/decisions.md` | always | Decision authority |
-| `workflow/records.md` | always | Local decision, task and audit records |
+| `workflow/records.md` | decision, task and audit records | Local record layout and entry fields |
 | `workflow/performance.md` | performance and benchmark files | Optimization guardrails |
 | `code/quality.md` | code files | Control flow, naming, complexity |
 | `code/organization.md` | code files | File naming and layout |

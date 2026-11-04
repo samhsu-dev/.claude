@@ -9,7 +9,7 @@ Existing project rules remain separate from the shared language profile.
 
 ## Skills
 
-Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards. The human-facing listing of rules and skills: `README.md`.
+Skills are active procedures. Rules are passive guardrails. Both layers enforce the same standards. The human-facing listing of rules and skills: `README.md`. A change to design documents or code follows skill `chain-session` Pipeline.
 
 ## Parameter Binding
 
@@ -31,6 +31,6 @@ Tools read the fixed headings and formats declared in these project rules. Parse
 | `readme` | `readme.md` | `rules/docs/readme.md` |
 | `integration` | `integration.md` | `skills/multi-agent/SKILL.md` |
 | `agent_prompt` | `prompts.md` | `rules/prompt/prompting.md` |
-| `completion` | `completion.md` | `rules/workflow/development.md` |
+| `completion` | `completion.md` | `skills/chain-session/SKILL.md` |
 | `profile` | `profile.md` | Native entry points; installation |
 | `execution` | `execution.md` | `skills/multi-agent/SKILL.md`; `skills/decisions/SKILL.md` |
