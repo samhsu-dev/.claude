@@ -6,7 +6,7 @@ paths:
 
 # TypeScript Debugging
 
-TypeScript-specific debugging tools and patterns. Extends global `code/debugging.md`.
+TypeScript-specific debugging tools and patterns. The debugging procedure is skill `debug`.
 
 ---
 
