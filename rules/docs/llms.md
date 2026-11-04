@@ -17,7 +17,7 @@ All llms.txt content is read by agents, not humans. Optimize for parsing under t
 
 ## File Layout
 
-```
+```text
 docs/
 ├── llms.txt          # L0 index — always loaded first
 ├── llms/             # L1 module docs — loaded on demand
@@ -44,7 +44,7 @@ Sections in order (llmstxt.org spec):
 
 ### Link format
 
-```
+```text
 - [Display Name](llms/<module>.md): One-line purpose.
 ```
 
@@ -74,7 +74,7 @@ Each `llms/<module>.md` file:
 
 ### API entry format
 
-```
+```text
 **`function_name(param: Type) -> ReturnType`** — One-line purpose. Raises `ErrorType` when condition.
 ```
 
@@ -109,6 +109,7 @@ Each `llms/<module>.md` file:
 - No redundancy between L0 and L1. L0 says what exists; L1 says how to use it.
 
 ### Include (Usage-Facing)
+
 - What to call: function signatures, class constructors, CLI commands.
 - What to pass: parameter names, types, valid ranges, defaults.
 - What comes back: return types, response shapes, error codes.
@@ -117,6 +118,7 @@ Each `llms/<module>.md` file:
 - What to avoid: known pitfalls, invalid inputs, deprecated paths.
 
 ### Exclude (Internal Details)
+
 - No algorithm descriptions — "Sorts results by relevance." not "Uses TF-IDF with BM25 ranking."
 - No data structure internals — "Accepts a config object." not "Config is stored as a nested dict with keys X, Y, Z."
 - No infrastructure — no container names, host paths, port mappings, process managers, orchestration details.
@@ -131,6 +133,7 @@ Each `llms/<module>.md` file:
 - No links to external documentation unless the external API is required for usage.
 
 ### Litmus Test
+
 For every sentence: "Does the caller need this to use the API correctly?" No → remove.
 
 ## Verification

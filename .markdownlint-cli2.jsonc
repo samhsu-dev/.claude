@@ -1,0 +1,12 @@
+// markdownlint rules for this repository. Prose keeps one paragraph or sentence per line, tables stay
+// compact, and a rule or skill file starts with its frontmatter.
+{
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD036": false,
+    "MD041": false,
+    "MD060": false
+  },
+  "ignores": ["skills/synced/**", "**/node_modules/**"]
+}

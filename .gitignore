@@ -18,6 +18,8 @@
 # Track .gitignore itself
 !.gitignore
 !LICENSE
+!.markdownlint-cli2.jsonc
+!cspell.json
 
 # App-managed skills are local runtime data
 /skills/synced/

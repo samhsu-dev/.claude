@@ -7,7 +7,7 @@ paths:
 
 ## Task Format
 
-```
+```text
 [state] <action verb> <object> <detail>
   Depends on: <task ids>
   Acceptance: <criteria>
@@ -20,6 +20,7 @@ States: `[ ]` todo, `[x]` done, `[~]` in progress, `[-]` skipped.
 ## Quality Gate
 
 Every task ends with this checklist (do not repeat inline — reference this section):
+
 - [ ] Lint and format (project linter)
 - [ ] Type check (project type checker)
 - [ ] Unit tests for new/changed public API
@@ -42,7 +43,8 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 ## Templates
 
 Feature:
-```
+
+```text
 [ ] Implement <feature>
   Acceptance: <criteria>
   - [ ] <subtask>
@@ -50,7 +52,8 @@ Feature:
 ```
 
 Bug fix:
-```
+
+```text
 [ ] Fix <description>
   Acceptance: <repro no longer fails>
   - [ ] Reproduce
@@ -61,7 +64,8 @@ Bug fix:
 ```
 
 Refactor:
-```
+
+```text
 [ ] Refactor <component>
   Acceptance: <no behavior change, tests pass>
   - [ ] Analyze

@@ -10,7 +10,9 @@ allowed-tools:
 argument-hint: "[optional path to a specific docs/ subdirectory]"
 ---
 Audit documentation files against their type-specific rulesets, produce a fix plan, and apply fixes after user approval.
+
 ## Step 1 — Discover Files
+
 1. `Glob("docs/**/*.md")` (or scoped to `$ARGUMENTS`), plus `Glob("**/*.md")` run with each existing records directory of `rules/workflow/records.md` (`docs/decisions/`, `docs/todo/`, `docs/audit/`) as its path. Those directories are git-excluded, so a listing that honors Git ignore rules misses them.
 2. Classify each file by name pattern (`rules/docs/documentation.md` Naming):
 
@@ -27,9 +29,13 @@ Audit documentation files against their type-specific rulesets, produce a fix pl
 | `**/glossary.md`, `**/glossary-*.md` | Glossary | `rules/docs/glossary.md` |
 
 Files matching no pattern: report as **unclassified** for user review.
+
 ## Step 2 — Audit Each File
+
 Read every file. Load the rule file of its type and `rules/docs/documentation.md`, and audit every requirement in them, including each rule's own exceptions and omission conditions. Record each violation with `[file:line] description`.
+
 ## Step 3 — Cross-File Consistency
+
 Check across files within the same docs subdirectory:
 
 1. **Terminology**: the glossary exists at `glossary.path` (project rule file `glossary.md`) when the project has documentation. Every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use. Report an entry that fails `rules/docs/glossary.md` Selection, an implementation detail above all; redundant entries under Selection; and an entry no document uses.
@@ -38,10 +44,12 @@ Check across files within the same docs subdirectory:
 4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.
 5. **impl.md sync**: API entries match what `design.md` specifies; no stale references to removed functions.
 6. **Repositories**, across the main repository and its submodules under `rules/docs/documentation.md` Repositories and `rules/docs/glossary.md` Repositories: every cross-repository link resolves and uses the stated link form; no link or term reference points against the dependency direction; no concept has entries in two glossaries; every imported term exists at its owning entry.
+
 ## Step 4 — Plan
+
 Output a structured fix plan. Do NOT apply any fix before approval.
 
-```
+```text
 ## Docs Update Plan: <scope>
 ### Missing Sections
 - [file] missing: <section name> — action: <add/restructure>
@@ -61,7 +69,9 @@ Output a structured fix plan. Do NOT apply any fix before approval.
 ```
 
 Wait for user approval before proceeding to Step 5.
+
 ## Step 5 — Apply Fixes
+
 For each approved item in the plan:
 
 1. Apply the fix. Preserve existing content where possible — restructure, not rewrite.
@@ -69,8 +79,10 @@ For each approved item in the plan:
 3. Check cross-file consistency after each change.
 
 One file at a time. If a fix requires changes in another file, apply them together as one logical unit.
+
 ## Step 6 — Report
-```
+
+```text
 ## Docs Update Results: <scope>
 ### Fixed
 - [file:line] <what was fixed>
@@ -83,7 +95,9 @@ One file at a time. If a fix requires changes in another file, apply them togeth
 - Violations fixed: N
 - Remaining: N
 ```
+
 ## Rules
+
 - Plan before fix. Never auto-fix without user approval of the plan.
 - Preserve content. Restructure and move — never delete domain knowledge.
 - Missing sections that require domain knowledge: report as "needs user input", do not fabricate content.

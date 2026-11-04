@@ -45,6 +45,7 @@ Isolate whether the fault is in input, logic, or external dependency:
 ### Common Pitfalls
 
 Check these first when applicable:
+
 - Empty catch/except blocks swallowing exceptions.
 - Missing error chaining (original cause lost when re-raising).
 - Uninitialized state accessed before setup completes.
@@ -59,6 +60,7 @@ Check these first when applicable:
 3. Run the full test suite. Confirm no regressions.
 
 If the fix requires changes beyond the immediate fault:
+
 - Report the scope to the user before proceeding.
 
 ## Step 5 — Verify
@@ -83,7 +85,7 @@ Commit the fix and its reproduction test together, before returning to other wor
 
 Output a summary:
 
-```
+```text
 ## Bug Fix
 
 **Symptom**: <what was observed>

@@ -93,7 +93,7 @@ Report measured use frequency where the eval provides it. An unmeasured frequenc
 
 Output the full verdict table first. Every ID from Steps 2, 3, and 4 appears exactly once.
 
-```
+```text
 ## Prompt Audit: <scope>
 
 | ID | Verdict | Evidence |

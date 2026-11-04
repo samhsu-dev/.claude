@@ -25,6 +25,7 @@ Never delete decided design text because no caller exists.
 Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 **Overview format**:
+
 - **Classes**: `ClassA`, `ClassB`, `ClassC`
 - **Relationships**: `ClassA` extends `ClassB`, `ClassA` contains `ClassC`
 - **Abstract**: `ClassE` (implemented by `ClassF`, `ClassG`)
@@ -36,6 +37,7 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 ## 2. Design principles
 
 ### SOLID
+
 - **S** — One reason to change per type.
 - **O** — Open for extension, closed for modification.
 - **L** — Subtypes fulfill the supertype contract without caller awareness.
@@ -43,6 +45,7 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 - **D** — Depend on abstractions, not concretes.
 
 ### Foundational
+
 - **KISS** — Simplest design that satisfies the requirement.
 - Scope of abstractions and configuration: `code/quality.md` Code Smells.
 - **DRY** — One authoritative representation per piece of knowledge. Reuse existing data and mechanisms before adding a representation, walk, cache, map or edge.
@@ -71,4 +74,3 @@ The maintainer reloads context each session and trusts types over execution. Des
 - One orchestrator per workflow. Helpers are stateless and receive inputs by argument.
 - Files with shared concern grouped into one directory as an internal submodule. One public entry point per directory.
 - External API verification and recording: `docs/impl.md`.
-

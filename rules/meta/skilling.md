@@ -12,7 +12,7 @@ A skill is instructions and bundled resources that load into the conversation wh
 
 ## File Structure
 
-```
+```text
 skill-name/
 ├── SKILL.md            # Required — frontmatter + prompt
 ├── scripts/            # Deterministic helpers (shell or scripting language)
@@ -79,6 +79,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 ### Threat Model
 
 Skills act through session tools within the session's permissions. A malicious skill can attempt to:
+
 - Read files such as `~/.ssh`, `~/.aws` or `.env` via `Read` or `Bash(cat)` when permissions allow.
 - Exfiltrate data via `WebFetch`, `Bash(curl)`, or MCP tools.
 - Modify git history, install packages, create persistence.
@@ -140,7 +141,7 @@ ln -s ../../extern/skill-name .claude/skills/skill-name
 
 ### Plugin (marketplace distribution)
 
-```
+```text
 plugin-name/
 ├── .claude-plugin/plugin.json
 └── skills/skill-name/SKILL.md

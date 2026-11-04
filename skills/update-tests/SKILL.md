@@ -11,9 +11,13 @@ allowed-tools:
 argument-hint: "[path to source dir/file, or blank for all]"
 ---
 Audit and update tests for source files. Tests are derived from design documents, never from reading implementation code.
+
 ## Core Principle
+
 Tests verify documented contracts. Read the design docs before any source or test code. Assertions and the classification of a failing test: `rules/code/testing.md` Failures.
+
 ## Step 1 — Identify Scope
+
 Determine scope from `$ARGUMENTS`:
 
 | Input | Scope |
@@ -28,7 +32,9 @@ Then for the resolved scope:
 1. List all source files in scope.
 2. List all existing test files: map each source path to its test mirror per project layout.
 3. List all design docs: find `docs/**/design.md` for the matching module. If the scope is a subdirectory of a module, walk up to find the nearest `docs/` with design files.
+
 ## Step 2 — Read Design Docs First
+
 For each module in scope, read the design documentation **before** reading any source or test code:
 
 1. `design.md` — class/type specs, function specs, exception types.
@@ -37,12 +43,15 @@ For each module in scope, read the design documentation **before** reading any s
 4. `impl.md` — API gotchas, library constraints.
 
 Extract a contract list per public function/class:
+
 - Expected behavior (from design.md function specs)
 - Input constraints and error conditions
 - State transitions and invariants (from model.md)
 - Algorithm edge cases (from spec.md)
 - API-specific gotchas (from impl.md)
+
 ## Step 3 — Coverage Audit
+
 Audit each source file in scope against `rules/code/testing.md`, the project testing rule and the contract list from Step 2. Record each finding with its label:
 
 | Label | Finding | Standard |
@@ -54,10 +63,12 @@ Audit each source file in scope against `rules/code/testing.md`, the project tes
 | **UNCOVERED** | Public function or class of the contract list without a test | Step 2 contract list |
 | **GAP** | Contract without a test for one category: documented behavior, equivalence class, boundary value, error case, documented exception, `model.md` invariant, `spec.md` edge case | `rules/code/testing.md` Test Design; Step 2 contract list |
 | **STALE** | Stale test; record the reason | `rules/code/testing.md` Maintenance and Reproductions |
+
 ## Step 4 — Plan
+
 Output a structured plan before writing any code:
 
-```
+```text
 ## Test Update Plan: <scope>
 ### Layout Issues
 - MISPLACED: <CurrentPath> → move to <ExpectedPath>
@@ -80,25 +91,37 @@ Output a structured plan before writing any code:
 ```
 
 Wait for user approval before proceeding to Step 5.
+
 ## Step 5 — Reorganize and Write Tests
+
 Apply the approved plan. Fix layout issues before writing new tests; reorganization changes only import paths, file moves and the file-level index comments, never test logic.
+
 ### Reorganize layout issues
+
 1. **MISPLACED**: Move the test file to the mirrored path. Update imports. Run the tests.
 2. **FRAGMENTED**: Merge the test methods for one source file into the test file at the mirrored path. Deduplicate fixtures. Update the index comment. Delete the empty originals.
 3. **OVERSIZED**: Split the test file by responsibility under `rules/code/testing.md` Layout, named by the project testing rule. Move shared fixtures into the framework's fixture mechanism. Write each new file's index comment. Delete the original file.
+
 ### New test files and methods
+
 1. Create each new test file at the mirrored path with its index comment (`rules/code/testing.md` File-Level Index Comment).
 2. Write each assertion from the function's documented contract, under `rules/code/testing.md` Test Design, Structure, Assertions and Mocking and the project testing rule.
+
 ### Remove stale tests
+
 1. Delete the test method. A reproduction test is deleted only under `rules/code/testing.md` Reproductions.
 2. Update the index comment.
 3. Delete a test file left empty.
+
 ## Step 6 — Verify
+
 1. Run the project test command.
 2. Classify each failing test under `rules/code/testing.md` Failures. Report an implementation defect to the user with the design doc reference.
 3. Run the project linter — no new violations.
+
 ## Step 7 — Report
-```
+
+```text
 ## Test Update Results: <scope>
 ### Reorganized
 - MOVED: <OldPath> → <NewPath>

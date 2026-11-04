@@ -47,7 +47,7 @@ Read each scoped file. Audit it against every requirement of these rule files, i
 
 Output a structured fix plan. Do NOT apply any fix before approval.
 
-```
+```text
 ## Code Update Plan: <scope>
 
 ### Linter Violations
@@ -99,7 +99,7 @@ One logical change at a time. If a fix cascades into other files, report scope e
 
 ## Step 7 — Report
 
-```
+```text
 ## Code Update Results: <scope>
 
 ### Fixed

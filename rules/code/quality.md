@@ -8,6 +8,7 @@ paths:
 Language-specific naming, formatting, idioms, and complexity thresholds: see project `.claude/rules/code/quality.md`.
 
 ## Control Flow
+
 - Use guard clauses and early returns. Maximum two indentation levels in a function body.
 - `continue` over nested `if` in loops.
 - Use `break` when the loop stopping condition holds.
@@ -15,6 +16,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No flag variables tracking state across a loop — extract to function or use early exit.
 
 ## Error Handling
+
 - Specific exception/error types. No broad catches.
 - Handle an error at the layer that can recover or report the operation failure.
 - Error context and logging: `code/logging.md` Error Records.
@@ -23,6 +25,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No error codes as return values. Exception: a tool protocol that requires structured success/error objects uses that protocol.
 
 ## Code Structure
+
 - Functions under 20 lines.
 - Max 3 parameters per function. More → introduce a parameter object.
 - Put each multi-step operation in a function named for that operation.
@@ -43,6 +46,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Remove artifacts with no surviving code, design, build or entry-point consumer.
 
 ## Code Smells — Detect and Eliminate
+
 - No primitive obsession — raw strings/ints representing domain concepts → wrap in a type.
 - No god objects — a class with >7 public methods or >5 fields → split responsibilities. File splitting follows `code/organization.md`.
 - No shotgun surgery — one change requires edits in many files → consolidate. Duplicate facts retain one owner.
@@ -53,6 +57,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No repeated conditional logic on the same discriminant → polymorphism or lookup table.
 
 ## Bug Prevention
+
 - Check for string injection.
 - For every range, slice, and index operation, apply boundary value analysis from `testing.md`.
 - Null/None: never assume a return value is non-null without a type guarantee or check.
@@ -65,6 +70,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Encoding: explicit encoding on every I/O boundary. No implicit platform defaults.
 
 ## Resource Management
+
 - Scoped resource use: Bug Prevention.
 - No object construction in loop bodies. Move construction before the loop.
 - Consult a mechanism's existing valid cache before expensive work. Representation ownership follows `docs/design.md` Design principles.
@@ -72,21 +78,25 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## Documentation
 
 ### Comments
+
 - English.
 - Why, not what.
 
 ### Docstrings (Public API)
+
 - Public API only. Private: one-line comment.
 - Content: summary; constraints; parameters; return value; exceptions.
 - No redundancy, no implementation details, no examples.
 - Language-standard convention.
 
 ## Type Safety
+
 - Type annotations on all parameters and return values. Project rules may specify language-level omissions.
 - Concrete types. No escape types (`Any`, `any`, `Object`, `interface{}`).
 - Strict type checking enabled.
 
 ## Input Contract & Invariants
+
 - Allowed input set defined per function.
 - Single validation point for the allowed input set at the system or trust boundary; a violation raises/throws. Core logic accepts verified data only; never re-validate that data deep inside code.
 - Invariants as executable checks, not comments.
@@ -94,6 +104,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Same violation → same exception type at same layer.
 
 ## No Patch-Style Code
+
 - Every change integrates as if written from scratch, at the rule, mechanism or data that produces the fault, within the existing ownership, types and callers. No "add a check here" band-aid.
 - No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
 - No conditional branch added solely to handle one caller's edge case; a branch expresses an input distinction the contract defines, otherwise the design is fixed.
@@ -101,12 +112,15 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
 ## Agent Maintainability
+
 - Among implementations that satisfy accepted behavior, security and resource constraints, choose the one a reader new to the repository changes correctly from its owning documents and identifiers alone.
 - Every concept a change adds or changes links to its owning document section, its identifier, its mechanism and a behavioral test. The site list sent with the diff names those four links per concept; a missing link is a finding.
 - A reviewer resolves each link from the repository alone. A link that needs the author's conversation to resolve is a finding.
 
 ## Post-Edit Verification (Mandatory)
+
 Before completing a coherent change, review its diff and affected contracts for:
+
 1. Check Code Structure and Code Smells.
 2. Check Bug Prevention.
 3. Check No Patch-Style Code.
@@ -114,6 +128,7 @@ Before completing a coherent change, review its diff and affected contracts for:
 Fix every finding in the changed code and its affected contracts before the change is complete. A finding in untouched code goes to the module's task doc.
 
 ## API Design
+
 - Error signaling: Error Handling.
 - A call reads without its declaration. A literal whose meaning the call does not show (a bare `true`, `false`, `null` or number) is passed by name, or its parameter becomes an enum or an options type.
 - A setting has a default that serves the common case, so a caller it does not concern never names it.

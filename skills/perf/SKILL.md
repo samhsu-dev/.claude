@@ -18,6 +18,7 @@ Read `rules/workflow/performance.md` before applying this workflow. Follow `work
 Analyze code for optimization opportunities. If the user supplies a target, focus there. Otherwise scan changed files.
 
 Look for:
+
 - Unnecessary allocations (object creation, copies, boxing).
 - Inefficient patterns (element-by-element vs bulk, concatenation in loops).
 - Redundant operations (dead code, unused intermediates).
@@ -98,7 +99,7 @@ After round: update Remaining Bottlenecks and Key Insights.
 
 ### Module task record structure
 
-```
+```text
 ## Current Baseline
 ## Key Improvements
 ## Completed Optimizations

@@ -48,6 +48,7 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_O
 | `empty_fields_fillable` | Info | Propose filling only empty fields |
 
 Rules:
+
 - DOI discovery evidence paths: `arxiv_link` (Semantic Scholar maps the arXiv ID to a published DOI), `crossref_search`, `s2_title_match`. `doi_found` requires author overlap plus `arxiv_link`, or a year gap of at most 1 with two agreeing paths, an exact title, or an identical author list. A larger gap is another version or edition. Anything weaker is `possible_wrong_title`.
 - Crossref titles that are a prefix of the local title are subtitle splits, not errors.
 - Same-title pairs with different types (conference vs journal version) are distinct works, not duplicates.

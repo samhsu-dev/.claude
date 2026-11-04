@@ -91,7 +91,7 @@ For each logical commit, in order:
 1. Stage specific files by name. Never `git add -A` or `git add .`.
 2. Create the commit using a HEREDOC:
 
-```
+```text
 git commit -m "$(cat <<'EOF'
 type(scope): description
 
@@ -102,7 +102,7 @@ EOF
 )"
 ```
 
-3. Run `git status` after each commit to verify.
+1. Run `git status` after each commit to verify.
 
 ## Step 5 — Verify
 
