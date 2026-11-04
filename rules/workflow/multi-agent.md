@@ -11,7 +11,6 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 | Refutation | Tries to refute a user-decidable draft in a fresh context. Read-only. |
 | New reader | Reads a module's revised documents as a reader new to the repository. Read-only. |
 
-- The main agent does a Simple task itself when briefing an agent costs more context than the work. On a project whose modules develop independently, it delegates other code and document work; on a small project, or for a change that cannot be split by module, it edits and commits directly.
 - A write run edits only its own worktree, branch and run directory, and never merges, pushes or rebases.
 
 ## Task Modes
@@ -32,7 +31,7 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 
 ## Main Agent
 
-- The main agent keeps decisions and delegates execution. Code, documents, investigation, evidence gathering, record edits and worktree cleanup go to residents. Exception: a Simple task whose brief costs more context than the work.
+- The main agent keeps decisions and delegates execution. Code, documents, investigation, evidence gathering, record edits and worktree cleanup go to residents. Exceptions: it does a Simple task itself when briefing an agent costs more context than the work, and it edits and commits directly on a small project or for a change that cannot be split by module.
 - It accepts a result from the resident's report and the evidence the report names (commit, check output, diff stat). It reads a diff hunk or file only to resolve a doubt the report leaves open, and never reads a run transcript or full log.
 - It never repeats an investigation a resident reported; a gap goes back to that resident as a question.
 - It answers boundary questions, decides agent-decidable items and batches user-decidable items into one question to the user.
