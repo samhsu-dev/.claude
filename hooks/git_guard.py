@@ -73,6 +73,13 @@ def file_text(rest, flags, cwd):
         return None
 
 
+def git_cwd(invocation, cwd):
+    """Directory git runs in: `cwd` after each `-C <dir>` option of the matched git invocation, in order."""
+    for directory in re.findall(r"(?:^|\s)-C\s+(\S+)", invocation):
+        cwd = os.path.join(cwd, os.path.expanduser(directory.strip("'\"")))
+    return cwd
+
+
 def check(command, cwd="."):
     """Return the list of violation messages for one Bash command run in `cwd`."""
     masked = mask(command)
@@ -83,7 +90,8 @@ def check(command, cwd="."):
         if TRAILER.search(body) or AI_MARK.search(body):
             errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
     if re.search(GIT + r"commit\b", masked):
-        message_file = file_text(re.split(GIT + r"commit\b", command, maxsplit=1)[1], r"--file|-F", cwd)
+        invocation = re.search(GIT + r"commit\b", command)
+        message_file = file_text(command[invocation.end():], r"--file|-F", git_cwd(invocation.group(0), cwd))
         message = command + "\n" + (message_file or "")
         if TRAILER.search(message) or AI_MARK.search(message):
             errors.append("Commit message carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
