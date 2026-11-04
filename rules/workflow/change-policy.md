@@ -5,7 +5,7 @@
 - Define the observable result, required constraints and completion checks before choosing an implementation. Reuse the task's existing statement; no separate planning artifact is required.
 - Derive necessary work backward from that result. An added dependency, abstraction, tool, investigation or check names the current requirement, demonstrated failure or concrete safety risk it addresses. Future usefulness alone establishes no requirement.
 - Compare materially different feasible approaches by their remaining implementation, verification, runtime and maintenance costs. Include direct use or modification of existing code and data; choose the least complex approach that satisfies the result and constraints.
-- Reconsider the approach when a new dependency, repeated repair or cost growth changes that comparison. Prior effort and agent-authored plans do not justify further work or expand user authorization.
+- Reconsider the approach when a new dependency, repeated repair or cost growth changes that comparison. Prior effort and agent-authored plans do not justify further work or expand user authorization. When a profile rule, memory entry or plan disagrees with current code or a consumed contract, report the exact disagreement and resolve which one holds authority before a broad repair; memory and generated plans are never that authority.
 - Verify every claim used to justify the result. Investigation covers the task's requirements and affected contracts; it does not enumerate unrelated possibilities.
 - Complete the task when its result and required checks pass. Additional investigation or repeated checks need a new change, failure or unresolved concrete risk.
 
