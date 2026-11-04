@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """PostToolUse hook for Write, Edit, and MultiEdit: reports
-- a doc or rule file past its line limit (rules/docs/documentation.md Naming, rules/meta/rulewriting.md),
-- a forbidden term from the native project's rules/project/terminology.md in the written text,
+- a Markdown file past its line limit (rules/docs/documentation.md Naming, rules/meta/rulewriting.md, rules/meta/skilling.md),
+- a forbidden term from the native project's rules/project/terminology.md in the written text, except a
+  substitution marked `check: review` (rules/communication/terminology.md Domain),
 - a glossary Source path that does not resolve (rules/docs/glossary.md),
 - a URL, a directory path, or a line number in a glossary entry outside Source and Example (rules/docs/glossary.md Entry),
 - a glossary citation field without a bibliography key (rules/docs/glossary.md Entry),
 - a citation key that the bibliography does not hold (rules/docs/bibliography.md),
-- a repository document that names a path of the agent configuration (rules/docs/documentation.md Naming).
+- a product repository document that names a path of the agent configuration (rules/docs/documentation.md Naming):
+  a Markdown file in a Git work tree, outside an agent configuration and the local records.
 
 The tool has already run; exit 2 shows stderr to Claude as a warning.
 """
@@ -17,7 +19,7 @@ import subprocess
 import sys
 from pathlib import Path
 from doc_check_context import bibliography_path as bibliography_path, TERMINOLOGY as TERMINOLOGY, CODE_SPAN as CODE_SPAN, AGENT_CONFIG as AGENT_CONFIG, line_limit as line_limit, written_text as written_text, terminology_files as terminology_files, LOCAL_RECORD_DIRS as LOCAL_RECORD_DIRS, local_record as local_record, forbidden_terms as forbidden_terms, term_pattern as term_pattern, term_hits as term_hits
-from doc_check_context import DOC_TYPES, HOST
+from doc_check_context import DOC_TYPES, HOST, work_tree, agent_configuration
 PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
 MAX_REPORTED = 20
 CELL_SEPARATOR = re.compile(r"(?<!\\)\|")
@@ -147,7 +149,7 @@ def main():
     hits = term_hits(path, written_text(tool_input))
     if hits:
         warnings.append("Forbidden term in written text (allowed only as an exception the rule names):\n  " + "\n  ".join(hits[:MAX_REPORTED]))
-    if path.suffix == ".md" and not local_record(path) and not {".claude", ".codex"}.intersection(path.parts):
+    if path.suffix == ".md" and work_tree(path) is not None and not local_record(path) and not agent_configuration(path):
         agent_paths = [f"{path.name}:{number}" for number, line in enumerate(path.read_text().splitlines(), 1)
                        if AGENT_CONFIG.search(line)]
         if agent_paths:

@@ -15,7 +15,7 @@ These rules bind every surface the agent writes, with no exception: chat replies
 - Every technical term comes from the task domain or the repository vocabulary. The project may narrow the allowed domains through `domain.allowed`.
 - Never borrow a term from an unrelated domain as a metaphor for a technical concept. Before writing a term, check that its source field belongs to the task domain or the repository vocabulary.
 - Never coin a term, label, or metaphor the codebase does not already use. Selection of an existing source name follows `rules/docs/glossary.md` Name Sources and Naming Steps.
-- Never translate a metaphor word for word across languages. The project parameter `terminology.substitutions` supplies forbidden words, replacements, scope and exemptions. `hooks/doc_check.py` reports them in written files.
+- Never translate a metaphor word for word across languages. The project parameter `terminology.substitutions` supplies forbidden words, replacements, scope and exemptions. `hooks/doc_check.py` reports each use of a forbidden word outside its exemptions in written files. A substitution marked `check: review` applies only where the text is about its subject, which no word match can tell; review checks it and the hook skips it.
 
 ## Established Terms
 

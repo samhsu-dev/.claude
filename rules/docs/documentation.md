@@ -20,9 +20,9 @@ Documents split by responsibility use prefix naming:
 
 Each split file follows the same rules as its single-file counterpart. One concern per file. Glossary layout: `rules/docs/glossary.md`.
 
-Single doc file: 200 lines max (`hooks/doc_check.py` reports an overrun). Exceeds limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `concept-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
+Every Markdown file in a repository: 200 lines max; `SKILL.md` follows `rules/meta/skilling.md` (`hooks/doc_check.py` reports an overrun of either). A document that exceeds the limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `concept-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
 
-A product repository document never names an agent rule, skill, or hook, or any path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`. The agent configuration is not part of the product repository; a document states the convention it follows in its own words (`hooks/doc_check.py` reports such a path). The agent configuration's own documentation is exempt.
+A product repository document never names an agent rule, skill, or hook, or any path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`. The agent configuration is not part of the product repository; a document states the convention it follows in its own words. The agent configuration's own documentation is exempt, and so is a local record (`rules/workflow/records.md`); `hooks/doc_check.py` reports a named configuration path in every other Markdown file of a Git work tree.
 
 ## Ownership
 

@@ -1,4 +1,8 @@
-"""Data and context helpers for doc_check.py. No command runs at import."""
+"""Data and context helpers for doc_check.py. No command runs at import.
+
+Implements the checks of rules/docs/documentation.md Naming (line limit, agent-configuration paths),
+rules/meta/skilling.md (SKILL.md line limit) and rules/communication/terminology.md Domain (forbidden words).
+"""
 import os
 import re
 from pathlib import Path
@@ -15,11 +19,18 @@ VALUE_FILES = tuple(
 DOC_TYPES = re.compile(r"^(concept|model|design|spec|impl|glossary)(-[\w-]+)?\.md$")
 CODE_SPAN = re.compile(r"`[^`\n]*`")
 AGENT_CONFIG = re.compile(r"(?<![\w.])~?/?\.(?:claude|codex)/")
+def work_tree(path):
+    """The Git work tree holding path, or None; a linked worktree marks its root with a .git file."""
+    return next((d for d in path.parents if (d / ".git").exists()), None)
+def agent_configuration(path):
+    """A file of an agent configuration: under a .claude or .codex directory, or in a work tree rooted at one."""
+    tree = work_tree(path)
+    return bool({".claude", ".codex"}.intersection(path.parts)) or (tree is not None and tree.name in {".claude", ".codex"})
 def line_limit(path):
-    """Line limit for the file, or None when it has none."""
+    """Line limit for the file, or None when it has none: SKILL.md 500, any other Markdown file in a work tree 200."""
     if path.name == "SKILL.md":
         return 500
-    if DOC_TYPES.match(path.name) or path.name in {"CLAUDE.md", "AGENTS.md"} or any(f"/.{host}/rules/" in str(path) for host in ("claude", "codex")):
+    if path.suffix == ".md" and (work_tree(path) is not None or any(f"/.{host}/rules/" in str(path) for host in ("claude", "codex"))):
         return 200
     return None
 def written_text(tool_input):
@@ -45,13 +56,19 @@ def local_record(path):
     """A file of a local record directory, `docs/decisions/`, `docs/todo/` or `docs/audit/`, which is never committed."""
     return path.parent.name in LOCAL_RECORD_DIRS and path.parent.parent.name == "docs"
 def forbidden_terms(rule_file):
-    """Forbidden terms and their exemptions from the fixed markdown section."""
+    """Forbidden terms and their exemptions from the fixed markdown section.
+
+    A substitution with `check: review` is skipped: its scope depends on what the text is about,
+    which only a reviewer can tell. Every other substitution applies to each use of the word.
+    """
     values = fields(rule_file, "Forbidden Substitutions")
     terms = []
     for key, term in values.items():
         if ".forbidden." in key:
-            prefix = key.split(".forbidden.")[0] + ".exemptions."
-            terms.append((term, [text for name, text in values.items() if name.startswith(prefix)]))
+            entry = key.split(".forbidden.")[0]
+            if values.get(entry + ".check") == "review":
+                continue
+            terms.append((term, [text for name, text in values.items() if name.startswith(entry + ".exemptions.")]))
     return terms
 
 def bibliography_path(repository: Path) -> Path:
