@@ -93,10 +93,10 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Single access path for optional/variant fields.
 - Same violation → same exception type at same layer.
 
-## Contract-Preserving Changes
-- Scope and root-cause correction follow `workflow/change-policy.md`. Integrate the correction with the existing ownership, types and callers.
+## No Patch-Style Code
+- Every change integrates as if written from scratch, at the rule, mechanism or data that produces the fault, within the existing ownership, types and callers. No "add a check here" band-aid.
 - No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
-- A branch expresses an accepted input distinction or contract. A caller-specific exception that conceals a violated shared contract is rejected.
+- No conditional branch added solely to handle one caller's edge case; a branch expresses an input distinction the contract defines, otherwise the design is fixed.
 - Controlled-code adapters: API Design.
 - No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
@@ -104,8 +104,8 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 Before completing a coherent change, review its diff and affected contracts for:
 1. Check Code Structure and Code Smells.
 2. Check Bug Prevention.
-3. Check Contract-Preserving Changes.
-Fix introduced violations and failures of the accepted requirements. Report unrelated findings without expanding the change; retain required repository checks.
+3. Check No Patch-Style Code.
+Fix every finding in the changed code and its affected contracts before the change is complete. A finding in untouched code goes to the module's task doc.
 
 ## API Design
 - Error signaling: Error Handling.

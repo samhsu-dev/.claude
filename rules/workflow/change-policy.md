@@ -12,7 +12,7 @@
 ## Correctness and Verification
 
 - No guessing. Verify via documentation, source code, or test. If unverifiable, ask.
-- Trace a fault to the rule, mechanism or data that produces it and correct that cause within the accepted scope. Check all affected callers and contracts. A local correction is valid when it restores the contract; masking the failure or creating inconsistent parallel behavior is rejected.
+- Trace a fault to the rule, mechanism or data that produces it and correct it there; one change covers every item sharing that cause. Check all affected callers and contracts. Masking the failure, a caller-specific guard or a parallel mechanism beside the existing one is rejected.
 - Before review, identify the sites governed by changed invariants across the diff and its affected callers. Verify every identified site and cover distinct affected behaviors with tests. Send the site list with the diff.
 - Compare behavior and required quality and resource constraints with the integration base using tests or measurements. A regression of an accepted constraint goes to the user unless an existing decision authorizes the tradeoff. Removing what the same branch added creates no loss against that base.
 - Use project-defined metrics and phases when assessing a resource-sensitive change. Report the evidence supporting the claimed impact.
