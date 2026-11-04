@@ -12,7 +12,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Use guard clauses and early returns. Maximum two indentation levels in a function body.
 - `continue` over nested `if` in loops.
 - Use `break` when the loop stopping condition holds.
-- No boolean parameters that switch behavior — split into two functions.
+- A boolean parameter that selects between two behaviors, each with its own callers, becomes two functions.
 - No flag variables tracking state across a loop — extract to function or use early exit.
 
 ## Error Handling
@@ -72,7 +72,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## Resource Management
 
 - Scoped resource use: Bug Prevention.
-- No object construction in loop bodies. Move construction before the loop.
+- Move object construction before a loop when every iteration can share the object and a measurement shows its allocation cost.
 - Consult a mechanism's existing valid cache before expensive work. Representation ownership follows `docs/design.md` Design principles.
 
 ## Documentation

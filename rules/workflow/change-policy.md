@@ -11,9 +11,9 @@
 
 ## Correctness and Verification
 
-- No guessing. Verify via documentation, source code, or test. If unverifiable, ask.
-- Trace a fault to the rule, mechanism or data that produces it and correct it there; one change covers every item sharing that cause. Check all affected callers and contracts. Masking the failure, a caller-specific guard or a parallel mechanism beside the existing one is rejected.
-- Before review, identify the sites governed by changed invariants across the diff and its affected callers. Verify every identified site and cover distinct affected behaviors with tests. Send the site list with the diff.
+- No guessing. Verify each claim the result depends on via documentation, source code, or test. Ask when missing evidence blocks the work; otherwise report the unverified point and continue the work it does not affect.
+- Trace a fault to the rule, mechanism or data that produces it and correct it there; one change covers every item sharing that cause. Check all affected callers and contracts. Masking the failure, a caller-specific guard or a parallel mechanism beside the existing one is rejected. The correction stays within the accepted behavior; a cause outside the task's scope is reported, not redesigned.
+- For a change that alters an invariant, identify before review the sites it governs across the diff and its affected callers. Verify every identified site and cover distinct affected behaviors with tests. Send the site list with the diff.
 - Compare behavior and required quality and resource constraints with the integration base using tests or measurements. A regression of an accepted constraint goes to the user unless an existing decision authorizes the tradeoff. Removing what the same branch added creates no loss against that base.
 - Use project-defined metrics and phases when assessing a resource-sensitive change. Report the evidence supporting the claimed impact.
 
@@ -30,5 +30,5 @@
 
 - Before changing or removing a component, read the code that implements it to establish the actual division of labor. Never infer responsibility from names, docstrings, or an adjacent doc sentence.
 - Choose tools and automation under Outcome and Scope. An auxiliary tool supports the accepted inputs; expanding its input domain is a separate scope decision.
-- No backward-compatibility requirements.
+- No backward-compatibility requirement unless the project values state one.
 - Return types, signatures, behavior and public API change only within user authorization or the agent authority assigned by `workflow/decisions.md`.

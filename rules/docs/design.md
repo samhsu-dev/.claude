@@ -58,8 +58,8 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 The maintainer reloads context each session and trusts types over execution. Design for that reader.
 
-- Domain wrappers and argument grouping: `code/quality.md`. A closed-value scalar uses an enum. A distinct concern becomes its own type.
-- **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`input_`, `output_`) is two concepts.
+- Domain wrappers and argument grouping: `code/quality.md`. A closed-value scalar uses an enum. A distinct concern with its own owner or invariant becomes its own type.
+- **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`input_`, `output_`) is two concepts; split it when the groups have separate owners or invariants.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
 - Granularity follows `code/organization.md` File Responsibility and `code/quality.md` Code Smells.
 - **Contract lives in types** — Named fields over optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
@@ -70,7 +70,7 @@ The maintainer reloads context each session and trusts types over execution. Des
 ## 3. Architectural constraints
 
 - Dependencies are one-way: A uses B → B must not use A.
-- Data holders contain only primitives, enums, or other data holders.
-- One orchestrator per workflow. Helpers are stateless and receive inputs by argument.
-- Files with shared concern grouped into one directory as an internal submodule. One public entry point per directory.
+- Data holders contain only primitives, enums, or other data holders, unless a field's owner requires a reference to a behavior type.
+- A workflow of several steps has one orchestrator. A helper holds no state unless it owns that state's invariant, and receives inputs by argument.
+- When several files share a concern, group them into one directory as an internal submodule with one public entry point.
 - External API verification and recording: `docs/impl.md`.
