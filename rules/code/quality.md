@@ -42,7 +42,7 @@ Python-specific rules and toolchain. Extends global `code/quality.md`. PEP 8 / P
 
 ## Performance Idioms
 
-- `set` / `dict` for membership tests.
+- `set` / `dict` for membership tests repeated on a collection whose size grows with the input.
 - Generator expressions for single-pass. List comprehensions for reuse.
 - `''.join(parts)` in loops. Not `+=`.
 - `tuple` / `frozenset` for fixed data.
