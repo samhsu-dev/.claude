@@ -17,6 +17,15 @@
 - Compare behavior and required quality and resource constraints with the integration base using tests or measurements. A regression of an accepted constraint goes to the user unless an existing decision authorizes the tradeoff. Removing what the same branch added creates no loss against that base.
 - Use project-defined metrics and phases when assessing a resource-sensitive change. Report the evidence supporting the claimed impact.
 
+## Early Cost Checks
+
+- This section applies to a core query, traversal, rollback, cache or context-expansion change whose added work grows with a dimension beyond the items the operation already processes, such as paths, labels, states, buffers or contexts. A local change is exempt.
+- Before coding, record a structural forecast: work per operation, growth dimensions, the current cost baseline from measurements or existing code, and the configured resource bound at which the prototype stops. A delegated task's brief carries the forecast; no performance proof precedes coding.
+- The prototype brief states its correctness checks, the fixed target workload, the unrelated input dimensions, pass and stop conditions, and the source and result evidence to retain.
+- At the first runnable prototype, check correctness, then hold the target workload fixed while growing unrelated inputs, and record query, traversal and state counts and memory use.
+- A failed correctness or growth check keeps a reproducible counterexample and the prototype evidence and stops that candidate; shrink or redesign it before starting another.
+- A passing prototype establishes a candidate, not delivery. Delivery requires the complete acceptance checks and quality gate; a task that targets detection or product effects verifies the impact on the real consuming path before a delivery claim.
+
 ## Implementation
 
 - Before changing or removing a component, read the code that implements it to establish the actual division of labor. Never infer responsibility from names, docstrings, or an adjacent doc sentence.
