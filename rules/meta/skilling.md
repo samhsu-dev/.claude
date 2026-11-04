@@ -6,7 +6,7 @@ paths:
 
 # Skill Writing Standards
 
-A skill is a prompt template injected into conversation when invoked. Not code, not a function.
+A skill is instructions and bundled resources that load into the conversation when invoked; its commands and scripts run through session tools under the session's permissions. Field and variable reference: [Extend Claude with skills](https://code.claude.com/docs/en/skills).
 
 ---
 
@@ -23,45 +23,21 @@ skill-name/
 - Reference files via `${CLAUDE_SKILL_DIR}/path`. Claude does not discover unreferenced files.
 - `SKILL.md` under 500 lines.
 
-## Frontmatter
+## Frontmatter and Variables
 
-| Field | Type | Default | Purpose |
-|-------|------|---------|---------|
-| `name` | string | dir name | `/name` invocation. Lowercase, hyphens, max 64 chars. |
-| `description` | string | first paragraph | Auto-trigger judgment; see Description Rules. |
-| `allowed-tools` | string/list | session perms | Pre-approved tools; see Constraints. |
-| `argument-hint` | string | none | Autocomplete hint. |
-| `disable-model-invocation` | bool | `false` | `true` = user-only, Claude cannot auto-trigger. |
-| `user-invocable` | bool | `true` | `false` = Claude-only, hidden from `/` menu. |
-| `paths` | string/list | none | Glob filter. Skill loads only for matching files. |
-| `model` | string | session | Override model. |
-| `effort` | enum | session | `low` / `medium` / `high` / `max`. |
-| `context` | string | inline | `fork` = isolated subagent. |
-| `agent` | string | general-purpose | Subagent type for `context: fork`. |
-| `shell` | enum | `bash` | Shell for preprocessing. |
-
-### Constraints
-
+- Every field is optional; give `description`. Field meanings, defaults and substitution variables follow the reference above, not a local copy.
 - `disable-model-invocation: true` + `user-invocable: false` = contradictory. Never combine.
 - `context: fork` without actionable task = empty output.
-- `allowed-tools` accepts tool names only. `Bash(npm *)` is invalid.
-
-## Variables
-
-| Variable | Value |
-|----------|-------|
-| `$ARGUMENTS` | All args. Auto-appended if absent. |
-| `$ARGUMENTS[N]` / `$N` | Nth arg (0-indexed). |
-| `${CLAUDE_SESSION_ID}` | Session UUID. |
-| `${CLAUDE_SKILL_DIR}` | Skill directory absolute path. |
+- `allowed-tools` pre-approves the listed tools, including `Bash(pattern)` specifiers, for the invoking turn. It restricts nothing; settings deny and ask rules still apply.
+- `effort` takes a level the session model supports: `low`, `medium`, `high`, `xhigh` or `max`.
 
 ## Shell Preprocessing
 
 `` !`command` `` executes before Claude sees content. Output replaces placeholder.
 
-- Runs as the current OS user with full permissions.
-- Failed commands produce empty replacement.
-- Disabled by policy: `"disableSkillShellExecution": true`.
+- Each command is checked against permission rules. A deny match, or a command not allowed outside auto mode, aborts the invocation.
+- A failed command aborts the whole invocation; exit 1 is tolerated for search and comparison commands.
+- Disabled by policy: `"disableSkillShellExecution": true` replaces each command with a disabled notice; bundled and managed skills are unaffected.
 
 ---
 
@@ -102,19 +78,15 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 ### Threat Model
 
-Skills run with the user's full OS permissions. A malicious skill can:
-- Read any file (`~/.ssh`, `~/.aws`, `.env`) via `Read` or `Bash(cat)`.
+Skills act through session tools within the session's permissions. A malicious skill can attempt to:
+- Read files such as `~/.ssh`, `~/.aws` or `.env` via `Read` or `Bash(cat)` when permissions allow.
 - Exfiltrate data via `WebFetch`, `Bash(curl)`, or MCP tools.
 - Modify git history, install packages, create persistence.
 - Shell preprocessing (`` !`cmd` ``) runs before Claude sees anything.
 
 ### allowed-tools Rules
 
-- List only tools the procedure uses. No extras.
-- Never grant bare `Bash` unless the skill requires arbitrary shell. Use `Read`/`Write`/`Grep` instead.
-- `WebFetch` = network access. Grant only when HTTP fetch is the skill's purpose.
-- Pre-approval bypasses user confirmation. Over-permitting = reduced oversight.
-- `allowed-tools` cannot override deny rules in settings.json. Deny always wins.
+- Pre-approve only tools the procedure uses, narrowest specifier first (`Bash(git status *)` over bare `Bash`; `WebFetch` only when HTTP fetch is the skill's purpose). Pre-approval skips confirmation; settings permissions remain the boundary.
 
 ### Shell Preprocessing Rules
 
@@ -132,12 +104,14 @@ Skills run with the user's full OS permissions. A malicious skill can:
 
 ### Trust Levels
 
-| Scope | Location | Trust | Risk |
-|-------|----------|-------|------|
-| Personal | `~/.claude/skills/` | High | Applies to all projects |
-| Project | `.claude/skills/` | Medium | Anyone with repo access controls |
-| Plugin | marketplace install | Low | Unknown author |
-| Managed | enterprise policy | Highest | Admin-vetted |
+Trust follows provenance and the capabilities a skill is permitted, not its installation scope. A personal skill copied from an unknown author stays untrusted until audited.
+
+| Scope | Location | Reach |
+|-------|----------|-------|
+| Managed | enterprise policy | All users |
+| Personal | `~/.claude/skills/` | All projects |
+| Project | `.claude/skills/` | Anyone with repo access controls it |
+| Plugin | marketplace install | Namespaced `/plugin-name:skill-name` |
 
 ### Audit Checklist (before installing external skills)
 
@@ -176,14 +150,7 @@ Invoked as `/plugin-name:skill-name`.
 
 ## Discovery & Priority
 
-| Scope | Priority |
-|-------|----------|
-| Enterprise managed | highest |
-| Personal `~/.claude/skills/` | high |
-| Project `.claude/skills/` | medium |
-| Plugin | lowest |
-
-Same-name: higher scope wins, no merging. Live reload on file change.
+- Same-name skills: enterprise overrides personal, personal overrides project; no merging. Plugin skills are namespaced, so they never collide. Live reload on file change.
 
 ## Verification
 
