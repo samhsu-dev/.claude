@@ -1,0 +1,5 @@
+#!/bin/sh
+# Git hook: runs the jobs of lefthook.yml beside this file for the hook named by this file.
+HOOKS_DIR=$(cd "$(dirname "$0")" && pwd)
+export HOOKS_DIR
+LEFTHOOK_CONFIG="$HOOKS_DIR/lefthook.yml" exec lefthook run --no-auto-install "$(basename "$0")" "$@"

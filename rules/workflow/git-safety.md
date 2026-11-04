@@ -4,7 +4,7 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 
 ## Prohibited Operations
 
-- Never `git reset`, `checkout --`/`.`/`-f`, `restore`, `clean`, `stash`, `push --force`/`-f`/`--force-with-lease`, `branch -D`, `rebase -i`, `commit --amend`, `add -A`/`.`. `hooks/git_guard.py` blocks each one; a block is never worked around.
+- `hooks/git_guard.py` blocks the operations that discard work, rewrite history or skip the Git hooks, and names the safe alternative; a block is never worked around.
 
 ## Publication
 

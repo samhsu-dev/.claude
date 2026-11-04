@@ -1,0 +1,18 @@
+# Git hooks of rules/workflow/committing.md for every repository whose Git configuration sets
+# core.hooksPath to this directory. A repository opts into a linter by committing its config file.
+output:
+  - failure
+  - execution_info
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: commitlint --config "$HOOKS_DIR/commitlint.config.mjs" --edit {1}
+pre-commit:
+  parallel: true
+  jobs:
+    - name: markdownlint
+      glob: "*.md"
+      run: test ! -f .markdownlint-cli2.jsonc || markdownlint-cli2 {staged_files}
+    - name: cspell
+      glob: "*.md"
+      run: test ! -f cspell.json || cspell --no-progress --no-summary --no-must-find-files {staged_files}

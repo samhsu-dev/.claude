@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""PreToolUse hook for Bash: blocks the git operations of rules/workflow/git-safety.md,
-commit messages that break rules/workflow/committing.md, a `git add` or `git commit` of a path
-that rules/workflow/committing.md Staging never commits, and AI attribution in `gh pr create`
-and `gh pr edit` bodies.
+"""PreToolUse hook for Bash: blocks the git operations of rules/workflow/git-safety.md, a bypass
+of the Git hooks in tools/git-hooks, a `git add` or `git commit` of a path that
+rules/workflow/committing.md Staging never commits, and AI attribution in `gh pr create` and
+`gh pr edit` bodies. The commit-msg hook of tools/git-hooks checks the commit message itself.
 
 A never-committed path is one the global Git ignore file excludes, asked of `git check-ignore`.
 A repository whose own ignore rules re-include the path (an agent configuration repository's
@@ -33,11 +33,13 @@ PROHIBITED = [
     (GIT + r"rebase\s+(?:.*\s)?(?:-i\b|--interactive\b)", "Interactive rebase can drop commits."),
     (GIT + r"commit\s+(?:.*\s)?--amend\b", "git commit --amend rewrites a commit. Create a fixup commit."),
     (GIT + r"add\s+(?:.*\s)?(?:-A\b|--all\b|\.(?:\s|$))", "Stage specific files by name, never git add -A or git add ."),
+    (GIT + r"(?:.*\s)?--no-verify\b", "--no-verify skips the Git hooks. Fix what the hook reports."),
+    (GIT + r"commit\s+(?:.*\s)?-[a-zA-Z]*n[a-zA-Z]*\b", "git commit -n skips the Git hooks. Fix what the hook reports."),
+    (r"\bgit\s+(?:.*\s)?-c\s+core\.hooksPath\b|\bLEFTHOOK(?:_CONFIG)?=", "Overriding the Git hooks skips their checks. Fix what the hook reports."),
 ]
 
 TRAILER = re.compile(r"^\s*(Co-Authored-By|Signed-off-by|Claude-Session)\s*:", re.I | re.M)
 AI_MARK = re.compile(r"Generated with \[Claude Code\]|noreply@anthropic\.com|claude\.ai/code/session", re.I)
-SUBJECT = re.compile(r"^[a-z]+(\([^)]+\))?!?: \S")
 HEREDOC = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?[^\n]*\n(.*?)\n\s*\1\b", re.S)
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
 GH_PR = r"\bgh\s+pr\s+(?:create|edit)\b"
@@ -130,20 +132,6 @@ def staging_errors(command, cwd):
             "Leave them out of the index; `git rm --cached <path>` unstages a staged one (rules/workflow/committing.md Staging)."]
 
 
-def commit_subject(rest):
-    """First line of the commit message given by a heredoc or the first -m argument in `rest`, or None."""
-    doc = HEREDOC.search(rest)
-    message = re.search(r"(?:-m|--message)(?:\s+|=)('([^']*)'|\"((?:\\.|[^\"\\])*)\")", rest)
-    if doc and (not message or doc.start() < message.end()):
-        text = doc.group(2)
-    elif message:
-        text = message.group(2) if message.group(2) is not None else message.group(3)
-    else:
-        return None
-    lines = [line for line in text.splitlines() if line.strip()]
-    return lines[0].strip() if lines else None
-
-
 def file_text(rest, flags, cwd):
     """Text of the message file named by the first of `flags` in `rest`, or None for none or stdin."""
     found = re.search(FILE_ARG.format(flags), rest)
@@ -173,22 +161,7 @@ def check(command, cwd="."):
         body = command + "\n" + (file_text(rest, r"--body-file|-F", cwd) or "")
         if TRAILER.search(body) or AI_MARK.search(body):
             errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-    errors += staging_errors(command, cwd)
-    for invocation, rest, _ in invocations(command, "commit"):
-        message_file = file_text(rest, r"--file|-F", git_cwd(invocation, cwd))
-        message = rest + "\n" + (message_file or "")
-        if TRAILER.search(message) or AI_MARK.search(message):
-            errors.append("Commit message carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-        subject = commit_subject(rest)
-        if subject is None and message_file:
-            lines = [line for line in message_file.splitlines() if line.strip() and not line.startswith("#")]
-            subject = lines[0].strip() if lines else None
-        if subject is not None:
-            if len(subject) > 72:
-                errors.append(f"Commit subject is {len(subject)} chars; the limit is 72.")
-            if not SUBJECT.match(subject):
-                errors.append(f"Commit subject is not Conventional Commits `type[(scope)]: description`: {subject!r}")
-    return errors
+    return errors + staging_errors(command, cwd)
 
 
 def main():

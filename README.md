@@ -65,16 +65,33 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 ```json
 "PreToolUse": [{ "matcher": "Bash", "hooks": [
-  { "type": "command", "if": "Bash(git *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" },
-  { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"" }] }],
+  { "type": "command", "if": "Bash(git *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" },
+  { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" }] }],
 "PostToolUse": [{ "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command",
-  "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"" }] }]
+  "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"", "onFailure": "block" }] }]
 ```
+
+`"attribution": {"commit": "", "pr": "", "sessionUrl": false}` in the same file stops Claude Code from adding attribution lines.
 
 | Script | Event | Checks |
 |--------|-------|--------|
-| `hooks/git_guard.py` | before a git or `gh pr` command | Enforces `workflow/git-safety.md` and `workflow/committing.md`, including `-F` message files and pull request bodies |
+| `hooks/git_guard.py` | before a git or `gh pr` command | Blocks the operations of `workflow/git-safety.md`, Git hook bypasses, staging of never-committed paths and attribution in pull request bodies |
 | `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `rules/docs/`; reads project markdown values |
+
+### Git hooks
+
+`tools/git-hooks/` is a Git hooks directory run by [Lefthook](https://lefthook.dev): `commit-msg` checks the message with commitlint against `commitlint.config.mjs`, and `pre-commit` runs markdownlint-cli2 and CSpell on staged Markdown in a repository that commits `.markdownlint-cli2.jsonc` or `cspell.json`. It needs `lefthook`, `commitlint`, `markdownlint-cli2` and `cspell` on `PATH` (`brew install lefthook`; `npm install -g @commitlint/cli markdownlint-cli2 cspell`). A repository uses it when its Git configuration sets `core.hooksPath`; `~/.gitconfig` scopes that to the agent-managed repositories:
+
+```ini
+[includeIf "gitdir:~/.claude/.git/"]
+    path = ~/.config/git/agent-hooks
+[includeIf "gitdir:~/.codex/.git/"]
+    path = ~/.config/git/agent-hooks
+[includeIf "gitdir/i:~/Projects/Cobra/CobraPHP/.git/"]
+    path = ~/.config/git/agent-hooks
+```
+
+`~/.config/git/agent-hooks` holds `[core] hooksPath = <home>/.claude/tools/git-hooks`. A gitdir pattern covers the repository's linked worktrees and submodules, whose Git directories lie under it.
 
 ## Tools
 
