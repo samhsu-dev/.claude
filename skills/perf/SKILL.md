@@ -63,7 +63,7 @@ Run the project's benchmark suite. Capture fresh numbers.
 
 For each approved candidate, in priority order:
 
-1. One candidate at a time. No combining with refactors or cleanups.
+1. One candidate at a time, under `rules/workflow/performance.md`.
 2. Minimal change. Keep revertable.
 3. Note exact files touched.
 
@@ -91,7 +91,8 @@ Update the resolved module task record:
 
 - **KEEP**: Move candidate from Candidates to Completed Optimizations. Update Current Baseline.
 - **REVERT**: Move to Evaluated & Rejected. Record result and reason. Revert source files.
-- **SKIP**: Move to Evaluated & Rejected with "Not tested" and reason.
+- **SKIP**: Move to Evaluated & Rejected with the measured result and reason.
+- A candidate dropped before any measurement moves to Evaluated & Rejected with "Not tested" and reason.
 
 After round: update Remaining Bottlenecks and Key Insights.
 
@@ -109,14 +110,7 @@ After round: update Remaining Bottlenecks and Key Insights.
 
 ## Step 8 — Commit
 
-One optimization per commit. Use `/commit` skill or stage manually:
+Commit under `rules/workflow/performance.md`. Use `/commit` skill or stage manually:
 
 - **KEEP**: `perf(<ID>): <title>` — stage source only; keep the module task record uncommitted.
 - **REVERT**: revert through a new commit under `workflow/git-safety.md`; record the result in the uncommitted module task record.
-
-## Safety
-
-- Never combine optimization with unrelated changes.
-- Never skip measurement.
-- A measured regression follows `workflow/change-policy.md` Correctness and Verification.
-- Decision authority follows `workflow/decisions.md`; no new approval is required for work already authorized within that scope.
