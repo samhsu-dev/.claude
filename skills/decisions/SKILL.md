@@ -25,7 +25,7 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 - A Full core-choice draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
-- A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No chief and no rebuttal round.
+- A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No rebuttal round.
 - A missing fact becomes a follow-up question. A choice depending on it waits for the answer.
 
 ## Evidence Files

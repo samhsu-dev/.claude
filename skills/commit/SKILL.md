@@ -113,20 +113,8 @@ After all commits:
 
 ## Safety Rules (multi-agent environment)
 
-These are absolute prohibitions. No exceptions.
-
-- Never `git add -A` or `git add .`.
-- Never `git reset` (any form).
-- Never `git commit --amend`.
-- Never `git checkout -- <path>` or `git restore`.
-- Never `git stash`.
-- Never `git clean`.
-- Never `git push --force` or `git push -f`.
-- Never `git rebase -i`.
+- Prohibited git operations: `workflow/git-safety.md` Prohibited Operations; `hooks/git_guard.py` blocks them.
+- No push. A push follows `workflow/git-safety.md` Publication.
 - Stage and commit only files that belong to the current task.
 - If a file has changes from another agent's work, skip it and report to the user.
-
-## Attribution
-
-- No AI names, emails, or references in author, committer, or trailer fields.
-- No `Co-Authored-By`, `Signed-off-by`, or any trailer containing `Claude`, `AI`, or `Anthropic`.
+- Attribution: `workflow/committing.md` Attribution.

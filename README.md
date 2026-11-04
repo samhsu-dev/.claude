@@ -29,7 +29,7 @@ Skill procedures and usage triggers:
 | `/perf` | User asks to optimize or benchmark | Measurement-driven optimization pipeline |
 | `/debug` | User reports a bug or test failure | Reproduce-first investigation and fix protocol |
 | `/zotero-audit` | User asks to check or clean Zotero items | Read-only metadata audit against Crossref |
-| `/multi-agent` | Main agent dispatches, reviews, merges or consolidates delegated runs | Dispatch, review rounds, branch lifecycle, records, outage handling |
+| `/multi-agent` | Main agent dispatches, reviews, merges or consolidates delegated runs | Dispatch, review rounds, branch lifecycle, records, consolidation |
 | `/chain-session` | A brief makes the agent a chain session or a reviewer | Work loop, boundary questions, self-check, review checklist |
 | `/decisions` | A design question is open | Evidence preparation, decision runs, solution checks, question format, recording |
 

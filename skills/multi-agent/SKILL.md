@@ -1,6 +1,6 @@
 ---
 name: multi-agent
-description: Coordinate delegated runs as the main agent. Use before dispatching, briefing or resuming a run, choosing a review, merging a branch, after a module's documents are revised, at consolidation, in a credential outage, or after compaction.
+description: Coordinate delegated runs as the main agent. Use before dispatching, briefing or resuming a run, choosing a review, merging a branch, after a module's documents are revised, at consolidation, or after compaction.
 ---
 
 Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-agent.md`. Parameters `integration` and `execution` come from the project rule files `integration.md` and `execution.md` under `rules/project/`, and `algorithm.core_principles` from `decisions.md`.
@@ -41,7 +41,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 
 - Keep the residents of `rules/workflow/multi-agent.md` Context Economy: one for simple work and bookkeeping, one chain per related set of files, contracts or mechanisms, one reviewer per module under review. Queue tasks within each resident sequentially; every request names its current input revision and permitted write set.
 - After a merge, resume the chain session for the chain's next task; its brief carries the integration diff since its last commit.
-- After compaction, refresh the current task, decisions and revision from the progress record and continue. Replace a context when its assumptions are stale, unrelated work would dominate it, or repeated failures show it cannot reliably continue.
+- After compaction, refresh the current task, decisions and revision from the progress record and continue. A resident's context is replaced only under `rules/workflow/multi-agent.md` Context Economy.
 
 ## Review
 
@@ -52,7 +52,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 | Task mode | Check |
 |---|---|
 | Simple | Resident verifies the requested result; main agent checks the returned evidence |
-| Routine | Implementer checks affected behavior; main agent inspects the diff and evidence; a specific unresolved risk may receive a focused independent check |
+| Routine | Implementer checks affected behavior; main agent inspects the diff and evidence; an unresolved correctness or security risk escalates that part to Full |
 | Full | One independent review against accepted contracts and behavioral evidence; fixes within unchanged contracts take reproduction, applicable gate and main-agent diff checks |
 
 - Every mode retains required repository and integration checks. Reuse checks for the same revision; rerun affected checks after changes or new failures.
@@ -64,7 +64,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 - A branch takes at most two full reviews. After that only an S1 finding the diff introduces, shown by program output or a decided sentence, blocks its merge, and it closes through the main agent's reproduction, gate and diff checks.
 - A second introduced S1 after the full reviews stops the branch: the item goes to the user with its evidence instead of another fix round.
 - A finding outside the write set follows the deferred-finding classification below. A demonstrated regression of the accepted result remains blocking until a scoped repair or independently correct split removes it.
-- Route deferred findings by the project's acceptance criteria and configured `execution.triage` policy. A finding that shares an open task's cause joins that task; an unrelated improvement does not block the accepted result.
+- Route deferred findings by the project's acceptance criteria. A finding that shares an open task's cause joins that task; an unrelated improvement does not block the accepted result.
 
 ## Branch Lifecycle
 
@@ -85,7 +85,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 - A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
 - Update the run registry row on every notification.
 - A board dependency names the file or contract the row consumes from that row; an entry with neither is dropped.
-- The resident agent handles simple tasks in a reused context. Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
+- Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
 - After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
@@ -99,14 +99,6 @@ Task Modes determines review depth. A configured project review trigger may spec
 - For a blocking row, identify the contract, file or decided sentence each dependent consumes and the smallest independently correct delivery that provides it. Replace whole-row waits with that delivery when write sets are disjoint; remove an edge only after its contract is delivered.
 - After a task completes or a result integrates, lightly recheck affected rows for a shared cause, satisfied dependency, smaller delivery and newly available disjoint work. The periodic pass covers the whole board.
 - A row that implements a decided sentence closes only into a row that implements the same sentence.
-
-## Credential Outage
-
-- Before any run is held on a stop signal (expired credentials, an outage, a stale run), the signal is verified against the provider the session actually uses, from its environment settings, and against the progress of the running runs; an unconfirmed signal holds nothing.
-- Only for a provider whose sign-in session expires, a zero-token shell watcher, never a timed model turn, checks run liveness and the model provider's credentials. It wakes the main agent only for a stale run, a sign-in session about to end, or credentials restored after an outage.
-- Before the sign-in session ends: no new run on `execution.outage_provider` starts; each running write run on that provider commits its work in progress and every running run on it records its last finished step; the ledger takes a checkpoint entry, and the user is asked to sign in again.
-- During an outage, runs on `execution.continuing_provider` continue; nothing requiring a turn on `execution.outage_provider` is retried.
-- On restore, a recovery report lists each open row's state and every result landed since the outage start; each stopped run resumes in its own session from its checkpoint, and no finished work restarts.
 
 ## Model Routing
 
