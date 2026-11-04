@@ -17,7 +17,7 @@ Render `$1` as a self-contained HTML page in the editorial design system below. 
 
 Write one file with `<!doctype html>`, a `<title>` matching the document title, `<meta charset>` and `<meta name="viewport">`, and one `<style>` element holding the whole stylesheet.
 
-Inline `${CLAUDE_SKILL_DIR}/assets/document.css` into that `<style>` element. Read it and paste it. The page fetches nothing: no font CDN, no stylesheet link, no script, no remote image. Embed any image as a `data:` URI.
+Inline `${CLAUDE_SKILL_DIR}/assets/document.css` into that `<style>` element. Read it and paste it. Self-containment: `rules/docs/html.md` Self-Containment.
 
 Wrap the body content in `<article class="page">`.
 
@@ -38,7 +38,7 @@ The page reads as a technical report, in the register of institutional reference
 | Table | `.table-block` with a numbered `.caption`, `table` inside `.scroll`, numeric cells `.num`, key column `.k` |
 | Closing caveat | `p.closing` |
 
-Cross-references in prose use section numbers, never "above" or "below". Every table and exhibit carries a number and is referenced by it.
+A prose cross-reference keeps its target; a relative one such as "above" or "below" becomes that target's section number. Every table and exhibit carries a number and is referenced by it.
 
 Every block in the table above already exists in the stylesheet. Adding a new visual treatment means adding a rule, and a new rule is justified only by a shape the document repeats at least twice.
 
@@ -55,12 +55,12 @@ The rendering is the moment to remove templated prose. Rewrite, never delete con
 | Tell | Replacement |
 |---|---|
 | `Example is X. Their side: ... Our side: ...` | The `figure.exhibit` block, with the row identifier as the caption and each side labelled |
-| A paragraph opening with a fixed word such as `Double-check.` or `Note.` | The `.check` block, with the label carried by `.verdict` |
+| A paragraph opening with a fixed word such as `Double-check.` or `Note.` | An `.admonition` whose `.title` carries the fixed word as its label |
 | A heading that restates the section it sits in | The distinguishing half only |
 | Bold runs used to mark importance | Position and heading level |
 | Emoji, icons, decorative dividers | Removed |
 
-Preserve every quotation verbatim. Preserve every number, identifier, file path, and cross-reference exactly. Rewriting applies to connective prose only.
+Quotations, numbers, identifiers and paths carry over under `rules/docs/html.md` Derived Pages; a cross-reference keeps its target under Step 3.
 
 ## Step 5 — Verify
 
@@ -86,6 +86,6 @@ The typographic constants trace to Butterick's Practical Typography and the GOV.
 ## Rules
 
 - One source file, one output file. Never split a rendering across pages.
-- The Markdown is authoritative. A content correction is made in the Markdown and the page re-rendered.
+- Source authority and content corrections: `rules/docs/html.md` Derived Pages.
 - Never invent content to fill a layout. A block with no source material is removed, not padded.
 - Never edit `assets/document.css` to accommodate one document. Per-document deviation means the design system is wrong or the document is.
