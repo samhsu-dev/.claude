@@ -46,7 +46,7 @@ Except for the core terms governed by Naming Steps, a concept takes the name the
 An existing source name is selected in three steps, in order; the coinage prohibition in `communication/terminology.md` still applies:
 
 1. **Locate.** The structure the term belongs to — the model, graph, or table, and the element kind within it — gives the head noun.
-2. **Classify.** The semantics of the analyzed system fixes the term's locus: for a value in program analysis, the program point at which the language produces it.
+2. **Classify.** Identify the domain context that distinguishes the concept, such as its lifecycle stage or role in a process.
 3. **Name.** The name is the locus plus one role noun taken by Name Sources.
 
 - The terms of one locus share one role noun.
@@ -66,9 +66,9 @@ An existing source name is selected in three steps, in order; the coinage prohib
 
 ## Layers
 
-- Read glossary layers from general to specific in `glossary.layers` order. Without a project order, use architecture, infrastructure, analyzed-system model, one schema file per data structure (a graph, a model, a table) with its element types and their attributes, core algorithm, analysis semantics, phase procedures and outputs.
-- An element type of a structure, or an attribute of one, goes to that structure's schema file. A rule for writing a structure goes to infrastructure. A step of one phase goes to that phase's procedure file.
-- Any other entry goes to the file of the concern its Definition states, whatever structure its Is a names. A semantic term whose Is a is an AST node type, such as a read of a variable, stays with its concern, not in the AST schema file.
+- Read glossary concerns in configured `glossary.layers` order. Without that value, follow the documentation's dependency order; no domain-specific layer order is assumed.
+- An element type or attribute belongs to its structure's schema; a process step belongs to its process concern.
+- Other entries belong to the concern their Definition states, independently of the structure named by Is a.
 
 ## Entry
 
@@ -119,7 +119,7 @@ One entry per term: an H3 heading followed by fields in this order.
 ## Project Values
 
 - Apply `glossary.literature_min_year` and `glossary.naming_cutoff_work` when selecting naming sources.
-- A paper later than the cutoff work is similar at most; it is never a name source.
+- When a naming cutoff is configured, a paper later than that work is similar at most; it is never a name source.
 - Check the counterparts in `glossary.tools` for the same or a similar concept.
 - Include a paper meeting `glossary.literature_min_year` and an industrial counterpart when each exists.
 - Locate and Classify use `glossary.head_kinds` and `glossary.loci`.

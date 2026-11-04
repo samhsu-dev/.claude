@@ -11,11 +11,11 @@ allowed-tools:
 argument-hint: "[optional target file, function, or optimization ID]"
 ---
 
-Run the 8-step performance optimization pipeline. Resolve the affected module's task record under the native entrypoint's Local Records once and use that path for every record read/write in this procedure. The native entrypoint is `CLAUDE.md`.
+Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task record under the native entrypoint's Local Records once and use that path for every record read/write in this procedure. The native entrypoint is `CLAUDE.md`.
 
 ## Step 1 — Identify Candidates
 
-Analyze code for optimization opportunities. If `$ARGUMENTS` specifies a target, focus there. Otherwise scan changed files.
+Analyze code for optimization opportunities. If the user supplies a target, focus there. Otherwise scan changed files.
 
 Look for:
 - Unnecessary allocations (object creation, copies, boxing).
@@ -44,20 +44,20 @@ Record each candidate:
 
 Sort: bug fixes first, then high to low. Same priority: lower risk first, smaller diff first.
 
-Present the ranked list to the user. Wait for approval before proceeding.
+Present the ranked list. Existing authorization covers candidates within the accepted scope; an expanded scope or an unauthorized constraint tradeoff goes to the user under `workflow/decisions.md`.
 
 ## Step 3 — Baseline
 
 Run the project's benchmark suite. Capture fresh numbers.
 
-- If the resolved module task record has a recorded baseline, compare. Differ >5% → update and investigate before proceeding.
+- Compare an existing baseline with fresh measurements. Investigate a difference that exceeds measured variability and affects the conclusion.
 - If no baseline exists, record this as the initial baseline.
 
 ### Benchmark Reliability
 
 - 3+ independent runs. Report median.
 - Warm-up phase: 3-5 iterations discarded.
-- < 3% variation is noise. > 5% is meaningful.
+- Assess variability and improvement under `rules/workflow/performance.md`; apply configured acceptance thresholds.
 
 ## Step 4 — Implement
 
@@ -69,18 +69,17 @@ For each approved candidate, in priority order:
 
 ## Step 5 — Measure
 
-Run full benchmark suite after each change.
+Run the required benchmark suite and affected checks after each coherent change; retain any project-mandated full suite.
 
-- Compare **all** metrics against previous state, not just the targeted metric.
+- Compare the target metric and accepted quality and resource constraints against the baseline.
 - Check for cross-component regressions.
 
 ## Step 6 — Decide
 
 | Target metric | Other metrics | Decision |
 |--------------|---------------|----------|
-| Improved | No regression (< -3%) | **KEEP** |
-| Improved | Minor regression (3-10%) non-critical | **KEEP with note** |
-| Improved | Regression (> 10%) anywhere | **REVERT** |
+| Improved | Accepted constraints hold | **KEEP** |
+| Improved | An accepted constraint regresses | Ask the user unless an existing decision authorizes the tradeoff; otherwise reject |
 | No change | No regression | **KEEP** if bug fix, **SKIP** if pure optimization |
 | Degraded | Any | **REVERT** |
 
@@ -119,5 +118,5 @@ One optimization per commit. Use `/commit` skill or stage manually:
 
 - Never combine optimization with unrelated changes.
 - Never skip measurement.
-- Never keep an optimization that causes >10% regression anywhere.
-- All decisions require user approval.
+- A measured regression follows `workflow/change-policy.md` Correctness and Verification.
+- Decision authority follows `workflow/decisions.md`; no new approval is required for work already authorized within that scope.

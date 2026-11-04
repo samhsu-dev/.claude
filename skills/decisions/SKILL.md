@@ -7,13 +7,13 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 
 ## Evidence Preparation
 
-1. Read affected local decision entries and every affected module's documents, including modules whose data an option reads or writes.
+1. Apply `workflow/change-policy.md` Outcome and Scope. Read the owning documents and decision entries for the affected contracts, including a producer or consumer whose contract an option changes.
 2. Read the glossary entry for each concept through `glossary.path`.
-3. Search history for each concept. Use `git log -S '<term>' --oneline -- <documentation-paths> <source-paths>` and `git log --grep='<term>' --oneline`. Paths come from `paths`.
-4. Read deleted text for every history hit with `git show <commit>^:<path>`. For a root commit, inspect its diff against the empty tree.
+3. Search history when current owners and records leave an authority or behavior premise unresolved. Use scoped `git log -S` or `git log --grep`; paths come from `paths`.
+4. Read the changes needed to resolve that premise. A history match alone creates no investigation obligation.
 5. Apply recorded decisions; never offer them again as open choices. Cite the decision entry and recording commit in the question.
 6. Check summary-derived or explicitly derived premises against owning documents before using them.
-7. When an option changes how a construct is treated, count each such construct and each omitted limitation case in `usage_corpus`. Record occurrences, projects and method. Keep its role distinct from `scoring_corpus`.
+7. When a decision depends on usage frequency, measure the affected cases in a configured usage corpus and record the counting method. A scoring corpus, when configured, retains its separate evaluation role.
 8. Gather missing facts once: a chain session in its own context and decision entry, a user-decidable item into its evidence file under Evidence Files below.
 
 ## Decision Runs
@@ -30,8 +30,8 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 
 ## Evidence Files
 
-- A user-decidable question keeps its facts in an evidence file in its task's working directory. Row fields, generic kinds and validation belong to `tools/evidence.py`; `evidence` binds the project meanings and reference runtime. One row holds one established fact.
-- A run reads the evidence file before it searches and writes new rows only in its own run directory. The main agent merges them with `tools/evidence.py merge`, which keeps one current row per kind and source and marks a row whose value disagrees with the kept one as a conflict; no model edits the merged file.
+- A user-decidable question keeps each established fact with its source and relevant input or version in the task's evidence record. Use a configured evidence schema and validator when present.
+- Read that record before gathering more facts. Consolidate contributions by source, retaining conflicts explicitly. This procedure requires no project-specific script or new evidence tool.
 - A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. A stage that relies on it reads the source again and writes a new row.
 - The first stage gathers the needed facts once; later stages cite fresh rows and add only missing facts.
 
@@ -40,9 +40,9 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 - Check the candidate against every decided contract and configured `algorithm` constraint.
 - Reuse and representation checks follow `rules/docs/design.md` Design principles. Inspect `algorithm.reuse_candidates` before adding data or a mechanism; apply `algorithm.reuse_example` to its named operation, relation and owners.
 - Root-cause and capability checks follow `rules/workflow/change-policy.md`.
-- Data flows only through `algorithm.allowed_data`. No unlisted flag, map or lookup bypasses it.
+- When `algorithm.allowed_data` is configured, data flows only through those structures; no additional representation bypasses that constraint.
 - Entities listed in `algorithm.immutable_entities` are never modified after creation.
-- Compare examples with `reference.command` on `reference.version`. Record the complete output and version.
+- Check examples against the configured reference command and version, or against the accepted contract when no reference runtime exists. Record the input, expected result and verification evidence.
 - A mismatch is a limitation under `rules/workflow/decisions.md` Authority; no failing option is silently treated as conforming.
 - Before offering a known limitation, survey literature, industrial tools, other fields, closed-form mathematics and known algorithms. Cite alternatives and remaining limits.
 - Check all affected items and boundary cases against research, repository conventions and recorded decisions.
@@ -52,11 +52,11 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 
 - Open with every affected recorded constraint and its commit, then every recorded edge case with its example.
 - Name the documents and commits reviewed.
-- Every question and option list includes a minimal example and complete real reference output in readable multi-line form.
-- Each option states its reported result, precision, recall and cost per configured phase against the current design.
+- Every question and option list includes a minimal example, its expected result and supporting evidence; include complete reference output when a reference run supplies that evidence.
+- Each option states its observable result and effects on required quality and resource constraints against the current design, using configured metrics and phases.
 - Each option states that it keeps earlier decisions or quotes the sentence it changes with its commit.
 - Recommend a revision only when a reference example contradicts the earlier sentence.
-- State the usage counts from Evidence Preparation.
+- Include the impact measurements the decision relies on.
 - End with a discussion option and name one recommended option.
 
 ## Recording

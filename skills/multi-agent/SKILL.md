@@ -34,7 +34,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 ## Boundary Questions
 
 - Answer a chain session's question in that same session, by resume or message; never stop and relaunch it.
-- Widen the write set when no running task writes the files the answer needs; otherwise order the item after that task.
+- Widen the write set only for a prerequisite of the accepted result, within existing authorization and with no concurrent writer; otherwise keep the item separate or order it after its dependency.
 - Take a user-decidable question to the user under skill `decisions`.
 
 ## Chains
@@ -70,11 +70,11 @@ Task Modes determines review depth. A configured project review trigger may spec
 
 - Cut each worktree and branch from the `integration.branch` head, with every submodule at the commit that head records, outside the repository folder, since an editor opened on the repository indexes the whole folder.
 - A finished part whose gate and review pass merges that day; a part that waits on a decision or another row splits into its own row and never holds the finished part.
-- A task branch merges within `integration.branch_lifetime` of its cut. Size each row to fit it; a branch still open at that age goes to the next consolidation, which merges its finished part and splits the rest.
+- When `integration.branch_lifetime` is configured, size tasks to fit it; an older branch goes to the next consolidation, which merges its finished part and splits the rest.
 - Name a branch by `integration.task_branch_pattern`; its `branch.<name>.description` holds the task ID, the goal and the session handle.
 - After an interruption, commit the run's work in progress on its branch.
-- During implementation, submodule commits are pushed only to the task-named branch. At integration, fast-forward each submodule's `integration.submodule_branch` to the commit the superproject records and push it before `integration.branch`; a failed fast-forward goes to the user.
-- Rebase a finished branch in place onto `integration.branch`, under its own name. After its gate and review pass, fast-forward `integration.branch` to it and run the full gate. Before each push, fetch and rebase onto `integration.upstream`; never push unresolved conflicts.
+- Only the main agent publishes, under `workflow/git-safety.md` Publication and configured project policy. When publication is authorized, publish task submodule commits to the configured task branch; at integration, fast-forward each configured submodule branch and publish it before its superproject. A failed fast-forward goes to the user.
+- The main agent integrates a finished branch using the configured project integration policy and Git safety rules. After its gate and review pass, run the required integration checks. Publication follows `workflow/git-safety.md`; never resolve conflicts or publish without the required authorization.
 - After the full gate, remove the worktree once its tracked, untracked and ignored files and every submodule are clean or disposable build output. A task-named submodule branch goes only after its commits reach `integration.submodule_branch`.
 - After every merge, reconcile branches absent from the open board line by line against integration; recover or explain missing content. A rejected implementation's branch stays only while a board row names it as reference.
 
@@ -90,7 +90,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes, per task, runs launched, resumptions, fix rounds, review rounds, `execution.token_measure` and wall time from git and the run logs.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
-- A daily retrospective names the largest process problem with its numbers, counts the decisions a later review overturned, and applies at most one change.
+- When the user requests a retrospective or a configured project schedule calls for one, use the recorded evidence to identify a process problem and evaluate a scoped change. No default recurring task is created.
 
 ## Consolidation
 

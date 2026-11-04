@@ -10,8 +10,8 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 1. Read every sentence the brief quotes in its own file, and implement every quoted sentence.
 2. Append each finished step to the progress file in the run directory, so a stopped session resumes from its last step.
 3. Decide and record each agent-decidable design question under skill `decisions`.
-4. For an algorithmic task, before any code, run a root-cause probe: run the reference programs on the head, locate the rule, mechanism or data that produces the fault, and confirm it lies inside the write set. A cause outside it is a boundary question before any code.
-5. Write the test first.
+4. Apply `workflow/change-policy.md` Outcome and Scope. For a defect, locate its producing rule, mechanism or data using the reference evidence; run a probe when that cause is not established. A necessary repair outside the write set is a boundary question before editing it.
+5. For new or changed behavior, write the relevant test before implementation; a behavioral defect requires a failing reproduction under `code/testing.md`. For documentation, formatting or other reversible changes without changed behavior, use applicable checks without creating implementation-mirroring tests.
 6. Implement. A distinct mechanism beside an existing one for the same or a similar problem needs evidence that the problem differs and a rationale in its owning document.
 7. Run the affected checks required by the assigned task mode and project gate. Reuse passing evidence for an unchanged revision; required integration checks remain mandatory.
 8. Commit before you return, red work under a `wip:` subject. A pointer bump and its dependent consumer change share one commit.
@@ -34,10 +34,10 @@ Carry one task chain from reading to merge-ready in its own worktree, or review 
 - A decided sentence is read at the integration base, never at the branch head. A diff that changes or removes a sentence stating a user decision, without a user directive the brief quotes, is S1.
 - Severity: S1 a result the reference output contradicts, a contradiction of a decided document, a crash or a gate failure; S2 a missing test of decided behavior, or a rule violation the diff introduces; S3 wording or style. S1 and S2 need a real input: a file in the repository, a decided sentence, or a valid input of the product's public API. A problem that only a constructed input triggers in a tool that serves only development is S3 and never blocks the merge.
 - Apply `rules/docs/design.md` to maintainability, semantic type boundaries and abstraction, and `rules/communication/terminology.md` to naming; domain policy stays outside reusable mechanisms.
-- Check each fix against `workflow/change-policy.md`: it changes the rule, mechanism or data that produces the fault, and one change covers every item of that cause; a check, branch or special case beside the cause is a finding.
+- Apply `workflow/change-policy.md` Correctness and Verification to each fix.
 - A new engine, index, pass or helper that duplicates an existing relation, phase result, mechanism or sibling idiom is a finding that names what it should reuse.
 - New or changed names, signatures, result types, error and outcome shapes follow their sibling interfaces and the glossary; a divergence is a finding that names the sibling.
 - Read each changed call site without its declaration and each changed signature against its readers: a literal whose meaning the call hides, a setting every caller must restate, or a parameter no code reads is a finding under `rules/code/quality.md` API Design.
 - Report one finding per cause, naming every site of the diff that shares it, and check the author's site list against your own search; a missed site is a finding of that cause.
-- Write each edge case as a reproduction the chain session adds as a test.
+- Give a reproduction for each blocking behavioral finding. Add regression tests for accepted behavior and introduced failures; apply the development-tool input boundary in Severity above.
 - Return MERGE or FIX-FIRST.

@@ -28,7 +28,7 @@ Hard limits of delegated work. Procedures: skill `multi-agent` for the main agen
 - Running tasks have disjoint write sets.
 - Only Full starts the multi-stage pipeline. A Simple or Routine task runs no design stage, refutation or independent review run.
 - After each launch or resume, check the run's transcript model; relaunch a run on an older model generation than required.
-- The ledger, the run registry and the board hold the current state only, each within the byte budget a zero-token check enforces; history moves to its archive when it is written.
+- Project task and run records hold current state; retain history separately. Apply the project's configured record formats, size limits and existing checks.
 
 ## Context Economy
 

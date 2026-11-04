@@ -8,9 +8,9 @@ paths:
 
 ## 1. Scope
 
-- One `impl.md` per design. Same directory as the paired `design.md`. Create if missing.
+- One `impl.md` per design when the affected work needs implementation research or retained external API findings. Keep it with the paired `design.md`; unchanged work creates no missing document merely to complete a template.
 - Content boundaries and links follow `CLAUDE.md` Documentation Ownership.
-- On task start: read the paired `impl.md`.
+- Read the paired `impl.md` when it exists and contains findings relevant to the task.
 - Before writing code that uses an external library: check `impl.md` for existing findings.
 - Format: headings + lists + inline code. One line per fact. No prose.
 

@@ -23,6 +23,8 @@ Shared bibliography storage and citation syntax. Glossary field relations: `rule
 
 ---
 
+Zotero, Better BibTeX and collection-specific procedures apply only when that bibliography workflow is configured. Otherwise use the repository's existing bibliography workflow; a missing collection creates no export or library-setup task.
+
 ## File
 
 - One bibliography per repository, in BibLaTeX syntax. `bibliography.path` defaults to `docs/references.bib`. The glossary routing file names it and `bibliography.collection`.
