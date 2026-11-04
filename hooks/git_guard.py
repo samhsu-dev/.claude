@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """PreToolUse hook for Bash: blocks the git operations of rules/workflow/git-safety.md,
-commit messages that break rules/workflow/committing.md, and AI attribution in
-`gh pr create` and `gh pr edit` bodies.
+commit messages that break rules/workflow/committing.md, a `git add` or `git commit` of a path
+that rules/workflow/committing.md Staging never commits, and AI attribution in `gh pr create`
+and `gh pr edit` bodies.
+
+A never-committed path is one the global Git ignore file excludes, asked of `git check-ignore`.
+A repository whose own ignore rules re-include the path (an agent configuration repository's
+`!` whitelist) commits it: Git reports the re-including pattern, so the hook reads the same list
+Git applies and keeps no copy of it.
 
 Exit 2 blocks the call; stderr is the reason Claude reads.
 """
 import json
 import os
 import re
+import shlex
+import subprocess
 import sys
 
 GIT = r"\bgit(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+"
@@ -42,14 +50,84 @@ def mask(command):
     return QUOTED.sub(" Q ", command)
 
 
-def commit_invocations(command):
-    """(invocation, arguments) of each `git commit` outside quoted text, its arguments ending at the next one."""
+def invocations(command, verb):
+    """(invocation, arguments, words) of each `git <verb>` outside quoted text. Its arguments end at the
+    next one; its words are the shell words up to the end of its own command (`;`, `&`, `|` or a newline)."""
     blanked = HEREDOC.sub(lambda m: "Q" * len(m.group(0)), command)
     blanked = QUOTED.sub(lambda m: "Q" * len(m.group(0)), blanked)
-    found = list(re.finditer(GIT + r"commit\b", blanked))
+    found = list(re.finditer(GIT + verb + r"\b", blanked))
     for index, match in enumerate(found):
         end = found[index + 1].start() if index + 1 < len(found) else len(command)
-        yield command[match.start():match.end()], command[match.end():end]
+        stop = re.search(r"[;&|\n]", blanked[match.end():end])
+        own = command[match.end():match.end() + stop.start()] if stop else command[match.end():end]
+        try:
+            words = shlex.split(own)
+        except ValueError:
+            words = own.split()
+        yield command[match.start():match.end()], command[match.end():end], words
+
+
+def git(directory, *arguments, stdin=None):
+    """Output lines of a git command run in `directory`; none when it fails."""
+    result = subprocess.run(["git", "-C", directory, *arguments], input=stdin, capture_output=True, text=True)
+    return result.stdout.splitlines() if result.returncode == 0 else []
+
+
+def global_ignore_file(directory):
+    """The global Git ignore file: `core.excludesFile`, else `$XDG_CONFIG_HOME/git/ignore`."""
+    configured = git(directory, "config", "--path", "core.excludesFile")
+    if configured:
+        return os.path.realpath(os.path.expanduser(configured[0]))
+    return os.path.realpath(os.path.join(os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config"), "git", "ignore"))
+
+
+def never_committed(directory, paths):
+    """The paths, relative to `directory`, that the global Git ignore file excludes and no rule of the repository re-includes."""
+    if not paths:
+        return []
+    excludes = global_ignore_file(directory)
+    blocked = []
+    for line in git(directory, "check-ignore", "--no-index", "-v", "--stdin", stdin="\n".join(paths)):
+        found = re.match(r"(.*):\d+:(.*)\t(.*)$", line)
+        if found and not found.group(2).startswith("!") and os.path.realpath(os.path.join(directory, found.group(1))) == excludes:
+            blocked.append(found.group(3))
+    return blocked
+
+
+def named_paths(words):
+    """Path arguments: every word after `--`, and before it every word that is not an option."""
+    if "--" in words:
+        cut = words.index("--")
+        return [w for w in words[:cut] if not w.startswith("-")] + words[cut + 1:]
+    return [w for w in words if not w.startswith("-")]
+
+
+def staging_errors(command, cwd):
+    """Never-committed paths that a `git add` names or forces, or that a `git commit` would record."""
+    paths = []
+    for invocation, _, words in invocations(command, "add"):
+        directory = git_cwd(invocation, cwd)
+        named = named_paths(words)
+        if any(w in ("-u", "--update") for w in words):
+            named += git(directory, "diff", "--name-only", "--relative")
+        if any(w in ("-f", "--force") for w in words) and named:
+            named += git(directory, "ls-files", "--others", "--ignored", "--exclude-standard", "--", *named)
+        paths += never_committed(directory, named)
+    for invocation, _, words in invocations(command, "commit"):
+        directory = git_cwd(invocation, cwd)
+        top = git(directory, "rev-parse", "--show-toplevel")
+        if not top:
+            continue
+        recorded = git(top[0], "diff", "--cached", "--name-only")
+        if any(w == "--all" or re.fullmatch(r"-[a-zA-Z]*a[a-zA-Z]*", w) for w in words):
+            recorded += git(top[0], "diff", "--name-only")
+        paths += never_committed(top[0], recorded)
+        if "--" in words:
+            paths += never_committed(directory, words[words.index("--") + 1:])
+    if not paths:
+        return []
+    return [f"Agent configuration, local records and run artifacts are never committed: {', '.join(sorted(set(paths)))}. "
+            "Leave them out of the index; `git rm --cached <path>` unstages a staged one (rules/workflow/committing.md Staging)."]
 
 
 def commit_subject(rest):
@@ -95,7 +173,8 @@ def check(command, cwd="."):
         body = command + "\n" + (file_text(rest, r"--body-file|-F", cwd) or "")
         if TRAILER.search(body) or AI_MARK.search(body):
             errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-    for invocation, rest in commit_invocations(command):
+    errors += staging_errors(command, cwd)
+    for invocation, rest, _ in invocations(command, "commit"):
         message_file = file_text(rest, r"--file|-F", git_cwd(invocation, cwd))
         message = rest + "\n" + (message_file or "")
         if TRAILER.search(message) or AI_MARK.search(message):

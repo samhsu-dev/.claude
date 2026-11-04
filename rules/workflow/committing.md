@@ -11,6 +11,7 @@ Conventional Commits 1.0.0. `type[(scope)]: description`. Imperative mood, 72-ch
 ## Staging
 
 - One concept per commit.
+- A repository commits what a new developer needs to build, test and understand the product: source, tests, build and quality configuration, reader documentation, product tools and repository metadata. Agent tool configuration and instructions, local working records (`rules/workflow/records.md`) and run artifacts are never committed. The global Git ignore file (`core.excludesFile`, by default `~/.config/git/ignore`) lists them; an agent configuration repository re-includes its own files through its `.gitignore` whitelist. `hooks/git_guard.py` blocks a `git add` or `git commit` of a listed path that the repository does not re-include.
 
 ## Cadence
 

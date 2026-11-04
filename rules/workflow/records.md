@@ -1,6 +1,6 @@
 # Local Records
 
-Records that serve only the developers at work live in three local directories, excluded through `.git/info/exclude` and never committed:
+Records that serve only the developers at work live in three local directories, listed in the global Git ignore file and never committed (`rules/workflow/committing.md` Staging):
 
 | Record | Directory | Holds |
 |--------|-----------|-------|
