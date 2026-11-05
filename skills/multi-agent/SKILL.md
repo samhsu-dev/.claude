@@ -66,6 +66,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    - While a task waits, its read-only preparation — an inventory, a brief, a site list — runs ahead.
 8. Apply `workflow/change-policy.md` Outcome and Scope before dispatch. A Simple request supplies inputs, allowed edits and a completion check in a short message. For Routine or Full, write the brief under Context Economy above, adding the project root, the glossary path (`communication/terminology.md` Established Terms), exclusions, protected files and return format. The protected files are the files another running task writes, computed at launch.
 9. Quote in the brief, with path and line, every decided document sentence the task implements; never paraphrase a rule.
+   - Name a related decision only by its ID and landing path:line; never copy decision-log content into a brief. The decision log is read only to trace why a rule holds or to prepare a new decision, by the main agent or under skill `decisions`.
    - Check the implemented decisions against entries governing the same affected contract. Reuse established evidence; contradictory requirements for one input go to the user before dependent work starts.
    - Update owning text when its meaning changes. Independent specification review applies to Full; an unchanged approved specification is reused.
 10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.

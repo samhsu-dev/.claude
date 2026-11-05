@@ -30,6 +30,7 @@ A change to design documents or code passes the affected phases below in order, 
 ## Work Loop
 
 1. Read every sentence the brief quotes in its own file, and implement every quoted sentence.
+   - Intent comes from the design documents; a chain session never reads the decision log (`rules/workflow/records.md`).
 2. Append each finished step to the progress file in the run directory, so a stopped session resumes from its last step.
 3. Decide and record each agent-decidable design question under skill `decisions`.
 4. Apply `workflow/change-policy.md` Outcome and Scope. For a defect, locate its producing rule, mechanism or data using the reference evidence; run a probe when that cause is not established. A necessary repair outside the write set is a boundary question before editing it.
