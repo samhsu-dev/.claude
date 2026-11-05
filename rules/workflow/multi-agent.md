@@ -2,7 +2,7 @@
 
 Hard limits of delegated work. Roles, task modes, briefs and acceptance: skill `multi-agent` for the main agent, skill `chain-session` for a chain session and a reviewer.
 
-- A write run edits only its own worktree, branch and run directory, and never merges, pushes or rebases.
+- A write run edits only its own worktree, branch and run directory, and never pushes, rebases or moves another branch. Its only merge is the merge-result check of skill `chain-session` Work Loop, in a detached worktree under its run directory.
 - A reviewer, refutation or new-reader run is read-only.
 - Running tasks have disjoint write sets.
 - The main agent keeps decisions, acceptance, integration and the user conversation; it delegates execution unless briefing costs more than the work.
