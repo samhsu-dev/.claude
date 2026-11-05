@@ -15,5 +15,6 @@ Multiple agents work concurrently on the same repository. The working tree is sh
 - Never switch branches without explicit user instruction.
 - Delete a branch only on explicit user instruction with `git branch -d`, or under skill `multi-agent` Branch Lifecycle.
 - Never silently discard conflicting changes or another writer's uncommitted work.
-- Pull or rebase conflicts go to the user. Never auto-resolve, except the submodule pointers skill `multi-agent` Branch Lifecycle permits.
+- A conflict from merging the integration head into a task branch is resolved by that task's run from the decided documents and measured test output, never by taking one side unchecked; the main agent checks the resolution diff before integration. A conflict whose sides implement contradictory decided sentences goes to the user.
+- Other pull or rebase conflicts go to the user. Never auto-resolve them, except the submodule pointers skill `multi-agent` Branch Lifecycle permits.
 - `git rebase --abort` or `git merge --abort`: requires explicit user approval.
