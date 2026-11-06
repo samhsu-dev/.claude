@@ -55,7 +55,7 @@ Check these first when applicable:
 
 ## Step 4 — Fix
 
-1. Fix the root cause. One change addressing one fault.
+1. Fix the root cause. One change addressing one fault and its other instances (`rules/workflow/change-policy.md` Correctness and Verification).
 2. Run the reproduction test. Confirm it passes.
 3. Run the full test suite. Confirm no regressions.
 
