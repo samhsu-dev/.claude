@@ -26,6 +26,14 @@ One naming logic for every project, independent of language. Language-specific c
 
 - Directories group files by domain feature, not by architectural layer. Exception: framework-mandated layer files inside a feature directory.
 - No `utils/`, `helpers/`, `common/`, `misc/` directories. A shared function belongs to the module that owns its theme.
+- A directory names the domain concept its files serve, never a language mechanism or pattern role (`extension/`, `impl/`, `workers/`).
+- A directory whose files serve several nameable domain concepts splits into one subdirectory per concept.
+
+## Dependencies
+
+- Package and module dependencies form an acyclic graph. A lower layer never imports a higher one; a type both need moves down to the layer that owns its concept.
+- Domain-independent machinery (graph algorithms, work queues, storage) carries no domain policy and lives in the lowest package or library that can own it. A domain rule reaches it as a parameter.
+- Where the language has a tool for it, a test checks the package dependency rules.
 
 ## Entry Points
 
