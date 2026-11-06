@@ -5,9 +5,13 @@ paths:
 
 # Academic Prose Precision
 
-Community standards: Strunk & White; Gopen & Swan (*Science of Scientific Writing*, 1990); Knuth, Larrabee & Roberts (*Mathematical Writing*); Peyton Jones (*How to write a great research paper*); Dijkstra (EWD).
+Community standards: Strunk & White (*Elements of Style*); Gopen & Swan (*Science of Scientific Writing*, Am. Scientist 1990); Knuth et al. (*Mathematical Writing*, Stanford 1989); Peyton Jones (*How to Write a Great Research Paper*, MSR 2014); Levin & Redell (*How to Write a Good Systems Paper*, SIGOPS 1983); Shaw (*Writing Good SE Research Papers*, ICSE 2003); Shewchuk (*Three Sins*, CMU 1997); McDaniel (*How to Write a Security Paper*, Penn State); Dijkstra (EWD).
 
-Every term maps to a concrete, verifiable referent. No vague words.
+## Governing Principle
+
+Every sentence is read by a reviewer seeing the paper for the first time. Each term, claim, and transition is verifiable from the text already read, never from knowledge of a later section. Every rule below serves this test: a term maps to a concrete, verifiable referent; a claim survives one counterexample; a transition supplies every step the reader needs.
+
+The target reader is a computer-science expert with no prior knowledge of this paper. This baseline calibrates term choice in both directions: assume field-standard CS terms (data flow, static analysis, precision, recall, NP-hardness) are known and do not explain them; define every paper-specific term, system name, and non-standard use of a common word at first use. Over-explaining a standard term wastes the expert's attention; leaving a paper-specific term ungrounded breaks the first-read test.
 
 ---
 
@@ -15,151 +19,208 @@ Every term maps to a concrete, verifiable referent. No vague words.
 
 - Every abstract noun states its exact referent at first use (Knuth; IEEE/ACM).
 - No self-invented terms. Use an established term with a citation, or define inline with a concrete referent (Dijkstra; Knuth).
-- One concept, one name. Use the same term throughout; never rename a concept mid-paper (Knuth).
-- Use the concrete mechanism, not the abstract label (Strunk & White). "A fixed set of sinks such as `echo`, `mysql_query`" not "a general detection criterion".
-- Combat the curse of knowledge: unpack every piece of jargon a non-specialist reader cannot resolve.
+- One concept, one name. Never rename a concept mid-paper (Knuth).
+- Use the concrete mechanism, not the abstract label. "A fixed set of calls such as `read()`, `write()`" not "a general detection criterion".
+- No term whose established meaning in an adjacent field (payments, security, PL, networking) differs from the intended sense. The expert reader attaches the field-standard referent and misreads the claim. Pick a neutral term that carries only the intended meaning. Example: "settlement" denotes bank-side fund clearing in payments, not checkout completion.
 
-## Banned Vague Words
+## Word Choice Precision
 
-- No "technical specification", "technical error", "security property", "correctness standard" unless defined inline with a concrete referent.
-- No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective" (IEEE/ACM). Replace with a measurement or a concrete property.
-- No modifier that adds no information: "very", "quite", "simply", "clearly".
+- No subjective qualifier as the sole characterization: "general", "generic", "novel", "efficient", "robust", "proper", "appropriate", "effective". Replace with a measurement or a concrete property.
+- No modifier that adds no information: "very", "quite", "clearly", "direct".
+- No contentless modifier: a modifier that applies to every member of the class it modifies is contentless. Test: remove it; if the claim is no less specific, delete it (e.g., "custom" before "implementation" — all implementations are developed by someone).
+- No "technical specification", "technical error", "security property", "correctness standard" unless defined inline.
+- **Overloaded terms** — use only with their formal meaning; each invites "prove it" if used informally: "sound" (no false negatives), "complete" (no false positives), "correct" (formal proof), "genuine" / "real" (no verifiable criterion). Replace with the concrete property you mean.
+- **Near-synonym precision** — measurement and theory terms are distinct and non-interchangeable: "accuracy", "precision", "recall", "F1", "correctness", "soundness", "completeness". Name the one the paper actually computes or proves; never substitute one for another.
+- Use the exact established term for a concept, not an approximate near-synonym. Confirm an unfamiliar or ambiguous term's field-standard meaning before committing it (`/define-term`).
+- Express quantitative or comparative relations with noun phrases and a relational verb: "the measured latency was lower than the baseline", not "the latency fell far short of the baseline".
 
 ## Word-Level Register
 
-Standards: Strunk & White; ACM/IEEE editorial guides; Manchester Academic Phrasebank.
+Neutral, direct words. Replacements:
 
-Neutral, direct words over literary or conversational ones. Replacements:
+| Banned | Use |
+|--------|-----|
+| "yet" as a conjunction | "but" |
+| "whilst", "amongst", "amidst" | "while", "among", "amid" |
+| "hence" | "therefore", "thus" |
+| "in order to" | "to" |
+| "utilize", "leverage", "employ" (= use) | "use" |
+| "a number of", "a variety of" | a number, or "several" |
+| "it should be noted that" | delete; state the fact |
+| "delve", "showcase", "underscore", "pivotal", "crucial", "seamless" | concrete verb or measured property |
+| "translate to" (causal) | "result in", "lead to", "cause" |
+| "by hand" | "manually" |
+| "call it" / "call X Y" | "refer to it as" / "refer to X as Y" |
+| "spans" with abstract subject | "accounts for", "is distributed across", "covers" |
 
-| Banned | Reason | Use |
-|--------|--------|-----|
-| "yet" as a conjunction | literary; also reads as the adverb "not yet" | "but"; or "both A and B"; or state the tension explicitly |
-| "whilst", "amongst", "amidst" | British-literary register | "while", "among", "amid" |
-| "hence" | most archaic of the cause connectives | "therefore", "thus" |
-| "in order to" | wordy | "to" |
-| "utilize", "leverage", "employ" (= use) | inflated | "use" |
-| "a number of", "a variety of" | vague quantity | a number, or "several" |
-| "it should be noted that", "it is worth noting that" | meta-filler | delete; state the fact |
-| "delve", "showcase", "underscore", "pivotal", "crucial", "seamless" | LLM-register inflation | concrete verb or measured property |
 
-Connectives ("thus", "therefore", "moreover", "furthermore", "consequently") are valid at any position, including sentence start. Use one only where it marks a genuine logical relation. No filler connective, and no two consecutive sentences opened by a connective.
-
-- No contractions ("don't", "it's") in body text.
-- No first-person "I". Use "we" for authorial action; passive only when the actor is irrelevant.
-- Latin abbreviations: "e.g.", "i.e.", "cf." inside parentheses only; spell out ("for example") in running text.
-
-## Precision of Claims
-
-- No claim that fails on a counterexample. Verify every characterizing claim against one counterexample before writing it (Knuth; Dijkstra).
-- Every claim is supported by evidence or qualified to be defensible.
-- State the contribution as a single explicit, refutable sentence (Peyton Jones).
-- Degree claims, not absolutes, when prior work exists. "X remains the central difficulty", never "no such thing exists".
-
-## Definitions
-
-- Define a term at the first sentence whose argument depends on it. No earlier; no separate glossary in the introduction (Knuth).
-- Define to the depth the current argument needs. Defer formal definitions to the body.
-- Lead with a concrete example, then the general statement (Peyton Jones).
-- A definition that uses one method's implementation detail is not method-neutral. State problem difficulty without naming any solution's mechanism.
+- Connectives ("thus", "therefore", "moreover") mark genuine logical relations only. No filler connective. No two consecutive sentences opened by a connective.
+- No contractions in body text.
+- No first-person "I". Use "we" for authorial action.
+- Latin abbreviations: "e.g.", "i.e.", "cf." inside parentheses only; spell out in running text.
 
 ## Sentence Structure
 
-- Make the main character the grammatical subject; express the key action as a verb, not a nominalization (Gopen & Swan).
-- Place old/familiar information first, new information at the sentence end (stress position) (Gopen & Swan).
+- Main character as grammatical subject; key action as a verb, not a nominalization (Gopen & Swan).
+- No figurative or implied constructions ("emerges", "reveals", "suggests", "spans" for non-spatial subjects, "captures"). State the subject and its action directly with a literal verb.
+- No dangling participle: a participial phrase must share its grammatical subject with the main clause. "That volume…, growing by 4%" is a dangling participle when the main subject is not the thing growing.
+- Old/familiar information first, new information at sentence end (stress position) (Gopen & Swan).
+- The concept at the stress position (sentence end) of sentence N becomes the topic position (sentence start) of sentence N+1. A sentence whose subject has no referent in the preceding sentence's stress position requires an explicit logical bridge ("Specifically,", "Three routes illustrate this.").
 - Omit needless words (Strunk & White).
-- State each claim once. Two sentences asserting the same point → keep one.
+- State each claim once.
+- One sentence, one meaning. Never merge a definition, a causal claim, and an example into one sentence.
+- Vary sentence length within each paragraph. Five or more consecutive sentences of similar length signal monotony; insert a short sentence (under ten words) or combine two.
+- A term introduced only as a modifier or object of a prepositional phrase in sentence A cannot serve as the definite referent ("this X", "that X") in sentence B. If sentence B needs to take that concept as its subject, restructure sentence A so the concept stands as the main subject or appears at the stress position, or replace the pronoun chain with a self-sufficient noun phrase in sentence B (Gopen & Swan).
+
+## Grammatical Agreement
+
+### Articles
+
+- Every singular count noun takes a determiner: "a", "an", "the", "this", "each", or a possessive. A bare singular count noun is an error.
+- "a"/"an" for a count noun at first mention or for any instance of its class: "a violation", "an invariant".
+- "the" for a count noun already introduced, or fixed as unique by the context or a following restrictive phrase: "the invariant defined above", "the attacker in this example".
+- No article for a generic claim about a whole class: use the bare plural ("e-commerce websites accept orders"). Never "the" + singular for the class.
+- No article for a mass or abstract noun used generically: "static analysis", "data flow", "prior work".
+- "a" before a consonant sound, "an" before a vowel sound; decide by sound, not spelling: "an ELV", "a unique state", "an honest user".
+
+### Number
+
+- The verb agrees with its grammatical subject, not with an intervening noun in a prepositional phrase.
+- "each", "every", "a", "one" + singular noun take a singular verb and a singular pronoun ("it"). Never bind "they"/"them" to a singular antecedent.
+- A generic statement uses the bare plural with a plural verb ("violations occur"), not a singular count noun ("a violation occurs") when the claim is about the class.
+- A collective abstract noun is singular: "prior work shows", "the literature reports". Use "prior works"/"studies" only when counting distinct works.
+
+## Tense
+
+- Present tense for general truths, established facts, prior-work claims that still hold, and what the paper or system does: "the oracle evaluates the rule", "prior work detects ELVs".
+- Past tense for completed actions of this work: experiments run, corpus collected, results obtained: "we evaluated", "the tool flagged 42 cases".
+- Present perfect for prior work's contribution to the current state: "prior work has shown". Past for a specific completed study action: "Felmetsger et al. inferred invariants dynamically".
+- One tense per narrative frame. No tense shift within a paragraph when describing the same event or fact.
+
+## Terminology Consistency
+
+- One spelling and capitalization per term throughout the paper. Never alternate hyphenated and unhyphenated forms, or capitalized and lowercase variants, for the same concept.
+- A multi-word technical term has one canonical form (spacing, hyphenation, capitalization) used at every occurrence: fix "data flow" / "data-flow" / "dataflow" to a single field-standard form. Confirm the standard form via `/define-term`.
+- One term per concept per section. Do not cycle synonyms to avoid repetition; repetition of the correct term aids clarity.
+- The grammatical subject for the target system must remain consistent within a paragraph. Establish the precise term at first introduction (e.g., "web application"), then use it or its pronoun ("the application") for all subsequent references in the same passage. Do not shift between "site", "application", "system", and "software" within the same argument.
+
+## Precision of Claims
+
+- No claim that fails on a counterexample (Knuth; Dijkstra).
+- Every claim is supported by evidence or qualified to be defensible.
+- Degree claims, not absolutes, when prior work exists. "X remains the central difficulty", never "no such thing exists."
+- No absolute quantifiers unless strictly provable: "every", "always", "all", "never". Replace with "each", "typically", or a qualified scope.
+- No "requires X" for a necessity claim that is not proven. Use "X is the natural way to…" or "X is needed to…" when the necessity is contextual, not logical.
+- Never equate concepts at different logical levels. A bug is a code defect; a vulnerability is an exploitable weakness. Use the term that matches the claim's level of abstraction.
+- A derived clause (consequence, motivation, elaboration, "as a result", "this means", "so that") asserts only what the established premises strictly entail. No new actor, need, capability, or downstream effect the premises do not contain.
+- Entailment outranks completeness. A weaker statement that strictly follows beats a stronger one that needs an unstated assumption. Highest priority: every added assertion is un-questionable.
+
+## Definitions
+
+- Define a term at the first sentence whose argument depends on it.
+- Define to the depth the current argument needs. Defer formal definitions to the body.
+- Lead with observable phenomenon first, then the formal definition. Never introduce a label before the reader has seen what it refers to.
+- A definition that uses one method's implementation detail is not method-neutral.
+- Never define a domain phenomenon using a researcher-constructed abstraction as if that abstraction is an inherent property of the domain. State the observable phenomenon first; attribute the abstraction to the research community that introduced it.
+- When introducing a problem class, follow this order: (1) observable symptom, (2) prior work's model of that symptom, (3) the abstraction with its source made explicit.
 
 ## No Anthropomorphism
 
-A program, model, or algorithm performs mechanical operations. It does not know, think, believe, want, understand, or hold a notion. Attributing cognition to code states no verifiable fact.
+A program performs mechanical operations. It does not know, think, believe, or understand.
 
-- No mental verb with a non-agent subject: "knows", "thinks", "believes", "understands", "wants", "decides", "is aware", "has no notion of", "realizes". Not "the program has no notion of correctness."
-- State the mechanical fact instead. "No code path checks whether the outcome obeys the rule", not "the program does not know the outcome is wrong."
-- Name the human actor when cognition is the point. "The developer assumes the value is trustworthy", not "the code trusts the value."
-- A program "reports", "returns", "raises", "writes", "checks", "executes" — concrete operations it performs. These are not anthropomorphism.
+- No mental verb with a non-agent subject: "knows", "thinks", "believes", "understands", "decides", "realizes."
+- State the mechanical fact: "No code path checks whether the outcome obeys the rule", not "the program does not know the outcome is wrong."
+- A program "reports", "returns", "raises", "writes", "checks", "executes."
 
 ## Punctuation: Colon
 
-A colon promises that what follows completes or specifies what precedes. The clause before the colon is grammatically complete and raises an expectation; the text after fulfills it.
+Use for: a list the lead-in announces; an explanation that specifies the prior clause; an appositive naming what the prior clause referred to.
 
-Use a colon for:
-- A list the lead-in announces. "The pipeline runs in three stages: parsing, analysis, and reporting."
-- An explanation or restatement that specifies the prior clause. "The two runs diverge in one place: the loader reads the file eagerly in one, lazily in the other."
-- An appositive that names what the prior clause referred to. "One field defeats the parser: the trailing checksum."
-
-Never use a colon for:
-- A cause-effect link. Use "because", "so", "therefore". Not "The violation raises no error: no code path checks the outcome" but "...no error, because no code path checks the outcome."
-- Two independent statements with no lead-in/fulfillment relation. Use a period or "and".
-- After a verb or preposition that already governs the following text. Not "The stages are: A, B, C" but "The stages are A, B, C."
+Never use for: a cause-effect link (use "because"); two independent statements with no fulfillment relation; after a verb or preposition that governs the following text.
 
 One colon per sentence. The clause before it stands alone as a sentence.
 
 ## Punctuation: Semicolon
 
-A semicolon joins two complete, closely related statements as equals, or separates list items that themselves contain commas. It marks balance, not direction.
+Use for: two independent clauses in parallel or contrast; list items that contain internal commas.
 
-Use a semicolon for:
-- Two independent clauses in parallel or contrast, each a complete sentence. "Detection needs an external criterion; reproduction needs a triggering input."
-- List items that contain internal commas. "We evaluate three sites: a store in Berlin, Germany; a shop in Paris, France; and a market in Tokyo, Japan."
+Never use for: a directional logical relation (use "because", "but", "while"); a loosely related pair (use a period).
 
-Never use a semicolon for:
-- A directional logical relation — cause, contrast, or sequence. Use the connective that names it: "because", "so", "but", "while", "instead". Not "The rule is application-independent; only the binding is application-specific" but "...application-independent, while only the binding is application-specific."
-- A loosely related pair. Use a period.
-- A dependent clause on either side. Both sides stand alone as sentences, or it is not a semicolon.
-
-Default to a period. Use a semicolon only when the two clauses are strict parallels and the balance carries meaning.
+Default to a period.
 
 ## Punctuation: Em-Dash
 
-A paired em-dash (`---...---`) sets off a parenthetical aside. It is valid punctuation, but it bolts material onto a sentence instead of integrating it. Overuse becomes a stylistic tell.
+A paired em-dash sets off a parenthetical aside. At most once per paragraph.
 
-Never use a paired em-dash to:
-- Inject a definition. Not "the violation of an invariant---a rule that must always hold---triggers no error" but a separate defining sentence, or a colon that announces the definition.
-- Carry the sentence's main content as an aside. If the material is the point, it belongs in the main clause.
-
-Use a paired em-dash only for a genuine aside the main clause does not need, and at most once per paragraph. A single em-dash for a list lead-in or a sharp break is unrestricted.
+Never use to: inject a definition; carry the sentence's main content as an aside.
 
 Default to restructuring the sentence so the idea is built into its clause.
 
 ## Explanatory Prose
 
-- Explaining a defect or mechanism: state the root cause, not the observable symptom. "The developer trusted the value after it round-tripped through the client", not "the value is attacker-controlled".
-- One causal chain per paragraph. A clause appended to cover an edge case is a patch. Rewrite the chain to include the case, or drop it.
-- A trailing clause that restates the sentence's point is a patch. Drop it.
-- Name a component by the action it performs, not a placeholder verb. "Settles the order through the payment SDK", not "handles payment".
+- One main claim per paragraph, stated in its topic sentence.
+- State the root cause, not the observable symptom.
+- One causal chain per paragraph. A clause appended to cover an edge case is a patch — rewrite the chain.
+- A trailing clause that restates the sentence's point is a patch — drop it.
+- Name a component by the action it performs: "Writes each record to the database through the storage API", not "handles storage."
+
+## Argument Continuity
+
+- Each paragraph ends by motivating the next; each section ending sets up the opening of the following section.
+- Every promise made in an introductory paragraph must be fulfilled in the body, in the stated order. An unfulfilled promise is a structural gap.
+- Logical bridge required between adjacent paragraphs. A transition that marks only sequence ("Next, …", "Then, …") is not a logical bridge.
 
 ## Metadiscourse
 
-Standards: Peyton Jones; Manchester Academic Phrasebank.
+Cut: canned roadmap ("The rest of this paper is organized as follows…"); self-narration ("In this section we discuss"); content-free structural announcement.
 
-Writing needs some metadiscourse; too much buries the content. Keep the kind that carries a logical relation or a pointer the reader needs; cut the kind that only announces structure or narrates the act of writing.
+Delete these throat-clearing openers: "In the realm of", "It is important to note that", "It is worth mentioning that", "It goes without saying that", "In order to", "It should be noted that", "With that being said", "When it comes to".
 
-Cut:
-- The canned roadmap: "The rest of this paper is organized as follows. Section 2... Section 3..." (Peyton Jones). Replace with inline forward references from the narrative.
-- Self-narration: "In this section we discuss", "as we will show", "it is important to note that".
-- Content-free structural announcement: "this poses N challenges", "in the same order as the introduction".
-
-Keep:
-- Inline forward references woven into a claim: "We prove the type system sound (\autoref{...})" (Peyton Jones).
-- Logical transitions that mark a real relation: "but", "thus", "in contrast to X".
-- Frame markers that orient the reader through stages: "We first parse the input; building on that, we then analyze it".
-- Endophoric pointers that aid reuse: "as defined in \autoref{...}".
-
-The line: a sentence that *announces* structure is cut; a sentence that *carries* a logical relation or a needed pointer is kept.
+Keep: inline forward references woven into a claim; logical transitions marking a real relation; frame markers orienting the reader through stages.
 
 ## Post-Edit Reread
 
-- After editing any sentence, reread the entire paragraph before stopping. Local edits accumulate redundancy and patches at sentence seams.
-- Fix every violation surfaced by the reread in the same pass.
+After editing any sentence, reread the entire paragraph. Fix every violation in the same pass.
+
+## Structural Alignment
+
+- Every figure and table must have an explicit in-text citation before or at its first appearance. No orphaned floats.
+- A section introduction that enumerates topics ("we cover X, Y, and Z") must address them in the stated order with no omissions.
+- Caption text must match figure content. A spatial description in the caption ("left column", "top row") must correspond to the actual layout.
+
+## Opening
+
+- The subject of the first substantive sentence is the paper's central artifact or domain, matching the title's primary noun (Gopen & Swan).
+- No technology, language, or implementation detail appears as the grammatical subject of the opening unless the paper's title names it.
+- Do not open by explaining to experts why their field is important. Open with the paper's specific purpose (Shewchuk).
+
+## Paper Structure
+
+- Abstract: four sentences — (1) the problem, (2) why it is hard, (3) the approach, (4) the result (Peyton Jones).
+- Introduction: problem description and contribution list only. No background, no related work, no methodology. One page.
+- Related work follows the core idea, not precedes it. Readers cannot evaluate related work before understanding the contribution (Peyton Jones).
+- State the contribution at four levels of detail: title (~10 words), abstract (~100 words), introduction (~1000 words), body (~10,000 words). Each level is independently coherent and consistent with the others (Levin & Redell).
+
+## Contributions
+
+- Write the contribution list before drafting the body. The body provides evidence for the contributions, not the other way around (Peyton Jones).
+- Each contribution is a single refutable sentence. "We describe X" is not a contribution. "We prove X satisfies property Y (Section N)" is (Peyton Jones).
+- Forward-reference the evidence for each contribution at the point of the claim in the introduction.
+- Signal explicitly whether the work is novel (new scientific observation) or incremental (improvement over prior work). Do not leave the reader to infer which (McDaniel).
+
+## Evaluation
+
+- State upfront whether the system is implemented and deployed, unimplemented, or purely theoretical. Readers have a right to know this before investing in the paper (Levin & Redell).
+- Report failures, limitations, and trade-offs alongside successes. An evaluation that measures only what the system does well invites reviewer skepticism (Levin & Redell).
+- Every paper must answer three questions: (1) What is the contribution? (2) What is the new result and how does it differ from prior work? (3) Why should the reader believe the result? (Shaw).
+
+## Conclusions
+
+- Conclusions must add new information: implications, conjectures, open problems, perspective gained after reading the full paper (Shewchuk).
+- Do not summarize the paper in the conclusions. The reader has just read it. A conclusion the reader could understand before reading the paper adds nothing.
 
 ## Evidence and Attribution
 
-- Cite a third party's metric only when that party's relation to the subject is verifiable. Same vendor or same framework is not a verified relation.
-- External links unverifiable: state the subject is a representative instance, defer the magnitude to where it is established.
+- Cite a third party's metric only when that party's relation to the subject is verifiable.
+- External links unverifiable: state the subject is a representative instance.
 
-## BELUGA Term Discipline
-
-- Invariant: a boolean predicate over domain-level semantic variables (e.g., `total = price * quantity`). Semantics are application-independent.
-- Oracle: the in-code, runtime check that decides whether an invariant holds in one application.
-- The invariant's semantics are application-independent and reusable. Only the binding of semantic variables to concrete code locations is application-specific. Never conflate the two.
-- "No scalable oracle" is a degree claim, not an absolute. State it as a difficulty, never as non-existence, since prior work supplies oracles.
