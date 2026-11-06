@@ -32,6 +32,8 @@ paper/
 | `overall.md` | `overall.tex`, `overview.tex` | Overview structure |
 | `approach.md` | `approach.tex`, `approaches.tex` | Approach structure |
 | `implementation.md` | `implementation.tex`, `implementations.tex` | Implementation structure |
+| `evaluation.md` | `evaluation.tex`, `evaluations.tex`, `experiment.tex`, `experiments.tex` | Evaluation structure |
+| `related-works.md` | `related_works.tex`, `related-works.tex` | Related works structure |
 | `committing.md` | always active | Project commit and push rules |
 
 Global rules (`~/.claude/rules/`) provide language-agnostic defaults. These project rules add LaTeX-specific guidance and override the global defaults where both set a concrete value.
