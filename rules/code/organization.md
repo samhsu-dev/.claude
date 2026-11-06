@@ -19,6 +19,12 @@ Kotlin realization of global `rules/code/organization.md`. kotlinlang.org naming
 - Replaces global `code/organization.md` filename stems: Kotlin source files use PascalCase with `.kt`.
 - A file holding one primary class is named after the class: `Parser.kt`.
 
+## Extension Functions
+
+- An extension function relevant to every client of its receiver lives with the receiver: in the receiver's file, or in a file of the receiver's package named by the domain concern when the receiver's file reaches the size limit.
+- An extension function that only one client needs lives next to that client.
+- No file or directory exists only to hold the extensions of one type.
+
 ## Module Layout
 
 Gradle default source sets per module:
