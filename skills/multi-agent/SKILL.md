@@ -133,6 +133,7 @@ Task Modes determines review depth. A configured project review trigger may spec
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes per task, from git and the run logs: runs launched, resumptions, fix and review rounds, model and effort, `execution.token_measure` split into uncached input, cached input, output and reasoning without double counting, billed cost, wall time and the accepted outcome.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
+- When `integration.progress_snapshot` is configured, the bookkeeper appends its row on that schedule and records the close date on each row it archives as done; a completion-date estimate reads those rows, not the archive alone.
 - When the user requests a retrospective or a configured project schedule calls for one, use the recorded evidence to identify a process problem and evaluate a scoped change. No default recurring task is created.
 
 ## Consolidation
