@@ -39,7 +39,7 @@ fun `validate month boundary`(month: Int, valid: Boolean) {
 
 - Classes annotated or containing `@Test` / `@ParameterizedTest` methods.
 - Test classes marked `internal`.
-- No inheritance-based test suites. Plain classes with annotated methods.
+- Test classes are plain classes with annotated methods. Shared setup and query helpers may live in a base class the tests extend, whichever form is simplest to use.
 
 ## Setup and Fixtures
 
