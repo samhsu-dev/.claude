@@ -117,6 +117,13 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Every concept a change adds or changes links to its owning document section, its identifier, its mechanism and a behavioral test. The site list sent with the diff names those four links per concept; a missing link is a finding.
 - A reviewer resolves each link from the repository alone. A link that needs the author's conversation to resolve is a finding.
 
+## Tool Enforcement
+
+- A rule that an established analyzer, formatter, linter, type checker or architecture test can check is enforced by that tool in the build or gate. The tool runs at zero new findings over a recorded baseline. Review and agent checks cover only what no configured tool checks.
+- Before adding a review item or an agent check step, look for an established tool rule that covers it, starting with the language's standard analyzer rule sets. Adopt the rule once a run on the codebase shows that its findings are real or few enough to fix or baseline.
+- When a review finds a defect class that a tool rule could catch, enabling that rule goes into the same change or into a recorded follow-up.
+- A passing tool result is evidence: neither review nor an agent rereads code to recheck what a passing configured tool already checked.
+
 ## Post-Edit Verification (Mandatory)
 
 Before completing a coherent change, review its diff and affected contracts for:
