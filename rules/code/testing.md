@@ -85,6 +85,7 @@ internal class ParserTest {
 - `./gradlew test --tests "*.ParserTest"` -- single class.
 - `./gradlew test --tests "*.ParserTest.should*"` -- pattern match.
 - Verbose diagnostics: `code/debugging.md` Tools.
+- Coroutine code whose result depends on `delay` or scheduling is tested with `runTest` and an injected `TestDispatcher`. A test whose subject is real wall time or thread behavior keeps a real dispatcher.
 
 ## Configuration
 

@@ -34,7 +34,8 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Imports
 
-- No wildcard imports. Explicit imports only.
+- No wildcard imports. Explicit imports only. detekt `WildcardImport` checks this except for `java.util.*`, its default exclusion, which review checks.
+- ktlint is not applied: formatting detekt does not check is checked in review.
 - ASCII sorted.
 
 ## Null Safety
@@ -46,7 +47,7 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Idiomatic Kotlin
 
-- `val` over `var`. Immutable collections (`listOf`, `setOf`, `mapOf`) over mutable.
+- `val` over `var`. Read-only collections (`listOf`, `setOf`, `mapOf`) over mutable ones; a read-only view is not immutable.
 - Default parameter values for optional parameters, over function overloads.
 - Expression bodies (`fun foo(): Type = expr`) for single-expression functions.
 - String templates (`"$name"`) over concatenation. Multiline strings with `trimIndent()`.
@@ -94,9 +95,10 @@ Kotlin-specific rules. Extends global `code/quality.md`. kotlinlang.org conventi
 
 ## Coroutines
 
-- Every coroutine runs in a `CoroutineScope` that owns its lifecycle: the scope waits for its children and canceling it cancels them. No `GlobalScope`.
+- Every coroutine runs in a `CoroutineScope` that owns its lifecycle: the scope waits for its children and canceling it cancels them. No `GlobalScope` (detekt `GlobalCoroutineUsage`).
 - `launch` when no result is needed, `async`/`await` for a concurrent result.
-- `Dispatchers.Default` for CPU. `Dispatchers.IO` for I/O. Specify explicitly.
+- A function that switches dispatcher takes it as a parameter or constructor property whose default is `Dispatchers.Default` for CPU or `Dispatchers.IO` for I/O (detekt `InjectDispatcher`).
+- In `suspend` code, `runCatching` or a catch of `Exception` or `Throwable` rethrows `CancellationException`, so cancellation is never swallowed.
 - `suspend` functions: no "suspend" in the name.
 - `CoroutineScope` as receiver on functions that launch coroutines, not as a parameter.
 
