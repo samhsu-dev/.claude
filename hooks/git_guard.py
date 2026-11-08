@@ -5,6 +5,10 @@ rules/workflow/committing.md Staging never commits, and AI attribution in `gh pr
 `gh pr edit` bodies. The commit-msg hook of tools/git-hooks checks the commit message itself.
 
 A never-committed path is one the global Git ignore file excludes, asked of `git check-ignore`.
+
+`git branch -D` passes only for branches that are archived: `branch.<name>.archive` names a bundle
+that `git bundle verify` accepts and whose heads hold the branch's current tip, so the deletion loses
+no commit.
 A repository whose own ignore rules re-include the path (an agent configuration repository's
 `!` whitelist) commits it: Git reports the re-including pattern, so the hook reads the same list
 Git applies and keeps no copy of it.
@@ -29,7 +33,6 @@ PROHIBITED = [
     (GIT + r"clean\b", "git clean deletes untracked files. Remove known files by name with rm."),
     (GIT + r"stash\b", "git stash hides changes from other agents. Commit WIP to a temporary branch."),
     (GIT + r"push\s+(?:.*\s)?(?:--force(?:-with-lease)?\b|-f\b)", "Force push rewrites history. Use git push and investigate a rejection."),
-    (GIT + r"branch\s+(?:.*\s)?-D\b", "git branch -D deletes unmerged commits. Use git branch -d."),
     (GIT + r"rebase\s+(?:.*\s)?(?:-i\b|--interactive\b)", "Interactive rebase can drop commits."),
     (GIT + r"commit\s+(?:.*\s)?--amend\b", "git commit --amend rewrites a commit. Create a fixup commit."),
     (GIT + r"add\s+(?:.*\s)?(?:-A\b|--all\b|\.(?:\s|$))", "Stage specific files by name, never git add -A or git add ."),
@@ -152,6 +155,36 @@ def git_cwd(invocation, cwd):
     return cwd
 
 
+def archived(directory, branch):
+    """True when `branch.<branch>.archive` names a verified bundle whose heads hold the branch's tip."""
+    tip = git(directory, "rev-parse", "--verify", "-q", f"refs/heads/{branch}")
+    bundle = git(directory, "config", "--path", f"branch.{branch}.archive")
+    if not tip:
+        return True  # no such branch: git refuses it and no commit is lost
+    if not bundle or not os.path.isfile(bundle[0]):
+        return False
+    if subprocess.run(["git", "-C", directory, "bundle", "verify", "-q", bundle[0]], capture_output=True).returncode != 0:
+        return False
+    return any(line.split()[0] == tip[0] for line in git(directory, "bundle", "list-heads", bundle[0]) if line.strip())
+
+
+def force_delete_errors(command, cwd):
+    """A `git branch -D` (or `--delete --force`) of a branch that is not archived."""
+    errors = []
+    for invocation, _, words in invocations(command, "branch"):
+        options = [w for w in words if w.startswith("-")]
+        force = "-D" in options or ("--force" in options or "-f" in options) and ("--delete" in options or "-d" in options)
+        if not force:
+            continue
+        directory = git_cwd(invocation, cwd)
+        names = [w for w in words if not w.startswith("-")]
+        missing = [n for n in names if not archived(directory, n)] or ([] if names else ["<none>"])
+        if missing or set(options) - {"-D", "-d", "--delete", "-f", "--force"}:
+            errors.append(f"git branch -D deletes unmerged commits: {', '.join(missing) or 'extra options'}. Archive the "
+                          "branch first (a verified bundle named by branch.<name>.archive), or use git branch -d.")
+    return errors
+
+
 def check(command, cwd="."):
     """Return the list of violation messages for one Bash command run in `cwd`."""
     masked = mask(command)
@@ -161,7 +194,7 @@ def check(command, cwd="."):
         body = command + "\n" + (file_text(rest, r"--body-file|-F", cwd) or "")
         if TRAILER.search(body) or AI_MARK.search(body):
             errors.append("Pull request body carries an attribution trailer or AI marker. Remove it (rules/workflow/committing.md).")
-    return errors + staging_errors(command, cwd)
+    return errors + force_delete_errors(command, cwd) + staging_errors(command, cwd)
 
 
 def main():
