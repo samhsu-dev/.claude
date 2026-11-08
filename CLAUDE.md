@@ -34,3 +34,4 @@ Tools read the fixed headings and formats declared in these project rules. Parse
 | `completion` | `completion.md` | `skills/chain-session/SKILL.md` |
 | `profile` | `profile.md` | Native entry points; installation |
 | `execution` | `execution.md` | `skills/multi-agent/SKILL.md`; `skills/decisions/SKILL.md` |
+| `performance` | `performance.md` | `rules/workflow/performance.md`; `skills/perf/SKILL.md` |

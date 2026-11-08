@@ -13,23 +13,21 @@ argument-hint: "[optional target file, function, or optimization ID]"
 
 Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task record under `rules/workflow/records.md` once and use that path for every record read/write in this procedure.
 
-## Step 1 — Identify Candidates
+## Step 1 — Localize Candidates
 
-Analyze code for optimization opportunities. If the user supplies a target, focus there. Otherwise scan changed files.
+If the user supplies a target, localize there. Otherwise use the project's profiling samples and counters (project value `performance`). Run, under `rules/workflow/performance.md` Localization and with the tools the language profile names:
 
-Look for:
+1. Growth order: a work-counter size sweep with the target workload fixed.
+2. Hot paths: a sampling profile of a fixed sample.
+3. Cost class: CPU, allocation/GC or waiting.
 
-- Unnecessary allocations (object creation, copies, boxing).
-- Inefficient patterns (element-by-element vs bulk, concatenation in loops).
-- Redundant operations (dead code, unused intermediates).
-- Missing bulk/batch APIs.
-
-Record each candidate:
+Record each candidate that has profile or counter evidence:
 
 | Field | Format |
 |-------|--------|
 | ID | `P<round>-<seq>` (increment from last used round in the resolved module task record) |
 | Title | Short description |
+| Evidence | Counter sweep or profile result, with the cost class |
 | File(s) | Affected source files |
 | Hypothesis | What the change does and expected effect |
 | Risk | low / medium / high |
@@ -39,17 +37,17 @@ Record each candidate:
 | Priority | Criteria |
 |----------|----------|
 | Bug fix | Correctness issue. Apply regardless of perf impact. |
-| High | Hot path, measurable allocation removal. |
+| High | Profiled hot path or measured growth order. |
 | Medium | Utility functions, constructors, off-hot-path. |
 | Low | Structural improvement, no expected throughput impact. |
 
-Sort: bug fixes first, then high to low. Same priority: lower risk first, smaller diff first.
+Sort: bug fixes first, then high to low. Same priority: algorithm and data structure before implementation overhead before runtime tuning (`rules/workflow/performance.md` Fix Order), then lower risk, then smaller diff.
 
 Present the ranked list. Existing authorization covers candidates within the accepted scope; an expanded scope or an unauthorized constraint tradeoff goes to the user under `workflow/decisions.md`.
 
 ## Step 3 — Baseline
 
-Run the project's benchmark suite. Capture fresh numbers.
+Run the project's benchmark suite and the Step 1 counters. Capture fresh numbers.
 
 - Compare an existing baseline with fresh measurements. Investigate a difference that exceeds measured variability and affects the conclusion.
 - If no baseline exists, record this as the initial baseline.
