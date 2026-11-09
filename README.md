@@ -66,7 +66,8 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 ```json
 "PreToolUse": [{ "matcher": "Bash", "hooks": [
   { "type": "command", "if": "Bash(git *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" },
-  { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" }] }],
+  { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" },
+  { "type": "command", "command": "python3 \"$HOME/.claude/hooks/poll_guard.py\"", "onFailure": "block" }] }],
 "PostToolUse": [{ "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command",
   "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"", "onFailure": "block" }] }]
 ```
@@ -76,6 +77,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | Script | Event | Checks |
 |--------|-------|--------|
 | `hooks/git_guard.py` | before a git or `gh pr` command | Blocks the operations of `workflow/git-safety.md`, Git hook bypasses, staging of never-committed paths and attribution in pull request bodies |
+| `hooks/poll_guard.py` | before a shell command | Blocks a polling loop (`until` or `while` with `sleep`) under `workflow/multi-agent.md` |
 | `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `rules/docs/`; reads project markdown values |
 
 ### Git hooks
