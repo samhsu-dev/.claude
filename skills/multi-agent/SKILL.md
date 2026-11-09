@@ -37,6 +37,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 - It accepts a result from the resident's report and the evidence the report names (commit, check output, diff stat). It reads a diff hunk, file or log excerpt when the report leaves a material doubt, when the task mode requires a diff check, or to verify launch metadata; it never re-reads a full transcript.
 - It never repeats an investigation a resident reported; a gap goes back to that resident as a question.
 - It answers boundary questions, decides agent-decidable items and batches user-decidable items into one question to the user.
+- A row marked as needing a user decision gets its question prepared under skill `decisions` and put to the user the same day; recording it on a pending list does not count as asking.
 - It reports to the user the state of each running task in one line, the decisions waiting for the user, and each risk or failed check that changes what the user would do.
 
 ## Context Economy
