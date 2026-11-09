@@ -64,5 +64,6 @@ A change to design documents or code passes the affected phases below in order, 
 - New or changed names, signatures, result types, error and outcome shapes follow their sibling interfaces and the glossary; a divergence is a finding that names the sibling.
 - Read each changed call site without its declaration and each changed signature against its readers: a literal whose meaning the call hides, a setting every caller must restate, or a parameter no code reads is a finding under `rules/code/quality.md` API Design.
 - Report one finding per cause, naming every site of the diff that shares it, and check the author's site list against your own search; a missed site is a finding of that cause.
+- The review report ends with reading notes: each file and line range read with the conclusion drawn there, the call chain and reproduction command behind each finding, and each suspicion ruled out with its reason. A fix run reads these notes before opening any other file.
 - Give a reproduction for each blocking behavioral finding. Add regression tests for accepted behavior and introduced failures; apply the development-tool input boundary in Severity above.
 - Return MERGE or FIX-FIRST.
