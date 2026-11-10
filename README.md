@@ -79,6 +79,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | `hooks/git_guard.py` | before a git or `gh pr` command | Blocks the operations of `workflow/git-safety.md`, Git hook bypasses, staging of never-committed paths and attribution in pull request bodies |
 | `hooks/poll_guard.py` | before a shell command | Blocks a polling loop (`until` or `while` with `sleep`) under `workflow/multi-agent.md` |
 | `hooks/doc_check.py` | after a file write | Checks the documentation constraints named by `rules/docs/`; reads project markdown values |
+| `tools/branch_check.py` | session start and after `git push` | Reports the Branch Lifecycle state of skill `multi-agent`: integration branch ahead of or behind its upstream, landed, overdue and unowned branches, removable and missing worktrees; reads the project `Integration` values |
 
 ### Git hooks
 
