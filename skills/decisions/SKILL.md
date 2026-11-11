@@ -51,6 +51,9 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - Check the candidate against every decided contract and configured `algorithm` constraint.
 - Reuse and representation checks follow `rules/docs/design.md` Design principles. Inspect `algorithm.reuse_candidates` before adding data or a mechanism; apply `algorithm.reuse_example` to its named operation, relation and owners.
 - Root-cause and capability checks follow `rules/workflow/change-policy.md`.
+- Before listing options, state the fact or rule the design lacks that produces the failure, and search for every other site where the same lack changes a result; each site gets an input and its reference output. The option list includes one option that corrects the owner of that fact for all listed sites. An option that only changes the site where the failure was seen (a guard, a special case, a second mechanism beside the existing one) is a patch and is rejected, not offered. Options are never limited to the site where the failure was first seen.
+- A root-cause option is weighed like every other: state the result quality it gains or loses and the dimension its work grows with, with the bound that stops it. When the complete correction does not scale, offer the same correction at the owner with a stated bound, never a site patch, and name what the bound leaves open.
+- A run asked to check a question receives the question and the evidence before any candidate list, and proposes its own options first.
 - When `algorithm.allowed_data` is configured, data flows only through those structures; no additional representation bypasses that constraint.
 - Entities listed in `algorithm.immutable_entities` are never modified after creation.
 - Check examples against the configured reference command and version, or against the accepted contract when no reference runtime exists. Record the input, expected result and verification evidence.
@@ -65,6 +68,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - Name the documents and commits reviewed.
 - Every question and option list includes a minimal example, its expected result and supporting evidence; include complete reference output when a reference run supplies that evidence.
 - Each option states its observable result and effects on required quality and resource constraints against the current design, using configured metrics and phases.
+- State the lacking fact or rule and the list of affected sites before the options (Solution Checks). The recommendation states the tradeoff between result quality and growth that selects it.
 - Each option states that it keeps earlier decisions or quotes the sentence it changes with its commit.
 - Recommend a revision only when a reference example contradicts the earlier sentence.
 - Include the impact measurements the decision relies on.
