@@ -18,9 +18,9 @@ Language-specific casing, layout, and packaging: see project `.claude/rules/code
 
 - The file name states the single responsibility the file owns.
 - Filename stems use lowercase letters, digits and underscores; extensions are excluded.
-- File names are domain nouns, never pattern roles. No `utils`, `helpers`, `common`, `shared`, `misc`, `manager`, `handler` as a file name.
+- A file name is a domain noun, never a pattern role such as `utils`, `helpers`, `common`, `shared`, `misc`, `manager` or `handler`, alone or as a suffix.
 - Never name a file after one class it contains when the file owns a broader responsibility.
-- One grammatical number for file and directory names across a codebase. Never singular and plural variants of the same name.
+- File and directory names use the grammatical number of their existing sibling names. Never singular and plural variants of the same name.
 
 ## Directory Organization
 

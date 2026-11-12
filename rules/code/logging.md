@@ -20,7 +20,7 @@ Assign level by actionability, not by code location.
 | DEBUG | Diagnostic detail for one decision, still human-readable in volume. |
 | TRACE | Full execution flow; off by default. Frequency limits follow High-Frequency Paths. |
 
-- Test before emit: a record whose loss hides no problem is one level too high.
+- Test before emit: a WARN or ERROR record whose loss hides no problem is lowered one level.
 - Expected-success outcomes are not WARN or ERROR.
 
 ## Granularity
@@ -29,7 +29,7 @@ A unit of work is a request, job, task or consumed message.
 
 - Every unit of work emits one summary record at completion carrying its identifiers, outcome, and duration on every exit path: success, handled failure, abort.
 - Every call to an external system (network, database, subprocess) is recorded with target, duration, and result — as its own record or as fields on the unit-of-work summary.
-- Records report completed outcomes. A start record whose only field is the operation name is TRACE. Exception: an operation that can hang or crash mid-work logs start at INFO, so the absence of its completion record is diagnosable.
+- Records report completed outcomes. A start record whose only field is the operation name is TRACE. Exception: an operation that calls an external process or network, or runs under a resource bound of `code/resource-bounds.md`, logs its start at INFO, so the absence of its completion record is diagnosable.
 
 ## Error Records
 
@@ -48,7 +48,7 @@ A unit of work is a request, job, task or consumed message.
 ## Output Control
 
 - Routing, files, rotation and retention live in environment and handler configuration, never in code.
-- Never raise a third-party logger's level from inside application code.
+- Application code never sets a third-party logger's level; levels live in environment and handler configuration.
 - Every file sink has a size or rotation bound. No unbounded log file.
 
 ## High-Frequency Paths

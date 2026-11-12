@@ -23,7 +23,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 ### Coverage targets
 
 - **Branch coverage**: every true/false path taken.
-- Target: >= 90% branch coverage on changed modules. Production source roots named by the project configuration only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
+- Target: >= 90% branch coverage over each package the change touches. Production source roots named by the project configuration only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
 
 ## 3. Layout
 
@@ -58,13 +58,13 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 7. Assertions
 
-- Specific assertions (equality, errors, ranges) over boolean checks.
+- Specific assertions (equality, errors, ranges); never boolean checks.
 - Negative paths and error conditions asserted explicitly.
 
 ## 8. Mocking
 
 - Mock at system boundaries only.
-- Verified interactions on test doubles.
+- A test that uses a mock at a system boundary verifies each call to it that the behavior under test requires; a stub that only returns data is not verified.
 
 ## 9. Configuration
 

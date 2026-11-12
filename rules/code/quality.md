@@ -10,7 +10,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## Control Flow
 
 - Use guard clauses and early returns. Maximum two indentation levels in a function body.
-- `continue` over nested `if` in loops.
+- In a loop, a guard condition uses `continue`; no nested `if` around the loop body.
 - Use `break` when the loop stopping condition holds.
 - A boolean parameter that selects between two behaviors, each with its own callers, becomes two functions.
 - No flag variables tracking state across a loop — extract to function or use early exit.
@@ -20,20 +20,20 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Specific exception/error types. No broad catches.
 - Handle an error at the layer that can recover or report the operation failure.
 - Error context and logging: `code/logging.md` Error Records.
-- Detect and report errors at the earliest point. Raise or throw on failure, including a missing required internal value. Never disguise failure as an empty value, fallback or degradation. No result and failure are distinguishable by type. Documented recoverable sub-tool output follows `resource-bounds.md`.
-- Every catch re-raises, reports at its handling boundary, or transforms the error.
+- Detect an error at the earliest point and raise or throw there, including a missing required internal value. Never disguise failure as an empty value, fallback or degradation. No result and failure are distinguishable by type. Documented recoverable sub-tool output follows `resource-bounds.md`.
+- Every catch re-raises, reports at its handling boundary, or raises another exception carrying the caught one as its cause.
 - No error codes as return values. Exception: a tool protocol that requires structured success/error objects uses that protocol.
 
 ## Code Structure
 
 - Functions under 20 lines.
 - Max 3 parameters per function. More → introduce a parameter object.
-- Put each multi-step operation in a function named for that operation.
-- Single-letter variables are limited to comprehensions, loop indices and language-profile type parameters.
+- A statement sequence that the function's doc or a design doc names as one step is its own function named for that step.
+- Single-letter names only for loop indices, the parameter of a one-line lambda or comprehension, and type parameters.
 - Call only own methods, parameter methods, locally created objects, direct attributes.
 - No duplicate logic blocks. Two identical blocks → extract function.
 - A function that reads one object's fields more than its own belongs with that concept. For a data-only type, put the function in the module that owns it; API Design governs data holders.
-- Repeated groups of arguments or fields passed together become a type.
+- A group of two or more arguments or fields passed together at two or more call sites becomes a type.
 
 ## No Stale Code
 
@@ -50,15 +50,15 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No speculative generality — abstractions, parameters, or config for hypothetical futures → remove.
 - No middle-man classes that only delegate → remove and call target directly.
 - No magic numbers/strings. Named constants or enums.
-- No repeated conditional logic on the same discriminant → polymorphism or lookup table.
+- No repeated conditional logic on the same discriminant → polymorphism or lookup table. Exception: an exhaustive `when` over a sealed data hierarchy in a pass that owns the behavior.
 
 ## Bug Prevention
 
-- Check for string injection.
-- For every range, slice, and index operation, apply boundary value analysis from `testing.md`.
+- No command, query or path is built by concatenating an external string; it is passed as a separate argument or parameter.
+- A range, slice or index whose bounds come from a parameter or external input is tested at minimum, minimum−1, maximum and maximum+1 (boundary value analysis, `testing.md`).
 - Null/None: never assume a return value is non-null without a type guarantee or check.
 - Every opened file, connection or lock has a guaranteed close path through the language's scoped resource mechanism.
-- Mutation hazard: never mutate a collection while iterating. Never mutate function arguments.
+- Mutation hazard: never mutate a collection while iterating. Never mutate a function argument, except a parameter whose declared type is a mutable collection and whose name and doc comment state that the function fills it.
 - String building: use structured formatting. No manual concatenation of user-controlled input.
 - Comparison: use value equality for data, identity for singletons only.
 - Integer overflow: validate arithmetic on external inputs before use.
@@ -79,7 +79,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ### Docstrings (Public API)
 
-- Public API only. Private: one-line comment.
+- Doc comments document public declarations; a private or `internal` declaration has no doc comment or a one-line comment.
 - Content: summary; constraints; parameters; return value; exceptions.
 - No redundancy, no implementation details, no examples.
 - Language-standard convention.
@@ -92,7 +92,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Input Contract & Invariants
 
-- Allowed input set defined per function.
+- Each public function's allowed input set is stated in its design-doc Function Specification Input and checked at entry; caller misuse raises.
 - Single validation point for the allowed input set at the system or trust boundary; a violation raises/throws. Core logic accepts verified data only; never re-validate that data deep inside code.
 - Invariants as executable checks, not comments.
 - Single access path for optional/variant fields.
@@ -114,7 +114,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## Tool Enforcement
 
 - A rule that an established analyzer, formatter, linter, type checker or architecture test can check is enforced by that tool in the build or gate. The tool runs at zero new findings over a recorded baseline. Review and agent checks cover only what no configured tool checks.
-- Before adding a review item or an agent check step, look for an established tool rule that covers it, starting with the language's standard analyzer rule sets. Adopt the rule once a run on the codebase shows that its findings are real or few enough to fix or baseline.
+- Before adding a review item or an agent check step, look for an established tool rule that covers it, starting with the language's standard analyzer rule sets. The run that proposes a tool rule runs it on the codebase and enables it in the same change when every finding is fixed or recorded in the baseline file in that change.
 - When a review finds a defect class that a tool rule could catch, enabling that rule goes into the same change or into a recorded follow-up.
 - A passing tool result is evidence: neither review nor an agent rereads code to recheck what a passing configured tool already checked.
 
@@ -132,7 +132,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - One service has one interface. A function or algorithm is reached through one entry; a second entry offering the same service merges into the owner the design names, and its callers move to that owner. An old and a new implementation coexist only during a recorded migration whose task removes the old one.
 - Components of one kind share one interface shape: construction, entry verbs, parameter order, input and result conventions, synchronous or asynchronous invocation, completion and cancellation ownership, and glossary vocabulary. Name and justify a component-specific difference in the design document.
 - Data holders hold data. No embedded behavior.
-- Application logic as explicit functions.
+- Application logic lives in named functions; no logic in initializers, property getters with side effects or reflection.
 
 - Call core module APIs directly. No wrapping layers around controlled code.
 - Keep infrastructure dependencies outside core API contracts; boundaries own infrastructure adapters.
