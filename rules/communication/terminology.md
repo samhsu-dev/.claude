@@ -10,7 +10,7 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 
 ## Domain
 
-- Every technical term comes from the task domain or the repository vocabulary. The project may narrow the allowed domains through `domain.allowed`.
+- Every technical term comes from a domain `domain.allowed` lists; without that value the allowed domains are computer science (security analysis included) and the repository vocabulary.
 - Never borrow a term from an unrelated domain as a metaphor for a technical concept.
 - Never coin a term, label, or metaphor the codebase does not already use. Selection of an existing source name follows `rules/docs/glossary.md` Name Sources and Naming Steps.
 - Never translate a metaphor word for word across languages. The project parameter `terminology.substitutions` supplies forbidden words, replacements, scope and exemptions. `hooks/doc_check.py` reports each use of a forbidden word outside its exemptions in written files. A substitution marked `check: review` applies only where the text is about its subject; review checks it and the hook skips it.
@@ -18,7 +18,7 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 ## Established Terms
 
 - The project glossary is the single registry of established terms. Its path is `glossary.path`; the default is `docs/glossary.md`. A project with documentation has one; its first documentation change creates it. A brief to another agent names that path.
-- A concept the glossary names is referred to only by that name, in every output language alike. A concept a dependency repository defines keeps the name its owning glossary gives it (`rules/docs/glossary.md` Repositories).
+- A concept the glossary names is referred to only by that name, spelled as its entry spells it, in every output language, heading and table alike; no synonym, abbreviation or paraphrase stands for it. A concept a dependency repository defines keeps the name its owning glossary gives it (`rules/docs/glossary.md` Repositories).
 - A new concept gets its glossary entry in the change that first uses it; which concepts get one follows `rules/docs/glossary.md` Selection.
 - Until that procedure establishes a name, use an existing term or a plain clause.
 - A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A definition, a citation or a clause beside it is added instead.

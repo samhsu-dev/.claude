@@ -38,14 +38,15 @@ Read every file. Load the rule file of its type and `rules/docs/documentation.md
 
 ## Step 3 — Cross-File Consistency
 
-Check across all audited files; item 6 extends the check across the main repository and its submodules:
+Check across all audited files; item 7 extends the check across the main repository and its submodules:
 
 1. **Terminology**: the glossary exists at `glossary.path` (project rule file `glossary.md`) when the project has documentation. Every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use. Report an entry that fails `rules/docs/glossary.md` Selection; redundant entries under Selection; and an entry no document uses.
 2. **Ownership**: each fact lives in its owning document under `rules/docs/documentation.md` Ownership; another document links it.
 3. **Cross-references valid**: every relative Markdown link in an audited file points to an existing file.
 4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.
 5. **impl.md sync**: no `impl.md` entry references a removed function, and `design.md` links an external API fact to its `impl.md` entry instead of restating it.
-6. **Repositories**, across the main repository and its submodules under `rules/docs/documentation.md` Repositories and `rules/docs/glossary.md` Repositories: every cross-repository link resolves and uses the stated link form; no link or term reference points against the dependency direction; no concept has entries in two glossaries; every imported term exists at its owning entry.
+6. **Consistency**: no two sentences contradict each other, and no document patches another's statement; each deviation is reported at the owning statement under `rules/docs/documentation.md` Writing and Updating.
+7. **Repositories**, across the main repository and its submodules under `rules/docs/documentation.md` Repositories and `rules/docs/glossary.md` Repositories: every cross-repository link resolves and uses the stated link form; no link or term reference points against the dependency direction; no concept has entries in two glossaries; every imported term exists at its owning entry.
 
 ## Step 4 — Plan
 
@@ -76,7 +77,7 @@ Wait for user approval before proceeding to Step 5.
 
 For each approved item in the plan:
 
-1. Apply the fix. Preserve existing content — restructure, not rewrite.
+1. Apply the fix at the owning statement under `rules/docs/documentation.md` Updating; keep every domain fact the section states.
 2. Verify the fix resolves the specific violation.
 3. Check cross-file consistency after each change.
 

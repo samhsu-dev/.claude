@@ -50,6 +50,21 @@ Each fact has one owning document; every other document links it and never resta
 A committed document states the current design (`rules/workflow/committing.md` Staging); it has no dated or "verified" section. Decision records follow `rules/workflow/records.md`; a commit records when a fact changed.
 Rationale lives in `concept.md` Rationale and Rejected Alternatives.
 
+## Writing
+
+- Each document follows the rules of its type file under `rules/docs/`.
+- An engineer writes for a software engineer who implements, reviews or maintains the design. A document states what a component does, its inputs, outputs and invariants, and the reason for each rule. It only transfers information and design: no persuasion, narrative, restated summary, process note or commentary about the document.
+- Each sentence has one reading. It names the exact data, program point, context and condition; a quantity or bound is stated, not implied. A vague word ("handles", "appropriately", "some", "etc.") gives way to the list or condition it stands for.
+- No two sentences contradict each other, within a document or across documents.
+- Structure is plain: short sections and paragraphs, at most two heading levels below the title where the type's required structure allows, bullets nested at most one level, a table only for rows-by-columns data, no decorative callout, no chain of cross-references a reader follows to understand one rule.
+- Terms follow `communication/terminology.md`: computer-science terms and glossary terms only, algorithm terms spelled as the glossary spells them.
+
+## Updating
+
+- A change starts at the owning statement, the sentence that first defines the concept. Revise it there, rewrite the section that holds it so the whole section states the new design as if written fresh, then align every dependent sentence in this and other documents.
+- Never append a correcting sentence, an exception, an override note or a change history beside unchanged old text. Wording such as "now also", "in addition to the above", "previously", "changed to", or an exception paragraph after the rule it amends, marks a patch.
+- A section the change does not affect keeps its text; no document is recreated from scratch.
+
 ## Repositories
 
 These rules apply when a product spans several repositories: a main repository and the submodules it records, which may depend on each other.
