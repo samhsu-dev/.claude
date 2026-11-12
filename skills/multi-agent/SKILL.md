@@ -45,6 +45,8 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 - A brief states the purpose, the outcome as an independently deliverable result, acceptance checks, the tool and write boundaries, the effort level, dependencies, input revision and the change since that agent's last task. It references readable content by path and section and inlines only the decided sentences and changes needed to interpret the task.
 - A result returns outcome, commit, checks and open items. Detail stays in the run directory; another agent receives its path, never its text.
 - A resident restarts only when its context runs out or its responsibility ends, leaving a handoff file in its run directory.
+- A read-only run whose result is an edit of the files it read continues in the same session under a write profile; a new session takes the edit only for independence (review, refutation, new reader), an exhausted context, or parallel write sets one session cannot carry. A defect row's reproduction runs inside that row's preparation session, never as a separate run.
+- A reviewer of a diff never fixes it; the implementing session does. A read-only audit of documents applies its own findings, continued under a write profile one document area at a time after the running writers of that area; a finding that changes the meaning of a decided sentence goes to the main agent before the edit.
 
 ## Dispatch
 
