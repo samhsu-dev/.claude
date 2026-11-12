@@ -39,7 +39,7 @@ paths:
 
 ## Audience
 
-- **Rule files** → agent. Short, unambiguous, no narrative.
+- Rule files address the agent. Every sentence is a rule (an observable condition and the required action), a command or an order; a rule file holds no rationale, history, introduction, summary, or definition that no rule of the file uses.
 
 ## Language
 

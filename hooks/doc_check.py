@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 from doc_check_context import bibliography_path as bibliography_path, TERMINOLOGY as TERMINOLOGY, CODE_SPAN as CODE_SPAN, AGENT_CONFIG as AGENT_CONFIG, line_limit as line_limit, written_text as written_text, terminology_files as terminology_files, LOCAL_RECORD_DIRS as LOCAL_RECORD_DIRS, local_record as local_record, forbidden_terms as forbidden_terms, term_pattern as term_pattern, term_hits as term_hits
 from doc_check_context import DOC_TYPES, HOST, work_tree, agent_configuration
-PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
+PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.[A-Za-z]\w*))`")
 MAX_REPORTED = 20
 CELL_SEPARATOR = re.compile(r"(?<!\\)\|")
 CITATION = re.compile(r"\[[^\[\]]*@[^\[\]]*\]")
@@ -28,7 +28,7 @@ CITATION_KEY = re.compile(r"(?<![\w@])-?@([\w][\w:.#$%&+?<>~/-]*\w|\w)")
 CITATION_FIELDS = ("Reference", "Literature", "Tools")
 EXTERNAL_LOCATION = re.compile(
     r"https?://|\b[\w-]+(?:\.[\w-]+)*\.(?:com|org|io|net|dev|edu)/"            # URL
-    r"|\.(?:c|h|cc|cpp|hpp|kt|java|scala|qll|py|ts|js|go|rs|ml|php|y)`?:\d+"   # file:line
+    r"|\.[A-Za-z]\w*`?:\d+"   # file:line
     r"|`:\d+|(?<![\w])L\d+-L?\d+\b"                                          # bare line range
     r"|`[^`\s]*\w/[\w.][^`\s]*`")                                            # directory path
 def repo_root(directory):

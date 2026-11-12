@@ -52,7 +52,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 6. Fixtures & Data
 
-- Scenario-specific fixtures per test when needed.
+- A fixture used by one test lives in that test.
 - Temporary resources for file/network/process. Auto-clean after test.
 - A hand-written input that a test passes to the product as source text is a file in a data directory under the test root, in a directory named after the tested behavior; the file states its expected result. An input a test generates stays in test code.
 - No bulk payloads inline in test files. No test data in the source tree.
@@ -69,14 +69,14 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 9. Configuration
 
-- Framework, discovery, markers, strict/fail-fast in repo config.
+- Framework, discovery, markers and strict mode in repo config.
 - Deterministic environment: fixed seeds, stable paths, isolated temp dirs.
 
 ## 10. Execution
 
 - Default command: unit tests only. Separate command for integration.
-- Parallel execution when supported.
-- Concise tracebacks. Stop on first failure for debugging.
+- Tests run in parallel when the framework supports it.
+- Concise tracebacks. Stop on first failure only in a debugging run, through a command-line option.
 
 ## 11. Maintenance
 

@@ -20,7 +20,7 @@ Documents split by responsibility use prefix naming:
 
 Each split file follows the same rules as its single-file counterpart. One concern per file. Glossary layout: `rules/docs/glossary.md`.
 
-Every Markdown file in a repository: 200 lines max; `SKILL.md` follows `rules/meta/skilling.md` (`hooks/doc_check.py` reports an overrun of either). A document that exceeds the limit → split by concern using prefix naming above. When a single concern still exceeds the limit, append numeric index: `concept-{concern}-{index}.md` (e.g., `design-auth-1.md`, `design-auth-2.md`).
+Every Markdown file in a repository: 200 lines max; `SKILL.md` follows `rules/meta/skilling.md` (`hooks/doc_check.py` reports an overrun of either). A document that exceeds the limit → split by concern using prefix naming above. A single concern that still exceeds the limit splits into its sub-concerns, each file named `<type>-{concern}-{sub-concern}.md`.
 
 After splitting, delete the original monolithic file and update the directory's `index.md` (`rules/docs/index.md`).
 
@@ -47,8 +47,8 @@ Each fact has one owning document; every other document links it and never resta
 | Types, functions, open gaps between code and decided design, performance risks of a mechanism | `design.md` |
 | External APIs | `impl.md` |
 
-A committed document states the current design. No dates, no change history, no dated or "verified" sections, no decision IDs, no commit citations, no "user decision", "agent decision", "revises" or "keeps every decision" markers. Decision records follow `rules/workflow/records.md`; a commit records when a fact changed.
-Keep rationale only when readers need it to understand the design, as plain prose in the owning concept or model section.
+A committed document states the current design (`rules/workflow/committing.md` Staging); it has no dated or "verified" section. Decision records follow `rules/workflow/records.md`; a commit records when a fact changed.
+Rationale lives in `concept.md` Rationale and Rejected Alternatives.
 
 ## Repositories
 

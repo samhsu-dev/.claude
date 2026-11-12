@@ -11,7 +11,6 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 - Use guard clauses and early returns. Maximum two indentation levels in a function body.
 - In a loop, a guard condition uses `continue`; no nested `if` around the loop body.
-- Use `break` when the loop stopping condition holds.
 - A boolean parameter that selects between two behaviors, each with its own callers, becomes two functions.
 - No flag variables tracking state across a loop — extract to function or use early exit.
 
@@ -38,14 +37,13 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## No Stale Code
 
 - No dead code. No commented-out code.
-- No compatibility stubs. Removed API = removed everywhere.
-- No historical references in docstrings or comments.
+- No compatibility stubs; a removed API is removed at every call site. Exception: the old entry of a recorded migration under API Design until that migration's task removes it.
 - Remove artifacts with no surviving code, design, build or entry-point consumer.
 
 ## Code Smells — Detect and Eliminate
 
 - No primitive obsession — raw strings/ints representing domain concepts → wrap in a type.
-- No god objects — a class with >7 public methods or >5 fields → split responsibilities. File splitting follows `code/organization.md`.
+- No god objects: a class whose public methods or fields serve two responsibilities splits by responsibility. File splitting follows `code/organization.md`.
 - No shotgun surgery — one change requires edits in many files → consolidate.
 - No speculative generality — abstractions, parameters, or config for hypothetical futures → remove.
 - No middle-man classes that only delegate → remove and call target directly.
@@ -108,7 +106,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## Agent Maintainability
 
 - Among implementations that satisfy accepted behavior, security and resource constraints, choose the one a reader new to the repository changes correctly from its owning documents and identifiers alone.
-- Every concept a change adds or changes links to its owning document section, its identifier, its mechanism and a behavioral test. The site list sent with the diff names those four links per concept; a missing link is a finding.
+- Every concept a change adds or changes links to its owning document section, its identifier, its mechanism and a behavioral test. The report sent with the diff names those four links per concept; a missing link is a finding.
 - A reviewer resolves each link from the repository alone. A link that needs the author's conversation to resolve is a finding.
 
 ## Tool Enforcement

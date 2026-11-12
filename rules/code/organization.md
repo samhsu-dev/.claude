@@ -10,9 +10,8 @@ Language-specific casing, layout, and packaging: see project `.claude/rules/code
 ## File Responsibility
 
 - One responsibility per file. All types and functions in a file serve that responsibility.
-- Files under 300 lines. Extract a new file when a second responsibility emerges. Exception: a standalone tool script — a single-invocation script outside the shipped package (e.g. under `tools/`) — stays one file regardless of length.
+- A file over 300 lines splits along its responsibilities; a single-responsibility file over 300 lines splits that responsibility into sub-responsibilities. Exception: a standalone tool script — a single-invocation script outside the shipped package (e.g. under `tools/`) — stays one file regardless of length.
 - Splits follow responsibility boundaries, never line count alone. A split that leaves a fragment without a nameable responsibility is wrong.
-- A file exceeding the size limit becomes a directory of the same name; the directory's index file re-exports the original names so import paths survive the split.
 
 ## File Naming
 

@@ -15,7 +15,7 @@ Assign level by actionability, not by code location.
 |-------|-----------|
 | FATAL | Process cannot continue; crash imminent. |
 | ERROR | Operation failed; needs human intervention. |
-| WARN | Anomaly that does not stop the operation; the signal a search or scan exists to surface. |
+| WARN | Anomaly that does not stop the operation. |
 | INFO | State transition a reader follows in normal operation: start, end, resource loaded, milestone reached. |
 | DEBUG | Diagnostic detail for one decision, still human-readable in volume. |
 | TRACE | Full execution flow; off by default. Frequency limits follow High-Frequency Paths. |

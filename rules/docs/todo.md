@@ -36,7 +36,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 ## File Organization
 
 - Record location and file naming: `rules/workflow/records.md`.
-- Group related tasks together.
+- Tasks that share a module or a cause are adjacent in the file.
 - A run lists each task-doc item in its report; the main agent writes it to `docs/todo/<module>.md` in the main checkout and updates task state there when it accepts the run.
 
 ## Templates
