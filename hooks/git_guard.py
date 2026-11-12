@@ -31,7 +31,7 @@ PROHIBITED = [
      "git checkout --/./-f discards changes. Inspect with git diff, then edit by hand."),
     (GIT + r"restore\b", "git restore discards changes. Inspect with git diff, then edit by hand."),
     (GIT + r"clean\b", "git clean deletes untracked files. Remove known files by name with rm."),
-    (GIT + r"stash\b", "git stash hides changes from other agents. Commit WIP to a temporary branch."),
+    (GIT + r"stash\b", "git stash hides changes from other agents. Commit the work in progress on the current branch under a `wip:` subject."),
     (GIT + r"push\s+(?:.*\s)?(?:--force(?:-with-lease)?\b|-f\b)", "Force push rewrites history. Use git push and investigate a rejection."),
     (GIT + r"rebase\s+(?:.*\s)?(?:-i\b|--interactive\b)", "Interactive rebase can drop commits."),
     (GIT + r"commit\s+(?:.*\s)?--amend\b", "git commit --amend rewrites a commit. Create a fixup commit."),

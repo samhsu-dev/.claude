@@ -30,4 +30,4 @@ Full pipeline: `/perf` skill.
 ## Logging and Regression Guard
 
 - Logging added for performance is a counter or stage timing that explains a cause. Never log per element in a loop.
-- A periodic measurement on a fixed sample is compared with a recorded baseline. Work-count checks may gate merges; wall-time checks run separately because of noise.
+- A periodic measurement on a fixed sample is compared with a recorded baseline. Work-count checks gate merges when the project gate runs them; wall-time checks run outside the merge gate.

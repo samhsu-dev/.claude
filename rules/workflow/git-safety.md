@@ -8,7 +8,7 @@ Preflight and safe alternatives: skill `commit`; branch cleanup and submodule po
 
 ## Publication
 
-- A push requires explicit user authorization and follows configured project publication constraints. A local commit, passed review or merge does not authorize publication.
+- A push requires explicit user authorization; an `integration.publication` value is that authorization within the scope it states. A local commit, passed review or merge does not authorize publication.
 
 ## Branches and Conflicts
 
