@@ -34,6 +34,8 @@ A concept takes the name the highest-ranked source gives that same concept:
 - A candidate name that already names another glossary concept is recorded with both entries as a user question in the finding run's progress file; the main agent asks the user.
 - A borrowed word with no literature source in its glossary entry is a coined term.
 - A rename question cites the rank and the source of every candidate name.
+- A literature name source is a paper of `glossary.literature_min_year` or later; a paper later than `glossary.naming_cutoff_work` is similar at most, never a name source.
+- The Tools field checks each counterpart of `glossary.tools`.
 
 ## Naming Steps
 
@@ -52,7 +54,7 @@ An existing source name is selected in three steps, in order:
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one.- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading or its enumeration row: `grep -n "^### <term>\|^| <term> |" <dir>/glossary*.md`.
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and `bibliography.collection` when set), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one.- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading or its enumeration row: `grep -n "^### <term>\|^| <term> |" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
 - After a glossary file splits, add its new files to the routing table.
 
@@ -113,16 +115,6 @@ One entry per term: an H3 heading followed by fields in this order.
 - Each repository with documentation has its own glossary. The repository that defines a concept owns its entry; no concept has entries in two glossaries.
 - A consumer refers to a dependency's term by its exact name and links its owning entry. It never redefines or renames the term.
 - The consumer's routing file holds an imported-terms table with columns Term and Owning entry: one row per dependency term its documents use, no definition. That row and the owner's entry meet the Selection obligation.
+- Locate takes the head noun from `glossary.head_kinds`; Classify takes the role from `glossary.loci`; `glossary.top_classes` assigns each locus its top class.
+- A heading, word form or spelling that a `glossary` value states is used exactly as stated: `glossary.core_terms`, `glossary.protected_borrowed_terms`, `glossary.algorithm_data_names`, `glossary.operation_headings`, `glossary.property_heading`, `glossary.unknown`.
 - Link direction and link form follow `rules/docs/documentation.md` Repositories.
-
-## Project Values
-
-- Apply `glossary.literature_min_year` and `glossary.naming_cutoff_work` when selecting naming sources.
-- When a naming cutoff is configured, a paper later than that work is similar at most; it is never a name source.
-- Check the counterparts in `glossary.tools` for the same or a similar concept.
-- Include a paper meeting `glossary.literature_min_year` and an industrial counterpart when each exists.
-- Locate and Classify use `glossary.head_kinds` and `glossary.loci`.
-- Core names, protected borrowed terms, top classes and exact headings come from `glossary`. Name the algorithm's own data from its core terms; `glossary.algorithm_data_names` supplies established data names.
-- Classify values into configured top classes by their listed loci.
-
-- Use configured word forms and state membership for named project values.

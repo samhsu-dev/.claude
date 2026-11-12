@@ -7,10 +7,8 @@ Language-independent agent rules and skills for Claude Code, organized by the ar
 ## Install
 
 ```bash
-git clone https://github.com/<profile.repository> ~/.claude
+git clone https://github.com/samhsu-dev/.claude ~/.claude
 ```
-
-The project rule files under `rules/project/` supply `profile.repository` and profile branch identities.
 
 Skill invocation controls: [Skill Writing Standards](rules/meta/skilling.md#frontmatter-and-variables).
 
@@ -54,7 +52,7 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 | `code/testing.md` | test files | Test design, layout, assertions |
 | `docs/documentation.md` | Markdown files | Document naming, size limit, fact ownership |
 | `docs/<type>.md` | the doc type it names | Format of concept, model, spec, design, impl, task docs, index, glossary, README, llms, HTML |
-| `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography exported from Zotero by Better BibTeX, Pandoc citation keys, pinned tool versions |
+| `docs/bibliography.md` | `.bib` files and docs that cite | One bibliography exported from `bibliography.manager`, Pandoc citation keys, pinned tool versions |
 | `prompt/prompting.md` | `*.prompty`, `prompts/`, `PROMPT*.md` briefs | LLM prompt construction |
 | `meta/rulewriting.md` | rule files, `CLAUDE.md` | How to write rules |
 | `meta/skilling.md` | skill files | How to write skills |
@@ -103,7 +101,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | Script | Used by | Does |
 |--------|---------|------|
 | `tools/codex_rules.py` | run launcher | `pack` writes rule routes, routing native Codex project value files by their `paths:`; `--lean` adds the chain-session skill as a required read; `gate` checks logged always-active paths, with the read inspection required by skill `multi-agent` Run Isolation |
-| `tools/evidence.py` | task coordinator | Evidence schema, merge, freshness and brief commands |
+| `tools/evidence.py` | skill `decisions` Evidence Files | Evidence schema, merge, freshness and brief commands |
 
 See [Parameter Binding](CLAUDE.md#parameter-binding) for native project roots and fixed section formats.
 

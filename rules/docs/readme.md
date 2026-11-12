@@ -22,17 +22,17 @@ Sections in this order:
 | 1 | **Title** | Project name, spelled as the build's root project name. |
 | 2 | **Name** | One-line blockquote (`>`) with name etymology or metaphor. |
 | 3 | **Description** | One line, under 120 characters. Core functionality and idea — not how. |
-| 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
+| 4 | **Install** | Code block. Copy-paste-run. List every prerequisite the install command needs. |
 | 5 | **Usage** | Minimal working example in a code block. Simplest case first. |
-| 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to full docs when extensive. |
-| 7 | **Citation** | For a project with an associated work; format below. |
+| 6 | **API** | Exported functions/classes, signatures, parameters, return types. Link to the full API docs when they exist. |
+| 7 | **Citation** | When `readme.citation_required` is true; format below. |
 | 8 | **License** | License section below. Always last. |
 
 ### Optional Sections
 
-Optional sections follow the last required section before License, in table order, except for the Badges position below. Include only when the README lacks context without them:
+Optional sections follow the last required section before License, in table order, except for the Badges position below. Include each section below only under the condition it states:
 
-- **Background** — Motivation and context. When the problem or naming is non-obvious.
+- **Background** — Motivation and context. When the project name or its problem is not stated in the Description section.
 - **Contributing** — Link to `CONTRIBUTING.md` or one-line statement.
 - **Badges** — Build status, version, coverage. No heading. After description, before install.
 - **Documentation** — Links to `concept.md` (concepts) and `design.md` (architecture) when they exist. One link per doc, one-line description of what the reader finds there.
@@ -59,8 +59,8 @@ No table of contents.
 
 ## Citation
 
-- `readme.citation_required` controls whether an associated-work citation is mandatory.
-- Use the associated work's BibTeX in a fenced `bibtex` block. Unreleased work uses `readme.citation_placeholder` until publication; replace its fields on release.
+- When `readme.citation_required` is true, the section holds the associated work's BibTeX in a fenced `bibtex` block and `readme.citation_request`.
+- When `readme.work_status` is not `published`, the BibTeX is `readme.citation_placeholder`; on publication its fields are replaced.
 
 ## Rules
 

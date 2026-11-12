@@ -25,7 +25,7 @@ A project value file keeps the fixed headings and formats the tools read. Parsed
 | `glossary` | `glossary.md` | `rules/docs/glossary.md`; `rules/communication/terminology.md`; `skills/decisions/SKILL.md`; `skills/update-docs/SKILL.md`; `tools/codex_rules.py` |
 | `bibliography` | `bibliography.md` | `rules/docs/bibliography.md`; `hooks/doc_check.py` |
 | `readme` | `readme.md` | `rules/docs/readme.md` |
-| `integration` | `integration.md` | `rules/workflow/git-safety.md`; `skills/multi-agent/SKILL.md`; `tools/branch_check.py` |
+| `integration` | `integration.md` | `rules/workflow/git-safety.md`; `skills/multi-agent/SKILL.md`; `skills/chain-session/SKILL.md`; `skills/debug/SKILL.md`; `skills/update-codes/SKILL.md`; `skills/update-tests/SKILL.md`; `skills/update-prompts/SKILL.md`; `tools/branch_check.py` |
 | `agent_prompt` | `prompts.md` | `rules/prompt/prompting.md` |
 | `completion` | `completion.md` | `skills/chain-session/SKILL.md` |
 | `profile` | `profile.md` | Native entry points; installation |
