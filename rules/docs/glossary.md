@@ -54,8 +54,9 @@ An existing source name is selected in three steps, in order:
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and `bibliography.collection` when set), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one.- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading or its enumeration row: `grep -n "^### <term>\|^| <term> |" <dir>/glossary*.md`.
-- Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and `bibliography.collection` when set), the routing table, the imported-terms table (Repositories), and a link to `glossary-retired.md`. It holds no entry and no instruction for writing one.
+- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading or its enumeration row: `grep -n "^### <term>\|^| <term> |" <dir>/glossary*.md`.
+- `glossary-retired.md` holds only the retired-names table, columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
 - After a glossary file splits, add its new files to the routing table.
 
 ## Layers

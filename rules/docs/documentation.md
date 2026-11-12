@@ -18,7 +18,9 @@ Documents split by responsibility use prefix naming:
 | Implementation | `impl.md` | `impl-{concern}.md` |
 | Glossary | `glossary.md` | `glossary-{concern}.md` |
 
-Each split file follows the same rules as its single-file counterpart. One concern per file. Glossary layout: `rules/docs/glossary.md`.
+Each split file follows the same rules as its single-file counterpart. One concern per file.
+
+A companion file holds one kind of supporting content for one owning file and omits the type's required sections; its first line links the owner. Companions: `spec-{concern}-examples*.md` (complete inputs, context and expected results of the owning spec), `design-structure*.md` (diagrams of the owning design), `design-gaps*.md` (Open Gaps of the owning design). A companion defines no rule, algorithm step or API of its own; the owner keeps the complete contract, and a reader reaches the companion's owner in one link. Glossary layout: `rules/docs/glossary.md`.
 
 Every Markdown file in a repository: 200 lines max; `SKILL.md` follows `rules/meta/skilling.md` (`hooks/doc_check.py` reports an overrun of either). A document that exceeds the limit → split by concern using prefix naming above. A single concern that still exceeds the limit splits into its sub-concerns, each file named `<type>-{concern}-{sub-concern}.md`.
 

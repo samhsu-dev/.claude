@@ -49,7 +49,7 @@ paths:
 
 - Top-level `index.md` links to subdirectory `index.md` files, not to individual files within subdirectories.
 - Entry format for subdirectories: `<dirname>/index.md` with a one-line description of the subdirectory scope.
-- Two levels maximum. No `index.md` linking to another `index.md` linking to another `index.md`.
+- Three levels maximum, counted from the repository's own top-level `docs/index.md`; a submodule counts from its own. No `index.md` chain longer than three, and no cycle.
 
 ## Verification
 
