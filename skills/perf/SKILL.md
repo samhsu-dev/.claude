@@ -90,20 +90,15 @@ Report the decision to the user with numbers.
 
 Update the resolved module task doc:
 
-- **KEEP**: Move candidate from Candidates to Completed Optimizations. Update Current Baseline.
-- **REVERT**: Move to Evaluated & Rejected. Record result and reason. Revert source files.
-- **SKIP**: Move to Evaluated & Rejected with the measured result and reason.
-- A candidate dropped before any measurement moves to Evaluated & Rejected with "Not tested" and reason.
+- **KEEP**: delete the candidate from Candidates and update Current Baseline.
+- **REVERT**, **SKIP**, or dropped before measurement: delete the candidate and add its measured result (or "Not tested") and reason to Key Insights.
 
-After round: update Remaining Bottlenecks and Key Insights.
+After each round, update Remaining Known Bottlenecks and Key Insights.
 
 ### Module task record structure
 
 ```text
 ## Current Baseline
-## Key Improvements
-## Completed Optimizations
-## Evaluated & Rejected
 ## Candidates
 ## Remaining Known Bottlenecks
 ## Key Insights

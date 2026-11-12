@@ -40,7 +40,7 @@ Write plain declarative sentences, the imperative for what the reader must do, n
 
 A prose cross-reference keeps its target; a relative one such as "above" or "below" becomes that target's section number. Every table and exhibit carries a number and is referenced by it.
 
-Every block in the table above already exists in the stylesheet. Adding a new visual treatment means adding a rule, and a new rule is justified only by a shape the document repeats at least twice.
+Every block in the table above already exists in the stylesheet. A source shape the table lacks maps onto an existing block; a new rule enters `assets/document.css` only for a shape that two or more documents repeat.
 
 ## Step 3a — Source links and syntax highlighting
 
@@ -71,18 +71,10 @@ Quotations, numbers, identifiers and paths carry over under `rules/docs/html.md`
 
 ## Design system
 
-Palette and typefaces come from the Johns Hopkins visual identity, in its post-2025 open-source form. The stylesheet in `assets/` already encodes them, along with the constants the rule file requires.
-
-| Role | Value |
-|---|---|
-| Structure, headings, links | Heritage Blue `#002d72` |
-| Body text | Sable-toned ink `#1c1a17` |
-| Labelled states | Spirit Blue `#68ace5`, Homewood Green `#008767`, Dark Red `#a6192e`, Sand `#cba052` |
-| Prose and headings | Source Serif 4, falling back to Charter then Georgia |
-| Labels, eyebrows, table text | Work Sans, falling back to system-ui |
+The stylesheet in `assets/` holds the palette, the typefaces and the constants `rules/docs/html.md` requires.
 
 ## Rules
 
 - One source file, one output file. Never split a rendering across pages.
 - Never invent content to fill a layout. A block with no source material is removed, not padded.
-- Never edit `assets/document.css` to accommodate one document. Per-document deviation means the design system is wrong or the document is.
+- Never edit `assets/document.css` to accommodate one document.

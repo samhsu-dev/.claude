@@ -115,7 +115,7 @@ Apply the approved plan. Fix layout issues before writing new tests; reorganizat
 
 ## Step 6 — Verify
 
-1. Run the project test command.
+1. Run the tests skill `chain-session` Work Loop step 7 requires.
 2. Classify each failing test under `rules/code/testing.md` Failures. A delegated run reports an implementation defect with the design doc reference to the main agent in its result; the main agent takes it to the user.
 3. Run the project linter — no new violations.
 

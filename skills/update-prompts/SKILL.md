@@ -39,10 +39,8 @@ Read the JSON and map it onto these checks:
 | ID | Check | Fails when |
 |----|-------|-----------|
 | M1 | Rule duplication | `repeatedGrams` holds a content phrase outside a rule-to-example pair |
-| M2 | Attention budget | `overBudget` is true (`directiveCount` past `directiveBudget`) |
 | M3 | Emphasis inflation | `emphasisWords` is non-empty |
 | M4 | Corpus leakage | any `corpusLeakage.tokens[].corpusOccurrences` exceeds 0 |
-| M5 | Section balance | one non-example section holds more than a third of `size.words` |
 
 M4 is the highest-severity mechanical check.
 
@@ -118,7 +116,7 @@ Wait for user approval before Step 6.
 1. One concept per edit. A concept is one rule moved, one duplication removed, or one section restructured.
 2. Rewrite in place. Never append a clause to patch an observed failure; fold it into the rule that owns it.
 3. Re-render and re-run Step 2 after each edit.
-4. Run the project's formatter, type checker, and test suite on the carrier.
+4. Run the project's formatter, type checker, and the tests skill `chain-session` Work Loop step 7 requires, on the carrier.
 
 ## Step 7 — Measure
 
@@ -144,6 +142,6 @@ Append to the module task doc `docs/todo/<module>.md`: the ID fixed, the edit, t
 
 ## Rules
 
-- Scripts produce the inputs of M1 through M5; the only reading step is M1's exclusion of a `repeatedGrams` entry whose two occurrences are a rule and its example.
+- Scripts produce the inputs of M1, M3 and M4; the only reading step is M1's exclusion of a `repeatedGrams` entry whose two occurrences are a rule and its example.
 - One edit, one measurement. Never batch edits and measure once; attribution is unrecoverable.
 - Corpus leakage found after a measurement invalidates that measurement. Re-baseline before comparing.

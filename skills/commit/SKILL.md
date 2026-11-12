@@ -21,9 +21,9 @@ Run these three commands in parallel:
 
 ### Scope self-check
 
-- Count the distinct concepts the changes serve, not the files: changes across 3 or more unrelated modules, one file mixing edits of different features or fixes, or a change set several times larger than recent single-task commits in `git log` each indicate more than one concept.
+- Count the distinct concepts the changes serve, not the files: changes across 3 or more unrelated modules, one file mixing edits of different features or fixes, or a change set with more than 3 times the median file count of the last 20 commits each indicate more than one concept.
 - When the tree spans more than one unrelated concept, tell the user how many concepts you detect and that `workflow/committing.md` Staging commits each task once its tree is runnable, then commit the best grouping available.
-- A concept touching more than 15 files, or several times the size of recent `git log` commits, is split into the Step 2 role-ordered commits, each leaving the tree runnable; it stays one commit only when atomic (Step 2), and you then tell the user why it could not be split.
+- A concept touching more than 15 files, or more than 3 times the median file count of the last 20 commits, is split into the Step 2 role-ordered commits, each leaving the tree runnable; it stays one commit only when atomic (Step 2), and you then tell the user why it could not be split.
 
 ## Step 2 — Classify Changes
 
@@ -62,7 +62,7 @@ Format: `type[(scope)]: description`
 - Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `ci`, `perf`, `build`, `style`.
 - Scope: noun in parentheses — `fix(parser):`, `feat(auth):`.
 - Imperative mood, lowercase after colon, no trailing period.
-- 50 characters target. 72 characters hard limit.
+- 50 characters target; the limit is `rules/workflow/committing.md`.
 - Test: "If applied, this commit will ___."
 - Breaking changes: append `!` after type/scope.
 - Match the repository's existing commit naming conventions when a project convention exists.
@@ -104,7 +104,7 @@ EOF
 After all commits:
 
 1. `git log --oneline -N` (where N = number of new commits) — verify subjects.
-2. Confirm each commit leaves the codebase in a consistent state.
+2. Confirm each commit builds and its affected tests pass.
 
 ## Safety Rules (multi-agent environment)
 

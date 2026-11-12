@@ -45,6 +45,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - Read that file before gathering more facts. Consolidate contributions by source, retaining conflicts explicitly.
 - A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. A stage that relies on it reads the source again and writes a new row.
 - Later stages cite fresh rows and add only missing facts.
+- `tools/evidence.py merge <task-dir>` merges the run rows; `tools/evidence.py brief <task-dir>` prints the brief lines.
 
 ## Solution Checks
 

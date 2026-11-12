@@ -56,15 +56,14 @@ Check these first:
 
 1. Fix the root cause. One change addressing one fault and its other instances (`rules/workflow/change-policy.md` Correctness and Verification).
 2. Run the reproduction test. Confirm it passes.
-3. Run the full test suite. Confirm no regressions.
+3. Run the tests skill `chain-session` Work Loop step 7 requires.
 
 A repair outside the task's scope is reported to the user before it is made.
 
 ## Step 5 — Verify
 
-1. Run project test command — all pass.
-2. Run project linter — no new violations.
-3. Run project build — compiles clean.
+1. Run project linter — no new violations.
+2. Run project build — compiles clean.
 
 ## Step 6 — Preserve the Test
 
