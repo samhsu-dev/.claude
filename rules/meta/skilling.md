@@ -6,7 +6,7 @@ paths:
 
 # Skill Writing Standards
 
-A skill is instructions and bundled resources that load into the conversation when invoked; its commands and scripts run through session tools under the session's permissions. Field and variable reference: [Extend Claude with skills](https://code.claude.com/docs/en/skills).
+Field and variable reference: [Extend Claude with skills](https://code.claude.com/docs/en/skills).
 
 ---
 
@@ -28,16 +28,13 @@ skill-name/
 - Every field is optional; give `description`. Field meanings, defaults and substitution variables follow the reference above, not a local copy.
 - `disable-model-invocation: true` + `user-invocable: false` = contradictory. Never combine.
 - `context: fork` without actionable task = empty output.
-- `allowed-tools` pre-approves the listed tools, including `Bash(pattern)` specifiers, for the invoking turn. It restricts nothing; settings deny and ask rules still apply.
+- `allowed-tools` pre-approves the listed tools, including `Bash(pattern)` specifiers, for the invoking turn.
 - `effort` takes a level the session model supports: `low`, `medium`, `high`, `xhigh` or `max`.
 
 ## Shell Preprocessing
 
-`` !`command` `` executes before Claude sees content. Output replaces placeholder.
-
-- Each command is checked against permission rules. A deny match, or a command not allowed outside auto mode, aborts the invocation.
-- A failed command aborts the whole invocation; exit 1 is tolerated for search and comparison commands.
-- Disabled by policy: `"disableSkillShellExecution": true` replaces each command with a disabled notice; bundled and managed skills are unaffected.
+- A preprocessing command matches no deny rule and is allowed outside auto mode.
+- A preprocessing command exits 0, or 1 for a search or comparison command.
 
 ---
 
@@ -54,7 +51,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 - Scripts in `scripts/`. Invoke: `${CLAUDE_SKILL_DIR}/scripts/<name> $ARGUMENTS`.
 - Scripts return structured JSON on success and error. Agent reads and presents.
-- Scripts use stdlib only. Document dependencies if unavoidable.
+- Scripts use stdlib only. A script that needs a non-stdlib dependency documents it.
 - Scripts handle errors internally. Return error objects, never crash.
 
 ## Content Rules
@@ -76,15 +73,6 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 ## Security
 
-### Threat Model
-
-Skills act through session tools within the session's permissions. A malicious skill can attempt to:
-
-- Read files such as `~/.ssh`, `~/.aws` or `.env` via `Read` or `Bash(cat)` when permissions allow.
-- Exfiltrate data via `WebFetch`, `Bash(curl)`, or MCP tools.
-- Modify git history, install packages, create persistence.
-- Shell preprocessing (`` !`cmd` ``) runs before Claude sees anything.
-
 ### allowed-tools Rules
 
 - Pre-approve only tools the procedure uses, narrowest specifier first (`Bash(git status *)` over bare `Bash`; `WebFetch` only when HTTP fetch is the skill's purpose). Pre-approval skips confirmation; settings permissions remain the boundary.
@@ -95,24 +83,15 @@ Skills act through session tools within the session's permissions. A malicious s
 - Never write to shell profiles (`~/.zshrc`, `~/.bashrc`).
 - Never access credentials or secrets in preprocessing.
 - Use preprocessing only for read-only context injection (`git status`, `node --version`).
-- Disable for untrusted skills: `"disableSkillShellExecution": true` in settings.
 
 ### Sensitive Data
 
 - Never store API keys, tokens, or passwords in SKILL.md or scripts.
 - Use environment variables (`env` in settings.json) or plugin `userConfig` with `"sensitive": true`.
-- `userConfig` sensitive values stored in OS keychain.
 
 ### Trust Levels
 
-Trust follows provenance and the capabilities a skill is permitted, not its installation scope. A personal skill copied from an unknown author stays untrusted until audited.
-
-| Scope | Location | Reach |
-|-------|----------|-------|
-| Managed | enterprise policy | All users |
-| Personal | `~/.claude/skills/` | All projects |
-| Project | `.claude/skills/` | Anyone with repo access controls it |
-| Plugin | marketplace install | Namespaced `/plugin-name:skill-name` |
+A skill copied from an unknown author stays untrusted until audited, whatever its installation scope.
 
 ### Audit Checklist (before installing external skills)
 
@@ -126,7 +105,7 @@ Trust follows provenance and the capabilities a skill is permitted, not its inst
 
 ## Distribution
 
-### Symlink (cross-project, recommended)
+### Symlink (cross-project)
 
 ```bash
 ln -s /path/to/skill-name .claude/skills/skill-name
@@ -148,10 +127,6 @@ plugin-name/
 ```
 
 Invoked as `/plugin-name:skill-name`.
-
-## Discovery & Priority
-
-- Same-name skills: enterprise overrides personal, personal overrides project; no merging. Plugin skills are namespaced, so they never collide. Live reload on file change.
 
 ## Verification
 

@@ -8,12 +8,10 @@ paths:
 
 ## Platform Constraints
 
-- At most 200 lines per file. Longer files reduce adherence.
 - `paths:` YAML frontmatter → loaded when Claude reads matching files. No `paths:` → always active.
-- One topic per file. Descriptive filename.
-- Discovered recursively in `.claude/rules/`. Subdirectories supported.
-- Rules are context, not enforcement. A rule a script, a linter, or a hook can check is enforced there. The rule file keeps one line stating the rule and naming the check; reasons and examples go.
-- CLAUDE.md holds no directory tree or file listing; the file system is the listing.
+- One topic per file.
+- A rule a script, a linter, or a hook can check is enforced there. The rule file keeps one line stating the rule and naming the check; reasons and examples go.
+- CLAUDE.md holds no directory tree; a file is listed only in the Parameter Binding table.
 
 ## Context Loading
 
@@ -31,6 +29,8 @@ paths:
 | `rules/code/` | Rules constraining code artifacts | The concern: `quality.md`, `logging.md`, `organization.md` |
 | `rules/docs/` | Rules constraining one documentation artifact each | The artifact it governs: `design.md` governs design.md files |
 | `rules/workflow/` | Rules constraining operational processes | The process: `committing.md`, `git-safety.md` |
+| `rules/communication/` | Rules constraining the wording of agent output | The concern: `terminology.md` |
+| `rules/prompt/` | Rules constraining LLM prompt files | The artifact: `prompting.md` |
 | `rules/meta/` | Rules for authoring `.claude` assets | The asset type: `rulewriting.md`, `skilling.md` |
 
 - A rule file lives in the directory of the artifact it constrains, not the activity that produces it.
@@ -40,8 +40,6 @@ paths:
 ## Audience
 
 - **Rule files** → agent. Short, unambiguous, no narrative.
-- **Generated code** → human developers. Readable, idiomatic.
-- **Generated docs** → human readers. Clear prose, logical flow.
 
 ## Language
 
@@ -58,16 +56,14 @@ paths:
 - Title states the domain.
 - Sections group related rules. One topic per section.
 - Use H1 for the title, H2 for sections and H3 for subsections. No deeper heading.
-- The rule most often violated comes first in its section. Adherence drops for later rules as the rule count grows.
+- The rule most often violated comes first in its section.
 - Tables for structured data. Lists for rules. Code blocks for patterns.
-- No redundancy within one file.
-- No redundancy across files. Each rule has one authoritative location. Before adding a sentence, search for one that already states the fact and extend it.
+- No redundancy within or across files. Each rule has one authoritative location. Before adding a sentence, search for one that already states the fact and extend it.
 - A change to a rule fact updates, in the same change, every skill, hook and project value that cites or implements it. Find them by searching the configuration for the rule's file name, section heading and parameter names.
 
 ## Content
 
-- Every rule is actionable. Cannot be verified or applied → remove.
-- Every rule states an observable condition and required action.
+- Every rule states an observable condition and a required action that can be verified; a rule without them is removed.
 - Every rule is necessary. Removing it changes nothing → remove.
 - No tautologies. "Use meaningful names" adds no information.
 - No examples of what not to do unless the wrong pattern is non-obvious.
