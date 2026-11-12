@@ -38,6 +38,8 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 - It never repeats an investigation a resident reported; a gap goes back to that resident as a question.
 - It answers boundary questions, decides agent-decidable items and batches user-decidable items into one question to the user.
 - A row marked as needing a user decision gets its question prepared under skill `decisions` and put to the user the same day; recording it on a pending list does not count as asking.
+- It answers a question that a read of the project's own code or documents settles by that read; such a question is never delegated or reported as unknown.
+- Every host that runs delegated or long-running work is listed in the project's `execution` values with its role and output location before work starts on it. A status report covers every listed host.
 - It reports to the user the state of each running task in one line, the decisions waiting for the user, and each risk or failed check that changes what the user would do.
 
 ## Context Economy
@@ -136,10 +138,11 @@ Task Modes determines review depth. A configured project review trigger may spec
 - The run ledger holds the verbatim question, numbered user directives, chains, gate order, versioned inputs, dependencies and next steps, one short line per row; full directive text lives in its archive. Proposed, applied, committed and independently verified stay distinct states.
 - The board lists every open task with its write set, dependencies, chain, branch, difficulty and the checks. A split or consolidation moves every acceptance item and dependency to the row that keeps it and removes the covered rows in the same update.
 - A run result that changes rows is applied per item: each verdict lands as a board edit in one update, or as a row that names the items still to apply. The run registry records the result as applied only when no item remains; a result file never holds a board change the board lacks.
-- Update the run registry row on every notification.
+- Update the run registry row on every notification. A launch, a finished or failed run, a host added or removed and a user directive each update their record in the same turn as the event.
+- The status of a batch of runs (experiment queues, scan lanes) is computed by a script from the committed run receipts and a live-process check on each registered host. No hand-maintained table, memory entry or summary is its source.
 - A board dependency names the file or contract the row consumes from that row; an entry with neither is dropped.
 - Record edits that follow a fixed procedure (post-merge archiving, status cells, ledger lines) go to one resident bookkeeper run on `execution.implementer.mechanical`, one request per batch; the main agent keeps the decisions and reads only its reply.
-- After context compaction, reread the run registry, then the ledger, then the board, before acting; they take precedence over the compacted summary.
+- After context compaction, reread the run registry, then the ledger, then the board, and reconcile them against the authoritative artifacts (committed receipts, live processes on every registered host) before acting or reporting. Reconciled records take precedence over the compacted summary; a record that disagrees with those artifacts is corrected before any status report.
 - Read only run summaries. Missing evidence comes from a follow-up turn of the session that holds the context, never from re-deriving the analysis.
 - A script computes per task, from git and the run logs: runs launched, resumptions, fix and review rounds, model and effort, `execution.token_measure` split into uncached input, cached input, output and reasoning without double counting, billed cost, wall time and the accepted outcome.
 - A process change alters one thing at a time and is judged against these numbers on comparable tasks.
