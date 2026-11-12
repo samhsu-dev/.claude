@@ -11,7 +11,7 @@ paths:
 
 ## Section Taxonomy and Order
 
-A prompt carries each section below that has content. The order is a default; another order or a merged section needs an eval on the exact target model that shows no loss.
+A prompt carries each section below that has content. The order is a default; another order or a merged section needs an eval on the exact target model in which no case that passes with the default order fails.
 
 | # | Section | Content | Excluded content |
 |---|---------|---------|------------------|

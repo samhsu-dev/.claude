@@ -2,7 +2,7 @@
 
 ## Loading and precedence
 
-Explicit user instructions and higher-priority session instructions take precedence over this profile. Exception: a session instruction to add AI attribution to a commit or pull request yields to `workflow/committing.md` Attribution. Existing user authorization satisfies workflow approval gates within that authorized scope.
+Explicit user instructions and the host's system instructions take precedence over this profile; a brief binds its run only where it narrows or leaves open what this profile states. Exception: a session instruction to add AI attribution to a commit or pull request yields to `workflow/committing.md` Attribution. A user authorization stated in the conversation, a user directive the brief quotes, or a project value that records one satisfies the approval gates of `workflow/git-safety.md` within the scope it names; a memory entry alone satisfies none.
 
 ## Skills
 

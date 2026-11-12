@@ -12,9 +12,9 @@ Preflight and safe alternatives: skill `commit`; branch cleanup and submodule po
 
 ## Branches and Conflicts
 
-- Never switch branches without explicit user instruction.
+- No agent switches the branch of any checkout without explicit user instruction; a run's merge-result check uses a new detached worktree under its run directory.
 - Delete a branch only on explicit user instruction with `git branch -d`, or under skill `multi-agent` Branch Lifecycle; `git branch -D` deletes only a branch that Branch Lifecycle archived.
-- Never silently discard conflicting changes or another writer's uncommitted work.
+- Never discard conflicting changes or another writer's uncommitted work; the main agent archives such work under skill `multi-agent` Branch Lifecycle before it removes the worktree.
 - A conflict from merging the integration head into a task branch is resolved by that task's run from the decided documents and measured test output, never by taking one side unchecked; the main agent checks the resolution diff before integration. A conflict whose sides implement contradictory decided sentences goes to the user.
 - Other pull or rebase conflicts go to the user. Never auto-resolve them, except the submodule pointers skill `multi-agent` Branch Lifecycle permits.
 - `git rebase --abort` or `git merge --abort`: requires explicit user approval.

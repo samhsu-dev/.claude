@@ -10,7 +10,7 @@ Conventional Commits 1.0.0 in the imperative mood; the commit-msg hook of `tools
 
 ## Staging
 
-- One concept per commit, committed once the tree is runnable and before the next task starts.
+- One concept per commit, committed once the tree is runnable (compiles, tests pass) and before the next task starts; a chain session that returns with red work commits it under a `wip:` subject.
 - A repository commits what a new developer needs to build, test and understand the product: source, tests, build and quality configuration, reader documentation, product tools and repository metadata. Agent tool configuration and instructions, local working records (`rules/workflow/records.md`) and run artifacts are never committed. The global Git ignore file lists them and `hooks/git_guard.py` blocks staging them; an agent configuration repository re-includes its own files through its `.gitignore` whitelist.
 - A committed file never names, links or depends on a local record, and carries no date, decision ID or commit hash that only a record needs.
 

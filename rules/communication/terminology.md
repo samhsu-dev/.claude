@@ -26,7 +26,7 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.
 - Under `terminology.implementation_variants`, name compared implementations by their code names. Use its allowed category words and exclude its forbidden comparison labels.
-- The first use of a glossary term in a reply carries its definition in plain words.
+- The first use of a glossary term in a chat reply to the user carries its definition in plain words.
 - A question to the user uses only the vocabularies `terminology.question_vocabulary` lists.
 
 ## Readability
@@ -34,4 +34,4 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 - For a generic or coined word, when a rule and the reader's understanding pull apart, the reader wins. A literature, domain or core term keeps its name (Established Terms).
 - A generic word whose meaning the context fixes is not split by the one-term rule and needs no question.
 - A generic or coined abstract noun a reader new to the repository cannot parse without the glossary is replaced by a plain clause or the identifier.
-- After a change that renames or rewords terms, every changed sentence is reread in full. A sentence that reads stiffly, is ambiguous, or needs the glossary to parse is rewritten.
+- After a change that renames or rewords terms, the agent rereads every changed sentence in full and rewrites each one that has two readings or that a reader new to the repository cannot parse without the glossary.

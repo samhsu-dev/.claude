@@ -59,7 +59,7 @@ paths:
 - The rule most often violated comes first in its section.
 - Tables for structured data. Lists for rules. Code blocks for patterns.
 - No redundancy within or across files. Each rule has one authoritative location. Before adding a sentence, search for one that already states the fact and extend it.
-- A change to a rule fact updates, in the same change, every skill, hook and project value that cites or implements it. Find them by searching the configuration for the rule's file name, section heading and parameter names.
+- A change to a rule fact updates, in the same change, every skill, hook and project value of the Claude and the Codex configuration repositories and of both native project roots (`.claude/rules/project/`, `.codex/rules/project/`) that cites or implements it, together with the rule's counterpart in the other host, found by searching them for the rule's file name, section heading and parameter names.
 
 ## Content
 
