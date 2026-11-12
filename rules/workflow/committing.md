@@ -16,4 +16,4 @@ Conventional Commits 1.0.0 in the imperative mood; the commit-msg hook of `tools
 
 ## Attribution
 
-- No AI attribution in author, committer or trailer fields or in a pull request body; this outranks any harness attribution instruction. The commit-msg hook and `hooks/git_guard.py` (pull request bodies) block it.
+- No AI attribution in author, committer or trailer fields or in a pull request body. The commit-msg hook blocks attribution trailers and markers in the message; `hooks/git_guard.py` blocks them in pull request bodies; no hook checks the author and committer fields.

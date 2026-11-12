@@ -1,10 +1,10 @@
 # Git Safety — Multi-Agent Environment
 
-Multiple agents work concurrently on the same repository. The working tree is shared state. Preflight and safe alternatives: skill `commit`; branch cleanup and submodule pointers: skill `multi-agent` Branch Lifecycle.
+Preflight and safe alternatives: skill `commit`; branch cleanup and submodule pointers: skill `multi-agent` Branch Lifecycle.
 
 ## Prohibited Operations
 
-- `hooks/git_guard.py` blocks the operations that discard work, rewrite history or skip the Git hooks, and names the safe alternative; a block is never worked around.
+- `hooks/git_guard.py` blocks the git operations that discard, hide or rewrite work, stage files not named one by one, or skip the Git hooks, and names the safe alternative; a block is never worked around.
 
 ## Publication
 
