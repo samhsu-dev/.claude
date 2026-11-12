@@ -31,7 +31,7 @@ A concept takes the name the highest-ranked source gives that same concept:
 
 - Ranks 2 and 3 apply when the project analyzes or implements a language or system. Their values are `glossary.name_sources`.
 - A source counts only where its word names the same concept. The same word for another concept is a clash, never a name source.
-- A candidate name that already names another glossary concept is reported to the user with both entries.
+- A candidate name that already names another glossary concept is recorded with both entries as a user question in the finding run's progress file; the main agent asks the user.
 - A borrowed word with no literature source in its glossary entry is a coined term.
 - A rename question cites the rank and the source of every candidate name.
 
@@ -43,7 +43,7 @@ An existing source name is selected in three steps, in order:
 2. **Classify.** Identify the domain context that distinguishes the concept, such as its lifecycle stage or role in a process.
 3. **Name.** The name is the locus plus one role noun taken by Name Sources.
 
-- The terms of one locus share one role noun.
+- Terms of one locus that play the same role take one role noun; terms of one locus with different roles take different role nouns.
 - A state or attribute recorded on the element stays out of the element's name.
 - An umbrella term names only a class with a behavior of its own.
 - Core terms keep their names ahead of Name Sources; their project declarations follow Files. A literature name for the same mechanism is cited in the entry as its method or as a similar concept, never used as the name. A literature name for what a value stands for serves as the role noun.
@@ -86,7 +86,7 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
 - Shared citation syntax: `rules/docs/bibliography.md`. Glossary locators name a symbol, manual section, or page title; a file name is added only when the symbol alone is ambiguous. No URL, path, or line number outside Source and Example, and no citation field without a key; `hooks/doc_check.py` reports these violations.
-- Definition and Source are required. Fields without a presence condition above are present when a source exists.
+- Definition and Source are required. Literature and Tools are written after searching `glossary.tools` and the bibliography; a field with no source found is omitted.
 
 ## Order
 

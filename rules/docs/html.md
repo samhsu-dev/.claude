@@ -32,7 +32,7 @@ Rendering procedure: `render-doc` skill.
 - One primary colour carries structure, headings, and links.
 - Accent colours distinguish a labelled state. They hold under a fifth of total colour.
 - Body and heading text clear WCAG 2.1 AA: 4.5:1 for normal text, 3:1 for large text, in every colour scheme the page declares.
-- A page declaring dark mode overrides both `prefers-color-scheme: dark` and `:root[data-theme]` in both directions.
+- A page declaring dark mode defines its colors for `:root[data-theme="dark"]` and `:root[data-theme="light"]`, and the `data-theme` value wins over `prefers-color-scheme`.
 
 ## Tables
 

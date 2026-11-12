@@ -28,7 +28,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 ## Scope Rules
 
-- One task = one session of work.
+- A task delivers one independent behavior and is committed as one concept (`rules/workflow/committing.md` Staging); one chain session carries one or more tasks in order.
 - Action verb + object + detail. No vague titles.
 - Explicit dependencies.
 - Reference interfaces from design docs. No new design in TODO files.
@@ -37,7 +37,7 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 - Record location and file naming: `rules/workflow/records.md`.
 - Group related tasks together.
-- Update state immediately after change.
+- A run lists each task-doc item in its report; the main agent writes it to `docs/todo/<module>.md` in the main checkout and updates task state there when it accepts the run.
 
 ## Templates
 

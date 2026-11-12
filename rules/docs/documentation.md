@@ -32,7 +32,7 @@ Split within a document type by domain concept, not by section heading or mechan
 - Keep each fact in the document type that owns it under Ownership. Link other types.
 - A file explains its own concern. Follow links for adjacent concerns; merge fragments that need sibling text to define their own concern.
 
-A product repository document never names an agent rule, skill, or hook, or any path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`. The agent configuration is not part of the product repository (`rules/workflow/committing.md` Staging); a document states the convention it follows in its own words. The agent configuration's own documentation is exempt, and so is a local record (`rules/workflow/records.md`); `hooks/doc_check.py` reports a named configuration path in every other Markdown file of a Git work tree.
+No committed file of a product repository (document, code comment, build file) names an agent rule, skill or hook, or any path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`. The agent configuration is not part of the product repository (`rules/workflow/committing.md` Staging); a document states the convention it follows in its own words. The agent configuration's own documentation is exempt, and so is a local record (`rules/workflow/records.md`); `hooks/doc_check.py` reports a named configuration path in every other Markdown file of a Git work tree.
 
 ## Ownership
 

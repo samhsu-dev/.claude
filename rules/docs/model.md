@@ -10,7 +10,7 @@ paths:
 
 ## Scope
 
-- One `model.md` per module meeting When Required; apply When Not Required as the exception.
+- One `model.md` per documentation module (a directory under `docs/`) meeting When Required; apply When Not Required as the exception.
 - Same directory as paired `concept.md` and `design.md`.
 - Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
@@ -31,7 +31,7 @@ Sections in order; include only if they have content:
 - An entity is named by its glossary heading and linked to its entry.
 - Define what each relation **means**, not how it is implemented.
 - State transitions: source state, trigger, guard, target state. Table or list.
-- No language-specific types, class names, or method signatures. Domain vocabulary only.
+- No language-specific types or method signatures; a class or identifier appears only as the glossary heading that names an entity. Domain vocabulary only.
 - Reference `concept.md` for rationale. Reference `design.md` for implementation mapping.
 
 ## When Required

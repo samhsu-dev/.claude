@@ -78,7 +78,7 @@ No open question lives here; an undecided point goes to the Open Gaps section of
 
 - Headings, bullet points, bold text, diagrams for structure.
 - Paragraphs: 2–4 sentences.
-- No modifiers, no redundancy.
+- No modifiers such as "properly", "easily", "simply", "just"; no redundancy.
 - Audience: researchers and developers.
 
 ### Diagrams

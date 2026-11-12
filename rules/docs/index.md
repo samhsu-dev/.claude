@@ -9,9 +9,9 @@ paths:
 
 ## Scope
 
-- One `index.md` per documentation directory that contains 3+ files or any split documents; update it after any development stage that adds or renames a file.
+- One `index.md` per documentation directory that contains 3+ files or any split documents; the change that adds, renames or removes a documentation file updates `index.md` of its directory.
 - Contains file list with one-line descriptions. No code.
-- Loaded first when an agent enters a documentation directory. All other files loaded on demand.
+- An agent reads a documentation directory's `index.md` before it reads another file of that directory. All other files loaded on demand.
 
 ## Structure
 
@@ -53,5 +53,5 @@ paths:
 
 ## Verification
 
-- Every documentation file covered by the applicable index scope appears in `index.md`.
+- Every documentation file of the directory and every subdirectory `index.md` appears in the directory's `index.md`.
 - Every entry in `index.md` points to an existing file.

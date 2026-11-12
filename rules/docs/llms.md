@@ -81,7 +81,7 @@ Each `llms/<module>.md` file:
 ### Code examples
 
 - One example per concept. 3-10 lines. No boilerplate.
-- Working code only. Every example is copy-paste runnable.
+- Working code only. Every example compiles and runs when placed after the imports and setup the page's first example shows.
 - No comments explaining what the next line does.
 
 ## full.txt Structure (L2)

@@ -40,5 +40,5 @@ Zotero, Better BibTeX and collection-specific procedures apply only when that bi
 
 - Pandoc syntax: `[@key]`; a locator after a comma: `[@key, sec. 3.2]`, `[@key, p. 37]`, `[@key, def. 3]`; several sources: `[@a; @b]`.
 - A code symbol follows the key of its software entry: `` [@tool] `process` ``. A manual section or a documentation page title is the quoted suffix: `[@manual, "Configuration"]`.
-- A citing document never writes a source in prose beside its key: no authors, title, venue, version, URL, directory path, or line number.
+- A citing document names a source by its key, optionally after its short name; no authors, full title, venue, version, URL, directory path or line number beside it.
 - Every key resolves in the bibliography. `hooks/doc_check.py` reports a key that does not; `pandoc --citeproc` reports it as `citation <key> not found`.

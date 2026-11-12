@@ -10,7 +10,7 @@ paths:
 
 ## Scope
 
-- One `spec.md` per module meeting When Required; When Not Required is the exception.
+- One `spec.md` per documentation module (a directory under `docs/`) meeting When Required; When Not Required is the exception.
 - Same directory as paired `design.md`.
 - Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 

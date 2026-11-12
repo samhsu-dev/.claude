@@ -40,7 +40,7 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 ### SOLID
 
 - **S** — One reason to change per type.
-- **O** — Open for extension, closed for modification.
+- **O** — A new variant is added as a new type, not by editing existing branches; an extension point exists only once a second variant exists (`code/quality.md` speculative generality).
 - **L** — Subtypes fulfill the supertype contract without caller awareness.
 - **I** — No client depends on methods it does not use.
 - **D** — Depend on abstractions, not concretes.
@@ -61,13 +61,13 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 - **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`input_`, `output_`) is two concepts; split it when the groups have separate owners or invariants.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
 - Granularity follows `code/organization.md` File Responsibility and `code/quality.md` Code Smells.
-- **Contract lives in types** — Named fields over optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
+- **Contract lives in types** — Named fields; never optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
 
 ---
 
 ## 3. Architectural constraints
 
 - Dependency direction: `code/organization.md` Dependencies.
-- Data holders contain only primitives, enums, or other data holders, unless a field's owner requires a reference to a behavior type.
+- Data holders contain only primitives, strings, enums, other data holders and read-only collections of these, unless a field's owner requires a reference to a behavior type.
 - A workflow of several steps has one orchestrator. A helper holds no state unless it owns that state's invariant, and receives inputs by argument.
 - External API verification and recording: `rules/docs/impl.md`.

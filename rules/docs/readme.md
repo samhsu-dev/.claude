@@ -19,7 +19,7 @@ Sections in this order:
 
 | # | Section | Content |
 |---|---------|---------|
-| 1 | **Title** | Project name. Matches package name. |
+| 1 | **Title** | Project name, spelled as the build's root project name. |
 | 2 | **Name** | One-line blockquote (`>`) with name etymology or metaphor. |
 | 3 | **Description** | One line, under 120 characters. Core functionality and idea — not how. |
 | 4 | **Install** | Code block. Copy-paste-run. Include prerequisites when non-obvious. |
@@ -30,7 +30,7 @@ Sections in this order:
 
 ### Optional Sections
 
-Insert between Usage and License, except for the Badges position below. Include only when the README lacks context without them:
+Optional sections follow the last required section before License, in table order, except for the Badges position below. Include only when the README lacks context without them:
 
 - **Background** — Motivation and context. When the problem or naming is non-obvious.
 - **Contributing** — Link to `CONTRIBUTING.md` or one-line statement.

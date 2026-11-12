@@ -27,7 +27,7 @@ Sections in order; include only if they have content:
 ## 3. When to write
 
 - API needed → **APIs**. Library needed → **Libraries**. Developer instruction → **Developer instructions**.
-- Verify every external API through documentation, DeepWiki, Context7 or a minimal test before use. Record API behavior, gotchas and version constraints in `impl.md` immediately.
+- Before first use of an API of a declared dependency (version catalog entry), verify it through documentation, DeepWiki, Context7 or a minimal test. Record API behavior, gotchas and version constraints in `impl.md` immediately.
 - No long examples or tutorials.
 
 ## 4. Rules
