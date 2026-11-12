@@ -5,11 +5,11 @@ allowed-tools: Read, Write, Edit, Glob, Bash
 argument-hint: [path/to/doc.md]
 ---
 
-Render `$1` as a self-contained HTML page in the editorial design system below. The Markdown stays authoritative. The HTML is a derived rendering and is regenerated, never edited in place as the source of truth.
+Render `$1` as a self-contained HTML page in the editorial design system below.
 
 ## Step 1 — Read the source
 
-1. Read the full Markdown file. No excerpt, no search shortcut. Structure decisions in Step 3 depend on the whole document.
+1. Read the full Markdown file. No excerpt, no search shortcut.
 2. Record the document's own repeated shapes: a claim-and-citation pair, a verdict line, a metrics table, a step sequence. These become semantic blocks, not styled paragraphs.
 3. Resolve the output path: same directory, same basename, `.html` extension, unless the user names one.
 
@@ -23,7 +23,7 @@ Wrap the body content in `<article class="page">`.
 
 ## Step 3 — Map Markdown onto semantic blocks
 
-The page reads as a technical report, in the register of institutional reference documentation: plain declarative sentences, imperative mood for anything the reader must do, numbered sections, and admonition boxes for what must not be missed.
+Write plain declarative sentences, the imperative for what the reader must do, numbered sections, and admonition boxes for what must not be missed.
 
 | Source shape | Rendered as |
 |---|---|
@@ -46,11 +46,11 @@ Every block in the table above already exists in the stylesheet. Adding a new vi
 
 1. A repository path in the source becomes `<a class="src" href="vscode://file/<absolute-path>">` so the reader opens it in the editor. Link only paths that exist on disk. A path into an ephemeral checkout stays plain text, and the meta table states why.
 2. Tag inline and block code with `class="language-js|ts|py|sh"` where the language is known.
-3. After writing the page, run `node ${CLAUDE_SKILL_DIR}/scripts/highlight.mjs <output.html>`. It rewrites tagged code into `.tok-*` spans at render time, so the page ships no script. It is idempotent and reports the block count.
+3. After writing the page, run `node ${CLAUDE_SKILL_DIR}/scripts/highlight.mjs <output.html>`. It rewrites tagged code into `.tok-*` spans at render time.
 
 ## Step 4 — Strip the generated-text tells
 
-The rendering is the moment to remove templated prose. Rewrite, never delete content.
+Rewrite, never delete content.
 
 | Tell | Replacement |
 |---|---|
@@ -64,8 +64,8 @@ Quotations, numbers, identifiers and paths carry over under `rules/docs/html.md`
 
 ## Step 5 — Verify
 
-1. Read `~/.claude/rules/docs/html.md` and check the output against every constraint and every prohibition it lists. It carries the typographic constants, the contrast floor, and the machine-generated-design prohibitions.
-2. `grep -c 'https\?://' <output>` counts only in-document links. Any font, script, or stylesheet host is a failure.
+1. Read `~/.claude/rules/docs/html.md` and check the output against every constraint and every prohibition it lists.
+2. Run `grep -n 'https\?://' <output>`; each match is an in-document link, and a font, script or stylesheet host is a failure.
 3. Read the file end to end against the source. Every heading, table row, quotation, and link is present.
 4. Confirm the palette, the two families, and the measure are the stylesheet's own. A per-document override means Step 2 was not followed.
 
@@ -81,11 +81,8 @@ Palette and typefaces come from the Johns Hopkins visual identity, in its post-2
 | Prose and headings | Source Serif 4, falling back to Charter then Georgia |
 | Labels, eyebrows, table text | Work Sans, falling back to system-ui |
 
-The typographic constants trace to Butterick's Practical Typography and the GOV.UK Design System. The table convention is booktabs.
-
 ## Rules
 
 - One source file, one output file. Never split a rendering across pages.
-- Source authority and content corrections: `rules/docs/html.md` Derived Pages.
 - Never invent content to fill a layout. A block with no source material is removed, not padded.
 - Never edit `assets/document.css` to accommodate one document. Per-document deviation means the design system is wrong or the document is.

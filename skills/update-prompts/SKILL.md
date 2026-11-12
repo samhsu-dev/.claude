@@ -13,7 +13,7 @@ argument-hint: "[path to a prompt carrier file or directory]"
 
 Audit prompt carriers against `~/.claude/rules/prompt/prompting.md`, produce a fix plan, apply fixes after approval, and measure the result.
 
-Every check below carries an ID. Step 5 reports a verdict for every ID. A check reported `n/a` states why in the same row. An unreported ID means the audit did not run.
+Every check below carries an ID. A check reported `n/a` states why in its row; an ID missing from the Step 5 table fails the audit.
 
 ## Step 1 — Render
 
@@ -22,7 +22,7 @@ Every check below carries an ID. Step 5 reports a verdict for every ID. A check 
 3. Render each constant to `<scratchpad>/<constant>.txt`, with template substitutions resolved. Rendering imports the module and writes the string; never hand-copy the text.
 4. Record which surface each rendered string is bound to: system prompt, first user turn, tool description, subagent definition, or on-demand file.
 
-Skipping the render and scanning the carrier source instead is a failed audit. Composed constants and interpolated values are invisible in source.
+Skipping the render and scanning the carrier source instead is a failed audit.
 
 ## Step 2 — Mechanical Scan
 
@@ -44,7 +44,7 @@ Read the JSON and map it onto these checks:
 | M4 | Corpus leakage | any `corpusLeakage.tokens[].corpusOccurrences` exceeds 0 |
 | M5 | Section balance | one non-example section holds more than a third of `size.words` |
 
-M4 is the highest-severity mechanical check. A concrete token shared with the graded corpus binds that token to the example's verdict and contaminates every measurement taken afterward.
+M4 is the highest-severity mechanical check.
 
 ## Step 3 — Structural Audit
 
@@ -52,30 +52,30 @@ Read `~/.claude/rules/prompt/prompting.md`. Check each carrier against it and re
 
 | ID | Check | Source rule |
 |----|-------|-------------|
-| S1 | Sections present and in taxonomy order | Section Taxonomy and Order |
-| S2 | Constraints grouped into blocks, not a flat imperative list | Constraints |
-| S3 | Highest-priority rule first within each block | Constraints |
-| S4 | Output contract stated in-prompt, fields matching the parsed schema in both directions | Output Contract |
-| S5 | 3 to 5 examples in `<example>` tags, following the instructions | Examples |
-| S6 | One abstain or negative example present when the task has an abstain path | Examples |
-| S7 | One concept, one term across every stage sharing this preamble | Terminology |
-| S8 | Coined terms defined at first use | Terminology |
-| S9 | Common programming terms left undefined | Terminology |
-| S10 | Shared rules stated once in the preamble, not copied per stage | Terminology |
-| S11 | Section 10 restates exactly one rule | Information Placement |
-| S12 | One kind of information in one section, with its scope, exceptions, and illustrations | Information Placement |
-| S13 | No section exists solely to hold the exception to a rule stated elsewhere | Information Placement |
-| S14 | Nothing stated that the model already derives | Information Placement |
-| S15 | No induced reasoning step on a native-thinking model | Reasoning |
-| S16 | Tool output framed as untrusted data | AI-Agent Structural Patterns |
+| T1 | Sections present and in taxonomy order | Section Taxonomy and Order |
+| T2 | Constraints grouped into blocks, not a flat imperative list | Constraints |
+| T3 | Highest-priority rule first within each block | Constraints |
+| T4 | Output contract stated in-prompt, fields matching the parsed schema in both directions | Output Contract |
+| T5 | Examples follow `rules/prompt/prompting.md` Examples | Examples |
+| T6 | One abstain or negative example present when the task has an abstain path | Examples |
+| T7 | One concept, one term across every stage sharing this preamble | Terminology |
+| T8 | Coined terms defined at first use | Terminology |
+| T9 | Common programming terms left undefined | Terminology |
+| T10 | Shared rules stated once in the preamble, not copied per stage | Terminology |
+| T11 | Section 10 holds the anchor query and no new rule | Section Taxonomy and Order |
+| T12 | One kind of information in one section, with its scope, exceptions, and illustrations | Information Placement |
+| T13 | No section exists solely to hold the exception to a rule stated elsewhere | Information Placement |
+| T14 | Nothing stated that the model already derives | Information Placement |
+| T15 | No induced reasoning step on a native-thinking model | Reasoning |
+| T16 | Tool output framed as untrusted data | AI-Agent Structural Patterns |
 
-For S12, list every section each rule appears in. A rule in two sections is one rule in the wrong place, not two rules.
+For T12, list every section each rule appears in. A rule in two sections is one rule in the wrong place, not two rules.
 
-For S14, name the sentence and state what the model derives without it. A sentence the model needs but could not derive stays.
+For T14, name the sentence and state what the model derives without it. A sentence the model needs but could not derive stays.
 
 ## Step 4 — Load-Placement Audit
 
-Cost of resident text is per turn. Cost of on-demand text is one tool round trip plus the risk the agent never fetches it. Placement follows use frequency, never length.
+Placement follows use frequency, never length.
 
 | ID | Check | Fails when |
 |----|-------|-----------|
@@ -85,7 +85,7 @@ Cost of resident text is per turn. Cost of on-demand text is one tool round trip
 | L4 | Per-run data arrives in the user turn, not the system prompt | data is interpolated into the system prompt |
 | L5 | No instruction-bearing file loads from a directory the prompt treats as untrusted | a settings or context file loads from the target working directory |
 
-L5 is a prompt-injection check. Name the loading mechanism, the directory it reads from, and who controls that directory's contents.
+Name the loading mechanism, the directory it reads from, and who controls that directory's contents.
 
 Report measured use frequency where the eval provides it. An unmeasured frequency is reported as unmeasured, never estimated.
 
@@ -122,11 +122,9 @@ Wait for user approval before Step 6.
 
 ## Step 7 — Measure
 
-A prompt edit changes model behavior and is not verified by tests.
-
 1. Run the project's accuracy evaluation three times on the edited prompt.
 2. Copy the per-row output file after each run, before the next run overwrites it. Verify the copied file holds the run's rows.
-3. Compare against the recorded baseline on the deterministic subset: rows whose verdict is stable across the baseline runs. Aggregate accuracy at small n carries more noise than most effects.
+3. Compare against the recorded baseline on the deterministic subset: rows whose verdict is stable across the baseline runs.
 4. State the decision criteria before reading the results.
 
 | Target metric | Other metrics | Decision |
@@ -136,7 +134,7 @@ A prompt edit changes model behavior and is not verified by tests.
 | No change | No regression | REVERT, the edit is unproven |
 | Degraded | Any | REVERT |
 
-Report the decision with numbers. A change measured on one run is unmeasured.
+Report the decision with numbers.
 
 ## Step 8 — Record
 
@@ -144,8 +142,6 @@ Append to the project's prompt-change log: the ID fixed, the edit, the three-run
 
 ## Rules
 
-- Plan before fix. Never edit before the user approves the plan.
-- Every check ID appears in the Step 5 table. Omission is a failed audit, not a passed one.
 - Scripts decide mechanical checks. Never substitute a reading of the text for M1 through M5.
 - One edit, one measurement. Never batch edits and measure once; attribution is unrecoverable.
 - Corpus leakage found after a measurement invalidates that measurement. Re-baseline before comparing.

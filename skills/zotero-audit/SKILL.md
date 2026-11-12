@@ -14,12 +14,10 @@ Audit Zotero metadata read-only. Report findings. Never write to Zotero in this 
 Run with Crossref verification unless `$ARGUMENTS` contains `--no-crossref`:
 
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_OR_ID] [--limit N] > zotero_audit.json
+python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_OR_ID] [--limit N] > <scratchpad>/zotero_audit.json
 ```
 
-- Write the report into the session scratchpad, not the user's project.
-- The script copies `~/Zotero/zotero.sqlite` and its write-ahead log and reads the copy, so writes Zotero has not checkpointed yet are visible. It never opens the live file and never touches Zotero credential stores.
-- Sources: Crossref (authoritative record per DOI), DOI handle API (DataCite DOIs), Semantic Scholar (arXiv ID and title → DOI links). `SEMANTIC_SCHOLAR_API_KEY` raises its rate limit; without it requests are spaced 3 s apart.
+- When the user has a Semantic Scholar API key, run the script with `SEMANTIC_SCHOLAR_API_KEY` set.
 - A full Crossref run takes several minutes. Run it in the background. Bound cost with `--library` or `--limit`, never with a timeout.
 
 ## Step 2 — Read the Report
@@ -49,7 +47,7 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_O
 
 Rules:
 
-- DOI discovery evidence paths: `arxiv_link` (Semantic Scholar maps the arXiv ID to a published DOI), `crossref_search`, `s2_title_match`. `doi_found` requires author overlap plus `arxiv_link`, or a year gap of at most 1 with two agreeing paths, an exact title, or an identical author list. A larger gap is another version or edition. Anything weaker is `possible_wrong_title`.
+- DOI discovery evidence paths: `arxiv_link`, `crossref_search`, `s2_title_match`.
 - Crossref titles that are a prefix of the local title are subtitle splits, not errors.
 - Same-title pairs with different types (conference vs journal version) are distinct works, not duplicates.
 - Same-URL groups of book chapters are expected.

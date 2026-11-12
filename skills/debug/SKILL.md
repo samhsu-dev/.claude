@@ -11,7 +11,7 @@ allowed-tools:
 argument-hint: "[error message, test name, or symptom description]"
 ---
 
-Investigate and fix a bug. Never guess. Never patch symptoms.
+Investigate and fix a bug under `rules/workflow/change-policy.md` Correctness and Verification.
 
 ## Step 1 — Understand the Failure
 
@@ -25,8 +25,7 @@ Gather information from `$ARGUMENTS` and conversation context:
 
 Write a minimal failing test that triggers the reported behavior.
 
-- Locate the correct test file (mirror source layout).
-- Name: `` `should <expected behavior> when <condition>` `` or `test_<component>_<condition>_<expected>`.
+- Place and name it under `rules/code/testing.md` §3 Layout and §5 Structure and the project testing rule.
 - One assertion targeting the exact failure.
 
 Run the test. Confirm it fails.
@@ -40,11 +39,11 @@ Isolate whether the fault is in input, logic, or external dependency:
 1. Check inputs at the function boundary — are they what the code expects?
 2. Check assumptions with assertions or targeted logging at boundaries, not in the middle.
 3. If an external call fails, verify the input matches the API contract (check `impl.md` if it exists).
-4. No guessing. If the cause is unclear, add a targeted assertion or log to confirm before changing code.
+4. If the cause is unclear, confirm it with a targeted assertion or log before changing code.
 
 ### Common Pitfalls
 
-Check these first when applicable:
+Check these first:
 
 - Empty catch/except blocks swallowing exceptions.
 - Missing error chaining (original cause lost when re-raising).
@@ -59,9 +58,7 @@ Check these first when applicable:
 2. Run the reproduction test. Confirm it passes.
 3. Run the full test suite. Confirm no regressions.
 
-If the fix requires changes beyond the immediate fault:
-
-- Report the scope to the user before proceeding.
+A repair outside the task's scope is reported to the user before it is made.
 
 ## Step 5 — Verify
 
@@ -78,8 +75,8 @@ Keep the reproduction test under `rules/code/testing.md` Reproductions, in the l
 Commit the fix and its reproduction test together, before returning to other work.
 
 - One `fix(scope):` commit carrying the root-cause change plus the regression test — they are one concept.
-- Commit now, while the tree holds only this fix. Deferring lets the next task's edits entangle it into an unsplittable commit. Cadence rules: skill `commit` Cadence.
-- Follow the `/commit` staging and safety rules. Stage by name; never `git add -A`.
+- Commit now, under `rules/workflow/committing.md` Staging.
+- Stage and commit under skill `commit`.
 
 ## Report
 
@@ -97,8 +94,4 @@ Output a summary:
 
 ## Rules
 
-- Debugging evidence is an assertion, log, or test; verify every hypothesis with one before acting.
-- Reproduction before repair and its retention: `rules/code/testing.md` Reproductions.
-- Failing-test classification: `rules/code/testing.md` Failures.
-- Root-cause repair: `rules/workflow/change-policy.md` Correctness and Verification.
 - Failure handling and missing required values: `rules/code/quality.md` Error Handling.

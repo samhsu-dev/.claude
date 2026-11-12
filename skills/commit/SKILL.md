@@ -9,7 +9,7 @@ allowed-tools:
 argument-hint: "[optional scope or message hint]"
 ---
 
-Commit all pending changes in the current session, following every rule below exactly.
+Commit the current task's pending changes.
 
 ## Step 1 — Gather Context
 
@@ -19,15 +19,11 @@ Run these three commands in parallel:
 2. `git diff` and `git diff --cached` — see staged + unstaged changes.
 3. `git log --oneline -10` — recent commit messages for style reference.
 
-### Scope self-check (timing signal)
+### Scope self-check
 
-Before classifying, assess whether the working tree holds one task or many:
-
-- Count the distinct concepts the changes serve, not the files. Signals of multiple concepts: changes span 3+ unrelated subdirectories/modules; the same file mixes edits belonging to different features/fixes; the change set is far larger than recent single-task commits in `git log`.
-- File count is a diagnostic signal, not a rule. A cohesive refactor may touch many files (one concept); three unrelated fixes may touch three files (three concepts). High file count triggers reflection — "is this really one concept?" — never a forced split.
-- When the tree clearly spans multiple unrelated concepts, warn the user before committing: state how many concepts you detect and that a large multi-concept tree usually means commits were deferred too long, so clean per-concept separation may no longer be possible. Recommend committing per task in future. Then proceed with the best grouping available.
-- One concept can still be too large for one commit. When a single concept touches many files (rule of thumb: more than ~15, or several times the size of recent `git log` commits), do not default to one commit. First test whether it decomposes into the Step 2 role layers as separate runnable commits (config → core → deletions → docs → tests). Collapse to a single commit only when the change is **atomic** — a rename/move or interlocking edit whose intermediate states are not independently runnable and cannot be reconstructed without redoing the work.
-- When a large single-concept tree is forced into one commit because it is atomic, say so explicitly to the user: name why it could not be split (e.g. a layout move whose halves are non-runnable) and state that the durable fix is committing each runnable stage as the work is done, not deferring to the end. The commit skill runs at commit time and cannot un-defer an already-entangled tree.
+- Count the distinct concepts the changes serve, not the files: changes across 3 or more unrelated modules, one file mixing edits of different features or fixes, or a change set several times larger than recent single-task commits in `git log` each indicate more than one concept.
+- When the tree spans more than one unrelated concept, tell the user how many concepts you detect and that `workflow/committing.md` Staging commits each task once its tree is runnable, then commit the best grouping available.
+- A concept touching more than 15 files, or several times the size of recent `git log` commits, is split into the Step 2 role-ordered commits, each leaving the tree runnable; it stays one commit only when atomic (Step 2), and you then tell the user why it could not be split.
 
 ## Step 2 — Classify Changes
 
@@ -49,11 +45,11 @@ Skip empty groups. A single concept splits into multiple role-ordered commits wh
 
 ### When concepts are entangled in shared files
 
-A single file may carry edits from multiple concepts, and `git` stages whole files. When `git add -p` cannot cleanly separate them (interdependent hunks, or splitting would leave a non-runnable intermediate commit):
+When `git add -p` cannot cleanly separate them (interdependent hunks, or splitting would leave a non-runnable intermediate commit):
 
 - Commit the smallest cohesive unit that still leaves the codebase runnable (compiles, tests pass) — not the finest conceptual split.
 - Name it for the dominant concept; list the merged concepts in the body.
-- This is a fallback for an already-entangled tree. The real fix is timing: commit after each task completes, before the next task's edits touch the same files. Note this to the user when the fallback is used.
+- Tell the user when this fallback is used.
 
 ## Step 3 — Draft Each Commit
 
@@ -75,8 +71,7 @@ Format: `type[(scope)]: description`
 
 - One blank line between subject and body.
 - Wrap at 72 characters.
-- Explain what changed and why. Never how.
-- Omit for trivial changes.
+- Body: `workflow/committing.md` Commit Message Format; never how.
 
 ### Footers (when applicable)
 
@@ -88,7 +83,7 @@ Format: `type[(scope)]: description`
 
 For each logical commit, in order:
 
-1. Stage specific files by name. Never `git add -A` or `git add .`.
+1. Stage specific files by name.
 2. Create the commit using a HEREDOC:
 
 ```text
@@ -116,24 +111,5 @@ After all commits:
 - Prohibited git operations: `hooks/git_guard.py` blocks them and names the safe alternative (`workflow/git-safety.md`). The commit-msg hook of `tools/git-hooks/` checks the message.
 - No push. A push follows `workflow/git-safety.md` Publication.
 - Stage and commit only files that belong to the current task.
-- If a file has changes from another agent's work, skip it and report to the user.
+- Before staging, run `git status`; a file holding another agent's uncommitted changes is skipped and reported to the user.
 - Attribution: `workflow/committing.md` Attribution.
-
-## Cadence
-
-- Commit each completed task at the point the tree is runnable (compiles, tests pass) and one concept is complete, before the next task starts. A working tree holding many completed tasks cannot be split into its runnable states without prohibited history rewriting.
-- A large refactor commits in stages as each runnable step lands.
-- Atomic changes (a move or rename whose halves are not independently runnable) commit as one unit, staged the moment the unit is complete.
-
-## Safe Alternatives
-
-Before any Git write, run `git status` and check that no other agent has uncommitted changes in the same files.
-
-| Prohibited | Safe alternative |
-|-------------|-----------------|
-| `git reset --hard` | Create a new revert commit |
-| `git checkout -- file` | `git diff file` to inspect, then edit manually |
-| `git commit --amend` | Create a new fixup commit |
-| `git push --force` | `git push` (fail = investigate, never force) |
-| `git stash` | Commit WIP to a temporary branch |
-| `git clean` | Remove known files by name with `rm` |

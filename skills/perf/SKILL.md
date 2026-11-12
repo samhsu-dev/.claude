@@ -43,7 +43,7 @@ Record each candidate that has profile or counter evidence:
 
 Sort: bug fixes first, then high to low. Same priority: algorithm and data structure before implementation overhead before runtime tuning (`rules/workflow/performance.md` Fix Order), then lower risk, then smaller diff.
 
-Present the ranked list. Existing authorization covers candidates within the accepted scope; an expanded scope or an unauthorized constraint tradeoff goes to the user under `workflow/decisions.md`.
+Present the ranked list. An expanded scope or an unauthorized constraint tradeoff goes to the user under `workflow/decisions.md`.
 
 ## Step 3 — Baseline
 
@@ -78,7 +78,7 @@ Run the required benchmark suite and affected checks after each coherent change;
 | Target metric | Other metrics | Decision |
 |--------------|---------------|----------|
 | Improved | Accepted constraints hold | **KEEP** |
-| Improved | An accepted constraint regresses | Ask the user unless an existing decision authorizes the tradeoff; otherwise reject |
+| Improved | An accepted constraint regresses | **KEEP** when an existing decision authorizes the tradeoff; otherwise ask the user |
 | No change | No regression | **KEEP** if bug fix, **SKIP** if pure optimization |
 | Degraded | Any | **REVERT** |
 
@@ -112,4 +112,4 @@ After round: update Remaining Bottlenecks and Key Insights.
 Commit under `rules/workflow/performance.md`. Use `/commit` skill or stage manually:
 
 - **KEEP**: `perf(<ID>): <title>` — stage source only; keep the module task record uncommitted.
-- **REVERT**: revert through a new commit under `workflow/git-safety.md`; record the result in the uncommitted module task record.
+- **REVERT**: revert through a new commit; record the result in the uncommitted module task record.

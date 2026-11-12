@@ -10,11 +10,11 @@ allowed-tools:
   - Glob
 argument-hint: "[path to source dir/file, or blank for all]"
 ---
-Audit and update tests for source files. Tests are derived from design documents, never from reading implementation code.
+Audit and update tests for source files.
 
 ## Core Principle
 
-Tests verify documented contracts. Read the design docs before any source or test code. Assertions and the classification of a failing test: `rules/code/testing.md` Failures.
+Read the design docs before any source or test code. Assertions and the classification of a failing test: `rules/code/testing.md` Failures.
 
 ## Step 1 — Identify Scope
 
@@ -35,7 +35,7 @@ Then for the resolved scope:
 
 ## Step 2 — Read Design Docs First
 
-For each module in scope, read the design documentation **before** reading any source or test code:
+For each module in scope, read the design documentation before reading any source or test code:
 
 1. `design.md` — class/type specs, function specs, exception types.
 2. `model.md` — domain invariants, state transitions, relation semantics.
@@ -66,7 +66,7 @@ Audit each source file in scope against `rules/code/testing.md`, the project tes
 
 ## Step 4 — Plan
 
-Output a structured plan before writing any code:
+Output a structured plan:
 
 ```text
 ## Test Update Plan: <scope>

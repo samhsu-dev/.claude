@@ -27,7 +27,7 @@ List all source files in scope.
 
 ## Step 2 — Static Analysis
 
-Run the project's configured linter (e.g., `uv run pylint`, `./gradlew detekt`).
+Run the linter the language profile names.
 
 - Record all violations on scoped files.
 - Ignore pre-existing violations on out-of-scope files.
@@ -45,7 +45,7 @@ Read each scoped file. Audit it against every requirement of these rule files, i
 
 ## Step 4 — Plan
 
-Output a structured fix plan. Do NOT apply any fix before approval.
+Output a structured fix plan.
 
 ```text
 ## Code Update Plan: <scope>
@@ -89,7 +89,7 @@ For each approved item in the plan:
 2. Run linter on the changed file — verify no new violations.
 3. Run tests — verify no regressions.
 
-One logical change at a time. If a fix cascades into other files, report scope expansion before proceeding.
+One cause at a time. A repair outside the task's scope is reported to the user before it is made.
 
 ## Step 6 — Verify
 
@@ -116,8 +116,6 @@ One logical change at a time. If a fix cascades into other files, report scope e
 
 ## Rules
 
-- Plan before fix. Never auto-fix without user approval of the plan.
-- One smell/violation per fix. Atomic changes.
+- One cause per fix, covering every site that shares it (`rules/workflow/change-policy.md` Correctness and Verification).
 - Test after every fix. Regression = revert and report.
-- Fix root cause. No band-aids.
 - Linter-only violations: auto-fixable by formatter do not need individual plan items — batch as "Run formatter".
