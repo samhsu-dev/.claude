@@ -5,18 +5,16 @@ paths:
 
 # Resource Bounds and Timeouts
 
-Rules governing how cost, runtime, and process liveness are bounded.
-
 ---
 
 ## Where the Bound Lives
 
-- Bound cost through input scope, file count, item count or granularity. Never use a wall-clock kill to tune cost; Liveness Backstops governs a wedged process.
-- A deadline that kills a process producing all-or-nothing output is forbidden on a mandatory step. Its abort yields zero output, which fails the whole operation.
+- Bound cost through input scope, file count, item count or granularity, never through a kill deadline.
+- A deadline that kills a process producing all-or-nothing output is forbidden on a mandatory step.
 
 ## Liveness Backstops
 
-- A hard-kill deadline is a liveness backstop, not a tuning parameter. Never expose it as a per-run configuration knob.
+- A hard-kill deadline is never a per-run configuration setting.
 - One liveness backstop per unit of work. When an external or enclosing timeout bounds total runtime, inner steps set no fixed sub-deadline; the outer bound reaps a wedged process.
 
 ## Degradation

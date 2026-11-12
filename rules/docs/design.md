@@ -8,7 +8,7 @@ paths:
 
 ## 1. Required structure
 
-IEEE 1016 Logical viewpoint + Interface viewpoint. Software structure only.
+Software structure only.
 
 Sections in this order:
 
@@ -18,7 +18,8 @@ Sections in this order:
 | **Class / Type Specifications** | Per type: Responsibility, state/fields, methods (Behavior / Input / Output / errors). |
 | **Function Specifications** | Per function: **name(signature)** — Responsibility; Behavior; Input; Output; errors. Omit if none. |
 | **Exception / Error Types** | Each type and when raised. |
-| **Open Gaps** | Undecided points, each stated as an open question, a performance risk of the mechanism included, never in a separate risk document; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
+| **Caller Examples** | Each new or changed service interface: one caller example covering construction, invocation and result access through the intended API. |
+| **Open Gaps** | Undecided points, each stated as an open question, a performance risk of the mechanism included; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
 
 Never delete decided design text because no caller exists.
 
@@ -46,31 +47,27 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 ### Foundational
 
-- **KISS** — Simplest design that satisfies the requirement.
 - Scope of abstractions and configuration: `code/quality.md` Code Smells.
-- **DRY** — One authoritative representation per piece of knowledge. Reuse existing data and mechanisms before adding a representation, walk, cache, map or edge.
+- **DRY** — One authoritative representation per piece of knowledge; reuse of data and mechanisms: `code/quality.md` API Design.
 - **Separation of Concerns** — One concern per module. No overlap.
+- Domain policy stays outside reusable mechanisms.
 - Method access contracts: `code/quality.md` Code Structure.
 - **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
 - Failure signaling: `code/quality.md` Error Handling.
 
 ### Naturalness and maintainability
 
-The maintainer reloads context each session and trusts types over execution. Design for that reader.
-
-- Domain wrappers and argument grouping: `code/quality.md`. A closed-value scalar uses an enum. A distinct concern with its own owner or invariant becomes its own type.
+- Domain wrappers and argument grouping: `code/quality.md`. A closed-value scalar uses an enum.
 - **Type boundaries match concept boundaries** — One type, one concept. A type whose fields split by name prefix (`input_`, `output_`) is two concepts; split it when the groups have separate owners or invariants.
 - **One unit, one abstraction level** — A body mixing collection logic, object construction, and error handling is a split point. Extract the business rule out of the orchestration.
 - Granularity follows `code/organization.md` File Responsibility and `code/quality.md` Code Smells.
 - **Contract lives in types** — Named fields over optional positional args. Return types exhaust result meaning; type safety contracts: `code/quality.md`.
-- **Absence is not failure** — "No result" and "failed" are distinguishable by type, never a shared empty or `None`.
 
 ---
 
 ## 3. Architectural constraints
 
-- Dependencies are one-way: A uses B → B must not use A.
+- Dependency direction: `code/organization.md` Dependencies.
 - Data holders contain only primitives, enums, or other data holders, unless a field's owner requires a reference to a behavior type.
 - A workflow of several steps has one orchestrator. A helper holds no state unless it owns that state's invariant, and receives inputs by argument.
-- When several files share a concern, group them into one directory as an internal submodule with one public entry point.
-- External API verification and recording: `docs/impl.md`.
+- External API verification and recording: `rules/docs/impl.md`.

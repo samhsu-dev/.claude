@@ -6,15 +6,12 @@ paths:
 
 # Algorithm Specification Standards
 
-IEEE 1016 Algorithm viewpoint. Formalizes computation logic between domain model (model.md) and coding notes (impl.md).
-
 ---
 
 ## Scope
 
-- One `spec.md` per module with non-trivial algorithms.
+- One `spec.md` per module meeting When Required; When Not Required is the exception.
 - Same directory as paired `design.md`.
-- Contains algorithm steps, invariants, termination arguments, complexity.
 - Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 ## Required Sections
@@ -31,7 +28,7 @@ Per algorithm:
 
 ## Content Rules
 
-- Pseudocode uses domain vocabulary from `model.md`, not implementation names.
+- Pseudocode uses glossary terms, not implementation names.
 - One algorithm per heading. Multiple algorithms grouped by concern.
 - Pseudocode is unambiguous.
 - Edge cases and degenerate inputs documented after main steps.

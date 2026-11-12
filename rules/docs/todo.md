@@ -30,7 +30,6 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 
 - One task = one session of work.
 - Action verb + object + detail. No vague titles.
-- Acceptance criteria when verifiable.
 - Explicit dependencies.
 - Reference interfaces from design docs. No new design in TODO files.
 
@@ -56,10 +55,9 @@ Bug fix:
 ```text
 [ ] Fix <description>
   Acceptance: <repro no longer fails>
-  - [ ] Reproduce
+  - [ ] Reproduction test, failing
   - [ ] Root cause
   - [ ] Fix
-  - [ ] Regression test
   - [ ] Quality gate
 ```
 

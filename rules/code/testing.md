@@ -10,22 +10,18 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 1. Principles
 
-- Tests prove the presence of defects, not their absence.
-- Exhaustive testing is impossible.
-- Defects cluster. Concentrate tests on high-risk and high-change areas.
-- Same tests stop finding new defects over time (pesticide paradox). Update tests as code evolves.
+- Concentrate tests on high-risk and high-change areas.
 
 ## 2. Test Design
 
 ### Black-box (specification-based)
 
 - **Equivalence partitioning**: divide input domain into classes where all values produce equivalent behavior. One test per class.
-- **Boundary value analysis**: test at edges of each partition — minimum, minimum−1, maximum, maximum+1. Boundaries are the most common fault locations.
+- **Boundary value analysis**: test at edges of each partition — minimum, minimum−1, maximum, maximum+1.
 - **Error cases**: invalid inputs, empty inputs, null/None, out-of-range, wrong type.
 
 ### Coverage targets
 
-- **Statement coverage**: every line executed.
 - **Branch coverage**: every true/false path taken.
 - Target: >= 90% branch coverage on changed modules. Production source roots named by the project configuration only. Exclude generated code and vendor deps. Report missing lines. Fail CI below threshold.
 
@@ -37,8 +33,9 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 ## 4. Types
 
-- Unit: isolated from external systems. One unit per test file.
-- Integration: cross-module or external. Run separately from unit.
+- Unit: isolated from external systems.
+- Integration: cross-module or external.
+- Growth: when the project configures `algorithm.phases`, each function that runs one phase to completion (its driver) and each worklist loop inside such a function has a growth test. The test runs the size sweep of `workflow/performance.md` Localization and records, at each size, the work counters and the elapsed time; the counters decide the growth order, and a test whose counters grow faster than the bound its owning `spec.md` Complexity states fails.
 
 ## 5. Structure
 
@@ -51,27 +48,23 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 - Every test file starts with a file-level comment listing all test cases and their purpose.
 - Format: file description, then one entry per test function with name and one-line verification goal.
-- Update the comment when adding, removing, or renaming test functions. The comment is the index — code is the implementation.
+- Update the comment when adding, removing, or renaming test functions.
 
 ## 6. Fixtures & Data
 
-- Reusable setup in fixtures/factories.
 - Scenario-specific fixtures per test when needed.
 - Temporary resources for file/network/process. Auto-clean after test.
 - Test data files in a data directory under the test root. No bulk payloads inline in test files. No test data in the source tree.
 
 ## 7. Assertions
 
-- One assertion per test. Multiple only when verifying one behavior.
 - Specific assertions (equality, errors, ranges) over boolean checks.
 - Negative paths and error conditions asserted explicitly.
 
 ## 8. Mocking
 
 - Mock at system boundaries only.
-- Dependency injection enables mocking.
 - Verified interactions on test doubles.
-- No over-mocking. Real behavior for internal collaborators.
 
 ## 9. Configuration
 
@@ -88,17 +81,14 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 - Tests alongside new/changed code in the same change set.
 - Independent tests. No shared mutable state.
-- Deduplicate via helpers, fixtures, factories.
 - A test is stale when it covers a function or behavior the current design documents no longer state, tests private methods or internal state instead of a public contract, or repeats another test's input and assertion. A stale test is deleted; a reproduction test follows Reproductions.
 
 ## Reproductions
 
 - Before repairing a defect, write a reproduction test that fails on the unfixed implementation.
 - Keep reproduction tests permanently. Exception: a reproduction whose contract the owning design document removed is deleted with that contract, and the deletion names the document change.
-- A delegated implementer writes tests before implementation.
 
 ## Failures
 
 - Assertions come from the documented contract, never from observed behavior.
 - A failing test is first checked against the accepted contract in the owning design document. A test that contradicts the contract is a test defect and is corrected to the contract; a test that matches it reports an implementation defect.
-- Never change a test to match implementation behavior that deviates from the contract.

@@ -8,10 +8,9 @@ paths:
 
 ## 1. Scope
 
-- One `impl.md` per design when the affected work needs implementation research or retained external API findings. Keep it with the paired `design.md`; unchanged work creates no missing document merely to complete a template.
+- One `impl.md` per design whose work needs implementation research or retained external API findings, beside the paired `design.md`.
 - Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 - Read the paired `impl.md` when it exists and contains findings relevant to the task.
-- Before writing code that uses an external library: check `impl.md` for existing findings.
 - Format: headings + lists + inline code. One line per fact. No prose.
 
 ## 2. Structure
@@ -29,10 +28,10 @@ Sections in order; include only if they have content:
 
 - API needed → **APIs**. Library needed → **Libraries**. Developer instruction → **Developer instructions**.
 - Verify every external API through documentation, DeepWiki, Context7 or a minimal test before use. Record API behavior, gotchas and version constraints in `impl.md` immediately.
-- No design duplication. No long examples or tutorials.
+- No long examples or tutorials.
 
 ## 4. Rules
 
 - One to two lines per API: canonical import + when/gotcha. Remove when design no longer uses it.
 - Developer instructions: concrete only. Update/remove when workflow changes.
-- On user correction: update immediately, deduplicate and remove obsolete findings. Ownership follows `rules/docs/documentation.md` Ownership.
+- On user correction: update immediately, deduplicate and remove obsolete findings.

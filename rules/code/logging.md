@@ -9,7 +9,7 @@ Language-specific logger APIs and configuration: see project `.claude/rules/`.
 
 ## Severity Levels
 
-Assign level by actionability, not by code location. Levels follow OpenTelemetry / Syslog (RFC 5424) ordering.
+Assign level by actionability, not by code location.
 
 | Level | Emit when |
 |-------|-----------|
@@ -25,7 +25,7 @@ Assign level by actionability, not by code location. Levels follow OpenTelemetry
 
 ## Granularity
 
-The unit of work — request, job, task, consumed message — is the anchor for log granularity, not the function or the line.
+A unit of work is a request, job, task or consumed message.
 
 - Every unit of work emits one summary record at completion carrying its identifiers, outcome, and duration on every exit path: success, handled failure, abort.
 - Every call to an external system (network, database, subprocess) is recorded with target, duration, and result — as its own record or as fields on the unit-of-work summary.
@@ -33,11 +33,9 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 ## Error Records
 
-- Error messages include context (function, parameters, state). Record Content redaction applies.
 - A failure is logged exactly once, at the layer that handles it. A layer that propagates an error never logs it.
 - Propagation sites attach context (operation, parameters, entity IDs) to the error object; context reaches the handling boundary inside the error, not as log records.
-- Every ERROR record carries exception type, stack trace, operation, and reproducible inputs and state. Redact secrets, credentials, tokens and PII throughout those fields under Record Content.
-- Every ERROR record carries the identifiers of the affected unit of work and entities.
+- Every ERROR record carries exception type, stack trace, operation, parameters, and reproducible inputs and state.
 - A failed unit's summary record carries the error identifier, linking summary to failure detail.
 
 ## Correlation
@@ -49,16 +47,15 @@ The unit of work — request, job, task, consumed message — is the anchor for 
 
 ## Output Control
 
-- Code emits events. Routing, files, rotation, and retention are environment and handler config, not code.
+- Routing, files, rotation and retention live in environment and handler configuration, never in code.
 - Never raise a third-party logger's level from inside application code.
 - Every file sink has a size or rotation bound. No unbounded log file.
 
 ## High-Frequency Paths
 
-- Outside the TRACE exception below, log state transitions, not iterations.
+- Outside the TRACE exception below, log state transitions, not iterations; a record emitted once per call of a function that a loop calls is a per-iteration record.
 - Aggregate at loop exit. Exception: per-iteration diagnostics use TRACE with the frequency bound below, never DEBUG.
 - Rate-limit or sample repeatable diagnostics above one record per second. Required unit summaries and failure outcomes remain complete.
-- A record's frequency is set by its caller, not its wording. A per-call summary line ("N passed, M failed") is high-frequency when the function runs in a hot loop. Level it by call frequency, not by whether it reads like a summary.
 
 ## Record Content
 

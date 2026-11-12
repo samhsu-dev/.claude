@@ -7,13 +7,9 @@ paths:
 
 # LLM-Consumable Documentation Standards
 
-Agent-facing documentation following the llms.txt specification (llmstxt.org).
-
 ---
 
 ## Audience
-
-All llms.txt content is read by agents, not humans. Optimize for parsing under token constraints.
 
 ## File Layout
 
@@ -86,7 +82,7 @@ Each `llms/<module>.md` file:
 
 - One example per concept. 3-10 lines. No boilerplate.
 - Working code only. Every example is copy-paste runnable.
-- No comments explaining what the next line does. Code is self-evident or the example is wrong.
+- No comments explaining what the next line does.
 
 ## full.txt Structure (L2)
 

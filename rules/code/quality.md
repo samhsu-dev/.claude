@@ -20,8 +20,8 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Specific exception/error types. No broad catches.
 - Handle an error at the layer that can recover or report the operation failure.
 - Error context and logging: `code/logging.md` Error Records.
-- Detect and report errors at the earliest point. Raise or throw on failure, including a missing required internal value. Never disguise failure as an empty value, fallback or degradation. Documented recoverable sub-tool output follows `resource-bounds.md`.
-- Every catch re-raises, reports at its handling boundary, or transforms the error. Logging follows `code/logging.md`.
+- Detect and report errors at the earliest point. Raise or throw on failure, including a missing required internal value. Never disguise failure as an empty value, fallback or degradation. No result and failure are distinguishable by type. Documented recoverable sub-tool output follows `resource-bounds.md`.
+- Every catch re-raises, reports at its handling boundary, or transforms the error.
 - No error codes as return values. Exception: a tool protocol that requires structured success/error objects uses that protocol.
 
 ## Code Structure
@@ -29,29 +29,25 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - Functions under 20 lines.
 - Max 3 parameters per function. More → introduce a parameter object.
 - Put each multi-step operation in a function named for that operation.
-- Names state the domain concept or responsibility. Single-letter variables are limited to comprehensions, loop indices and language-profile type parameters.
-- Internal imports follow language convention.
+- Single-letter variables are limited to comprehensions, loop indices and language-profile type parameters.
 - Call only own methods, parameter methods, locally created objects, direct attributes.
 - No duplicate logic blocks. Two identical blocks → extract function.
 - A function that reads one object's fields more than its own belongs with that concept. For a data-only type, put the function in the module that owns it; API Design governs data holders.
-- Repeated groups of arguments or fields passed together become a type. The parameter-count limit above still applies.
+- Repeated groups of arguments or fields passed together become a type.
 
 ## No Stale Code
 
-- No redundant indirection.
 - No dead code. No commented-out code.
 - No compatibility stubs. Removed API = removed everywhere.
 - No historical references in docstrings or comments.
-- Indirection follows Code Smells and API Design.
 - Remove artifacts with no surviving code, design, build or entry-point consumer.
 
 ## Code Smells — Detect and Eliminate
 
 - No primitive obsession — raw strings/ints representing domain concepts → wrap in a type.
 - No god objects — a class with >7 public methods or >5 fields → split responsibilities. File splitting follows `code/organization.md`.
-- No shotgun surgery — one change requires edits in many files → consolidate. Duplicate facts retain one owner.
+- No shotgun surgery — one change requires edits in many files → consolidate.
 - No speculative generality — abstractions, parameters, or config for hypothetical futures → remove.
-- No message chains — `a.b().c().d()` → encapsulate in a method on `a`.
 - No middle-man classes that only delegate → remove and call target directly.
 - No magic numbers/strings. Named constants or enums.
 - No repeated conditional logic on the same discriminant → polymorphism or lookup table.
@@ -71,9 +67,8 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Resource Management
 
-- Scoped resource use: Bug Prevention.
 - Move object construction before a loop when every iteration can share the object and a measurement shows its allocation cost.
-- Consult a mechanism's existing valid cache before expensive work. Representation ownership follows `docs/design.md` Design principles.
+- Consult a mechanism's existing valid cache before expensive work.
 
 ## Documentation
 
@@ -91,7 +86,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Type Safety
 
-- Type annotations on all parameters and return values. Project rules may specify language-level omissions.
+- Type annotations on all parameters and return values.
 - Concrete types. No escape types (`Any`, `any`, `Object`, `interface{}`).
 - Strict type checking enabled.
 
@@ -105,10 +100,9 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## No Patch-Style Code
 
-- Every change integrates as if written from scratch, at the rule, mechanism or data that produces the fault, within the existing ownership, types and callers. No "add a check here" band-aid.
+- Every change integrates as if written from scratch, within the existing ownership, types and callers; fault location: `workflow/change-policy.md` Correctness and Verification.
 - No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
-- No conditional branch added solely to handle one caller's edge case; a branch expresses an input distinction the contract defines, otherwise the design is fixed.
-- Controlled-code adapters: API Design.
+- A conditional branch expresses an input distinction the contract defines.
 - No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
 ## Agent Maintainability
@@ -124,27 +118,20 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - When a review finds a defect class that a tool rule could catch, enabling that rule goes into the same change or into a recorded follow-up.
 - A passing tool result is evidence: neither review nor an agent rereads code to recheck what a passing configured tool already checked.
 
-## Post-Edit Verification (Mandatory)
+## Post-Edit Verification
 
-Before completing a coherent change, review its diff and affected contracts for:
-
-1. Check Code Structure and Code Smells.
-2. Check Bug Prevention.
-3. Check No Patch-Style Code.
-4. Check Agent Maintainability.
-Fix every finding in the changed code and its affected contracts before the change is complete. A finding in untouched code goes to the module's task doc.
+- The self-check of skill `chain-session` applies Code Structure, Code Smells, Bug Prevention, No Patch-Style Code and Agent Maintainability to the diff.
 
 ## API Design
 
-- A new or changed service interface has a caller example in its design document covering construction, invocation and result access through the intended API; sibling interfaces are reviewed together.
-- Error signaling: Error Handling.
+- Sibling service interfaces are reviewed together.
 - A call reads without its declaration. A literal whose meaning the call does not show (a bare `true`, `false`, `null` or number) is passed by name, or its parameter becomes an enum or an options type.
 - A setting has a default that serves the common case, so a caller it does not concern never names it.
 - A signature names what its function's job needs. A parameter, field or setting enters an interface in the change that adds its first reader; a value threaded through signatures that nothing reads is speculative generality.
 - One concern has one mechanism. Before adding a parameter style, options type, dispatch, registry, result or error shape, find how sibling code handles the same concern and reuse it; a genuine difference is named in the design document.
 - One service has one interface. A function or algorithm is reached through one entry; a second entry offering the same service merges into the owner the design names, and its callers move to that owner. An old and a new implementation coexist only during a recorded migration whose task removes the old one.
 - Components of one kind share one interface shape: construction, entry verbs, parameter order, input and result conventions, synchronous or asynchronous invocation, completion and cancellation ownership, and glossary vocabulary. Name and justify a component-specific difference in the design document.
-- Data containers hold data. No embedded behavior.
+- Data holders hold data. No embedded behavior.
 - Application logic as explicit functions.
 
 - Call core module APIs directly. No wrapping layers around controlled code.

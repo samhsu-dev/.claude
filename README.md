@@ -12,7 +12,7 @@ git clone https://github.com/<profile.repository> ~/.claude
 
 The project rule files under `rules/project/` supply `profile.repository` and profile branch identities.
 
-Skill invocation controls: [Skill Writing Standards](rules/meta/skilling.md#frontmatter).
+Skill invocation controls: [Skill Writing Standards](rules/meta/skilling.md#frontmatter-and-variables).
 
 ## Usage
 
@@ -64,12 +64,14 @@ Loading semantics: [Rule Writing Standards](rules/meta/rulewriting.md#context-lo
 Hooks check what a rule can only ask for. They apply in every repository once registered in `~/.claude/settings.json`; `settings.json` is not tracked, so a new machine adds this block:
 
 ```json
+"SessionStart": [{ "matcher": "", "hooks": [{ "type": "command", "command": "python3 \"$HOME/.claude/tools/branch_check.py\" --hook SessionStart", "timeout": 60 }] }],
 "PreToolUse": [{ "matcher": "Bash", "hooks": [
   { "type": "command", "if": "Bash(git *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" },
   { "type": "command", "if": "Bash(gh pr *)", "command": "python3 \"$HOME/.claude/hooks/git_guard.py\"", "onFailure": "block" },
   { "type": "command", "command": "python3 \"$HOME/.claude/hooks/poll_guard.py\"", "onFailure": "block" }] }],
 "PostToolUse": [{ "matcher": "Write|Edit|MultiEdit", "hooks": [{ "type": "command",
-  "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"", "onFailure": "block" }] }]
+  "command": "python3 \"$HOME/.claude/hooks/doc_check.py\"", "onFailure": "block" }] },
+  { "matcher": "Bash", "hooks": [{ "type": "command", "if": "Bash(git push *)", "command": "python3 \"$HOME/.claude/tools/branch_check.py\" --hook PostToolUse --no-fetch", "timeout": 60 }] }]
 ```
 
 `"attribution": {"commit": "", "pr": "", "sessionUrl": false}` in the same file stops Claude Code from adding attribution lines.
@@ -83,14 +85,14 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 
 ### Git hooks
 
-`tools/git-hooks/` is a Git hooks directory run by [Lefthook](https://lefthook.dev): `commit-msg` checks the message with commitlint against `commitlint.config.mjs`, and `pre-commit` runs markdownlint-cli2 and CSpell on staged Markdown in a repository that commits `.markdownlint-cli2.jsonc` or `cspell.json`. It needs `lefthook`, `commitlint`, `markdownlint-cli2` and `cspell` on `PATH` (`brew install lefthook`; `npm install -g @commitlint/cli markdownlint-cli2 cspell`). A repository uses it when its Git configuration sets `core.hooksPath`; `~/.gitconfig` scopes that to the agent-managed repositories:
+`tools/git-hooks/` is a Git hooks directory run by [Lefthook](https://lefthook.dev): `commit-msg` checks the message with commitlint against `commitlint.config.mjs`, and `pre-commit` runs markdownlint-cli2 and CSpell on staged Markdown in a repository that commits `.markdownlint-cli2.jsonc` or `cspell.json`. It needs `lefthook`, `commitlint`, `markdownlint-cli2` and `cspell` on `PATH` (`brew install lefthook`; `npm install -g @commitlint/cli markdownlint-cli2 cspell`). A repository uses it when its Git configuration sets `core.hooksPath`; `~/.gitconfig` scopes that to the agent configuration repositories and each project repository that opts in:
 
 ```ini
 [includeIf "gitdir:~/.claude/.git/"]
     path = ~/.config/git/agent-hooks
 [includeIf "gitdir:~/.codex/.git/"]
     path = ~/.config/git/agent-hooks
-[includeIf "gitdir/i:~/Projects/Cobra/CobraPHP/.git/"]
+[includeIf "gitdir/i:<project repository>/.git/"]
     path = ~/.config/git/agent-hooks
 ```
 
@@ -103,7 +105,7 @@ Hooks check what a rule can only ask for. They apply in every repository once re
 | `tools/codex_rules.py` | run launcher | `pack` writes rule routes, routing native Codex project value files by their `paths:`; `--lean` adds the chain-session skill as a required read; `gate` checks logged always-active paths, with the read inspection required by skill `multi-agent` Run Isolation |
 | `tools/evidence.py` | task coordinator | Evidence schema, merge, freshness and brief commands |
 
-The project rule files under `rules/project/` supply project values. See [Parameter Binding](CLAUDE.md#parameter-binding) for native project roots and fixed section formats. Project additions stay outside the shared language profile.
+See [Parameter Binding](CLAUDE.md#parameter-binding) for native project roots and fixed section formats.
 
 ## License
 

@@ -5,7 +5,7 @@ paths:
 
 # File Naming and Organization
 
-One naming logic for every project, independent of language. Language-specific casing, layout, and packaging: see project `.claude/rules/code/organization.md`.
+Language-specific casing, layout, and packaging: see project `.claude/rules/code/organization.md`.
 
 ## File Responsibility
 
@@ -17,9 +17,9 @@ One naming logic for every project, independent of language. Language-specific c
 ## File Naming
 
 - The file name states the single responsibility the file owns.
-- By default, filename stems use lowercase letters, digits and underscores; extensions are excluded. A language profile may replace the stem convention.
+- Filename stems use lowercase letters, digits and underscores; extensions are excluded.
 - File names are domain nouns, never pattern roles. No `utils`, `helpers`, `common`, `shared`, `misc`, `manager`, `handler` as a file name.
-- Never name a file after one class it contains when the file owns a broader responsibility. The file names the responsibility; the class names the instance.
+- Never name a file after one class it contains when the file owns a broader responsibility.
 - One grammatical number for file and directory names across a codebase. Never singular and plural variants of the same name.
 
 ## Directory Organization
@@ -28,12 +28,12 @@ One naming logic for every project, independent of language. Language-specific c
 - No `utils/`, `helpers/`, `common/`, `misc/` directories. A shared function belongs to the module that owns its theme.
 - A directory names the domain concept its files serve, never a language mechanism or pattern role (`extension/`, `impl/`, `workers/`).
 - A directory whose files serve several nameable domain concepts splits into one subdirectory per concept.
+- Files that share a concern form one directory with one public entry point.
 
 ## Dependencies
 
 - Package and module dependencies form an acyclic graph. A lower layer never imports a higher one; a type both need moves down to the layer that owns its concept.
-- Domain-independent machinery (graph algorithms, work queues, storage) carries no domain policy and lives in the lowest package or library that can own it. A domain rule reaches it as a parameter.
-- Where the language has a tool for it, a test checks the package dependency rules.
+- Domain-independent machinery carries no domain policy and lives in the lowest package or library that can own it. A domain rule reaches it as a parameter.
 
 ## Entry Points
 

@@ -6,27 +6,21 @@ paths:
 
 # Glossary Standards
 
-Parameter `glossary` is supplied by the project rule files under `rules/project/`; linked values retain their named owners.
-
-The registry of a project's established terms: which terms it holds, how a new term is named, and how the registry is laid out. Which terms output may use: `communication/terminology.md`. Source versions: `rule-references.json`. Basis: ANSI/NISO Z39.19 §5.3.5 term selection by warrant, §8.3 hierarchical relations; W3C SKOS Reference, documentation and mapping properties.
+Which terms output may use: `communication/terminology.md`.
 
 ---
 
 ## Selection
 
 - Every domain term in output has a glossary entry. General programming words (function, variable, class, loop, exception, call) need none. An identifier quoted as code needs an entry when it names a domain concept.
-- No entry for a keyword of the analyzed language unless it names a domain concept.
 - No entry for an identifier that names no concept of the domain: a helper class, an index, a monitor, an internal variable, field, counter or ID format, a module or package name. Its owner is the design doc.
-- A compound that names a domain concept follows the entry obligation above; a general programming phrase needs none.
 - No entry for a named external artifact: a paper, a tool, a dataset. Its owner is the bibliography.
-- No entry for a shorthand one document uses in its own prose unless it names a domain concept.
-- Entry removal preserves the domain-term entry obligation above.
-- A coined term whose meaning its parts, an existing name, or a plain clause state as well gets no entry and is not used. A new noun bundling several existing things is the typical case. Two entries whose definitions overlap, or one that is a special case the other states with a plain clause, are redundant: one stays and the other folds into it or is removed. Selection runs before Name Sources.
-- Removing an exempt entry never removes the term from prose. Domain terms, including textbook and literature terms, retain their entries.
+- A coined term whose meaning its parts, an existing name, or a plain clause state as well gets no entry and is not used. Two entries whose definitions overlap, or one that is a special case the other states with a plain clause, are redundant: one stays and the other folds into it or is removed. Selection runs before Name Sources.
+- Removing an exempt entry never removes the term from prose.
 
 ## Name Sources
 
-Except for the core terms governed by Naming Steps, a concept takes the name the highest-ranked source gives that same concept:
+A concept takes the name the highest-ranked source gives that same concept:
 
 1. A name widely accepted in the literature.
 2. The reference manual or standard of the language or system the project analyzes or implements.
@@ -43,9 +37,9 @@ Except for the core terms governed by Naming Steps, a concept takes the name the
 
 ## Naming Steps
 
-An existing source name is selected in three steps, in order; the coinage prohibition in `communication/terminology.md` still applies:
+An existing source name is selected in three steps, in order:
 
-1. **Locate.** The structure the term belongs to — the model, graph, or table, and the element kind within it — gives the head noun.
+1. **Locate.** The structure the term belongs to — the structure and the element kind within it — gives the head noun.
 2. **Classify.** Identify the domain context that distinguishes the concept, such as its lifecycle stage or role in a process.
 3. **Name.** The name is the locus plus one role noun taken by Name Sources.
 
@@ -58,15 +52,13 @@ An existing source name is selected in three steps, in order; the coinage prohib
 ## Files
 
 - `glossary.md` is the routing file. Every other glossary file is `glossary-<concern>.md` in the same directory, one concern per file.
-- Naming values come from `glossary` in the project rule files under `rules/project/`. Their provenance follows `rules/workflow/records.md`.
-- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one. Pinned versions live in the bibliography (`rules/docs/bibliography.md`).
-- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading: `grep -n "^### <term>" <dir>/glossary*.md`.
+- The routing file holds only what a reader of the glossary needs, in order: what the glossary is, the conventions for reading an entry (Source path prefix, bibliography path and the Zotero collection it is exported from), the routing table, the imported-terms table (Repositories), and the retired-names table. It holds no entry and no instruction for writing one.- Routing table columns: File, Concern. Routing table order is reading order. A term is found by its heading or its enumeration row: `grep -n "^### <term>\|^| <term> |" <dir>/glossary*.md`.
 - Retired-names table columns: Retired, Successor. One row per rename or removal; provenance follows `rules/workflow/records.md`.
 - After a glossary file splits, add its new files to the routing table.
 
 ## Layers
 
-- Read glossary concerns in configured `glossary.layers` order. Without that value, follow the documentation's dependency order; no domain-specific layer order is assumed.
+- Read glossary concerns in configured `glossary.layers` order. Without that value, follow the documentation's dependency order.
 - An element type or attribute belongs to its structure's schema; a process step belongs to its process concern.
 - Other entries belong to the concern their Definition states, independently of the structure named by Is a.
 
@@ -88,8 +80,8 @@ One entry per term: an H3 heading followed by fields in this order.
 - **Heading:** one term as used in prose, or one identifier in backticks. An abbreviation follows the long form in parentheses. The identifier that implements a prose term is named in Source, never in the heading. A heading never names two terms.
 - **Is a:** the parent entry, or the enumeration member in backticks, such that `<heading> is a <parent>` holds and both name the same kind of concept: two operations, two data, two rules. Omitted when no entry is the parent. A part never names its whole here; the Definition states the whole.
 - **Definition:** one plain sentence with the genus and distinguishing property. The genus is the Is a entry or a plain domain word. Use the owning document section under `rules/docs/documentation.md` Ownership, or the implementing symbol when no document decides it. No citation. Provenance stays in Local Records.
-- **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for a term with no code, the element the doc section specifies. Required when an input yields an instance of the term (a value, a node, an edge, a label, a construct); omitted otherwise.
-- **Source:** every file and symbol that implements the term, separated by `;`. A term with no code: the doc and its section. A term whose code differs from the decided design, or whose code the design removed: the doc section, then the code symbol; the Open Gaps section of that design doc states the difference. Every Source resolves to the named location; `hooks/doc_check.py` reports one that does not.
+- **Example:** a minimal input and the term's instance in it. For a program value, the output the reference implementation prints, verified by running it. For a structural element, the element the analysis yields; for a term with no code, the element the doc section specifies. Required when an input yields an instance of the term; omitted otherwise.
+- **Source:** every file and symbol that implements the term, separated by `;`. A term with no code: the doc and its section. A term whose code differs from the decided design, or whose code the design removed: the doc section, then the code symbol; the Open Gaps section of that design doc states the difference. Every Source resolves to the named location; `hooks/doc_check.py` reports a Source file path that does not resolve.
 - **Reference:** the rank 2 or rank 3 counterpart, then the relation. Present when those sources are configured.
 - **Literature:** one line per source: its bibliography key with the section that defines the word as locator, then the relation. `borrowed` marks the defining source of a borrowed word and is required for one. `method` marks the mechanism behind a core term. `clash` marks the same word for another concept. At most three lines, the defining source first. Further sources go in the module's concept doc.
 - **Tools:** one line per tool: its bibliography key, then the symbol or the documentation page title, then the relation. At most two lines.
@@ -106,12 +98,12 @@ One entry per term: an H3 heading followed by fields in this order.
 ## Names
 
 - Every heading is unique across all glossary files.
-- A heading is a term, never the bare element kind of the locate step: no entry named "Node", "Edge", or "Label".
+- A heading is a term, never the bare element kind of the locate step.
 - A rename deletes the old entry and adds a retired-names row with the successor. A term removed from the design whose code is gone gets a row with successor `none`. A retired name is never reused for another concept.
 
 ## Enumerations
 
-- A closed set (every node type or edge type of one graph, every label) is one H2 section: the set's class entry, then one table with columns Member, Definition, Reference, Literature, Tools. A file holds any number of closed sets.
+- A closed set is one H2 section: the set's class entry, then one table with columns Member, Definition, Reference, Literature, Tools. A file holds any number of closed sets.
 - A counterpart cell holds a citation and its relation in the form of the matching Entry field, or `none` with an optional parenthetical reason. A `|` inside a cell is escaped as `\|`.
 - A table row holds one sentence of definition. A member needing more keeps its row and gets an entry headed by its identifier directly below the table.
 - A set generated from an external schema has one row per naming pattern, with the generator named in Source.

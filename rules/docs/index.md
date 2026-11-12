@@ -5,8 +5,6 @@ paths:
 
 # Index Document Standards
 
-Developer-facing navigation for documentation directories. Routes agents to the correct file without forcing a full read.
-
 ---
 
 ## Scope
@@ -36,28 +34,13 @@ Developer-facing navigation for documentation directories. Routes agents to the 
 - Rows ordered: concept → model → design → spec → impl.
 - A committed navigation index lists committed docs only; indexes inside local record directories follow `rules/workflow/records.md`.
 
-## When to Split
-
-- Shared size limits and prefix naming: `rules/docs/documentation.md` Naming.
-- After splitting: delete the original monolithic file. Update `index.md`.
-
-### Split Logic
-
-Split within a document type by domain concept, not by section heading or mechanical line count.
-
-- Identify the domain concepts the document covers. Each concept that can be understood independently becomes one file.
-- Related content stays together: an entity's definition, its state transitions, and its invariants belong in one file — not three files split by "entities", "states", "invariants".
-- Cross-referencing concepts that cannot be understood without each other stay in the same file.
-- Keep each fact in the document type that owns it under `rules/docs/documentation.md` Ownership. Link other types.
-- A file explains its own concern. Follow links for adjacent concerns; merge fragments that need sibling text to define their own concern.
-
 ## Naming Convention
 
 - Topic name: noun or noun phrase. No verbs, no abbreviations.
 
 ## Content Rules
 
-- No domain content. "Graph node types and their semantic roles" not a definition of what the node types are.
+- No domain content: a Content cell names the topic, never its definition.
 - No redundancy with file content. The description says what topic the file covers; the file itself has the content.
 - No hierarchy or nesting. Flat table. No subsections, no grouping headers.
 - No external links. Entries target files in this directory or the subdirectory indexes specified in Multi-Level Navigation.

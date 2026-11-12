@@ -5,7 +5,7 @@ paths:
 
 # HTML Document Standards
 
-Constraints on a standalone HTML page whose purpose is to be read. Rendering procedure: `render-doc` skill.
+Rendering procedure: `render-doc` skill.
 
 ## Self-Containment
 
@@ -42,8 +42,6 @@ Constraints on a standalone HTML page whose purpose is to be read. Rendering pro
 - Every table sits inside an `overflow-x: auto` container. The page body never scrolls horizontally.
 
 ## Prohibitions
-
-These are the recognised markers of machine-generated design.
 
 - No purple or violet gradient. No cyan-on-dark. No gradient text.
 - No grid of uniform rounded cards. No coloured left border on a card. No icon-heading-blurb triple.

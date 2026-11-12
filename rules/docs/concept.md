@@ -50,6 +50,8 @@ paths:
 
 ### 4. Scenarios
 
+At least one of each:
+
 - **Typical:** [normal operation]
 - **Boundary:** [edge case]
 - **Interaction:** [collaboration with other modules]
@@ -59,7 +61,7 @@ paths:
 Optional. One entry per design choice the module rests on:
 
 - **Choice:** [why this concept or mechanism, one or two sentences]
-- **Rejected:** [each alternative and why it was rejected; provenance follows `rules/docs/documentation.md` Ownership]
+- **Rejected:** [each alternative and why it was rejected]
 
 No open question lives here; an undecided point goes to the Open Gaps section of `design.md`.
 
@@ -83,8 +85,3 @@ No open question lives here; an undecided point goes to the Open Gaps section of
 
 - Module relationships and data flow.
 - One diagram per interaction boundary.
-
-### Scenarios
-
-- One typical, one boundary, one interaction case minimum.
-- Consistent terminology with Section 2.

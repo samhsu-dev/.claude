@@ -5,17 +5,11 @@ paths:
 
 # README Standards
 
-Parameter `readme` is supplied by the project rule files under `rules/project/`, in `readme.md`.
-
-Audience: developers evaluating or using this library. Not maintainers, not contributors.
+Audience: developers evaluating or using the product. Not maintainers, not contributors.
 
 ---
 
 ## Principle
-
-Cognitive funnel: broadest to most specific. Each section is an exit point — readers stop when their question is answered. Section order follows Required Sections.
-
-A developer understands what the repo does within 10 seconds: title, one-line description, usage example.
 
 ---
 
@@ -70,7 +64,6 @@ No table of contents.
 
 ## Rules
 
-- Lead with the problem solved, not the implementation.
 - One usage example visible without scrolling.
 - Detailed docs, tutorials, and guides in separate files or docs site. README is a landing page, not a manual.
 - No decorative content (banner images, animated GIFs, badge walls).

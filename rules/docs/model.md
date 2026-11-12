@@ -6,8 +6,6 @@ paths:
 
 # Domain Model Documentation Standards
 
-IEEE 1016 Information viewpoint + State dynamics viewpoint. Formalizes domain semantics between concept definition (concept.md) and software structure (design.md).
-
 ---
 
 ## Scope
@@ -23,10 +21,10 @@ Sections in order; include only if they have content:
 | Section | Content |
 |---------|---------|
 | **Entities** | Each domain entity: name, semantic role, existence conditions. One entry per entity kind. |
-| **Relations** | Each semantic relation: direction, label requirements, cardinality, meaning. Table format. |
+| **Relations** | Each semantic relation: direction, cardinality, meaning. Table format. |
 | **State Model** | States, transitions, guards, terminal conditions. State diagram or table. |
 | **Invariants** | Structural constraints that hold at all times. One per line, falsifiable. |
-| **Cross-Structure Contracts** | Semantic mappings between domain structures (e.g., AST-to-IR mapping rules). |
+| **Cross-Structure Contracts** | Semantic mappings between domain structures. |
 
 ## Content Rules
 

@@ -23,7 +23,6 @@ from doc_check_context import DOC_TYPES, HOST, work_tree, agent_configuration
 PATH_TOKEN = re.compile(r"`([^`\s]+(?:/|\.(?:kt|kts|md|ya?ml|json|php|py|ts|js|toml)))`")
 MAX_REPORTED = 20
 CELL_SEPARATOR = re.compile(r"(?<!\\)\|")
-BIBLIOGRAPHY = Path("docs/references.bib")
 CITATION = re.compile(r"\[[^\[\]]*@[^\[\]]*\]")
 CITATION_KEY = re.compile(r"(?<![\w@])-?@([\w][\w:.#$%&+?<>~/-]*\w|\w)")
 CITATION_FIELDS = ("Reference", "Literature", "Tools")
@@ -105,7 +104,7 @@ def unresolved_citations(path):
     relative = bibliography_path(root)
     bibliography = root / relative
     if not bibliography.is_file():
-        return [f"{path.name}: no {BIBLIOGRAPHY}"]
+        return [f"{path.name}: no {relative}"]
     held = set(re.findall(r"^@\w+\{([^,\s]+),", bibliography.read_text(), re.M))
     return [f"{path.name}: @{key}" for key in sorted(cited - held)]
 def tracked_paths(root):
