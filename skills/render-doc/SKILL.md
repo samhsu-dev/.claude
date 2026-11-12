@@ -44,7 +44,7 @@ Every block in the table above already exists in the stylesheet. Adding a new vi
 
 ## Step 3a — Source links and syntax highlighting
 
-1. A repository path in the source becomes `<a class="src" href="vscode://file/<absolute-path>">` so the reader opens it in the editor. Link only paths that exist on disk. A path into an ephemeral checkout stays plain text, and the meta table states why.
+1. A repository path in the source becomes `<a class="src" href="vscode://file/<absolute-path>">` so the reader opens it in the editor. Link only paths that exist on disk. A path in a worktree other than the repository's main checkout stays plain text, and the meta table states why.
 2. Tag inline and block code with `class="language-js|ts|py|sh"` where the language is known.
 3. After writing the page, run `node ${CLAUDE_SKILL_DIR}/scripts/highlight.mjs <output.html>`. It rewrites tagged code into `.tok-*` spans at render time.
 

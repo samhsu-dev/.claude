@@ -11,7 +11,7 @@ allowed-tools:
 argument-hint: "[optional target file, function, or optimization ID]"
 ---
 
-Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task record under `rules/workflow/records.md` once and use that path for every record read/write in this procedure.
+Read `rules/workflow/performance.md` before applying this workflow. Follow `workflow/change-policy.md` Outcome and Scope. Resolve the affected module's task doc `docs/todo/<module>.md` once and use that path for every record read and write in this procedure.
 
 ## Step 1 — Localize Candidates
 
@@ -25,20 +25,20 @@ Record each candidate that has profile or counter evidence:
 
 | Field | Format |
 |-------|--------|
-| ID | `P<round>-<seq>` (increment from last used round in the resolved module task record) |
+| ID | `P<round>-<seq>` (increment from last used round in the resolved module task doc) |
 | Title | Short description |
 | Evidence | Counter sweep or profile result, with the cost class |
 | File(s) | Affected source files |
 | Hypothesis | What the change does and expected effect |
-| Risk | low / medium / high |
+| Risk | high when the change alters a contract or a shared mechanism, medium when it changes behavior inside one component, low otherwise |
 
 ## Step 2 — Classify and Prioritize
 
 | Priority | Criteria |
 |----------|----------|
 | Bug fix | Correctness issue. Apply regardless of perf impact. |
-| High | Profiled hot path or measured growth order. |
-| Medium | Utility functions, constructors, off-hot-path. |
+| High | A candidate on a profiled hot path or with a measured growth order, of any kind. |
+| Medium | A utility function or constructor off the hot path. |
 | Low | Structural improvement, no expected throughput impact. |
 
 Sort: bug fixes first, then high to low. Same priority: algorithm and data structure before implementation overhead before runtime tuning (`rules/workflow/performance.md` Fix Order), then lower risk, then smaller diff.
@@ -63,15 +63,15 @@ Run the project's benchmark suite and the Step 1 counters. Capture fresh numbers
 For each approved candidate, in priority order:
 
 1. One candidate at a time, under `rules/workflow/performance.md`.
-2. Minimal change. Keep revertable.
+2. Edit only the files the candidate's File(s) field names, and commit the candidate as its own commit.
 3. Note exact files touched.
 
 ## Step 5 — Measure
 
-Run the required benchmark suite and affected checks after each coherent change; retain any project-mandated full suite.
+Run the required benchmark suite and affected checks after each candidate's change; retain any project-mandated full suite.
 
 - Compare the target metric and accepted quality and resource constraints against the baseline.
-- Check for cross-component regressions.
+- Run the tests and benchmarks of each component that calls the changed code and compare them with the baseline; a worse result is a regression in Step 6.
 
 ## Step 6 — Decide
 
@@ -82,11 +82,13 @@ Run the required benchmark suite and affected checks after each coherent change;
 | No change | No regression | **KEEP** if bug fix, **SKIP** if pure optimization |
 | Degraded | Any | **REVERT** |
 
+Revert a committed change with a new revert commit and an uncommitted change by inspecting `git diff` and editing the files back (skill `commit`).
+
 Report the decision to the user with numbers.
 
 ## Step 7 — Document
 
-Update the resolved module task record:
+Update the resolved module task doc:
 
 - **KEEP**: Move candidate from Candidates to Completed Optimizations. Update Current Baseline.
 - **REVERT**: Move to Evaluated & Rejected. Record result and reason. Revert source files.
@@ -111,5 +113,5 @@ After round: update Remaining Bottlenecks and Key Insights.
 
 Commit under `rules/workflow/performance.md`. Use `/commit` skill or stage manually:
 
-- **KEEP**: `perf(<ID>): <title>` — stage source only; keep the module task record uncommitted.
-- **REVERT**: revert through a new commit; record the result in the uncommitted module task record.
+- **KEEP**: `perf(<ID>): <title>` — stage source only; keep the module task doc uncommitted.
+- **REVERT**: revert through a new commit; record the result in the uncommitted module task doc.

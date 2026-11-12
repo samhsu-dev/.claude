@@ -117,5 +117,5 @@ One cause at a time. A repair outside the task's scope is reported to the user b
 ## Rules
 
 - One cause per fix, covering every site that shares it (`rules/workflow/change-policy.md` Correctness and Verification).
-- Test after every fix. Regression = revert and report.
+- Test after every fix. A regression is reverted and reported: revert a committed change with a new revert commit and an uncommitted change by inspecting `git diff` and editing the files back (skill `commit`).
 - Linter-only violations: auto-fixable by formatter do not need individual plan items — batch as "Run formatter".

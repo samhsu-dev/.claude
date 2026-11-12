@@ -17,7 +17,7 @@ Every check below carries an ID. A check reported `n/a` states why in its row; a
 
 ## Step 1 — Render
 
-1. Locate the carriers in scope from `$ARGUMENTS`. No argument: `Glob("**/prompts/**/*.{ts,py,md,prompty}")` plus changed files from `git diff --name-only`.
+1. Locate the carriers in scope from `$ARGUMENTS`. No argument: the carriers are the files `Glob("**/prompts/**/*.{ts,py,md,prompty}")` matches plus each file of `git diff --name-only` that exports a prompt constant.
 2. Read each carrier. List every exported prompt constant.
 3. Render each constant to `<scratchpad>/<constant>.txt`, with template substitutions resolved. Rendering imports the module and writes the string; never hand-copy the text.
 4. Record which surface each rendered string is bound to: system prompt, first user turn, tool description, subagent definition, or on-demand file.
@@ -87,7 +87,7 @@ Placement follows use frequency, never length.
 
 Name the loading mechanism, the directory it reads from, and who controls that directory's contents.
 
-Report measured use frequency where the eval provides it. An unmeasured frequency is reported as unmeasured, never estimated.
+Report measured use frequency where the eval provides it. When the eval provides no use frequency, L1 and L2 are reported `n/a` with the reason "use frequency unmeasured"; a frequency is never estimated.
 
 ## Step 5 — Plan
 
@@ -134,14 +134,16 @@ Wait for user approval before Step 6.
 | No change | No regression | REVERT, the edit is unproven |
 | Degraded | Any | REVERT |
 
+Revert a committed change with a new revert commit and an uncommitted change by inspecting `git diff` and editing the files back (skill `commit`).
+
 Report the decision with numbers.
 
 ## Step 8 — Record
 
-Append to the project's prompt-change log: the ID fixed, the edit, the three-run numbers, and the decision. A REVERT is recorded with its numbers so the same edit is not retried.
+Append to the module task doc `docs/todo/<module>.md`: the ID fixed, the edit, the three-run numbers, and the decision; Step 7 compares against the baseline recorded there. A REVERT is recorded with its numbers so the same edit is not retried.
 
 ## Rules
 
-- Scripts decide mechanical checks. Never substitute a reading of the text for M1 through M5.
+- Scripts produce the inputs of M1 through M5; the only reading step is M1's exclusion of a `repeatedGrams` entry whose two occurrences are a rule and its example.
 - One edit, one measurement. Never batch edits and measure once; attribution is unrecoverable.
 - Corpus leakage found after a measurement invalidates that measurement. Re-baseline before comparing.

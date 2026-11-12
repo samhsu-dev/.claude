@@ -28,7 +28,9 @@ Audit documentation files against their type-specific rulesets, produce a fix pl
 | `**/index.md` | Index | `rules/docs/index.md` |
 | `**/glossary.md`, `**/glossary-*.md` | Glossary | `rules/docs/glossary.md` |
 
-Files matching no pattern: report as **unclassified** for user review.
+A file matching several rows takes the first matching row of the table.
+
+A delegated run reports a file matching no row as **unclassified** to the main agent in its result; the main agent takes it to the user.
 
 ## Step 2 — Audit Each File
 
@@ -36,11 +38,11 @@ Read every file. Load the rule file of its type and `rules/docs/documentation.md
 
 ## Step 3 — Cross-File Consistency
 
-Check across files within the same docs subdirectory:
+Check across all audited files; item 6 extends the check across the main repository and its submodules:
 
 1. **Terminology**: the glossary exists at `glossary.path` (project rule file `glossary.md`) when the project has documentation. Every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use. Report an entry that fails `rules/docs/glossary.md` Selection; redundant entries under Selection; and an entry no document uses.
 2. **Ownership**: each fact lives in its owning document under `rules/docs/documentation.md` Ownership; another document links it.
-3. **Cross-references valid**: every `see [file.md]` link points to an existing file.
+3. **Cross-references valid**: every relative Markdown link in an audited file points to an existing file.
 4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.
 5. **impl.md sync**: no `impl.md` entry references a removed function, and `design.md` links an external API fact to its `impl.md` entry instead of restating it.
 6. **Repositories**, across the main repository and its submodules under `rules/docs/documentation.md` Repositories and `rules/docs/glossary.md` Repositories: every cross-repository link resolves and uses the stated link form; no link or term reference points against the dependency direction; no concept has entries in two glossaries; every imported term exists at its owning entry.
@@ -99,5 +101,5 @@ One file at a time. If a fix requires changes in another file, apply them togeth
 ## Rules
 
 - Preserve content. Restructure and move — never delete domain knowledge.
-- Missing sections that require domain knowledge: report as "needs user input", do not fabricate content.
+- Missing sections that require domain knowledge: a delegated run reports them as "needs user input" to the main agent in its result, and the main agent takes them to the user; do not fabricate content.
 - One logical change per file update. Atomic edits.

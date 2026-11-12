@@ -7,7 +7,7 @@ allowed-tools:
 argument-hint: "[--library NAME_OR_ID] [--limit N] [--no-crossref]"
 ---
 
-Audit Zotero metadata read-only. Report findings. Never write to Zotero in this skill.
+Audit Zotero metadata read-only. Report findings. The audit steps never write to Zotero; a write happens only under Applying Fixes after the user confirms.
 
 ## Step 1 — Run the Audit
 

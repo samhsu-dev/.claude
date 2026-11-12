@@ -94,11 +94,11 @@ Wait for user approval before proceeding to Step 5.
 
 ## Step 5 — Reorganize and Write Tests
 
-Apply the approved plan. Fix layout issues before writing new tests; reorganization changes only import paths, file moves and the file-level index comments, never test logic.
+Apply the approved plan. Fix layout issues before writing new tests; reorganization moves test files, test methods and fixtures and updates import paths and index comments; it never changes an assertion or the input a test builds.
 
 ### Reorganize layout issues
 
-1. **MISPLACED**: Move the test file to the mirrored path. Update imports. Run the tests.
+1. **MISPLACED**: Move the test file to the mirrored path. Update imports. Run the moved test class by `integration.test_tiers`.
 2. **FRAGMENTED**: Merge the test methods for one source file into the test file at the mirrored path. Deduplicate fixtures. Update the index comment. Delete the empty originals.
 3. **OVERSIZED**: Split the test file by responsibility under `rules/code/testing.md` Layout, named by the project testing rule. Move shared fixtures into the framework's fixture mechanism. Write each new file's index comment. Delete the original file.
 
@@ -116,7 +116,7 @@ Apply the approved plan. Fix layout issues before writing new tests; reorganizat
 ## Step 6 — Verify
 
 1. Run the project test command.
-2. Classify each failing test under `rules/code/testing.md` Failures. Report an implementation defect to the user with the design doc reference.
+2. Classify each failing test under `rules/code/testing.md` Failures. A delegated run reports an implementation defect with the design doc reference to the main agent in its result; the main agent takes it to the user.
 3. Run the project linter — no new violations.
 
 ## Step 7 — Report

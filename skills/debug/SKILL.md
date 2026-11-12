@@ -30,7 +30,7 @@ Write a minimal failing test that triggers the reported behavior.
 
 Run the test. Confirm it fails.
 
-- If the test passes, the bug does not exist as described. Report back to the user. Stop.
+- If the test passes, the bug does not exist as described. A delegated run reports this to the main agent in its result and stops; the main agent takes it to the user.
 
 ## Step 3 — Narrow Scope
 
