@@ -17,6 +17,7 @@ Records that serve only the developers at work live in three local directories, 
 
 - A record goes to the directory its content belongs to, not the one of the activity that produced it: an audit's open question is a decision item, its follow-up is a task.
 - Each directory holds one file per module, named after the module (`catalog-import.md` for `docs/catalog/import/`), and an `index.md` listing its files.
+- A project task or run record holds current state; its history goes to that record's archive.
 - Dates, decision IDs and commit hashes are allowed here; committed files follow `rules/workflow/committing.md` Staging.
 - A decision entry holds its ID and authority, question, choice and reason, the rejected alternatives and all recording commits.
 - A user-decidable entry also holds the options, viewpoint recommendations, the refutation result, examples with their expected results and supporting evidence, impact measurements with their method when the choice depends on them, the reused data or mechanisms, and whether earlier decisions are kept or which sentences change.

@@ -4,7 +4,7 @@ Preflight and safe alternatives: skill `commit`; branch cleanup and submodule po
 
 ## Prohibited Operations
 
-- `hooks/git_guard.py` blocks the git operations that discard, hide or rewrite work, stage files not named one by one, or skip the Git hooks, and names the safe alternative; a block is never worked around.
+- `hooks/git_guard.py` blocks the git operations that discard, hide or rewrite work, stage files not named one by one, or skip the Git hooks, and names the safe alternative.
 
 ## Publication
 
