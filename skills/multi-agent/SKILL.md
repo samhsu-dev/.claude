@@ -75,6 +75,20 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 11. Launch through the host's agent tool or a tracked background command. Retain its handle for follow-up and completion notifications. No worker exists only to wrap another run, and no model turn polls for unchanged status.
 12. Give a research run that lacks a tool the exported source material.
 
+## Dispatch Order
+
+Open rows are dispatched by layer, then within a layer by the number of open rows a row blocks, then by cost. `execution.dispatch` supplies the project's preconditions and mechanism chains in order; without that value only the layer definitions apply.
+
+1. Precondition: a defect that keeps results from being trusted or measured, such as an analysis that does not end on a project input or an unstable gate.
+2. Mechanism chain: a step of a core mechanism replacement in progress. Each chain keeps one write run until the chain ends. A chain has file priority: no other row starts on, or keeps, a file the chain's next step writes.
+3. Symptom: a crash, a missed finding or a false finding. Its reproduction test merges at once under Branch Lifecycle. Its fix is dispatched only when no chain is expected to remove or change the symptom and the code it changes is not code a chain deletes; otherwise the row waits and is rechecked when that chain step merges.
+4. Cleanup, API work and later planned steps.
+
+- A cost row belongs to the layer of the result its cost blocks.
+- Every blocker of a row is recorded as a dependency of that row; a blocker stated only in prose is a records defect.
+- A mechanism step merges only when every existing test passes and the parallel run of Branch Lifecycle shows no difference without an owning row.
+- A dispatch that departs from this order records its reason on the board row.
+
 ## Boundary Questions
 
 - Answer a chain session's question in that same session, by resume or message; never stop and relaunch it.
