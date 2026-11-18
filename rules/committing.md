@@ -1,19 +1,17 @@
 # Project Commit Rules
 
-Extends global `committing.md`. No duplication -- project-specific additions only.
+Extends global `committing.md`.
 
 ## Pre-Push
 
-- Rebase onto main before every push.
-- Resolve all conflicts before pushing. Never push with unresolved conflicts.
-- Never force-push without explicit user approval.
+- Rebase onto `main` before every push.
+- Resolve every conflict before pushing.
 
 ## LaTeX-Specific
 
-- Never commit build artifacts: `.aux`, `.log`, `.bbl`, `.blg`, `.out`, `.toc`, `.fls`, `.fdb_latexmk`, `.synctex.gz`.
-- Never commit build output directories.
-- Never commit the output PDF unless explicitly requested (e.g., camera-ready submission).
-- Use the `github/gitignore` TeX.gitignore template as baseline.
-- Commit `.bib` files alongside `.tex` files that cite them.
-- Commit figure source files (`.drawio`, `.svg`) alongside exported PDFs.
-- Binary figures (PDF, PNG): one figure per commit when adding multiple. Keeps diffs reviewable.
+- Never commit build artifacts (`.aux`, `.log`, `.bbl`, `.blg`, `.out`, `.toc`, `.fls`, `.fdb_latexmk`, `.synctex.gz`) or build output directories.
+- Never commit the output PDF unless the user requests it.
+- `.gitignore` extends the `github/gitignore` TeX.gitignore template.
+- Commit a `.bib` file in the same commit as the `.tex` files that cite its new entries.
+- Commit a figure's source file (`.drawio`, `.svg`) in the same commit as its exported PDF.
+- When adding several binary figures (PDF, PNG), commit one figure per commit.

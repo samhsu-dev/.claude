@@ -8,90 +8,66 @@ paths:
 
 # Evaluation Structure
 
-The section opens by listing the research questions, then sets up the experiment once, then answers each question in its own subsection. Each research question maps to exactly one body subsection. Every quantitative claim cites a table or figure. The reader holds one set of questions, one experimental setup, and one answer per question.
-
----
-
 ## Section Order
 
-| # | Block | Function |
-|---|-------|----------|
-| 1 | RQ list | One sentence framing, then an enumerated list of research questions |
-| 2 | Experimental Setup | Environment, datasets, baselines/tools, metrics — the shared basis for every RQ |
-| 3 | RQ1..N | One subsection per research question, in the order the RQ list names them |
-
-## RQ List Block
-
-- One framing sentence: the section evaluates the tool by answering the research questions below.
-- Each RQ is one `\item` in an enumerated list (e.g., `icompact`), bolded as `\textbf{RQ$n$:}`.
-- Each RQ is one question stating the capability or property measured, in one sentence.
-- RQ count, numbering, and order are identical here and in the body subsections.
-- No method, no result, no metric definition in the list. The list is a map.
+| # | Block | Content |
+|---|-------|---------|
+| 1 | RQ list | One framing sentence, then the enumerated research questions |
+| 2 | Experimental Setup | Environment, datasets, baselines, metrics, unit and pool |
+| 3 | RQ1..N | One subsection per research question, in list order |
 
 ## RQ Design
 
-- State upfront whether the system is implemented and deployed, unimplemented, or purely theoretical. Readers have a right to know this before investing in the paper (Levin & Redell).
-- Report failures, limitations, and trade-offs alongside successes. An evaluation that measures only what the system does well invites reviewer skepticism (Levin & Redell).
-- Each RQ tests one claim and has one main table or figure. A configuration that adds one row to an existing comparison is a row of that comparison, not a new RQ: replacing the LLM backend is a row of the ablation table.
-- Order the RQs by what the reader already knows. An RQ whose count aggregates the outputs of every system and configuration (real-world impact, zero-days) follows the RQs that introduce those systems and configurations.
-- Name each RQ by the claim it tests (Effectiveness, Exploitation, Ablation Study, Real-World Impact, Cost), not by a component or mechanism of the tool.
-- Report every measured number in the evaluation section. Discussion and threats to validity interpret and cite these numbers; they report no new data.
+- Each RQ tests one claim and has one main table or figure.
+- A configuration that adds one row to an existing comparison is a row of that comparison, not a new RQ. Example: replacing the LLM backend is a row of the ablation table.
+- An RQ whose count aggregates the outputs of every system and configuration (real-world impact, zero-days) comes after every RQ that introduces those systems and configurations.
+- An RQ is named by the claim it tests (Effectiveness, Exploitation, Ablation Study, Real-World Impact, Cost), never by a component of the tool.
+- The section states whether the tool is implemented and deployed before RQ1.
+- The tool's false positives and failures are reported in the same table as its true positives.
+
+## RQ List Block
+
+- The framing sentence states the number of research questions and that the section answers them.
+- Each RQ is one `\item` of an `icompact` list, labeled `\textbf{RQ$n$ (Name):}` and followed by one question.
+- The list holds no method, result, or metric definition.
+- RQ count, numbers, names, and order are identical in the list and in the subsection titles.
 
 ## Experimental Setup Block
 
-One subsection covering the shared basis every RQ reuses. Each concern is one `\paragraph{}` or bolded label.
+One `\para{}` per concern:
 
 | Concern | Content |
 |---------|---------|
-| Environment | Hardware (CPU, cores, memory) and software (OS, language, tool versions) as exact figures. |
-| Datasets | One named paragraph per dataset: source, size, construction criteria, and which RQ it serves. Cite the dataset. |
-| Baselines | The compared tools in a table with versions and configurations. State that recommended configurations were used. |
-| Metrics | Define each metric by its formula at first use (e.g., $FDR = FP/(FP+TP)$). |
-| Unit and pool | The counting unit of one finding, and the pool: the union of the findings confirmed for any system or configuration, each counted once. Every RQ counts in this unit over this pool. |
+| Environment | Hardware (CPU, cores, memory) and software (OS, language, tool versions) as exact figures |
+| Datasets | Per dataset: source, measured size, inclusion criteria (an enumerated list when more than two), the RQs it serves, citation |
+| Baselines | A table with `\caption` and `\label` listing each tool, version, and configuration; a statement that each tool runs in its authors' recommended configuration |
+| Metrics | Each metric defined once by its formula at its first use: $FDR = FP/(FP+TP)$ |
+| Unit and pool | The counting unit of one finding; the pool, the union of the findings confirmed for any system or configuration, each counted once |
 
-Rules:
-- State every dataset's size as a measured count, and the RQ it answers.
-- Dataset construction states the inclusion criteria as an enumerated list when more than two.
-- Baseline tools, versions, and configurations go in a table with `\caption` and `\label`.
-- Each metric is defined once, at the point of first dependence.
+- Every RQ counts in the setup's unit over the setup's pool.
+- No RQ subsection restates the environment.
 
 ## RQ Subsections
 
-One subsection per research question, in the order the RQ list names them. Each:
-
-- Carries a `\label{subsec:rqN}` and a title naming the property measured.
-- Opens on one sentence restating what the RQ measures and on which dataset.
-- States the measurement method before the numbers: the metric, the ground-truth basis, the unit of analysis.
-- Reports results referencing a table or figure (`\autoref{tab:...}`, `\autoref{fig:...}`).
-- Reports the tool's number first, then each baseline's, then states the gap.
-- Closes by interpreting the result: the one mechanism that explains the gap.
-
-Rules:
-- Every result number appears in a table or figure; prose references it, never replaces it.
-- Comparison is symmetric: report the same metric for the tool and every baseline.
-- Each gap is explained by a stated cause, not asserted as superiority.
-- Show the overlap of systems' findings over the pool with a set-intersection plot (UpSet or Venn). Do not derive a system's unique findings by subtracting counts reported in different units.
-- Define a zero-day as a finding not publicly known before the authors' disclosure. Do not define it as a finding the other evaluated tools did not report.
+- Title: `RQ$n$: Name`, with a `\label` of prefix `subsec:`.
+- The first sentence states what the RQ measures and on which dataset.
+- The method precedes the numbers: the metric, the ground-truth criterion, the unit.
+- Results cite their table or figure with `\autoref`.
+- Order of numbers: the tool, then each baseline, then the difference.
+- The same metric is reported for the tool and every baseline.
+- A sentence attributes a difference to a cause only when a controlled comparison in the evaluation isolates that cause. Otherwise it states the difference ("is lower", "differs").
+- Show the overlap of the systems' findings over the pool in a set-intersection plot (UpSet or Venn). Never derive a system's unique findings by subtracting counts of different units.
+- A zero-day is a finding that was not publicly known before the authors' disclosure. Never define it as a finding the other evaluated tools did not report.
 
 ## Tables and Figures
 
-- Every result table has `\caption`, `\label`, and is filled by `\input{}` of a separate table file.
-- The caption defines any non-obvious column or status term used in the table.
-- A figure spans `\linewidth` and carries `\caption`, `\label`, and `\Description`.
-- Regression or trend claims state the fit statistic (e.g., $R^2$) for the tool and each baseline.
+- Every result table has `\caption` and `\label` and is loaded by `\input{}` from its own file.
+- The caption defines each column name and status term that the text does not define.
+- A figure has width `\linewidth` and carries `\caption`, `\label`, and `\Description`.
+- A regression or trend claim states the fit statistic ($R^2$) for the tool and each baseline.
 
 ## Quantification
 
-- No bare adjective where a number exists. "FNR of 11.34%" not "low FNR".
-- Every rate carries its raw count in parentheses: "0.3% (only 2 false positives)".
-- Counts of true positives, false positives, false negatives are stated when a rate is derived from them.
-- Performance claims state both the measured value and the comparison direction against each baseline.
-
-## Invariants
-
-- One RQ per body subsection. RQ numbering and order match the opening list.
-- One experimental setup, defined before RQ1, reused by every RQ. No per-RQ environment restatement.
-- One counting unit and one pool, defined in the setup, shared by every RQ.
-- Each metric is defined once, by formula, at first use.
-- Every result number is anchored to a table or figure with a `\label`.
-- Every comparative claim reports the same metric for the tool and all baselines, and names the cause of the gap.
+- Write the number instead of an adjective: "an FNR of 11.34%", not "a low FNR".
+- Each rate is followed by its raw counts: "an FDR of 13.9% (62 true positives, 10 false positives)".
+- A performance claim states the measured value and the direction of the difference to each baseline.

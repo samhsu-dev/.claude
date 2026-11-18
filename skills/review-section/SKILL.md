@@ -73,7 +73,7 @@ Scan the whole section for the `writing.md` **Word Choice Precision** vague qual
 
 ## Step 7 — Structural Alignment Audit
 
-Apply the `writing.md` **Structural Alignment** checks: figure and table citation order, caption-to-figure match, and topic-enumeration order.
+Apply the `writing.md` **Structural Alignment** checks (figure and table citation order, caption-to-figure match) and the **Argument Continuity** topic-order check.
 
 ---
 
