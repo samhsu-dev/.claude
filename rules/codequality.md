@@ -67,6 +67,16 @@ Community standards: dspinellis/latex-advice, booktabs, Kopka & Daly.
 - After macro invocation, use `{}` to prevent space swallowing: `\toolname{} is a tool`.
 - `\todo{text}` for unfinished sections. Remove before submission.
 
+## Revision Markup
+
+`Packages/revision.tex` defines the markup of a revised version.
+
+- Wrap in `\revision{old}{new}` only the words that change; keep the common prefix and suffix outside. Use a whole-sentence `\revision` only for a rewritten sentence.
+- Do not mark a grammar, hyphenation, spacing, or macro-brace edit (`previously-unknown` to `previously unknown`, `\sys` to `\sys{}`). Apply it silently.
+- Mark a number that is not measured yet with `\revisiondata{tag}` (or `\revisionvalue{old}{tag}` in a macro). Never fill it with an estimate.
+- Mark a change proposed for the author's review with `\changedBy{new}{old}`. Convert it to `\revision` after approval.
+- After narrowing a `\revision`, check that the old and the new view read unchanged.
+
 ## Package Management
 
 - No duplicate `\usepackage`. Check before adding.
