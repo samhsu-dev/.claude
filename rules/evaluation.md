@@ -28,6 +28,13 @@ The section opens by listing the research questions, then sets up the experiment
 - RQ count, numbering, and order are identical here and in the body subsections.
 - No method, no result, no metric definition in the list. The list is a map.
 
+## RQ Design
+
+- Each RQ tests one claim and has one main table or figure. A configuration that adds one row to an existing comparison is a row of that comparison, not a new RQ: replacing the LLM backend is a row of the ablation table.
+- Order the RQs by what the reader already knows. An RQ whose count aggregates the outputs of every system and configuration (real-world impact, zero-days) follows the RQs that introduce those systems and configurations.
+- Name each RQ by the claim it tests (Effectiveness, Exploitation, Ablation Study, Real-World Impact, Cost), not by a component or mechanism of the tool.
+- Report every measured number in the evaluation section. Discussion and threats to validity interpret and cite these numbers; they report no new data.
+
 ## Experimental Setup Block
 
 One subsection covering the shared basis every RQ reuses. Each concern is one `\paragraph{}` or bolded label.
@@ -38,6 +45,7 @@ One subsection covering the shared basis every RQ reuses. Each concern is one `\
 | Datasets | One named paragraph per dataset: source, size, construction criteria, and which RQ it serves. Cite the dataset. |
 | Baselines | The compared tools in a table with versions and configurations. State that recommended configurations were used. |
 | Metrics | Define each metric by its formula at first use (e.g., $FDR = FP/(FP+TP)$). |
+| Unit and pool | The counting unit of one finding, and the pool: the union of the findings confirmed for any system or configuration, each counted once. Every RQ counts in this unit over this pool. |
 
 Rules:
 - State every dataset's size as a measured count, and the RQ it answers.
@@ -60,6 +68,8 @@ Rules:
 - Every result number appears in a table or figure; prose references it, never replaces it.
 - Comparison is symmetric: report the same metric for the tool and every baseline.
 - Each gap is explained by a stated cause, not asserted as superiority.
+- Show the overlap of systems' findings over the pool with a set-intersection plot (UpSet or Venn). Do not derive a system's unique findings by subtracting counts reported in different units.
+- Define a zero-day as a finding not publicly known before the authors' disclosure. Do not define it as a finding the other evaluated tools did not report.
 
 ## Tables and Figures
 
@@ -79,6 +89,7 @@ Rules:
 
 - One RQ per body subsection. RQ numbering and order match the opening list.
 - One experimental setup, defined before RQ1, reused by every RQ. No per-RQ environment restatement.
+- One counting unit and one pool, defined in the setup, shared by every RQ.
 - Each metric is defined once, by formula, at first use.
 - Every result number is anchored to a table or figure with a `\label`.
 - Every comparative claim reports the same metric for the tool and all baselines, and names the cause of the gap.
