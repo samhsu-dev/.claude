@@ -20,7 +20,6 @@ Applies to `Sections/response.tex`. Extends `writing.md`.
 - Apply the duplicate-claim test. Delete a sentence that repeats a claim made earlier in the response.
 - Delete roadmap, announcement, and linking-only sentences ("We answer the points in turn", "Below we document ...").
 - Delete an ordinal label ("The first is", "First,") when the following words name the dimension. Write "In checking X, ...".
-- Keep a connective only when it names a relation the reader cannot see without it.
 - Include a number, table, or URL only when it supports the stated answer.
 - Delete implementation details the request does not ask for.
 - Delete a second figure that repeats what the first shows.
@@ -33,7 +32,6 @@ Applies to `Sections/response.tex`. Extends `writing.md`.
 - State a limit the request does raise as scope and design rationale: what the system targets, why, what it detects within that scope ("detects 62 of the y"), and where the paper discusses extensions. Do not write "cannot", "misses", or "establishes nothing" about the system.
 - Report a result the request asks about in full, with the interpretation that answers the request.
 - Write for experts. Do not explain field-standard terms or arithmetic.
-- State each claim directly. Do not set up a claim with "not X but Y" or a counterexample.
 - Attribute a difference to a cause only when a controlled setup excludes the other causes. Otherwise state the comparison ("differs", "is lower").
 
 ## Terms
@@ -48,8 +46,6 @@ Applies to `Sections/response.tex`. Extends `writing.md`.
 
 ## Wording
 
-- Choose a verb that fits every object it governs. Split a coordination whose objects need different verbs.
-- Use a pronoun only when its antecedent is the nearest preceding noun phrase.
 - Verify each number against the result tables and `Packages/local.tex`, and each system claim against its repository or prompt, before writing. Mark an unverified claim with `\todo` or omit it.
 
 ## Flow

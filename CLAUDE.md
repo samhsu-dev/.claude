@@ -31,7 +31,9 @@ paper/
 
 | Rule | Scope | Purpose |
 |------|-------|---------|
-| `writing.md` | `**/*.tex` | Academic prose: opening, structure, contributions, claims, register, punctuation |
+| `writing.md` | `**/*.tex` | Academic prose: terms, claims, register, sentence structure, agreement |
+| `punctuation.md` | `**/*.tex` | Colon, semicolon, and em-dash use |
+| `paper-structure.md` | `**/main.tex`, `**/abstract.tex`, `**/introduction.tex`, `**/conclusion.tex`, `**/conclusions.tex` | Opening, abstract, introduction, contributions, conclusions |
 | `codequality.md` | `**/*.tex`, `**/*.bib`, `**/*.sty`, `**/*.cls` | LaTeX source quality: formatting, labels, citations, figures, tables |
 | `approach.md` | `**/approach.tex`, `**/approaches.tex` | Approach section structure |
 | `evaluation.md` | `**/evaluation.tex`, `**/evaluations.tex`, `**/experiment.tex`, `**/experiments.tex` | Evaluation section structure |

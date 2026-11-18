@@ -30,6 +30,8 @@ The section opens by listing the research questions, then sets up the experiment
 
 ## RQ Design
 
+- State upfront whether the system is implemented and deployed, unimplemented, or purely theoretical. Readers have a right to know this before investing in the paper (Levin & Redell).
+- Report failures, limitations, and trade-offs alongside successes. An evaluation that measures only what the system does well invites reviewer skepticism (Levin & Redell).
 - Each RQ tests one claim and has one main table or figure. A configuration that adds one row to an existing comparison is a row of that comparison, not a new RQ: replacing the LLM backend is a row of the ablation table.
 - Order the RQs by what the reader already knows. An RQ whose count aggregates the outputs of every system and configuration (real-world impact, zero-days) follows the RQs that introduce those systems and configurations.
 - Name each RQ by the claim it tests (Effectiveness, Exploitation, Ablation Study, Real-World Impact, Cost), not by a component or mechanism of the tool.

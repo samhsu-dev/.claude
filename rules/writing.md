@@ -141,30 +141,6 @@ A program performs mechanical operations. It does not know, think, believe, or u
 - State the mechanical fact: "No code path checks whether the outcome obeys the rule", not "the program does not know the outcome is wrong."
 - A program "reports", "returns", "raises", "writes", "checks", "executes."
 
-## Punctuation: Colon
-
-Use for: a list the lead-in announces; an explanation that specifies the prior clause; an appositive naming what the prior clause referred to.
-
-Never use for: a cause-effect link (use "because"); two independent statements with no fulfillment relation; after a verb or preposition that governs the following text.
-
-One colon per sentence. The clause before it stands alone as a sentence.
-
-## Punctuation: Semicolon
-
-Use for: two independent clauses in parallel or contrast; list items that contain internal commas.
-
-Never use for: a directional logical relation (use "because", "but", "while"); a loosely related pair (use a period).
-
-Default to a period.
-
-## Punctuation: Em-Dash
-
-A paired em-dash sets off a parenthetical aside. At most once per paragraph.
-
-Never use to: inject a definition; carry the sentence's main content as an aside.
-
-Default to restructuring the sentence so the idea is built into its clause.
-
 ## Explanatory Prose
 
 - One main claim per paragraph, stated in its topic sentence.
@@ -202,37 +178,6 @@ Check list per edited paragraph: (1) every sentence necessary; (2) every term ca
 - Every figure and table must have an explicit in-text citation before or at its first appearance. No orphaned floats.
 - A section introduction that enumerates topics ("we cover X, Y, and Z") must address them in the stated order with no omissions.
 - Caption text must match figure content. A spatial description in the caption ("left column", "top row") must correspond to the actual layout.
-
-## Opening
-
-- The subject of the first substantive sentence is the paper's central artifact or domain, matching the title's primary noun (Gopen & Swan).
-- No technology, language, or implementation detail appears as the grammatical subject of the opening unless the paper's title names it.
-- Do not open by explaining to experts why their field is important. Open with the paper's specific purpose (Shewchuk).
-
-## Paper Structure
-
-- Abstract: four sentences — (1) the problem, (2) why it is hard, (3) the approach, (4) the result (Peyton Jones).
-- Introduction: problem description and contribution list only. No background, no related work, no methodology. One page.
-- Related work follows the core idea, not precedes it. Readers cannot evaluate related work before understanding the contribution (Peyton Jones).
-- State the contribution at four levels of detail: title (~10 words), abstract (~100 words), introduction (~1000 words), body (~10,000 words). Each level is independently coherent and consistent with the others (Levin & Redell).
-
-## Contributions
-
-- Write the contribution list before drafting the body. The body provides evidence for the contributions, not the other way around (Peyton Jones).
-- Each contribution is a single refutable sentence. "We describe X" is not a contribution. "We prove X satisfies property Y (Section N)" is (Peyton Jones).
-- Forward-reference the evidence for each contribution at the point of the claim in the introduction.
-- Signal explicitly whether the work is novel (new scientific observation) or incremental (improvement over prior work). Do not leave the reader to infer which (McDaniel).
-
-## Evaluation
-
-- State upfront whether the system is implemented and deployed, unimplemented, or purely theoretical. Readers have a right to know this before investing in the paper (Levin & Redell).
-- Report failures, limitations, and trade-offs alongside successes. An evaluation that measures only what the system does well invites reviewer skepticism (Levin & Redell).
-- Every paper must answer three questions: (1) What is the contribution? (2) What is the new result and how does it differ from prior work? (3) Why should the reader believe the result? (Shaw).
-
-## Conclusions
-
-- Conclusions must add new information: implications, conjectures, open problems, perspective gained after reading the full paper (Shewchuk).
-- Do not summarize the paper in the conclusions. The reader has just read it. A conclusion the reader could understand before reading the paper adds nothing.
 
 ## Evidence and Attribution
 
