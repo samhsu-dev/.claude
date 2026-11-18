@@ -36,6 +36,7 @@ paper/
 | `approach.md` | `**/approach.tex`, `**/approaches.tex` | Approach section structure |
 | `evaluation.md` | `**/evaluation.tex`, `**/evaluations.tex`, `**/experiment.tex`, `**/experiments.tex` | Evaluation section structure |
 | `related-works.md` | `**/related_works.tex`, `**/related-works.tex`, `**/relatedwork.tex` | Related works section structure |
+| `response-letter.md` | `**/response.tex` | Response letter: answer first, serve the reviewer's request, no unrequested limitations |
 | `committing.md` | always active | Project-specific commit and push rules (extends global) |
 
 Global rules in `~/.claude/rules/` provide language-agnostic defaults. Project rules add LaTeX-specific guidance and override globals where both set a concrete value.
