@@ -83,6 +83,10 @@ Neutral, direct words. Replacements:
 - No article for a mass or abstract noun used generically: "static analysis", "data flow", "prior work".
 - "a" before a consonant sound, "an" before a vowel sound; decide by sound, not spelling: "an ELV", "a unique state", "an honest user".
 
+### Coordination
+
+- Let one verb govern coordinated objects only when it fits each: write "receives the source and the flow, uses the backend", not "receives the source, the flow, and the backend". Check the verb against every object after each edit.
+
 ### Number
 
 - The verb agrees with its grammatical subject, not with an intervening noun in a prepositional phrase.
@@ -98,6 +102,11 @@ Neutral, direct words. Replacements:
 - One tense per narrative frame. No tense shift within a paragraph when describing the same event or fact.
 
 ## Terminology Consistency
+
+- Name a compared system, tool, variant, or dataset by its own name at every mention. A group noun or generic label ("both configurations", "the two systems", "the variants", "the baselines") is allowed only when the same or the preceding sentence lists its members. Never use a generic word for a named entity ("configuration" for STRIX-Control).
+- Use at most one count word ("two", "both", "each of") per set of objects. Do not stack counts that refer to different sets ("the two tools ... two of them"); name the objects.
+- Use a pronoun ("them", "it", "this step") only when its antecedent is the nearest preceding noun phrase. Otherwise repeat the noun.
+- Match each count word to the members: "both" and "all three" equal the systems the sentence's table or result covers, including `\sys{}` when it is compared.
 
 - One spelling and capitalization per term throughout the paper. Never alternate hyphenated and unhyphenated forms, or capitalized and lowercase variants, for the same concept.
 - A multi-word technical term has one canonical form (spacing, hyphenation, capitalization) used at every occurrence: fix "data flow" / "data-flow" / "dataflow" to a single field-standard form. Confirm the standard form via `/define-term`.
@@ -162,6 +171,9 @@ Default to restructuring the sentence so the idea is built into its clause.
 - State the root cause, not the observable symptom.
 - One causal chain per paragraph. A clause appended to cover an edge case is a patch — rewrite the chain.
 - A trailing clause that restates the sentence's point is a patch — drop it.
+- Every sentence carries information its paragraph's claim needs. Delete a sentence that restates, announces, or explains what an expert reads from the numbers.
+- State a claim directly (A is A). Do not set it up with a counterexample or a "not X but Y" contrast.
+- Keep a connective only when it names a relation (contrast, consequence, condition) the reader cannot see without it.
 - Name a component by the action it performs: "Writes each record to the database through the storage API", not "handles storage."
 
 ## Argument Continuity
@@ -181,6 +193,9 @@ Keep: inline forward references woven into a claim; logical transitions marking 
 ## Post-Edit Reread
 
 After editing any sentence, reread the entire paragraph. Fix every violation in the same pass.
+After changing a description, number, or term, search all `.tex` sources for its other occurrences and update them in the same change.
+
+Check list per edited paragraph: (1) every sentence necessary; (2) every term canonical and defined at first use; (3) each verb fits all its objects; (4) each causal verb backed by a controlled comparison; (5) each number and system behavior verified against its source; (6) the paragraph follows from the previous one.
 
 ## Structural Alignment
 
