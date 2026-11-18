@@ -12,3 +12,9 @@
 
 # Track .gitignore itself
 !.gitignore
+
+# Section and response-letter rules stay local to each paper
+rules/approach.md
+rules/evaluation.md
+rules/related-works.md
+rules/response-letter.md
