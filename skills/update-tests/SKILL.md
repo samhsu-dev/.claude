@@ -31,7 +31,7 @@ Then for the resolved scope:
 
 1. List all source files in scope.
 2. List all existing test files: map each source path to its test mirror per project layout.
-3. List all design docs: find `docs/**/design.md` for the matching module. If the scope is a subdirectory of a module, walk up to find the nearest `docs/` with design files.
+3. List all design docs: find `docs/**/design.md` and `docs/**/design-*.md` for the matching module. If the scope is a subdirectory of a module, walk up to find the nearest `docs/` with design files.
 
 ## Step 2 — Read Design Docs First
 
@@ -117,7 +117,7 @@ Apply the approved plan. Fix layout issues before writing new tests; reorganizat
 
 1. Run the tests skill `chain-session` Work Loop step 7 requires.
 2. Classify each failing test under `rules/code/testing.md` Failures. A delegated run reports an implementation defect with the design doc reference to the main agent in its result; the main agent takes it to the user.
-3. Run the project linter — no new violations.
+3. Run the project linter — no finding beyond its recorded baseline.
 
 ## Step 7 — Report
 

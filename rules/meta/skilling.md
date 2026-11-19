@@ -75,7 +75,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 ### allowed-tools Rules
 
-- Pre-approve only tools the procedure uses, narrowest specifier first (`Bash(git status *)` over bare `Bash`; `WebFetch` only when HTTP fetch is the skill's purpose). Pre-approval skips confirmation; settings permissions remain the boundary.
+- Pre-approve only tools the procedure uses, each with the narrowest specifier that covers its calls (`Bash(git status *)` over bare `Bash`; `WebFetch` only when HTTP fetch is the skill's purpose). Pre-approval skips confirmation; settings permissions remain the boundary.
 
 ### Shell Preprocessing Rules
 

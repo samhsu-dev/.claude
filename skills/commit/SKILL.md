@@ -13,7 +13,7 @@ Commit the current task's pending changes.
 
 ## Step 1 — Gather Context
 
-Run these three commands in parallel:
+Run the commands of items 1 to 3 in parallel:
 
 1. `git status` — list all modified, staged, and untracked files.
 2. `git diff` and `git diff --cached` — see staged + unstaged changes.
@@ -41,7 +41,7 @@ Group files into **one or more logical commits** by **concept first, role second
 | 5 | Documentation |
 | 6 | Tests |
 
-Skip empty groups. A single concept splits into multiple role-ordered commits when each layer lands the tree runnable; collapse to one commit only when the change is atomic — a move/rename or interlocking edit whose halves are not independently runnable.
+Skip empty groups. A single concept splits into multiple role-ordered commits when the tree is runnable after each of them, applied in role order; collapse to one commit only when the change is atomic — a move/rename or interlocking edit whose halves are not independently runnable.
 
 ### When concepts are entangled in shared files
 
@@ -60,7 +60,7 @@ For each commit, compose a message following Conventional Commits 1.0.0:
 Format: `type[(scope)]: description`
 
 - Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `ci`, `perf`, `build`, `style`.
-- Scope: noun in parentheses — `fix(parser):`, `feat(auth):`.
+- Scope, when present: noun in parentheses — `fix(parser):`, `feat(auth):`.
 - Imperative mood, lowercase after colon, no trailing period.
 - 50 characters target; the limit is `rules/workflow/committing.md`.
 - Test: "If applied, this commit will ___."

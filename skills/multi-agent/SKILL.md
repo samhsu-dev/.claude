@@ -193,6 +193,6 @@ Task Modes determines review depth. A configured project review trigger may spec
 ## Reader Review
 
 - For a Full task with a revision of a document's design content, or an explicitly requested reader review, a fresh reader starts at `index.md` and follows the affected owning documents. Routine wording edits use the main agent's diff check.
-- It reports with file:line every place it cannot follow: an undefined or generic-looking term, a step it cannot trace, a diagram that differs from its text, a missing reason, a term whose meaning drifts, a class or layer that does not match what it groups, a section a maintainer cannot change safely without reading other files.
+- The fresh reader reports with file:line every place it cannot follow: an undefined or generic-looking term, a step it cannot trace, a diagram that differs from its text, a missing reason, a term whose meaning drifts, a class or layer that does not match what it groups, a section a maintainer cannot change safely without reading other files.
 - Acceptance: accurate semantics and sound abstraction, so the documents are easy to understand and easy to maintain.
-- A fix changes the documents, never the algorithm.
+- A fix of a fresh reader's finding changes the documents, never the algorithm.

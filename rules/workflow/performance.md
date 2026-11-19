@@ -24,7 +24,7 @@ Full pipeline: `/perf` skill.
 
 ## Fix Order
 
-- Algorithm and data structure first, then implementation overhead, then runtime tuning.
+- Within one priority of skill `perf` Step 2: algorithm and data structure first, then implementation overhead, then runtime tuning.
 - A micro-benchmark only compares before and after a change to a located hot spot.
 
 ## Logging and Regression Guard

@@ -19,8 +19,8 @@ paths:
 - Rules that always co-apply to one task type live in one file. Rules for unrelated task types live in separate files.
 - `paths:` globs match exactly the files whose editing requires the rule. No broader, no narrower.
 - A file states its own rules completely. A cross-reference names an owning file and section for another concern; load that owner before applying its rule.
-- Always-active status (no `paths:`) is reserved for rules governing every task. A rule needed by one task type gets `paths:`. Value-only project files under `rules/project/` follow the same rule: `paths:` names the files their consumers govern.
-- File-count test before adding or splitting a rule file: for each task type, count the rule files it forces into context. A change that raises the count without adding a requirement is wrong.
+- Always-active status (no `paths:`) is reserved for rules governing every task. A rule that some task type does not need gets `paths:`. Value-only project files under `rules/project/` follow the same rule: `paths:` names the files their consumers govern.
+- File-count test before adding or splitting a rule file: for each task type, count the rule files it forces into context. A change that raises a task type's count without adding a requirement of that task type is wrong.
 
 ## Repository Layout
 
@@ -43,7 +43,7 @@ paths:
 
 ## Language
 
-- Assert-style. State what is, not what should be.
+- Assert or command style. State what is or what to do, not what should be.
 - One rule per line. One concept per bullet.
 - No modifiers: no "properly", "appropriately", "effectively", "ideally", "simply".
 - No softeners: no "prefer", "avoid", "consider", "try to".

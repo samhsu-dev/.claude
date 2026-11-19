@@ -11,7 +11,7 @@ Audit Zotero metadata read-only. Report findings. The audit steps never write to
 
 ## Step 1 — Run the Audit
 
-Run with Crossref verification unless `$ARGUMENTS` contains `--no-crossref`:
+Run with Crossref verification unless `$ARGUMENTS` contains `--no-crossref`; for `--no-crossref`, drop `--crossref` from the command:
 
 ```bash
 python3 ${CLAUDE_SKILL_DIR}/scripts/zotero_audit.py --crossref [--library NAME_OR_ID] [--limit N] > <scratchpad>/zotero_audit.json

@@ -10,7 +10,7 @@ Prepare, decide, ask and record an open design question. Authority: `rules/workf
 The user-authority conditions are `rules/workflow/decisions.md` Authority.
 
 - Triage each item as agent-decidable or user-decidable. Give a one-clause reason.
-- For an item no user-authority condition covers, the agent chooses one option and records the chosen option, the evidence deciding it and the rejected alternative, including public API shape, signatures, field names and result types.
+- For an item no user-authority condition covers, public API shape, signatures, field names and result types included, the agent chooses one option and records the chosen option, the evidence deciding it and the rejected alternative.
 - A unique option matching every reference example is agent-decidable unless a user-authority condition applies.
 - Behavior-equivalent naming choices follow the glossary at `glossary.path` and `rules/docs/glossary.md` Naming Steps. A name derived from an existing type identifier needs no user question.
 - The agent may revise a user decision only outside the core principles, and only when reference output refutes the decided sentence or that sentence was derived by an agent from another decided sentence that still holds.
@@ -20,7 +20,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 
 1. Apply `workflow/change-policy.md` Outcome and Scope. Read the owning documents and decision entries for the affected contracts, including a producer or consumer whose contract an option changes.
 2. Read the glossary entry for each concept through `glossary.path`.
-3. Search history when current owners and records leave an authority or behavior premise unresolved. Use scoped `git log -S` or `git log --grep`; paths come from `paths`.
+3. Search history when the owning documents and decision entries of step 1 leave an authority or behavior premise unresolved. Use scoped `git log -S` or `git log --grep`; paths come from `paths`.
 4. Read the changes needed to resolve that premise. A history match alone creates no investigation obligation.
 5. Apply recorded decisions; never offer them again as open choices.
 6. Check summary-derived or explicitly derived premises against owning documents before using them.
@@ -32,7 +32,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - The chain session of a task decides each agent-decidable item inside that task, in its own context, with a short rationale: the chosen option, the evidence deciding it and the rejected alternative. No viewpoints and no refutation run; the task mode's verification checks the decision against Solution Checks.
 - Draft an open choice in its owning resident or chain context. A Simple or Routine choice that requires user authority goes directly to the user with relevant options and evidence; it creates no separate design or refutation run.
 - Only an unresolved user-decidable core choice in Full uses the design and refutation procedure below. Its drafter weighs the affected viewpoints. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
-- It then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
+- The drafter then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
 - A Full core-choice draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
@@ -44,7 +44,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 
 - A user-decidable question keeps each established fact with its source and relevant input or version in the question's evidence file under the decision log's `evidence/` directory (`rules/workflow/records.md`). Use a configured evidence schema and validator when present.
 - Read that file before gathering more facts. Consolidate contributions by source, retaining conflicts explicitly.
-- A row is stale when its quoted text no longer appears in its source file, or its program file or interpreter version changed. A stage that relies on it reads the source again and writes a new row.
+- A row is stale when its quoted text, with each whitespace run read as one space, no longer appears in its source file, or its program file or interpreter version changed. A stage that relies on it reads the source again and writes a new row.
 - Later stages cite fresh rows and add only missing facts.
 - `tools/evidence.py merge <task-dir>` merges the run rows; `tools/evidence.py brief <task-dir>` prints the brief lines.
 
@@ -70,7 +70,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - Every question and option list includes a minimal example, its expected result and supporting evidence; include complete reference output when a reference run supplies that evidence.
 - Each option states its observable result and effects on required quality and resource constraints against the current design, using configured metrics and phases.
 - The recommendation states the tradeoff between result quality and growth that selects it.
-- Each option states that it keeps earlier decisions or quotes the sentence it changes with its commit.
+- Each option states that it keeps earlier decisions or quotes each sentence it changes with its commit.
 - Recommend a revision only when a reference example contradicts the earlier sentence.
 - End with a discussion option and name one recommended option.
 

@@ -56,7 +56,7 @@ A prompt carries each section below that has content. The order is a default; an
 ## Examples
 
 - Examples, when the eval shows they help, are diverse, each wrapped in `<example>` tags and grouped under `<examples>`; their number follows the distinct cases the eval covers.
-- Include one abstain / negative example when the task has an abstain path.
+- Include one example whose output takes the abstain path when the task has an abstain path.
 - No input-specific token baked into a constraint as if it were a general rule.
 
 ## Multi-Stage Consistency
@@ -67,7 +67,7 @@ A prompt carries each section below that has content. The order is a default; an
 - Recall stage: wide net, bounded top-k, "include anything plausibly relevant, do not filter."
 - Precision stage: verify strictly, abstain on doubt. Emit a decision, a confidence and the reason for each abstention.
 - Threshold confidence on a held-out set. Route abstain to review, never to a forced decision.
-- A stage's prompt states only that stage's job. No precision/ranking bias in a recall prompt. No decision a downstream stage owns.
+- A stage file states only that stage's job. No precision/ranking bias in a recall prompt. No decision a downstream stage owns.
 
 ## Terminology
 

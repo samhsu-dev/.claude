@@ -13,9 +13,9 @@ A change to design documents or code follows skill `chain-session` Pipeline.
 The project rule files under `rules/project/` supply project values as named parameters.The native project roots are `<repository>/.claude/rules/project/` for Claude and `<repository>/.codex/rules/project/` for Codex.
 A project value file loads with a file its `paths:` matches; a consuming rule or skill whose procedure applies reads it from the host project's `.claude/rules/project/`.
 Paths in values resolve against the host project unless a field names another base.
-A linked parameter uses the value at its owning bullet. Numeric suffixes preserve list order.
+Resolve a linked parameter to the value of the bullet its link names. Numeric suffixes preserve list order.
 Project names, domains, corpora, models, schedules, paths and integration policies live only in project values. Apply domain-specific procedures only when their corresponding parameters are configured. A value a consuming rule names that the project files lack is reported as missing evidence; the rule then applies only its stated default, or does not apply when it states none.
-A project value file keeps the fixed headings and formats the tools read. Parsed substitution words and exemptions, the bibliography path, evidence aliases and reference runtime fields hold literal values; other parameters may link their owner.
+A project value file keeps the fixed headings and formats the tools read. Parsed substitution words and exemptions, the bibliography path, evidence aliases and the `reference.name`, `reference.version`, `reference.command` and `reference.version_command` fields hold literal values; other parameters may link their owner.
 
 | Parameters | Project owner under `rules/project/` | Consuming rule |
 |---|---|---|

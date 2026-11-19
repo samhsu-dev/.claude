@@ -68,7 +68,7 @@ For each approved candidate, in priority order:
 
 ## Step 5 — Measure
 
-Run the required benchmark suite and affected checks after each candidate's change; retain any project-mandated full suite.
+Run the required benchmark suite and affected checks after each candidate's change, and run any project-mandated full suite as well.
 
 - Compare the target metric and accepted quality and resource constraints against the baseline.
 - Run the tests and benchmarks of each component that calls the changed code and compare them with the baseline; a worse result is a regression in Step 6.

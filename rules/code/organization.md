@@ -36,4 +36,4 @@ Language-specific casing, layout, and packaging: see project `.claude/rules/code
 
 ## Entry Points
 
-- Entry-point files contain argument parsing and delegation only. Business logic lives in importable modules. Exception: a standalone tool script holds its own logic.
+- Executable entry-point files contain argument parsing and delegation only. Business logic lives in importable modules. Exception: a standalone tool script holds its own logic.

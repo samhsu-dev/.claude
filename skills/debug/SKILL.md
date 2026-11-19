@@ -17,7 +17,7 @@ Investigate and fix a bug under `rules/workflow/change-policy.md` Correctness an
 
 Gather information from `$ARGUMENTS` and conversation context:
 
-1. Read the full exception chain / error output. Identify the origin, not just the surface message.
+1. Read the full exception chain and the full error output. Identify the origin, not just the surface message.
 2. Check the exception type and its fields, not just the message string.
 3. If a test fails, read the test first and classify the failure under `rules/code/testing.md` Failures before suspecting the implementation.
 
@@ -62,7 +62,7 @@ A repair outside the task's scope is reported to the user before it is made.
 
 ## Step 5 — Verify
 
-1. Run project linter — no new violations.
+1. Run project linter — no finding beyond its recorded baseline.
 2. Run project build — compiles clean.
 
 ## Step 6 — Preserve the Test

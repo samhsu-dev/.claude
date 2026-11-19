@@ -116,7 +116,7 @@ Wait for user approval before Step 6.
 1. One concept per edit. A concept is one rule moved, one duplication removed, or one section restructured.
 2. Rewrite in place. Never append a clause to patch an observed failure; fold it into the rule that owns it.
 3. Re-render and re-run Step 2 after each edit.
-4. Run the project's formatter, type checker, and the tests skill `chain-session` Work Loop step 7 requires, on the carrier.
+4. Run the project's formatter and type checker on the carrier, and run the tests skill `chain-session` Work Loop step 7 requires.
 
 ## Step 7 — Measure
 

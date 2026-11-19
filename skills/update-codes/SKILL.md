@@ -86,7 +86,7 @@ Wait for user approval before proceeding to Step 5.
 For each approved item in the plan:
 
 1. Apply the fix.
-2. Run linter on the changed file — verify no new violations.
+2. Run linter on the changed file — verify no finding beyond its recorded baseline.
 3. Run the tests skill `chain-session` Work Loop step 7 requires.
 
 One cause at a time. A repair outside the task's scope is reported to the user before it is made.

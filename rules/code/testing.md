@@ -29,7 +29,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 
 - The test tree mirrors the source tree. The project rule names its root and file-name pattern.
 - One test file per component. A test file over the `code/organization.md` size limit splits by the component's responsibilities, one responsibility per file; together those files are the component's test file.
-- Shared fixtures per test directory, in the framework's fixture mechanism.
+- A fixture shared by tests of one test directory lives in that directory, in the framework's fixture mechanism.
 
 ## 4. Types
 
@@ -53,7 +53,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 ## 6. Fixtures & Data
 
 - A fixture used by one test lives in that test.
-- Temporary resources for file/network/process. Auto-clean after test.
+- Temporary resources for file/network/process. Auto-clean after each test, a failed test included.
 - A hand-written input that a test passes to the product as source text is a file in a data directory under the test root, in a directory named after the tested behavior; the file states its expected result. An input a test generates stays in test code.
 - No bulk payloads inline in test files. No test data in the source tree.
 
