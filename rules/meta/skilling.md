@@ -130,5 +130,5 @@ Invoked as `/plugin-name:skill-name`.
 
 ## Verification
 
-- Invoking `/name <text>` loads the skill, and `$ARGUMENTS` in its body expands to `<text>`.
+- For a skill the user can invoke, invoking `/name <text>` loads the skill, and `$ARGUMENTS` in its body expands to `<text>`.
 - All referenced files exist at `${CLAUDE_SKILL_DIR}` paths.

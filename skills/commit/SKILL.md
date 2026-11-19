@@ -109,7 +109,7 @@ After all commits:
 ## Safety Rules (multi-agent environment)
 
 - Prohibited git operations: `hooks/git_guard.py` blocks them and names the safe alternative (`workflow/git-safety.md`). The commit-msg hook of `tools/git-hooks/` checks the message.
-- No push. A push follows `workflow/git-safety.md` Publication.
+- This skill never pushes. A push is a separate step under `workflow/git-safety.md` Publication.
 - Stage and commit only files that belong to the current task.
 - Before staging, run `git status`; a file holding another agent's uncommitted changes is skipped and reported to the user.
 - Attribution: `workflow/committing.md` Attribution.

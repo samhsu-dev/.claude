@@ -13,12 +13,14 @@ Full pipeline: `/perf` skill.
 
 - Measurement before and after every change. No unmeasured optimizations.
 - Estimate measurement variability before claiming an improvement. Use configured project metrics and acceptance thresholds; an unconfigured threshold is not a requirement.
-- A regression of an accepted constraint follows `workflow/change-policy.md` Correctness and Verification.- Put optimization state in the module task record under `rules/workflow/records.md`.
+- A regression of an accepted constraint follows `workflow/change-policy.md` Correctness and Verification.
+- Put optimization state in the module task record under `rules/workflow/records.md`.
 - Decision authority follows `workflow/decisions.md`.
 
 ## Localization
 
-- A candidate needs profile or counter evidence.- Growth order comes from work counters over a size sweep: the target workload fixed, one unrelated dimension grown, the counts recorded. Counters judge the growth order; wall time does not. Cost forecasts of a core change follow `workflow/change-policy.md` Early Cost Checks.
+- A candidate needs profile or counter evidence.
+- Growth order comes from work counters over a size sweep: the target workload fixed, one unrelated dimension grown, the counts recorded. Counters judge the growth order; wall time does not. Cost forecasts of a core change follow `workflow/change-policy.md` Early Cost Checks.
 - Hot paths come from a sampling profiler run on a fixed sample.
 - The cost is classified as CPU, allocation/GC or waiting (IO, lock, external process) before a fix is chosen.
 

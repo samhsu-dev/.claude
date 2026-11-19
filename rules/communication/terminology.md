@@ -26,7 +26,7 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.
 - Under `terminology.implementation_variants`, name compared implementations by their code names. Use its allowed category words and exclude its forbidden comparison labels.
-- The first use of a glossary term in a chat reply to the user carries its definition in plain words.
+- The first use of a glossary term in each chat reply to the user carries its definition in plain words.
 - A question to the user uses only the vocabularies `terminology.question_vocabulary` lists.
 
 ## Readability

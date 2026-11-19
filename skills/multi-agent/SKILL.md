@@ -37,7 +37,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
 - It answers boundary questions, decides agent-decidable items and puts the user-decidable items, prepared under skill `decisions`, to the user in one batched question on the day they arise; recording an item on a pending list does not count as asking.
 - It answers a question that a read of the project's own code or documents settles by that read; such a question is never delegated or reported as unknown.
 - Every host that runs delegated or long-running work is listed in `execution.hosts` with its role and output location before work starts on it. A status report covers every listed host.
-- It reports to the user the state of each running task in one line, the decisions waiting for the user, and each risk or failed check that changes what the user would do.
+- It reports to the user the state of each running task in one line, the decisions waiting for the user, and each risk and each failed check that changes what the user would do; one that changes nothing for the user is not reported.
 
 ## Context Economy
 
