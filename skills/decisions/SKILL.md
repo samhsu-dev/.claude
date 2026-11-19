@@ -37,6 +37,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
 - A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No rebuttal round.
+- A brief for a run that compares designs or investigates a choice states three requirements. The run reports what it finds and never confirms the preference of the main agent or the user; a result that contradicts every listed candidate is valid. The candidates are not limited to the listed ones: the run adds each other design it finds in the literature, industrial tools or the code's existing mechanisms, with its source. The result gives the evidence against its own recommendation in a separate section.
 - A fact the drafter or refutation lacks becomes a follow-up question from the main agent to the session that holds that context; a choice depending on it waits for the answer.
 
 ## Evidence Files
