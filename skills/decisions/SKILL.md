@@ -80,6 +80,6 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - The chain session that decides an agent decision writes its rule into the owning document and commits it at once. It writes the decision entry into its progress file; the main agent moves the entry into the decision log.
 - After a user decision is recorded, the main agent resumes the drafting session to implement it and continues the next independent work.
 - Write a new edge case in the same turn: its example goes beside the rule that decides it in the owning document, or into the open decision entry while the rule is undecided.
-- The change that writes a decided sentence searches the documents and code comments for each sentence that contradicts it and corrects each one in the same change; a contradiction outside the write set becomes an open row that names the sentence.
+- The session that writes a decided sentence searches the project's documents and code comments for each sentence that states a different result for the same input, and corrects each in the same commit; a sentence in a file outside that session's write set is added to the board as an open row that quotes it with path and line.
 - When a rule is added, the main agent checks each logged agent decision that governs a contract the rule governs, and revises a failing one under Authority above or takes it to the user.
 - A decision result names the corrections for the session that implements it.
