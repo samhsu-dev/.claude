@@ -71,7 +71,7 @@ Coordinate delegated work as the main agent. Hard limits: `rules/workflow/multi-
    - Name a related decision only by its ID and landing path:line; never copy decision-log content into a brief. The decision log is read only to trace why a rule holds or to prepare a new decision, by the main agent or under skill `decisions`.
    - Check the implemented decisions against entries governing the same affected contract. Reuse established evidence; contradictory requirements for one input go to the user before dependent work starts.
    - Update owning text when its meaning changes. Independent specification review applies to Full; an unchanged approved specification is reused.
-10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action.
+10. Write the run registry row before launch: handle, task, model and effort, branch, progress file, status and next action. A gate the main agent launches and awaits itself gets its row once, when it ends, with its result.
 11. Launch through the host's agent tool or a tracked background command. Retain its handle for follow-up and completion notifications. No worker exists only to wrap another run, and no model turn polls for unchanged status.
 12. Give a research run that lacks a tool the exported source material.
 
