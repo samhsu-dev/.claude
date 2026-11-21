@@ -7,6 +7,7 @@ Procedure for splitting, staging and messages: `/commit`.
 Conventional Commits 1.0.0 in the imperative mood; the commit-msg hook of `tools/git-hooks/` enforces the header form and its 72-character limit.
 
 - A commit message states what changed and why in plain words.
+- A merge commit takes the same header form: its subject states the change the merged branch delivers, and its body lists the subjects of the merged commits. The commit-msg hook rejects Git's default merge subject (`Merge commit '<sha>' into HEAD`, `Merge branch '<name>'`).
 
 ## Staging
 
