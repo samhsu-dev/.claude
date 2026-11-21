@@ -12,6 +12,8 @@ Preflight and safe alternatives: skill `commit`; branch cleanup and submodule po
 
 ## Branches and Conflicts
 
+- Never create, rename or publish a branch whose name starts with `codex/`.
+- Prefix every agent-created branch with `samhsu/`.
 - No agent switches the branch of any checkout without explicit user instruction; a run's merge-result check uses a new detached worktree under its run directory.
 - Delete a branch only on explicit user instruction with `git branch -d`, or under skill `multi-agent` Branch Lifecycle; `git branch -D` deletes only a branch that Branch Lifecycle archived.
 - Never discard conflicting changes or another writer's uncommitted work; the main agent archives such work under skill `multi-agent` Branch Lifecycle before it removes the worktree.
