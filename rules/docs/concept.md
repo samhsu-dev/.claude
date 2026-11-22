@@ -71,7 +71,7 @@ No open question lives here; an undecided point goes to the Open Gaps section of
 
 ### Content
 
-- Concepts only. No implementation details, APIs, commands, or code.
+- State concepts only; implementation details, APIs, commands and code go to the documents `rules/docs/documentation.md` Ownership assigns them.
 - Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 ### Format

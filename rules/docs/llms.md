@@ -46,7 +46,7 @@ Sections in order (llmstxt.org spec):
 
 - Relative paths from `llms.txt` location.
 - Every link targets a file in `llms/` or another `docs/` file.
-- No external URLs in link lists. External references go in L1 files.
+- External references go in L1 files.
 
 ### Instructions for Agents section
 
@@ -74,20 +74,20 @@ Each `llms/<module>.md` file:
 **`function_name(param: Type) -> ReturnType`** — One-line purpose. Raises `ErrorType` when condition.
 ```
 
-- Signature includes types. No docstring duplication.
-- One line per function. No multi-line explanations.
+- Signature includes types; the purpose line is written for this page, not copied from the docstring.
+- One line per function.
 - Group by: constructors, methods, helpers.
 
 ### Code examples
 
-- One example per concept. 3-10 lines. No boilerplate.
+- One example per concept, 3-10 lines, holding only the lines that use the concept.
 - Working code only. Every example compiles and runs when placed after the imports and setup the page's first example shows.
-- No comments explaining what the next line does.
+- A comment in an example states only what its code does not show.
 
 ## full.txt Structure (L2)
 
 - `full.txt` is the plain concatenation `cat docs/llms.txt docs/llms/*.md > docs/llms/full.txt`. No script and no rewriting: each link keeps the form its source file gives it.
-- Regenerate it with that command after every change to `llms.txt` or any `llms/*.md`. Never hand-edit.
+- Regenerate it with that command after every change to `llms.txt` or any `llms/*.md`; that command is its only writer.
 - `llms.txt` and each `llms/*.md` follow the line limit of `rules/docs/documentation.md` Naming. `full.txt` has no line limit.
 
 ## Language Rules
@@ -101,8 +101,8 @@ Each `llms/<module>.md` file:
 
 ## Content Rules
 
-- No prose paragraphs in L0 or L1. Lists and tables only. Exception: L0 body text (max 3 sentences).
-- No redundancy between L0 and L1. L0 says what exists; L1 says how to use it.
+- L0 and L1 use lists and tables; the L0 body text, at most 3 sentences, is their one prose paragraph.
+- L0 says what exists; L1 says how to use it; each fact appears in one of them.
 
 ### Include (Usage-Facing)
 
@@ -115,18 +115,18 @@ Each `llms/<module>.md` file:
 
 ### Exclude (Internal Details)
 
-- No algorithm descriptions — "Sorts results by relevance." not "Uses TF-IDF with BM25 ranking."
-- No data structure internals — "Accepts a config object." not "Config is stored as a nested dict with keys X, Y, Z."
-- No infrastructure — no container names, host paths, port mappings, process managers, orchestration details.
-- No storage schemas — no database tables, column names, index strategies, migration history.
-- No internal control flow — no "first it checks X, then loops over Y, then calls Z."
-- No concurrency/threading model — "Thread-safe." not "Uses a read-write lock with writer preference."
-- No performance characteristics — no Big-O, benchmark numbers, cache strategies, batch sizes.
-- No internal error handling — "Raises `ConfigError` on invalid input." not "Catches `KeyError` internally and wraps it."
-- No dependency justifications — no "uses library X because Y." State the public dependency, not why.
-- No source file paths or line numbers. The agent calls the API, not the source.
-- No version history or changelogs.
-- No links to external documentation unless the external API is required for usage.
+- Algorithm descriptions — "Sorts results by relevance." not "Uses TF-IDF with BM25 ranking."
+- Data structure internals — "Accepts a config object." not "Config is stored as a nested dict with keys X, Y, Z."
+- Infrastructure — container names, host paths, port mappings, process managers, orchestration details.
+- Storage schemas — database tables, column names, index strategies, migration history.
+- Internal control flow — "first it checks X, then loops over Y, then calls Z."
+- Concurrency and threading model — "Thread-safe." not "Uses a read-write lock with writer preference."
+- Performance characteristics — Big-O, benchmark numbers, cache strategies, batch sizes.
+- Internal error handling — "Raises `ConfigError` on invalid input." not "Catches `KeyError` internally and wraps it."
+- Dependency justifications — "uses library X because Y." State the public dependency, not why.
+- Source file paths and line numbers — the agent calls the API, not the source.
+- Version history and changelogs.
+- Links to external documentation of an API the usage does not require.
 
 ### Litmus Test
 

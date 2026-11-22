@@ -18,13 +18,13 @@ Language-specific casing, layout, and packaging: see project `.claude/rules/code
 - The file name states the single responsibility the file owns.
 - Filename stems use lowercase letters, digits and underscores; extensions are excluded.
 - A file name is a domain noun, never a pattern role such as `utils`, `helpers`, `common`, `shared`, `misc`, `manager` or `handler`, alone or as a suffix.
-- Never name a file after one class it contains when the file owns a broader responsibility.
-- File and directory names use the grammatical number of their existing sibling names. Never singular and plural variants of the same name.
+- Name a file that owns a responsibility broader than one class it contains after that responsibility.
+- File and directory names use the grammatical number of their existing sibling names, and one name keeps one grammatical number across the repository.
 
 ## Directory Organization
 
 - Directories group files by domain feature, not by architectural layer. Exception: framework-mandated layer files inside a feature directory.
-- No `utils/`, `helpers/`, `common/`, `misc/` directories. A shared function belongs to the module that owns its theme.
+- Put a shared function in the module that owns its theme, in place of a `utils/`, `helpers/`, `common/` or `misc/` directory.
 - A directory names the domain concept its files serve, never a language mechanism or pattern role (`extension/`, `impl/`, `workers/`).
 - A directory whose files serve several nameable domain concepts splits into one subdirectory per concept.
 - Files that share a concern form one directory with one public entry point.

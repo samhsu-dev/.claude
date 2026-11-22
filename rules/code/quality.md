@@ -16,12 +16,12 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 ## Error Handling
 
-- Specific exception/error types. No broad catches.
+- Catch and raise specific exception or error types; each catch names the types it handles.
 - Handle an error at the layer that can recover or report the operation failure.
 - Error context and logging: `code/logging.md` Error Records.
-- Detect an error at the earliest point and raise or throw there, including a missing required internal value. Never disguise failure as an empty value, fallback or degradation. No result and failure are distinguishable by type. Documented recoverable sub-tool output follows `resource-bounds.md`.
+- Detect an error at the earliest point and raise or throw there, including a missing required internal value. Report a failure as an error that its type distinguishes from a result, in place of an empty value, fallback or degradation. Documented recoverable sub-tool output follows `resource-bounds.md`.
 - Every catch re-raises, reports at its handling boundary, or raises another exception carrying the caught one as its cause.
-- No error codes as return values. Exception: a tool protocol that requires structured success/error objects uses that protocol.
+- Report an error by exception or error type, in place of an error code return value; a function whose tool protocol requires structured success and error objects returns that protocol's objects.
 
 ## Code Structure
 
@@ -30,13 +30,13 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - A statement sequence that the function's doc or a design doc names as one step is its own function named for that step.
 - Single-letter names only for loop indices, the parameter of a one-line lambda or comprehension, and type parameters.
 - Call only own methods, parameter methods, locally created objects, direct attributes.
-- No duplicate logic blocks. Two identical blocks → extract function.
+- Extract two identical logic blocks into one function.
 - A function that reads one object's fields more than its own belongs with that concept. For a data-only type, put the function in the module that owns it; API Design governs data holders.
 - A group of two or more arguments or fields passed together at two or more call sites becomes a type.
 
 ## No Stale Code
 
-- No dead code. No commented-out code.
+- Delete dead code and commented-out code.
 - No compatibility stubs; a removed API is removed at every call site. Exception: the old entry of a recorded migration under API Design until that migration's task removes it.
 - Remove artifacts with no surviving code, design, build or entry-point consumer.
 
@@ -47,7 +47,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - No shotgun surgery — one change requires edits in many files → consolidate.
 - No speculative generality — abstractions, parameters, or config for hypothetical futures → remove.
 - No middle-man classes that only delegate → remove and call target directly.
-- No magic numbers/strings. Named constants or enums.
+- Give each number or string literal whose value does not show its meaning a name, as a constant or an enum member.
 - No repeated conditional logic on the same discriminant → polymorphism or lookup table. Exception: an exhaustive `when` over a sealed data hierarchy in a pass that owns the behavior.
 
 ## Bug Prevention
@@ -56,12 +56,12 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - A range, slice or index whose bounds come from a parameter or external input is tested at minimum, minimum−1, maximum and maximum+1 (boundary value analysis, `testing.md`).
 - Null/None: never assume a return value is non-null without a type guarantee or check.
 - Every opened file, connection or lock has a guaranteed close path through the language's scoped resource mechanism.
-- Mutation hazard: never mutate a collection while iterating. Never mutate a function argument, except a parameter whose declared type is a mutable collection and whose name and doc comment state that the function fills it.
-- String building: use structured formatting. No manual concatenation of user-controlled input.
+- Mutation hazard: never mutate a collection while iterating. A function mutates an argument only when the parameter's declared type is a mutable collection and its name and doc comment state that the function fills it.
+- String building: use structured formatting, and pass user-controlled input only through it.
 - Comparison: use value equality for data, identity for singletons only.
 - Integer overflow: validate arithmetic on external inputs before use.
 - Race condition: shared mutable state requires explicit synchronization or is forbidden.
-- Encoding: explicit encoding on every I/O boundary. No implicit platform defaults.
+- Encoding: name the encoding on every I/O boundary, in place of the platform default.
 
 ## Resource Management
 
@@ -79,13 +79,13 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 
 - Doc comments document public declarations; a private or `internal` declaration has no doc comment or a one-line comment.
 - Content: summary; constraints; parameters; return value; exceptions.
-- No redundancy, no implementation details, no examples.
+- Each item once, at contract level, without implementation details or examples.
 - Language-standard convention.
 
 ## Type Safety
 
 - Type annotations on all parameters and return values.
-- Concrete types. No escape types (`Any`, `any`, `Object`, `interface{}`).
+- Concrete types, in place of escape types (`Any`, `any`, `Object`, `interface{}`).
 - Strict type checking enabled.
 
 ## Input Contract & Invariants
@@ -99,7 +99,7 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 ## No Patch-Style Code
 
 - Every change integrates as if written from scratch, within the existing ownership, types and callers; fault location: `workflow/change-policy.md` Correctness and Verification.
-- No inline workarounds with `# HACK`, `# FIXME`, `# TODO`, `# WORKAROUND` left in place.
+- Replace each inline workaround marked `# HACK`, `# FIXME`, `# TODO` or `# WORKAROUND` by a fix at its cause before the change lands.
 - A conditional branch expresses an input distinction the contract defines.
 - No defensive copies inside code operating on boundary-verified data; validation placement: Input Contract & Invariants.
 
@@ -129,9 +129,9 @@ Language-specific naming, formatting, idioms, and complexity thresholds: see pro
 - One concern has one mechanism. Before adding a parameter style, options type, dispatch, registry, result or error shape, find how sibling code handles the same concern and reuse it; a genuine difference is named in the design document.
 - One service has one interface. A function or algorithm is reached through one entry; a second entry offering the same service merges into the owner the design names, and its callers move to that owner. An old and a new implementation coexist only during a recorded migration whose task removes the old one.
 - Components of one kind share one interface shape: construction, entry verbs, parameter order, input and result conventions, synchronous or asynchronous invocation, completion and cancellation ownership, and glossary vocabulary. Name and justify a component-specific difference in the design document.
-- Data holders hold data. No embedded behavior.
+- Data holders hold data; their behavior lives in functions of the module that owns the type.
 - Application logic lives in named functions; no logic in initializers, property getters with side effects or reflection.
 
-- Call core module APIs directly. No wrapping layers around controlled code.
+- Call core module APIs and other code the project controls directly, through no wrapping layer.
 - Keep infrastructure dependencies outside core API contracts; boundaries own infrastructure adapters.
 - Core API contracts expose domain operations and results; implementation data structures and intermediate steps are exposed only when a documented caller scenario requires them.

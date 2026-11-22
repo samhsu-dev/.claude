@@ -29,9 +29,9 @@ Every task ends with this checklist (do not repeat inline — reference this sec
 ## Scope Rules
 
 - A task delivers one independent behavior and is committed as one concept (`rules/workflow/committing.md` Staging); one chain session carries one or more tasks in order.
-- Action verb + object + detail. No vague titles.
+- Task title: action verb + object + detail.
 - Explicit dependencies.
-- Reference interfaces from design docs. No new design in TODO files.
+- Reference interfaces from design docs; new design goes into the design docs before a task names it.
 
 ## File Organization
 

@@ -11,7 +11,7 @@ Full pipeline: `/perf` skill.
 
 ---
 
-- Measurement before and after every change. No unmeasured optimizations.
+- Measure before and after every change, optimizations included.
 - Estimate measurement variability before claiming an improvement. Use configured project metrics and acceptance thresholds; an unconfigured threshold is not a requirement.
 - A regression of an accepted constraint follows `workflow/change-policy.md` Correctness and Verification.
 - Put optimization state in the module task record under `rules/workflow/records.md`.

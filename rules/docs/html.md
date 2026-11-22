@@ -10,7 +10,7 @@ Rendering procedure: `render-doc` skill.
 ## Self-Containment
 
 - One file. All CSS in one `<style>` element.
-- No external fetch. No font CDN, no stylesheet link, no remote script, no remote image.
+- The page loads every resource from the file itself: fonts, styles, scripts and images are inline, with no font CDN, stylesheet link, remote script or remote image.
 - Images embed as `data:` URIs.
 - A typeface the reader may not have is named first in a stack ending in a system face.
 
@@ -18,13 +18,13 @@ Rendering procedure: `render-doc` skill.
 
 | Property | Value |
 |---|---|
-| Body size | 19px; 16 to 19px at viewport widths up to 640px. Never below 16px |
+| Body size | 19px; 16 to 19px at viewport widths up to 640px; 16px minimum |
 | Line spacing | 1.5 to 1.6 unitless at that size |
 | Measure | 45 to 90 characters. 66 to 72 is the target |
 | Families | Two. One serif for prose, one sans for labels |
 | Capitalised labels | 10 to 14 percent letterspacing, under one line |
 
-- Bold and italic mark one word or phrase. Never combined.
+- Bold and italic each mark one word or phrase, and a phrase carries at most one of them.
 - Emphasis comes from position and heading level, not from bold runs in body text.
 
 ## Colour
@@ -36,23 +36,22 @@ Rendering procedure: `render-doc` skill.
 
 ## Tables
 
-- Rule above the header, rule below the header, rule at the foot.
-- No vertical rules. No cell fill. No zebra striping.
+- Horizontal rules only: above the header, below the header and at the foot; cells keep the page background.
 - Numeric columns right-aligned with tabular figures.
 - Every table sits inside an `overflow-x: auto` container. The page body never scrolls horizontally.
 
-## Prohibitions
+## Decoration
 
-- No purple or violet gradient. No cyan-on-dark. No gradient text.
-- No grid of uniform rounded cards. No coloured left border on a card. No icon-heading-blurb triple.
-- No oversized hero. No centred badge above the title. No stat banner.
-- No emoji. No icon font. No decorative SVG.
-- No third typeface for accent. No serif italic as a decorative device.
-- No animation, scroll effect, or hover transform.
-- No `Conclusion`, `Summary`, `Key Takeaways`, or `Getting Started` section absent from the source.
+- Fill text and backgrounds with flat colours from Colour above; leave out purple or violet gradients, cyan text on dark backgrounds and gradient text.
+- Lay out content as prose, headings, lists and tables; leave out grids of uniform rounded cards, coloured left borders on cards and icon-heading-blurb triples.
+- Start the page with its title and then the source text; leave out oversized heroes, centred badges above the title and stat banners.
+- Mark meaning with text; leave out emoji, icon fonts and decorative SVG.
+- Set all text in the two families of Typography; leave out a third accent typeface and serif italic used as decoration.
+- Keep the page static: leave out animation, scroll effects and hover transforms.
+- Render the sections the source holds and only those, so a `Conclusion`, `Summary`, `Key Takeaways` or `Getting Started` section appears only when the source has it.
 
 ## Derived Pages
 
 - A page rendered from a Markdown source is derived. The Markdown is authoritative.
-- A content correction is made in the source and the page re-rendered. Never edited in the page alone.
+- Make a content correction in the source and re-render the page from it.
 - Quotations, numbers, identifiers, and paths carry over verbatim. Rewriting applies to connective prose only.

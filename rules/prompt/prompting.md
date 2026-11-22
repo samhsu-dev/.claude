@@ -35,16 +35,16 @@ A prompt carries each section below that has content. The order is a default; an
 
 ## Constraints
 
-- Group constraints into few hierarchical blocks. Never a flat list of many imperative lines.
+- Group constraints into few hierarchical blocks, in place of a flat list of many imperative lines.
 - Run the assembled prompt against its eval. When the eval shows dropped instructions, split rules across pipeline stages rather than adding emphasis.
-- No per-line emphasis inflation ("CRITICAL", "MUST", "ALWAYS") and no emphatic reasoning directive.
+- Write constraints at plain emphasis, without per-line "CRITICAL", "MUST" or "ALWAYS" markers and without an emphatic reasoning directive.
 - Highest-priority rules first within each block.
 
 ## Output Contract
 
-- State the output shape inside the prompt. Never rely solely on an out-of-band parsed schema.
-- Every field the parsed schema reads is described in the Output Format section. Every field the prompt promises is read by the schema. No field on one side only.
-- Strict structured output uses Structured Outputs or tool-calling with an enum. No assistant prefill.
+- State the output shape inside the prompt, also when an out-of-band parsed schema exists.
+- Every field the parsed schema reads is described in the Output Format section. Every field the prompt promises is read by the schema.
+- Strict structured output uses Structured Outputs or tool-calling with an enum, in place of assistant prefill.
 - Phrase the contract positively: state the target shape, not forbidden shapes.
 
 ## Reasoning
@@ -57,7 +57,7 @@ A prompt carries each section below that has content. The order is a default; an
 
 - Examples, when the eval shows they help, are diverse, each wrapped in `<example>` tags and grouped under `<examples>`; their number follows the distinct cases the eval covers.
 - Include one example whose output takes the abstain path when the task has an abstain path.
-- No input-specific token baked into a constraint as if it were a general rule.
+- Each constraint names only tokens that hold for every input it governs.
 
 ## Multi-Stage Consistency
 
@@ -67,7 +67,7 @@ A prompt carries each section below that has content. The order is a default; an
 - Recall stage: wide net, bounded top-k, "include anything plausibly relevant, do not filter."
 - Precision stage: verify strictly, abstain on doubt. Emit a decision, a confidence and the reason for each abstention.
 - Threshold confidence on a held-out set. Route abstain to review, never to a forced decision.
-- A stage file states only that stage's job. No precision/ranking bias in a recall prompt. No decision a downstream stage owns.
+- A stage file states only that stage's job: a recall prompt asks for coverage alone, and each decision stays with the stage that owns it.
 
 ## Terminology
 

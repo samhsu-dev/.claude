@@ -9,7 +9,7 @@ Render `$1` as a self-contained HTML page in the editorial design system below.
 
 ## Step 1 — Read the source
 
-1. Read the full Markdown file. No excerpt, no search shortcut.
+1. Read the full Markdown file, every line, in place of an excerpt or a search.
 2. Record the document's own repeated shapes: a claim-and-citation pair, a verdict line, a metrics table, a step sequence. These become semantic blocks, not styled paragraphs.
 3. Resolve the output path: same directory, same basename, `.html` extension, unless the user names one.
 
@@ -75,6 +75,6 @@ The stylesheet in `assets/` holds the palette, the typefaces and the constants `
 
 ## Rules
 
-- One source file, one output file. Never split a rendering across pages.
-- Never invent content to fill a layout. A block with no source material is removed, not padded.
-- Never edit `assets/document.css` to accommodate one document.
+- One source file, one output file: render the whole source into one page.
+- Take every block's content from the source; remove a block with no source material in place of padding it.
+- Change `assets/document.css` only for a change that serves every document.

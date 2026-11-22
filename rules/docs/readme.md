@@ -39,17 +39,17 @@ Optional sections follow the last required section before License, in table orde
 - **For Agents** — Link to `docs/llms.txt`. One line: "Agent-consumable documentation index at `docs/llms.txt` (llmstxt.org format)." Present when `docs/llms.txt` exists.
 - **Experiments** — One sentence per experiment: what was tested and the outcome. No methodology, no analysis — link to the full write-up.
 
-No table of contents.
+Readers navigate the README by the section headings above, which take the place of a table of contents.
 
 ---
 
 ## Format
 
-- Code blocks for all commands, examples, and output. No prose descriptions of code.
+- Code blocks for all commands, examples and output, in place of prose descriptions of code.
 - Two heading levels maximum (`#` and `##`).
 - Hyperlink specialized terms, related projects, and external concepts.
 - Code examples pass the project's own linter.
-- No broken links.
+- Every link resolves.
 
 ---
 
@@ -66,9 +66,9 @@ No table of contents.
 
 - One usage example visible without scrolling.
 - Detailed docs, tutorials, and guides in separate files or docs site. README is a landing page, not a manual.
-- No decorative images (banner images, animated GIFs). Status badges are not decorative.
-- No vague descriptions ("A utility library", "A tool for developers").
-- Blockquote (`>`) only for the Name line. No blockquote elsewhere.
-- No generic section names ("Miscellaneous", "Extra", "Other").
+- Images show the product or its status, status badges included; leave out banner images, animated GIFs and other decoration.
+- Each description names the specific task the project performs, in place of a vague phrase such as "A utility library" or "A tool for developers".
+- Blockquote (`>`) only for the Name line.
+- Each section name states its topic, in place of a generic name such as "Miscellaneous", "Extra" or "Other".
 
 - When citation is required, include `readme.citation_request`.

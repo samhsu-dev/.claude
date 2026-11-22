@@ -10,7 +10,7 @@ paths:
 ## Scope
 
 - One `index.md` per documentation directory that contains 3+ files or any split documents; the change that adds, renames or removes a documentation file updates `index.md` of its directory.
-- Contains file list with one-line descriptions. No code.
+- Contains only the file list with one-line descriptions.
 - An agent reads a documentation directory's `index.md` before it reads another file of that directory. All other files loaded on demand.
 
 ## Structure
@@ -36,20 +36,20 @@ paths:
 
 ## Naming Convention
 
-- Topic name: noun or noun phrase. No verbs, no abbreviations.
+- Topic name: a noun or noun phrase of unabbreviated words.
 
 ## Content Rules
 
 - No domain content: a Content cell names the topic, never its definition.
-- No redundancy with file content. The description says what topic the file covers; the file itself has the content.
-- No hierarchy or nesting. Flat table. No subsections, no grouping headers.
-- No external links. Entries target files in this directory or the subdirectory indexes specified in Multi-Level Navigation.
+- The description says what topic the file covers; the file itself has the content.
+- One flat table, with no hierarchy, subsections or grouping headers.
+- Entries target only files in this directory or the subdirectory indexes specified in Multi-Level Navigation.
 
 ## Multi-Level Navigation
 
 - Top-level `index.md` links to subdirectory `index.md` files, not to individual files within subdirectories.
 - Entry format for subdirectories: `<dirname>/index.md` with a one-line description of the subdirectory scope.
-- Three levels maximum, counted from the repository's own top-level `docs/index.md`; a submodule counts from its own. No `index.md` chain longer than three, and no cycle.
+- Three levels maximum, counted from the repository's own top-level `docs/index.md`; a submodule counts from its own. Index links form acyclic chains of at most three `index.md` files.
 
 ## Verification
 

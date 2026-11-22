@@ -55,7 +55,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 - A fixture used by one test lives in that test.
 - Temporary resources for file/network/process. Auto-clean after each test, a failed test included.
 - A hand-written input that a test passes to the product as source text is a file in a data directory under the test root, in a directory named after the tested behavior; the file states its expected result. An input a test generates stays in test code.
-- No bulk payloads inline in test files. No test data in the source tree.
+- Store bulk payloads as data files under the test root; all test data lives under the test root, outside the product source tree.
 
 ## 7. Assertions
 
@@ -81,7 +81,7 @@ Language-specific test framework, layout, assertions, and execution: see project
 ## 11. Maintenance
 
 - Tests alongside new/changed code in the same change set.
-- Independent tests. No shared mutable state.
+- Independent tests: each test creates the mutable state it uses.
 - Before adding a test, search the component's tests and test data for a test of the same behavior. A new input that differs from an existing test's input only by names, by literals the code under test does not branch on, or by a construct the code under test handles on the same branch is added to that test as a named case; no new test is created.
 - Two existing tests that meet that condition are merged into one test, each input kept as a named case.
 - A test is stale when it covers a function or behavior the current design documents no longer state, tests private methods or internal state instead of a public contract, or repeats another test's input and assertion. A stale test is deleted; a reproduction test follows Reproductions.

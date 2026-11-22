@@ -34,7 +34,7 @@ Split within a document type by domain concept, not by section heading or mechan
 - Keep each fact in the document type that owns it under Ownership. Link other types.
 - A file explains its own concern. Follow links for adjacent concerns; merge fragments that need sibling text to define their own concern.
 
-No committed file of a product repository (document, code comment, build file) names an agent rule, skill or hook, or any path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`. The agent configuration is not part of the product repository (`rules/workflow/committing.md` Staging); a document states the convention it follows in its own words. The agent configuration's own documentation is exempt, and so is a local record (`rules/workflow/records.md`); `hooks/doc_check.py` reports a named configuration path in every other Markdown file of a Git work tree.
+A committed file of a product repository (document, code comment, build file) states each convention it follows in its own words and names no agent rule, skill or hook and no path under `.claude/`, `.codex/`, `~/.claude/` or `~/.codex/`; the agent configuration stays outside the product repository (`rules/workflow/committing.md` Staging). `hooks/doc_check.py` reports a named configuration path in each Markdown file of a Git work tree outside the agent configuration's own documentation and the local records (`rules/workflow/records.md`).
 
 ## Ownership
 
@@ -57,14 +57,14 @@ Rationale lives in `concept.md` Rationale and Rejected Alternatives.
 - Each document follows the rules of its type file under `rules/docs/`.
 - An engineer writes for a software engineer who implements, reviews or maintains the design. A document states what a component does, its inputs, outputs and invariants, and the reason for each rule. It only transfers information and design: no persuasion, narrative, restated summary, process note or commentary about the document.
 - Each sentence has one reading. It names the exact data, program point, context and condition; a quantity or bound is stated, not implied. A vague word ("handles", "appropriately", "some", "etc.") gives way to the list or condition it stands for.
-- No two sentences contradict each other, within a document or across documents.
+- Sentences agree with each other, within a document and across documents.
 - Structure is plain: short sections and paragraphs, at most two heading levels below the title where the type's required structure allows, bullets nested at most one level, a table only for rows-by-columns data, no decorative callout, no chain of cross-references a reader follows to understand one rule.
 - Terms follow `communication/terminology.md`: computer-science terms and glossary terms only, algorithm terms spelled as the glossary spells them.
 
 ## Updating
 
 - A change starts at the owning statement, the sentence that first defines the concept. Revise it there, rewrite the section that holds it so the whole section states the new design as if written fresh, then align every dependent sentence in this and other documents.
-- Never append a correcting sentence, an exception, an override note or a change history beside unchanged old text. Wording such as "now also", "in addition to the above", "previously", "changed to", or an exception paragraph after the rule it amends, marks a patch.
+- Replace old text in place: the rewritten section holds no correcting sentence, exception, override note or change history beside unchanged old text. Wording such as "now also", "in addition to the above", "previously", "changed to", or an exception paragraph after the rule it amends, marks a patch.
 - A section the change does not affect keeps its text; no document is recreated from scratch.
 
 ## Repositories

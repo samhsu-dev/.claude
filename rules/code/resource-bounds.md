@@ -24,5 +24,5 @@ paths:
 
 ## Sub-Tool Limits
 
-- Use a sub-tool's own per-unit limits (per-file timeout, per-item budget) that skip the slow unit and return partial results. Never wrap the whole sub-tool in an external kill that returns nothing.
+- Use a sub-tool's own per-unit limits (per-file timeout, per-item budget) that skip the slow unit and return partial results, in place of an external kill of the whole sub-tool that returns nothing.
 - A mandatory step whose per-unit limit skips units completes with the processed units, reports each skipped unit as a warning, and lists the skipped units in its summary record. Keep partial output and report recoverable per-unit errors as warnings. Whole-tool failure is fatal. A mandatory operation still has to meet Degradation.

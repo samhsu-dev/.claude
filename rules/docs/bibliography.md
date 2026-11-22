@@ -28,7 +28,7 @@ Glossary field relations: `rules/docs/glossary.md` Entry.
 - A paper item holds authors, title, venue, year, pages, and DOI, checked against the DOI registry.
 - A tool, a reference implementation, a manual, or a documentation site is a Computer Program or Document item. Its Version field holds the pinned repository commit or the documentation version; a Document item, which has no Version field, holds it as a `tex.version:` line in Extra, which Better BibTeX exports as `version`. Its URL holds the repository or the site. The pin lives only here.
 - A tool or reference implementation hosted as a GitHub repository has the repository's `owner/repo` full name, as GitHub spells it today, as its Title: `<owner>/<repo>`. Its URL is that repository. A documentation site or a specification keeps the document's own title.
-- No `urldate`, `abstract`, or other access date in the export.
+- Leave `urldate`, `abstract` and every other access date out of the export.
 - A key is never renamed. A source replaced by another gets a new key.
 
 ## Citation

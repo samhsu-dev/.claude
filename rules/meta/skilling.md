@@ -26,7 +26,7 @@ skill-name/
 ## Frontmatter and Variables
 
 - Every field is optional; give `description`. Field meanings, defaults and substitution variables follow the reference above, not a local copy.
-- `disable-model-invocation: true` + `user-invocable: false` = contradictory. Never combine.
+- `disable-model-invocation: true` + `user-invocable: false` = contradictory; set at most one of them.
 - `context: fork` without actionable task = empty output.
 - `allowed-tools` pre-approves the listed tools, including `Bash(pattern)` specifiers, for the invoking turn.
 - `effort` takes a level the session model supports: `low`, `medium`, `high`, `xhigh` or `max`.
@@ -67,7 +67,7 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 - Under 250 characters.
 - Pattern: `{Action} {target}. Use when {trigger}.`
-- No vague descriptions ("Useful utility", "Helper for tasks").
+- `{Action}` and `{target}` name the specific task and object, in place of a vague phrase such as "Useful utility" or "Helper for tasks".
 
 ---
 
@@ -79,15 +79,11 @@ Deterministic work in scripts. Reasoning in SKILL.md.
 
 ### Shell Preprocessing Rules
 
-- Never fetch and execute remote scripts (`` !`curl url | bash` ``).
-- Never write to shell profiles (`~/.zshrc`, `~/.bashrc`).
-- Never access credentials or secrets in preprocessing.
-- Use preprocessing only for read-only context injection (`git status`, `node --version`).
+- Use preprocessing only for read-only context injection (`git status`, `node --version`): it fetches and executes no remote script (`` !`curl url | bash` ``), writes no shell profile (`~/.zshrc`, `~/.bashrc`) and reads no credential or secret.
 
 ### Sensitive Data
 
-- Never store API keys, tokens, or passwords in SKILL.md or scripts.
-- Use environment variables (`env` in settings.json) or plugin `userConfig` with `"sensitive": true`.
+- Keep API keys, tokens and passwords in environment variables (`env` in settings.json) or plugin `userConfig` with `"sensitive": true`, outside SKILL.md and scripts.
 
 ### Trust Levels
 

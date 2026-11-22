@@ -59,7 +59,7 @@ Present a table per severity: key, library, current value, proposed value, evide
 
 ## Applying Fixes (after confirmation, outside this skill's scope)
 
-- Write through the Zotero MCP (`zotero_update_item`, `zotero_switch_library` for group libraries); moves to trash use `zotero_delete_item`. Never permanently delete.
+- Write through the Zotero MCP (`zotero_update_item`, `zotero_switch_library` for group libraries); delete only by moving the item to the trash with `zotero_delete_item`.
 - Fill only empty fields unless the user approved an overwrite.
 - Re-run this audit afterward and confirm the fixed checks are gone.
 

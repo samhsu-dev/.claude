@@ -40,7 +40,7 @@ Read every file. Load the rule file of its type and `rules/docs/documentation.md
 
 Check across all audited files; item 7 extends the check across the main repository and its submodules:
 
-1. **Terminology**: the glossary exists at `glossary.path` (project rule file `glossary.md`) when the project has documentation. Every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading. No retired name in use. Report an entry that fails `rules/docs/glossary.md` Selection; redundant entries under Selection; and an entry no document uses.
+1. **Terminology**: the glossary exists at `glossary.path` (project rule file `glossary.md`) when the project has documentation. Every domain term used in a concept, model, design, or spec file (Step 1 patterns) has a glossary entry and is spelled as its heading, and each retired name is replaced by its current term. Report an entry that fails `rules/docs/glossary.md` Selection; redundant entries under Selection; and an entry no document uses.
 2. **Ownership**: each fact lives in its owning document under `rules/docs/documentation.md` Ownership; another document links it.
 3. **Cross-references valid**: every relative Markdown link in an audited file points to an existing file.
 4. **index.md sync**: each `index.md` lists its directory's files under `rules/docs/index.md`; no orphan entries.

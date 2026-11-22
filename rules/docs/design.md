@@ -21,7 +21,7 @@ Sections in this order:
 | **Caller Examples** | Each new or changed service interface: one caller example covering construction, invocation and result access through the intended API. |
 | **Open Gaps** | Undecided points, each stated as an open question, a performance risk of the mechanism included; and decided behaviors the code lacks or contradicts, each with the behavior, code symbol and deciding model or spec section. Omit if none. |
 
-Never delete decided design text because no caller exists.
+Keep decided design text when no caller exists yet.
 
 Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
@@ -49,7 +49,7 @@ Content boundaries and links follow `rules/docs/documentation.md` Ownership.
 
 - Scope of abstractions and configuration: `code/quality.md` Code Smells.
 - **DRY** — One authoritative representation per piece of knowledge; reuse of data and mechanisms: `code/quality.md` API Design.
-- **Separation of Concerns** — One concern per module. No overlap.
+- **Separation of Concerns** — One concern per module, each concern in exactly one module.
 - Domain policy stays outside reusable mechanisms.
 - Method access contracts: `code/quality.md` Code Structure.
 - **Composition over Inheritance** — Contain and delegate. Inherit only for true is-a with shared state.
