@@ -4,6 +4,7 @@ Triage, the agent's authority and recording: skill `decisions`.
 
 ## Authority
 
+- Apply this section to each choice and each revision; the agent decides a choice within its task when no condition below gives it to the user.
 - Before changing algorithm semantics, a core principle or an evaluation, read the project `decisions.md` values.
 - The user decides changes to `algorithm.core_principles`.
 - The user decides a known limitation when every available option contradicts a complete reference output.

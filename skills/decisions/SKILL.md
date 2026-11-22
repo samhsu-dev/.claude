@@ -13,7 +13,7 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 - For an item no user-authority condition covers, public API shape, signatures, field names and result types included, the agent chooses one option and records the chosen option, the evidence deciding it and the rejected alternative.
 - A unique option matching every reference example is agent-decidable unless a user-authority condition applies.
 - Behavior-equivalent naming choices follow the glossary at `glossary.path` and `rules/docs/glossary.md` Naming Steps. A name derived from an existing type identifier needs no user question.
-- The agent may revise a user decision only outside the core principles, and only when reference output refutes the decided sentence or that sentence was derived by an agent from another decided sentence that still holds.
+- The agent revises a user decision outside the core principles when reference output refutes the decided sentence or when an agent derived that sentence from another decided sentence that still holds; the user decides every other revision.
 - Keep mechanism details with the agent when they follow from a core choice. Ask the user only that core choice, in plain words, with one example.
 
 ## Evidence Preparation
@@ -22,22 +22,23 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 2. Read the glossary entry for each concept through `glossary.path`.
 3. Search history when the owning documents and decision entries of step 1 leave an authority or behavior premise unresolved. Use scoped `git log -S` or `git log --grep`; paths come from `paths`.
 4. Read the changes needed to resolve that premise. A history match alone creates no investigation obligation.
-5. Apply recorded decisions; never offer them again as open choices.
+5. Apply recorded decisions as fixed premises of the option list.
 6. Check summary-derived or explicitly derived premises against owning documents before using them.
-7. When a decision depends on usage frequency, measure the affected cases in a configured usage corpus and record the counting method. Usage frequency is never measured in a configured scoring corpus.
+7. When a decision depends on usage frequency, measure the affected cases in a configured usage corpus and record the counting method. Measure usage frequency outside the configured scoring corpus.
 8. Gather missing facts once: a chain session in its own context and decision entry, a user-decidable item into its evidence file under Evidence Files below.
 
 ## Decision Runs
 
-- The chain session of a task decides each agent-decidable item inside that task, in its own context, with a short rationale: the chosen option, the evidence deciding it and the rejected alternative. No viewpoints and no refutation run; the task mode's verification checks the decision against Solution Checks.
+- The chain session of a task decides each agent-decidable item inside that task, in its own context, with a short rationale: the chosen option, the evidence deciding it and the rejected alternative. It verifies the choice against Solution Checks in that task, with no viewpoints and no refutation run.
 - Draft an open choice in its owning resident or chain context. A Simple or Routine choice that requires user authority goes directly to the user with relevant options and evidence; it creates no separate design or refutation run.
-- Only an unresolved user-decidable core choice in Full uses the design and refutation procedure below. Its drafter weighs the affected viewpoints. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
+- Record each open core question in the decision log when it is found, and queue its evidence gathering or draft at once under skill `multi-agent` Dispatch.
+- Route an unresolved user-decidable core choice in Full through the design and refutation procedure below. Its drafter weighs the affected viewpoints. `viewpoints` supplies the selected roles and their exact project focuses. Each viewpoint is a section that ends with its own option and recommendation.
 - The drafter then lists the disagreements and the evidence deciding each, followed by the decision draft and its record draft.
 - A Full core-choice draft takes one refutation run on `execution.background` at `high_effort` in a fresh context. Its only substantive inputs are the question, the evidence file and the candidate rule; it receives no design reasoning.
 - The refutation tries to refute the rule through counterexamples, invariants and cost counts, including security and precision consequences. It cites reference input and complete output, a decided sentence, or a code line.
 - The drafter and the refutation apply Solution Checks.
-- A refutation that holds returns to the drafter once. The item then reaches the user in Question Format; a refutation that still holds, or viewpoints that still disagree, are shown with both positions. No rebuttal round.
-- A brief for a run that compares designs or investigates a choice states three requirements. The run reports what it finds and never confirms the preference of the main agent or the user; a result that contradicts every listed candidate is valid. The candidates are not limited to the listed ones: the run adds each other design it finds in the literature, industrial tools or the code's existing mechanisms, with its source. The result gives the evidence against its own recommendation in a separate section.
+- Return a refutation that holds to the drafter once. Then present the item to the user in Question Format with each supported position: the refutation that still holds and each viewpoint that still disagrees.
+- A brief for a run that compares designs or investigates a choice states three requirements. The run reports what it finds, independent of the preference of the main agent or the user, and a result that contradicts every listed candidate is valid. The run adds to the listed candidates each other design it finds in the literature, industrial tools or the code's existing mechanisms, with its source. The result gives the evidence against its own recommendation in a separate section.
 - A fact the drafter or refutation lacks becomes a follow-up question from the main agent to the session that holds that context; a choice depending on it waits for the answer.
 
 ## Evidence Files
@@ -52,26 +53,27 @@ The user-authority conditions are `rules/workflow/decisions.md` Authority.
 
 - Check the candidate against each decided contract Evidence Preparation step 1 read and each configured `algorithm` constraint.
 - Reuse and representation checks follow `rules/docs/design.md` Design principles. Inspect `algorithm.reuse_candidates` before adding data or a mechanism; apply `algorithm.reuse_example` to its named operation, relation and owners.
-- Before listing options, apply `rules/workflow/change-policy.md` Correctness and Verification to the failure: state the fact or rule the design lacks and every site where that lack changes a result, each with an input and its reference output. The option list includes one option that corrects the owner of that fact for all listed sites; an option that only changes the site where the failure was seen (a guard, a special case, a second mechanism beside the existing one) is a patch and is not offered.
-- A root-cause option is weighed like every other: state the result quality it gains or loses and the dimension its work grows with, with the bound that stops it. When the complete correction does not scale, offer the same correction at the owner with a stated bound, never a site patch, and name what the bound leaves open.
+- Before listing options, apply `rules/workflow/change-policy.md` Correctness and Verification to the failure: state the fact or rule the design lacks and every site where that lack changes a result, each with an input and its reference output. List only options that change the owner of that fact, one of them correcting it for all listed sites; leave a guard, a special case or a second mechanism beside the existing one at the failing site off the list.
+- A root-cause option is weighed like every other: state the result quality it gains or loses and the dimension its work grows with, with the bound that stops it. When the complete correction does not scale, offer the same correction at the owner with a stated bound, and name what the bound leaves open.
 - A run asked to check a question receives the question and the evidence before any candidate list, and proposes its own options first.
-- When `algorithm.allowed_data` is configured, data flows only through those structures; no additional representation bypasses that constraint.
-- Entities listed in `algorithm.immutable_entities` are never modified after creation.
-- Check examples against the configured reference command and version, or against the accepted contract when no reference runtime exists. Record the input, expected result and verification evidence.
-- A mismatch is a limitation under Authority above; no failing option is silently treated as conforming.
+- When `algorithm.allowed_data` is configured, route data only through those structures.
+- Keep each entity listed in `algorithm.immutable_entities` unchanged after creation.
+- Check each example by running `reference.command` and record the version `reference.version_command` prints in the example's evidence; without a reference runtime, check it against the accepted contract. Record the input, expected result and verification evidence.
+- Treat a mismatch as a limitation under Authority above, and mark each failing option as failing.
 - Before offering a known limitation, the drafter cites for each of literature, industrial tools, other fields, closed-form mathematics and known algorithms either an alternative with its remaining limit or the search that found none.
 - Check all affected items and boundary cases against research, repository conventions and recorded decisions.
 - A code/doc difference is a code gap unless independent reference output shows a semantic defect.
 
 ## Question Format
 
+- Send or list a question only after recording its authority (Authority above), the searches of the decided documents, the directives and the transcripts with their results, and the question with its evidence.
 - Open with every affected recorded constraint with its decision entry and recording commit, then every recorded edge case with its example.
 - Name the documents and commits reviewed.
 - Every question and option list includes a minimal example, its expected result and supporting evidence; include complete reference output when a reference run supplies that evidence.
 - Each option states its observable result and effects on required quality and resource constraints against the current design, using configured metrics and phases.
 - The recommendation states the tradeoff between result quality and growth that selects it.
 - Each option states that it keeps earlier decisions or quotes each sentence it changes with its commit.
-- Recommend a revision only when a reference example contradicts the earlier sentence.
+- Recommend a revision of an earlier sentence when reference output refutes it or when an agent derived it from another decided sentence that still holds (Authority above); otherwise recommend an option that keeps it.
 - End with a discussion option and name one recommended option.
 
 ## Recording

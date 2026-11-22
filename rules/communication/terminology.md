@@ -10,19 +10,19 @@ These rules bind every surface the agent writes: chat replies, briefs to agents,
 
 ## Domain
 
-- Every technical term comes from a domain `domain.allowed` lists; without that value the allowed domains are computer science (security analysis included) and the repository vocabulary.
-- Never borrow a term from an unrelated domain as a metaphor for a technical concept.
-- Never coin a term, label, or metaphor the codebase does not already use. Selection of an existing source name follows `rules/docs/glossary.md` Name Sources and Naming Steps.
-- Never translate a metaphor word for word across languages. The project parameter `terminology.substitutions` supplies forbidden words, replacements, scope and exemptions. `hooks/doc_check.py` reports each use of a forbidden word outside its exemptions in written files. A substitution marked `check: review` applies only where the text is about its subject; review checks it and the hook skips it.
+- Take every technical term from a domain `domain.allowed` lists, or, without that value, from computer science (security analysis included) and the repository vocabulary; write the rest of agent text in ordinary words, and spell each established term as its glossary entry spells it.
+- Name a technical concept by its technical term or a plain clause; use the words of its own domain, with no metaphor from an unrelated domain.
+- Use the terms, labels and metaphors the codebase already uses; select an existing source name under `rules/docs/glossary.md` Name Sources and Naming Steps.
+- Translate a term across languages by its meaning. The project parameter `terminology.substitutions` supplies forbidden words, replacements, scope and exemptions. `hooks/doc_check.py` reports each use of a forbidden word outside its exemptions in written files. A substitution marked `check: review` applies only where the text is about its subject; review checks it and the hook skips it.
 
 ## Established Terms
 
 - The project glossary is the single registry of established terms. Its path is `glossary.path`; the default is `docs/glossary.md`. A project with documentation has one; its first documentation change creates it. A brief to another agent names that path.
-- A concept the glossary names is referred to only by that name, spelled as its entry spells it, in every output language, heading and table alike; no synonym, abbreviation or paraphrase stands for it. A concept a dependency repository defines keeps the name its owning glossary gives it (`rules/docs/glossary.md` Repositories).
+- A concept the glossary names is referred to only by that name, spelled as its entry spells it, in every output language, heading and table alike, in place of any synonym, abbreviation or paraphrase. A concept a dependency repository defines keeps the name its owning glossary gives it (`rules/docs/glossary.md` Repositories).
 - A new concept gets its glossary entry in the change that first uses it; which concepts get one follows `rules/docs/glossary.md` Selection.
 - Until that procedure establishes a name, use an existing term or a plain clause.
-- A term of the literature or of the domain and a core term of the algorithm never yield to readability: no common word or paraphrase replaces it. A definition, a citation or a clause beside it is added instead.
-- One term names one concept, and one concept has one term, in prose and in domain identifiers alike. An identifier differs from the term only by the casing its language requires; a protected external name keeps its spelling, its glossary entry maps it to the term, and no option list offers its renaming. A terminology audit checks both directions: each term names one concept, and each concept has one term.
+- Keep a term of the literature or of the domain and a core term of the algorithm under its name, and add a definition, a citation or a clause beside it for readability.
+- One term names one concept, and one concept has one term, in prose and in domain identifiers alike. An identifier differs from the term only by the casing its language requires; a protected external name keeps its spelling, its glossary entry maps it to the term, and an option list keeps its name. A terminology audit checks both directions: each term names one concept, and each concept has one term.
 - A term has one spelling, hyphenation included.
 - An identifier is quoted as code, spelled exactly as in the source.
 - Under `terminology.implementation_variants`, name compared implementations by their code names. Use its allowed category words and exclude its forbidden comparison labels.

@@ -30,7 +30,7 @@ Write a minimal failing test that triggers the reported behavior.
 
 Run the test. Confirm it fails.
 
-- If the test passes, the bug does not exist as described. A delegated run reports this to the main agent in its result and stops; the main agent takes it to the user.
+- If the test passes, record the input, the revision and the result, and dispose of the report under skill `multi-agent` Context Economy.
 
 ## Step 3 — Narrow Scope
 
@@ -58,7 +58,7 @@ Check these first:
 2. Run the reproduction test. Confirm it passes.
 3. Run the tests skill `chain-session` Work Loop step 7 requires.
 
-A repair outside the task's scope is reported to the user before it is made.
+Report a repair outside the task's scope before making it: to the user in a direct session, and as a boundary question under skill `chain-session` Boundary Questions in a delegated run.
 
 ## Step 5 — Verify
 
@@ -71,11 +71,7 @@ Keep the reproduction test under `rules/code/testing.md` Reproductions, in the l
 
 ## Step 7 — Commit
 
-Commit the fix and its reproduction test together, before returning to other work.
-
-- One `fix(scope):` commit carrying the root-cause change plus the regression test — they are one concept.
-- Commit now, under `rules/workflow/committing.md` Staging.
-- Stage and commit under skill `commit`.
+Commit the root-cause change and its reproduction test as one `fix(<scope>):` commit under skill `commit`, before returning to other work.
 
 ## Report
 

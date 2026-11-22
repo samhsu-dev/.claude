@@ -8,15 +8,15 @@ Preflight and safe alternatives: skill `commit`; branch cleanup and submodule po
 
 ## Publication
 
-- A push requires explicit user authorization; an `integration.publication` value is that authorization within the scope it states. A local commit, passed review or merge does not authorize publication.
+- Push only with explicit user authorization or within the scope an `integration.publication` value states; these two are the only authorization of a push.
 
 ## Branches and Conflicts
 
-- Never create, rename or publish a branch whose name starts with `codex/`.
-- Prefix every agent-created branch with `samhsu/`.
-- No agent switches the branch of any checkout without explicit user instruction; a run's merge-result check uses a new detached worktree under its run directory.
+- Name each agent-created task branch by `integration.task_branch_pattern` when it is configured, and every other agent-created branch with the prefix `samhsu/`.
+- Create, rename and publish branches outside the `codex/` namespace.
+- Switch the branch of a checkout only on explicit user instruction; a run's merge-result check uses a new detached worktree under its run directory.
 - Delete a branch only on explicit user instruction with `git branch -d`, or under skill `multi-agent` Branch Lifecycle; `git branch -D` deletes only a branch that Branch Lifecycle archived.
-- Never discard conflicting changes or another writer's uncommitted work; the main agent archives such work under skill `multi-agent` Branch Lifecycle before it removes the worktree.
-- A conflict from merging the integration head into a task branch is resolved by that task's run from the decided documents and measured test output, never by taking one side unchecked; the main agent checks the resolution diff before integration. A conflict whose sides implement contradictory decided sentences goes to the user.
-- Other pull or rebase conflicts go to the user. Never auto-resolve them, except the submodule pointers skill `multi-agent` Branch Lifecycle permits.
-- `git rebase --abort` or `git merge --abort`: requires explicit user approval.
+- Keep conflicting changes and another writer's uncommitted work: the main agent reads and archives such work under skill `multi-agent` Branch Lifecycle before it removes the worktree.
+- A conflict from merging the integration head into a task branch is resolved by that task's run from the decided documents and measured test output, with each side checked; the main agent checks the resolution diff before integration. A conflict whose sides implement contradictory decided sentences goes to the user.
+- Send other pull or rebase conflicts to the user for resolution; an agent resolves only the submodule pointers skill `multi-agent` Branch Lifecycle permits.
+- Run `git rebase --abort` or `git merge --abort` only with explicit user approval.

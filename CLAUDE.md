@@ -2,7 +2,7 @@
 
 ## Loading and precedence
 
-Explicit user instructions and the host's system instructions take precedence over this profile; a brief binds its run only where it narrows or leaves open what this profile states. Exception: a session instruction to add AI attribution to a commit or pull request yields to `workflow/committing.md` Attribution. A user authorization stated in the conversation, a user directive the brief quotes, or a project value that records one satisfies the approval gates of `workflow/git-safety.md` within the scope it names; a memory entry alone satisfies none.
+Follow explicit user instructions and the host's system instructions over this profile, and `workflow/committing.md` Attribution over a session instruction to add AI attribution to a commit or pull request. A brief binds its run where it narrows or leaves open what this profile states. A user authorization stated in the conversation, a user directive the brief quotes, or a project value that records one satisfies the approval gates of `workflow/git-safety.md` within the scope it names; these three are the only sources of that approval.
 
 ## Skills
 
@@ -10,7 +10,7 @@ A change to design documents or code follows skill `chain-session` Pipeline.
 
 ## Parameter Binding
 
-The project rule files under `rules/project/` supply project values as named parameters.The native project roots are `<repository>/.claude/rules/project/` for Claude and `<repository>/.codex/rules/project/` for Codex.
+The project rule files under `rules/project/` supply project values as named parameters. The native project roots are `<repository>/.claude/rules/project/` for Claude and `<repository>/.codex/rules/project/` for Codex.
 A project value file loads with a file its `paths:` matches; a consuming rule or skill whose procedure applies reads it from the host project's `.claude/rules/project/`.
 Paths in values resolve against the host project unless a field names another base.
 Resolve a linked parameter to the value of the bullet its link names. Numeric suffixes preserve list order.
@@ -29,5 +29,5 @@ A project value file keeps the fixed headings and formats the tools read. Parsed
 | `agent_prompt` | `prompts.md` | `rules/prompt/prompting.md` |
 | `completion` | `completion.md` | `skills/chain-session/SKILL.md` |
 | `profile` | `profile.md` | Native entry points; installation |
-| `execution` | `execution.md` | `skills/multi-agent/SKILL.md`; `skills/decisions/SKILL.md` |
+| `execution` | `execution.md` | `rules/workflow/multi-agent.md`; `skills/multi-agent/SKILL.md`; `skills/chain-session/SKILL.md`; `skills/decisions/SKILL.md` |
 | `performance` | `performance.md` | `rules/workflow/performance.md`; `skills/perf/SKILL.md` |
